@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles - VedaVMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --saffron: #E65100;
+            --maroon: #800000;
+            --cream: #FFF8F0;
+            --gold: #DAA520;
+            --dark-brown: #4E342E;
+            --white: #FFFFFF;
+            --light-orange: #FFF3E0;
+        }
+        body { font-family: 'Noto Sans', sans-serif; color: var(--dark-brown); background: var(--cream); line-height: 1.6; }
+        .header {
+            background: linear-gradient(rgba(62, 39, 25, 0.92), rgba(62, 39, 25, 0.92)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%238B4513" width="100" height="100"/></svg>');
+            color: white; padding: 1rem 0; text-align: center;
+        }
+        .logo { font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none; color: white; }
+        .om-symbol { font-size: 1.5rem; color: var(--gold); }
+        .blessing { font-size: 0.8rem; opacity: 0.9; font-style: italic; margin-top: 0.25rem; }
+        .nav { background: var(--white); box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; flex-wrap: wrap; }
+        .nav a { color: var(--dark-brown); text-decoration: none; padding: 0.85rem 1.25rem; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; border-bottom: 3px solid transparent; transition: all 0.3s; }
+        .nav a:hover, .nav a.active { color: var(--saffron); border-bottom-color: var(--saffron); background: var(--light-orange); }
+        .nav .donate-btn { background: var(--saffron); color: white !important; border-radius: 4px; margin: 0.4rem; padding: 0.5rem 1rem; }
+        .page-header { background: linear-gradient(135deg, var(--maroon) 0%, #4a1a1a 100%); color: white; padding: 2rem 1rem; text-align: center; }
+        .page-header h1 { font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 2rem; margin-bottom: 0.25rem; }
+        .page-header p { opacity: 0.9; }
+        .main-content { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+        .info-box { background: #FFF9C4; border-left: 4px solid var(--gold); padding: 0.75rem 1rem; margin-bottom: 1.5rem; border-radius: 0 6px 6px 0; font-size: 0.9rem; }
+        .article-grid { display: grid; gap: 0.75rem; }
+        .article-card {
+            display: flex; align-items: center; justify-content: space-between;
+            background: white; padding: 1rem 1.25rem; border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08); border-left: 4px solid var(--saffron);
+            transition: all 0.2s; flex-wrap: wrap; gap: 0.75rem;
+        }
+        .article-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.12); transform: translateX(4px); }
+        .article-info { flex: 1; min-width: 250px; }
+        .article-title { font-weight: 600; font-size: 0.95rem; color: var(--dark-brown); margin-bottom: 0.25rem; }
+        .article-meta { font-size: 0.8rem; color: #666; }
+        .dl-btn {
+            display: inline-flex; align-items: center; gap: 0.25rem;
+            padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;
+            font-size: 0.85rem; font-weight: 600; background: var(--saffron); color: white;
+            transition: all 0.2s;
+        }
+        .dl-btn:hover { background: var(--maroon); }
+        .footer { background: var(--dark-brown); color: white; padding: 1.5rem 1rem; text-align: center; margin-top: 2rem; }
+        .footer a { color: white; margin: 0 1rem; text-decoration: none; opacity: 0.8; }
+        @media (max-width: 600px) {
+            .article-card { flex-direction: column; align-items: flex-start; }
+            .dl-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo"><span class="om-symbol">ॐ</span><span>VedaVMS</span></a>
+        <div class="blessing">ॐ श्री महागणपतये नमः || श्री गुरुभ्यो नमः ||</div>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html">Home</a>
+            <a href="documents.html">Documents</a>
+            <a href="videos.html">Videos</a>
+            <a href="articles.html" class="active">Articles</a>
+            <a href="about.html">About</a>
+            <a href="https://vedavms.in/Donations.html" target="_blank" class="donate-btn">Donate</a>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <h1>Articles & Discussion Papers</h1>
+        <p>Educational resources for Veda students</p>
+    </section>
+
+    <main class="main-content">
+        <div class="info-box">
+            📌 <strong>Note:</strong> Kindly refer to updates on Articles as they periodically change as our learnings progress. These articles complement our video lectures.
+        </div>
+
+        <div class="article-grid">
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">1) Basics of Sanskrit Letters</div>
+                    <div class="article-meta">Version 0.3 | Apr 30, 2020</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/00Sanskrit%20Letters.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">2) Basics of Veda Swaras</div>
+                    <div class="article-meta">Version 0.2 | Jan 1, 2021</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/01Basics%20of%20Veda%20Swaras.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">3) Basics of Veda Recital</div>
+                    <div class="article-meta">Version 0.2 | Aug 31, 2020</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/01ABasics%20of%20Veda%20Recital.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">4) Basics of Veda - Dheerga Swaritam</div>
+                    <div class="article-meta">Version 0.5 | Mar 31, 2022</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/02Basics%20of%20Veda-Dheerga%20Swaritam.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">5) Basics of Veda - Visarga Sandhi</div>
+                    <div class="article-meta">Version 0.3 | Feb 20, 2019</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/03Basics%20of%20Veda-Visarga%20Sandhi.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">6) Basics of Veda - Avagraha</div>
+                    <div class="article-meta">Version 0.4 | Jul 31, 2022</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/04Basics%20of%20Veda-avagraha.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">7) Basics of Veda - Chandas</div>
+                    <div class="article-meta">Version 0.1 | Mar 15, 2019</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/05Basics%20of%20Veda-Chandas.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">8) Basics of Veda - Krama Paatam</div>
+                    <div class="article-meta">Version 0.2 | Mar 8, 2019</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/06Basics%20of%20Veda-Krama%20Paatam.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">9) Basics of Veda - Ghana Paatam</div>
+                    <div class="article-meta">Version 0.2 | Mar 8, 2019</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/07Basics%20of%20Veda-Ghana%20Paatam.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">10) Basics of Veda - Vowel Sandhi</div>
+                    <div class="article-meta">Version 0.2 | Feb 23, 2019</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/08Basics%20of%20Veda-Vowel%20Sandhi.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">11) Basics of Veda - Consonant Sandhi</div>
+                    <div class="article-meta">Version 0.2 | Mar 12, 2019</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/09Basics%20of%20Veda-Consonant%20Sandhi.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">12) Basics of Veda - Jata Paatam</div>
+                    <div class="article-meta">Version 0.1 | Mar 11, 2019</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/10Basics%20of%20Veda-Jata%20Paatam.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+
+            <div class="article-card">
+                <div class="article-info">
+                    <div class="article-title">13) Basics of Veda - Pada Paatam and Swara Rules</div>
+                    <div class="article-meta">Version 0.2 | Jan 8, 2019</div>
+                </div>
+                <a href="https://vedavms.in/docs/articles/11Basics%20of%20Veda-Pada%20Paatam.pdf" target="_blank" class="dl-btn">📄 Download PDF</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <a href="index.html">Home</a>
+        <a href="documents.html">Documents</a>
+        <a href="videos.html">Videos</a>
+        <a href="about.html">About</a>
+        <div style="margin-top:1rem; font-size:0.8rem; opacity:0.7;">&copy; 2025 VedaVMS</div>
+    </footer>
+</body>
+</html>

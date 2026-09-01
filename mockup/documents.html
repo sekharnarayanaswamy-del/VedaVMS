@@ -1,0 +1,2174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanskrit Documents - VedaVMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --saffron: #E65100;
+            --maroon: #800000;
+            --cream: #FFF8F0;
+            --gold: #DAA520;
+            --dark-brown: #4E342E;
+            --white: #FFFFFF;
+            --light-orange: #FFF3E0;
+        }
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            color: var(--dark-brown);
+            background: var(--cream);
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(rgba(62, 39, 25, 0.92), rgba(62, 39, 25, 0.92)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%238B4513" width="100" height="100"/><rect fill="%23A0522D" x="0" y="0" width="5" height="100"/><rect fill="%23A0522D" x="10" y="0" width="3" height="100"/><rect fill="%23A0522D" x="20" y="0" width="6" height="100"/><rect fill="%23A0522D" x="30" y="0" width="4" height="100"/><rect fill="%23A0522D" x="40" y="0" width="5" height="100"/><rect fill="%23A0522D" x="50" y="0" width="3" height="100"/><rect fill="%23A0522D" x="60" y="0" width="6" height="100"/><rect fill="%23A0522D" x="70" y="0" width="4" height="100"/><rect fill="%23A0522D" x="80" y="0" width="5" height="100"/><rect fill="%23A0522D" x="90" y="0" width="3" height="100"/></svg>');
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        .logo {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: white;
+        }
+        .om-symbol { font-size: 1.5rem; color: var(--gold); }
+        .blessing { font-size: 0.8rem; opacity: 0.9; font-style: italic; margin-top: 0.25rem; }
+        .nav {
+            background: var(--white);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .nav a {
+            color: var(--dark-brown);
+            text-decoration: none;
+            padding: 0.85rem 1.25rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        .nav a:hover, .nav a.active {
+            color: var(--saffron);
+            border-bottom-color: var(--saffron);
+            background: var(--light-orange);
+        }
+        .nav .donate-btn {
+            background: var(--saffron);
+            color: white !important;
+            border-radius: 4px;
+            margin: 0.4rem;
+            padding: 0.5rem 1rem;
+        }
+        .page-header {
+            background: linear-gradient(135deg, var(--maroon) 0%, #4a1a1a 100%);
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 1.8rem;
+            margin-bottom: 0.25rem;
+        }
+        .search-section {
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .search-input {
+            flex: 1;
+            padding: 0.65rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        .search-input:focus { outline: none; border-color: var(--saffron); }
+        .search-btn {
+            background: var(--saffron);
+            color: white;
+            border: none;
+            padding: 0.65rem 1.25rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .search-btn:hover { background: var(--maroon); }
+        .language-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            padding: 0.75rem;
+            background: var(--light-orange);
+            border-bottom: 1px solid #ddd;
+        }
+        .language-tab {
+            padding: 0.4rem 0.8rem;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--dark-brown);
+            font-size: 0.85rem;
+        }
+        .language-tab:hover { border-color: var(--saffron); }
+        .language-tab.active {
+            background: var(--saffron);
+            color: white;
+            border-color: var(--saffron);
+        }
+        .language-content { display: none; }
+        .language-content.active { display: block; }
+        .main-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+        .important-notes {
+            background: #FFF9C4;
+            border-left: 4px solid var(--gold);
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.9rem;
+        }
+        .important-notes h3 { color: var(--maroon); margin-bottom: 0.4rem; font-size: 0.95rem; }
+        .important-notes ul { margin-left: 1.25rem; font-size: 0.85rem; }
+        .important-notes li { margin-bottom: 0.2rem; }
+        .category {
+            margin-bottom: 0.75rem;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: var(--dark-brown);
+            color: white;
+            cursor: pointer;
+        }
+        .category-header:hover { background: var(--maroon); }
+        .category-header h3 { font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .category-count {
+            background: rgba(255,255,255,0.2);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+        .category-toggle { font-size: 1.25rem; transition: transform 0.3s; }
+        .category.open .category-toggle { transform: rotate(180deg); }
+        .category-content { display: none; padding: 0.75rem; }
+        .category.open .category-content { display: block; }
+        .doc-grid { display: grid; gap: 0.5rem; }
+        .doc-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 0.75rem;
+            background: var(--cream);
+            border-radius: 4px;
+            border: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .doc-card:hover { border-color: var(--saffron); }
+        .doc-info { flex: 1; min-width: 200px; }
+        .doc-title { font-weight: 600; font-size: 0.9rem; color: var(--dark-brown); }
+        .doc-meta { font-size: 0.75rem; color: #666; display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.2rem; }
+        .version-badge {
+            background: var(--saffron);
+            color: white;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .new-badge {
+            background: #4CAF50;
+            color: white;
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            font-size: 0.65rem;
+        }
+        .doc-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+        .dl-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            padding: 0.35rem 0.6rem;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .dl-btn.primary { background: var(--saffron); color: white; }
+        .dl-btn.primary:hover { background: var(--maroon); }
+        .dl-btn.secondary { background: #e0e0e0; color: var(--dark-brown); }
+        .dl-btn.secondary:hover { background: #bdbdbd; }
+        .footer {
+            background: var(--dark-brown);
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .footer a { color: white; margin: 0 1rem; text-decoration: none; opacity: 0.8; }
+        .footer a:hover { opacity: 1; }
+        @media (max-width: 600px) {
+            .doc-card { flex-direction: column; align-items: flex-start; }
+            .doc-actions { width: 100%; }
+            .dl-btn { flex: 1; justify-content: center; }
+            .nav a { padding: 0.6rem 0.6rem; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <span class="om-symbol">ॐ</span>
+            <span>VedaVMS</span>
+        </a>
+        <div class="blessing">ॐ श्री महागणपतये नमः || श्री गुरुभ्यो नमः ||</div>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html">Home</a>
+            <a href="documents.html" class="active">Documents</a>
+            <a href="videos.html">Videos</a>
+            <a href="articles.html">Articles</a>
+            <a href="about.html">About</a>
+            <a href="https://vedavms.in/Donations.html" target="_blank" class="donate-btn">Donate</a>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <h1>संस्कृत ग्रन्थाः | Document Downloads</h1>
+        <p style="opacity:0.9; font-size:0.95rem;">Krishna Yajurveda texts in multiple languages</p>
+    </section>
+
+    <section class="search-section">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search documents... (e.g., Shanti Japam, Rudra)" id="searchInput" onkeyup="searchDocs()">
+            <button class="search-btn" onclick="searchDocs()">Search</button>
+        </div>
+    </section>
+
+    <div class="language-tabs">
+        <span class="language-tab active" onclick="showLanguage('sanskrit')">संस्कृत Sanskrit</span>
+        <span class="language-tab" onclick="showLanguage('tamil')">தமிழ் Tamil</span>
+        <span class="language-tab" onclick="showLanguage('malayalam')">മലയാളം Malayalam</span>
+        <span class="language-tab" onclick="showLanguage('kannada')">ಕನ್ನಡ Kannada</span>
+        <span class="language-tab" onclick="showLanguage('telugu')">తెలుగు Telugu</span>
+        <span class="language-tab" onclick="showLanguage('english')">English (IAST)</span>
+    </div>
+
+    <main class="main-content">
+        <!-- SANSKRIT CONTENT -->
+        <div id="content-sanskrit" class="language-content active">
+        <div class="important-notes">
+            <h3>📌 Important Notes</h3>
+            <ul>
+                <li>All Standard Suktams are part of the <strong>Shanti Japam</strong> Book</li>
+                <li>Aruna Prasnam (Surya Namaskaram) is part of <strong>Taittiriyopanishad</strong> book</li>
+                <li>MahanyAsam, Rudra Kramam, Chamaka Kramam are part of <strong>Siva Stuti</strong> Book</li>
+                <li>We focus exclusively on Krishna Yajur Veda Mantras only</li>
+            </ul>
+        </div>
+
+        <!-- VEDIC BOOKS BY SUBJECT -->
+        <div class="category open" id="cat-vedic">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📚 Vedic Books by Subject <span class="category-count">15 docs</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">1) Shanti Japam - Sanskrit</div>
+                            <div class="doc-meta"><span class="version-badge">V5.0</span><span>Sep 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Shanti-Japam/Shanti%20Japam%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Shanti-Japam/Shanti%20Japam%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">2) Taittiriyopanishat, Arunaprasnam, Trinaaciketam - Sanskrit</div>
+                            <div class="doc-meta"><span class="version-badge">V3.3</span><span>Jul 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TU/Taittiriya%20Upanishad%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TU/TU%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">2A) Surya Namaskara Mantra - Sanskrit</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Nov 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TU/surya%20namaskaram%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TU/surya%20namaskaram%20Sanskrit%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">3) Udaka Shanti - Sanskrit</div>
+                            <div class="doc-meta"><span class="version-badge">V4.2</span><span>Jul 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/US/Udaka%20Shanti%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/US/US%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">4) Siva Stuti - Sanskrit</div>
+                            <div class="doc-meta"><span class="version-badge">V4.1</span><span>Aug 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Shiva-Stuti/Siva%20Stuti%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Shiva-Stuti/Siva%20Stuti%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">5) acChidram, aSvamedam & kAThakam - Sanskrit</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%203.7-3.12%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%203.7-3.12%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">6) aBiSravaNam - Sanskrit</div>
+                            <div class="doc-meta"><span class="version-badge">V1.0</span><span>Sep 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/abhishravaNa/abhishravaNam%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/abhishravaNa/abhishravaNam%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">7) Chamaka Ghanam - Sanskrit <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Ghanam%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Ghanam%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">8) Chamaka Jatai - Sanskrit <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Jatai%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Jatai%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">9) Rudra Ghanam - Sanskrit <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Ghanam/Rudra%20Ghanam%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Ghanam/Rudra%20Ghanam%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">10) Rudra Jatai - Sanskrit <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Ghanam/Rudra%20Jatai%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Ghanam/Rudra%20Jatai%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">11) Ekaagni Kaandam (with Padam) - Sanskrit</div>
+                            <div class="doc-meta"><span class="version-badge">V1.0</span><span>Oct 31, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/ekAgni/Ekaagni%20Kaandam%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/ekAgni/Ekaagni%20Kaandam%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">12) Svasti VAchanam - Sanskrit</div>
+                            <div class="doc-meta"><span class="version-badge">V1.0</span><span>Mar 31, 2020</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Veda-SIRAS/Svastivachanam%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">13) Rudra Kramam - Sanskrit Column</div>
+                            <div class="doc-meta"><span>Aug 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Shiva-Stuti/Rudra%20Kramam%20Sanskrit%20Column.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">14) Chamaka Kramam - Sanskrit Column</div>
+                            <div class="doc-meta"><span>Aug 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Shiva-Stuti/Chamaka%20Kramam%20Sanskrit%20Column.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">15) KalyaNa ASeervada Mantras - Sanskrit</div>
+                            <div class="doc-meta"><span>Sep 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/Kalyana%20Asheervadams-Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAITTIRIYA SAMHITA -->
+        <div class="category" id="cat-ts">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📖 Taittiriya Samhita <span class="category-count">7 Kandams + Index</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 1</div>
+                            <div class="doc-meta"><span class="version-badge">V3.1</span><span>Jul 31, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%201%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%201%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 2</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Jun 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%202%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%202%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 3</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Jun 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%203%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%203%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 4</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Jun 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%204%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%204%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 5</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>May 31, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%205%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%205%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 6</div>
+                            <div class="doc-meta"><span class="version-badge">V1.1</span><span>Sep 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%206%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%206%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 7</div>
+                            <div class="doc-meta"><span class="version-badge">V1.1</span><span>Sep 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%207%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%207%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - First and Last Panchati</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jun 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%20First%20and%20last%20Panchati%20-%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Index (Alphabetical)</div>
+                            <div class="doc-meta"><span>Mar 31, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS_Index_Alpha_31032024.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Index (Panchaati-wise)</div>
+                            <div class="doc-meta"><span>Mar 31, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS_Index_Panchaati_31032024.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAITTIRIYA BRAHMANA -->
+        <div class="category" id="cat-tb">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📖 Taittiriya Brahmana <span class="category-count">6 sections + Index</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 1 (Prapatakam 1-4)</div>
+                            <div class="doc-meta"><span class="version-badge">V3.0</span><span>Apr 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%201.1-1.4%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%201.1-1.4%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 1 (Prapatakam 5-8)</div>
+                            <div class="doc-meta"><span class="version-badge">V3.0</span><span>Apr 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%201.5-1.8%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%201.5-1.8%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 2 (Prapatakam 1-4) <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V3.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%202.1-2.4%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%202.1-2.4%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 2 (Prapatakam 5-8) <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V3.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%202.5-2.8%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%202.5-2.8%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 3 (Prapatakam 1-6)</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Sep 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%203.1-3.6%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%203.1-3.6%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 3 (Prapatakam 7-12)</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%203.7-3.12%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%203.7-3.12%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Index (Alphabetical)</div>
+                            <div class="doc-meta"><span>Mar 31, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB_Index_Alpha_31032024.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Index (Dasini-wise)</div>
+                            <div class="doc-meta"><span>Mar 31, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB_Index_Dasini_31032024.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAITTIRIYA ARANYAKA -->
+        <div class="category" id="cat-ta">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📖 Taittiriya Aranyakam <span class="category-count">4 sections + Index</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Aranyakam - Prapatam 1-4</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Apr 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TA/TA%201-4%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TA/TA%201-4%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Aranyakam - Prapatam 5-6</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Sep 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TA/TA%205-6%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TA/TA%205-6%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Aranyakam - Prapatam 7-8</div>
+                            <div class="doc-meta"><span class="version-badge">V1.0</span><span>Mar 31, 2020</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TA/TA%207-8%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TA/TA%207-8%20Sanskrit%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Aranyakam - Comparison of Publications</div>
+                            <div class="doc-meta"><span>Reference document</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TA/Comparison%20TA-Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Aranyakam - Index (Alphabetical)</div>
+                            <div class="doc-meta"><span>Mar 31, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TA/TA_Index_Alpha_31032024.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Aranyakam - Index (Dasini-wise)</div>
+                            <div class="doc-meta"><span>Mar 31, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TA/TA_Index_Dasini_31032024.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PADA PATHAM -->
+        <div class="category" id="cat-pada">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📝 Samhita Pada Patham (with Vakyam) <span class="category-count">40+ docs</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <p style="padding:0.5rem; color:#666; font-size:0.9rem;">Pada Patham documents organized by Kandam. Each praShna has document + corrections.</p>
+                <div class="doc-grid" style="margin-top:0.5rem;">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">TS 1.1 - 1.8 Pada Patham (8 files)</div>
+                            <div class="doc-meta"><span>Jul 31, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS1-Padam/TS%201.1%20Sanskrit%20Pada%20Paatam%20with%20Vaakyam.pdf" target="_blank" class="dl-btn primary">📄 TS 1.1</a>
+                            <a href="https://vedavms.in/docs/TS1-Padam/TS%201.2%20Sanskrit%20Pada%20Paatam%20with%20Vaakyam.pdf" target="_blank" class="dl-btn primary">📄 TS 1.2</a>
+                            <a href="https://vedavms.in/docs/TS1-Padam/TS%201.3%20Sanskrit%20Pada%20Paatam%20with%20Vaakyam.pdf" target="_blank" class="dl-btn primary">📄 TS 1.3</a>
+                            <a href="https://vedavms.in/docs/TS1-Padam/TS%201.4%20Sanskrit%20Pada%20Paatam%20with%20Vaakyam.pdf" target="_blank" class="dl-btn primary">📄 TS 1.4</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">TS 2.1 - 2.6 Pada Patham (6 files)</div>
+                            <div class="doc-meta"><span>Jun 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS2-Padam/TS%202.1%20Sanskrit%20Pada%20Paatam%20with%20Vaakyam.pdf" target="_blank" class="dl-btn primary">📄 TS 2.1</a>
+                            <a href="https://vedavms.in/docs/TS2-Padam/TS%202.2%20Sanskrit%20Pada%20Paatam%20with%20Vaakyam.pdf" target="_blank" class="dl-btn primary">📄 TS 2.2</a>
+                            <a href="https://vedavms.in/docs/TS2-Padam/TS%202.3%20Sanskrit%20Pada%20Paatam%20with%20Vaakyam.pdf" target="_blank" class="dl-btn primary">📄 TS 2.3</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">TS 3.1 - 3.5 Pada Patham (5 files)</div>
+                            <div class="doc-meta"><span>Jun 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs//TS3-Padam/TS%203.1%20Sanskrit%20Pada%20Paatam%20with%20Vaakyam.pdf" target="_blank" class="dl-btn primary">📄 TS 3.1</a>
+                            <a href="https://vedavms.in/docs//TS3-Padam/TS%203.2%20Sanskrit%20Pada%20Paatam%20with%20Vaakyam.pdf" target="_blank" class="dl-btn primary">📄 TS 3.2</a>
+                            <a href="https://vedavms.in/docs//TS3-Padam/TS%203.3%20Sanskrit%20Pada%20Paatam%20with%20Vaakyam.pdf" target="_blank" class="dl-btn primary">📄 TS 3.3</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">View all Pada Patham documents on original site</div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs_sanskrit.html" target="_blank" class="dl-btn secondary">View All →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KRAMA PATHAM -->
+        <div class="category" id="cat-krama">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📝 Samhita Krama Patham <span class="category-count">50+ docs</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <p style="padding:0.5rem; color:#666; font-size:0.9rem;">Krama Patham documents for all 7 Kandams. Each praShna has document + corrections.</p>
+                <div class="doc-grid" style="margin-top:0.5rem;">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">TS 1.1 - 1.8 Krama Patham (8 files)</div>
+                            <div class="doc-meta"><span>Jul 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TSK1-Kramam/TS%201.1%20Kramam%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 TS 1.1</a>
+                            <a href="https://vedavms.in/docs/TSK1-Kramam/TS%201.2%20Kramam%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 TS 1.2</a>
+                            <a href="https://vedavms.in/docs/TSK1-Kramam/TS%201.3%20Kramam%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 TS 1.3</a>
+                            <a href="https://vedavms.in/docs/TSK1-Kramam/TS%201.4%20Kramam%20Sanskrit.pdf" target="_blank" class="dl-btn primary">📄 TS 1.4</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">View all Krama Patham documents on original site</div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs_sanskrit.html" target="_blank" class="dl-btn secondary">View All →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div><!-- End Sanskrit Content -->
+
+        <!-- TAMIL CONTENT -->
+        <div id="content-tamil" class="language-content" style="display:none;">
+        <div class="important-notes">
+            <h3>📌 Important Notes</h3>
+            <ul>
+                <li>All Standard Suktams are part of the <strong>Shanti Japam</strong> Book</li>
+                <li>Aruna Prasnam (Surya Namaskaram) is part of <strong>Taittiriyopanishad</strong> book</li>
+                <li>MahanyAsam, Rudra Kramam, Chamaka Kramam are part of <strong>Siva Stuti</strong> Book</li>
+            </ul>
+        </div>
+
+        <div class="category open">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📚 Vedic Books by Subject <span class="category-count">15 docs</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">1) Shanti Japam - Tamil</div>
+                            <div class="doc-meta"><span class="version-badge">V5.0</span><span>Sep 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Shanti-Japam/Shanti%20Japam%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Shanti-Japam/Shanti%20Japam%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">2) Taittiriyopanishat, Arunaprasnam, Trinaaciketam - Tamil</div>
+                            <div class="doc-meta"><span class="version-badge">V3.3</span><span>Jul 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TU/Taittiriya%20Upanishad%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TU/TU%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">2A) Surya Namaskara Mantra - Tamil</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Nov 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TU/Surya%20Namaskaram%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TU/Surya%20Namaskaram%20Tamil%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">3) Udaka Shanti - Tamil</div>
+                            <div class="doc-meta"><span class="version-badge">V4.2</span><span>Jul 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/US/Udaka%20Shanti%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/US/US%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">4) Siva Stuti - Tamil</div>
+                            <div class="doc-meta"><span class="version-badge">V4.1</span><span>Aug 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Shiva-Stuti/Siva%20Stuti%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Shiva-Stuti/Siva%20Stuti%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">5) acChidram, aSvamedam & kAThakam - Tamil</div>
+                            <div class="doc-meta"><span>Nov 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%203.7-3.12%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%203.7-3.12%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">6) aBiSravaNam - Tamil</div>
+                            <div class="doc-meta"><span>Sep 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/abhishravaNa/abhishravaNam%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/abhishravaNa/abhishravaNam%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">7) Chamaka Ghanam - Tamil <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Ghanam%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Ghanam%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">8) Chamaka Jatai - Tamil <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Jatai%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Jatai%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">9) Rudra Ghanam - Tamil <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Ghanam/Rudra%20Ghanam%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Ghanam/Rudra%20Ghanam%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">10) Rudra Jatai - Tamil <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Ghanam/Rudra%20Jatai%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Ghanam/Rudra%20Jatai%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">11) EkAgni KAndam (with Padam) - Tamil</div>
+                            <div class="doc-meta"><span>Oct 31, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/ekAgni/Ekaagni%20Kaandam%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/ekAgni/Ekaagni%20Kaandam%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">12) Svasti VAchanam - Tamil</div>
+                            <div class="doc-meta"><span>Mar 31, 2020</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Veda-SIRAS/Svastivachanam%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">13) Rudra Kramam - Tamil Column</div>
+                            <div class="doc-meta"><span>Aug 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Shiva-Stuti/Rudra%20Kramam%20Tamil%20Column.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">14) Chamaka Kramam - Tamil Column</div>
+                            <div class="doc-meta"><span>Aug 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Shiva-Stuti/Chamaka%20Kramam%20Tamil%20Column.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">15) KalyaNa ASeervada Mantras - Tamil</div>
+                            <div class="doc-meta"><span>Sep 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/Kalyana%20Asheervadams-Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📖 Taittiriya Samhita <span class="category-count">7 Kandams</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 1</div>
+                            <div class="doc-meta"><span class="version-badge">V3.1</span><span>Jul 31, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%201%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%201%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 2</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Jun 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%202%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%202%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 3</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Jun 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%203%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%203%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 4</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Jun 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%204%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%204%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 5</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>May 31, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%205%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%205%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 6</div>
+                            <div class="doc-meta"><span class="version-badge">V1.1</span><span>Sep 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%206%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%206%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 7</div>
+                            <div class="doc-meta"><span class="version-badge">V1.1</span><span>Sep 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%207%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%207%20Tamil%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - First and Last Panchati</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jun 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%20First%20and%20last%20Panchati%20-%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📖 Taittiriya Brahmana <span class="category-count">6 sections</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 1 (Prapatakam 1-4)</div>
+                            <div class="doc-meta"><span class="version-badge">V3.0</span><span>Apr 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%201.1-1.4%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%201.1-1.4%20Tamil%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 1 (Prapatakam 5-8)</div>
+                            <div class="doc-meta"><span class="version-badge">V3.0</span><span>Apr 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%201.5-1.8%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%201.5-1.8%20Tamil%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 2 (Prapatakam 1-4) <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V3.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%202.1-2.4%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%202.1-2.4%20Tamil%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 2 (Prapatakam 5-8) <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V3.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%202.5-2.8%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%202.5-2.8%20Tamil%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 3 (Prapatakam 1-6)</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Sep 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%203.1-3.6%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%203.1-3.6%20Tamil%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 3 (Prapatakam 7-12)</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%203.7-3.12%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%203.7-3.12%20Tamil%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📖 Taittiriya Aranyakam <span class="category-count">4 sections</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Aranyakam - Prapatam 1-4</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Apr 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TA/TA%201-4%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TA/TA%201-4%20Tamil%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Aranyakam - Prapatam 5-6</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Sep 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TA/TA%205-6%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TA/TA%205-6%20Tamil%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Aranyakam - Prapatam 7-8</div>
+                            <div class="doc-meta"><span class="version-badge">V1.0</span><span>Mar 31, 2020</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TA/TA%207-8%20Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TA/TA%207-8%20Tamil%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Aranyakam - Comparison of Publications</div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TA/Comparison%20TA-Tamil.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div><!-- End Tamil Content -->
+
+        <!-- MALAYALAM CONTENT -->
+        <div id="content-malayalam" class="language-content" style="display:none;">
+        <div class="important-notes">
+            <h3>📌 Important Notes</h3>
+            <ul>
+                <li>All Standard Suktams are part of the <strong>Shanti Japam</strong> Book</li>
+                <li>Aruna Prasnam (Surya Namaskaram) is part of <strong>Taittiriyopanishad</strong> book</li>
+                <li>MahanyAsam, Rudra Kramam, Chamaka Kramam are part of <strong>Siva Stuti</strong> Book</li>
+            </ul>
+        </div>
+
+        <div class="category open">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📚 Vedic Books by Subject <span class="category-count">15 docs</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">1) Shanti Japam - Malayalam</div>
+                            <div class="doc-meta"><span class="version-badge">V5.0</span><span>Sep 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Shanti-Japam/Shanti%20Japam%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Shanti-Japam/Shanti%20Japam%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">2) Taittiriyopanishat, Arunaprasnam, Trinaaciketam - Malayalam</div>
+                            <div class="doc-meta"><span class="version-badge">V3.3</span><span>Jul 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TU/Taittiriya%20Upanishad%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TU/TU%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">2A) Surya Namaskara Mantra - Malayalam</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Nov 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TU/Surya%20Namaskaram%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TU/Surya%20Namaskaram%20Malayalam%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">3) Udaka Shanti - Malayalam</div>
+                            <div class="doc-meta"><span class="version-badge">V4.2</span><span>Jul 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/US/Udaka%20Shanti%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/US/US%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">4) Siva Stuti - Malayalam</div>
+                            <div class="doc-meta"><span class="version-badge">V4.1</span><span>Aug 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Shiva-Stuti/Siva%20Stuti%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Shiva-Stuti/Siva%20Stuti%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">5) acChidram, aSvamedam & kAThakam - Malayalam</div>
+                            <div class="doc-meta"><span>Nov 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%203.7-3.12%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%203.7-3.12%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">6) aBiSravaNam - Malayalam</div>
+                            <div class="doc-meta"><span>Sep 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/abhishravaNa/abhishravaNam%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/abhishravaNa/abhishravaNam%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">7) Chamaka Ghanam - Malayalam <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Ghanam%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Ghanam%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">8) Chamaka Jatai - Malayalam <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Jatai%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Jatai%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">9) Rudra Ghanam - Malayalam <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Ghanam/Rudra%20Ghanam%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Ghanam/Rudra%20Ghanam%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">10) Rudra Jatai - Malayalam <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Ghanam/Rudra%20Jatai%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/Ghanam/Rudra%20Jatai%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">11) EkAgni KAndam (with Padam) - Malayalam</div>
+                            <div class="doc-meta"><span class="version-badge">V1.0</span><span>Oct 31, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/ekAgni/Ekaagni%20Kaandam%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/ekAgni/Ekaagni%20Kaandam%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">12) Svasti VAchanam - Malayalam</div>
+                            <div class="doc-meta"><span>Mar 31, 2020</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Veda-SIRAS/Svastivachanam%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">13) Rudra Kramam - Malayalam Column</div>
+                            <div class="doc-meta"><span>Aug 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Shiva-Stuti/Rudra%20Kramam%20Malayalam%20Column.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">14) Chamaka Kramam - Malayalam Column</div>
+                            <div class="doc-meta"><span>Aug 31, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/Shiva-Stuti/Chamaka%20Kramam%20Malayalam%20Column.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">15) KalyaNa ASeervada Mantras - Malayalam</div>
+                            <div class="doc-meta"><span>Sep 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/Kalyana%20Asheervadams-Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📖 Taittiriya Samhita <span class="category-count">7 Kandams</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 1</div>
+                            <div class="doc-meta"><span class="version-badge">V3.1</span><span>Jul 31, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%201%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%201%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 2</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Jun 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%202%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%202%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 3</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Jun 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%203%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%203%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 4</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Jun 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%204%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%204%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 5</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>May 31, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%205%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%205%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 6</div>
+                            <div class="doc-meta"><span class="version-badge">V1.1</span><span>Sep 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%206%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%206%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 7</div>
+                            <div class="doc-meta"><span class="version-badge">V1.1</span><span>Sep 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%207%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TS/TS%207%20Malayalam%20Corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - First and Last Panchati</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jun 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TS/TS%20First%20and%20last%20Panchati%20-%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📖 Taittiriya Brahmana <span class="category-count">6 sections</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 1 (Prapatakam 1-4)</div>
+                            <div class="doc-meta"><span class="version-badge">V3.0</span><span>Apr 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%201.1-1.4%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%201.1-1.4%20Malayalam%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 1 (Prapatakam 5-8)</div>
+                            <div class="doc-meta"><span class="version-badge">V3.0</span><span>Apr 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%201.5-1.8%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%201.5-1.8%20Malayalam%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 2 (Prapatakam 1-4) <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V3.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%202.1-2.4%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%202.1-2.4%20Malayalam%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 2 (Prapatakam 5-8) <span class="new-badge">NEW</span></div>
+                            <div class="doc-meta"><span class="version-badge">V3.0</span><span>Nov 30, 2025</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%202.5-2.8%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%202.5-2.8%20Malayalam%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 3 (Prapatakam 1-6)</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Sep 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%203.1-3.6%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%203.1-3.6%20Malayalam%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Ashtakam 3 (Prapatakam 7-12)</div>
+                            <div class="doc-meta"><span class="version-badge">V2.0</span><span>Nov 30, 2024</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/TB/TB%203.7-3.12%20Malayalam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                            <a href="https://vedavms.in/docs/TB/TB%203.7-3.12%20Malayalam%20corrections.pdf" target="_blank" class="dl-btn secondary">Corrections</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div><!-- End Malayalam Content -->
+
+        <!-- KANNADA CONTENT -->
+        <div id="content-kannada" class="language-content" style="display:none;">
+        <div class="important-notes">
+            <h3>📌 Important Notes</h3>
+            <ul>
+                <li>Kannada documents are in <strong>trial/pilot</strong> stage</li>
+                <li>Some documents are through LaTeX platform (not Baraha Word format)</li>
+                <li>Taittiriya Samhita contributed by Srividya Veda Patashala, Bangalore</li>
+            </ul>
+        </div>
+
+        <div class="category open">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📚 Vedic Books by Subject <span class="category-count">10 docs</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">1) Shanti Japam - Kannada</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jan 31, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/Shanti%20Japam%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">2) Taittiriya Upanishad - Kannada</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jun 1, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/Taittiriya%20Upanishad%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">3) Udaka Shanti - Kannada</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jun 1, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/Udaka%20Shanti%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">4) Siva Stuti - Kannada (without Kramam)</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jun 1, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/Siva%20Stuti%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">5) acChidram, aSvamedam & kAThakam - Kannada</div>
+                            <div class="doc-meta"><span>Mar 31, 2020</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/AAK-Kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">6) AbhisravaNam - Kannada</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jun 30, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/abhisravaNam%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">7) Rudra Ghanam - Kannada</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>May 31, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/Rudra%20Ghanam%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">8) Chamaka Ghanam - Kannada</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>May 31, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/Chamaka%20Ghanam%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">9) Rudra Kramam Column - Kannada</div>
+                            <div class="doc-meta"><span>Jun 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/Rudra%20Kramam%20kannada%20Column.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">10) Chamaka Kramam Column - Kannada</div>
+                            <div class="doc-meta"><span>Jun 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/Chamaka%20Kramam%20kannada%20Column.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📖 Taittiriya Brahmana <span class="category-count">6 sections</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Prapatakam 1.1-1.4</div>
+                            <div class="doc-meta"><span>Feb 28, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TB%201.1-1.4%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Prapatakam 1.5-1.8</div>
+                            <div class="doc-meta"><span>Feb 28, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TB%201.5-1.8%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Prapatakam 2.1-2.4</div>
+                            <div class="doc-meta"><span>Feb 28, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TB%202.1-2.4%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Prapatakam 2.5-2.8</div>
+                            <div class="doc-meta"><span>Feb 28, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TB%202.5-2.8%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Prapatakam 3.1-3.6</div>
+                            <div class="doc-meta"><span>Feb 28, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TB%203.1-3.6%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - Prapatakam 3.7-3.12</div>
+                            <div class="doc-meta"><span>Feb 28, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TB%203.7-3.12%20kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📖 Taittiriya Samhita (Srividya Patashala) <span class="category-count">7 Kandams</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <p style="padding:0.5rem; color:#666; font-size:0.85rem;">Contributed by Students and Well-Wishers of Srividya Veda Patashala, Ramamurthy Nagar, Bangalore</p>
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 1</div>
+                            <div class="doc-meta"><span>Nov 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS1%20Kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 2</div>
+                            <div class="doc-meta"><span>Nov 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS2%20Kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 3</div>
+                            <div class="doc-meta"><span>Nov 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS3%20Kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 4</div>
+                            <div class="doc-meta"><span>Nov 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS4%20Kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 5</div>
+                            <div class="doc-meta"><span>Nov 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS5%20Kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 6</div>
+                            <div class="doc-meta"><span>Nov 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS6%20Kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Samhita - Kandam 7</div>
+                            <div class="doc-meta"><span>Nov 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS7%20Kannada.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📝 Taittiriya Samhita Pada Paatam <span class="category-count">7 Kandams</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <p style="padding:0.5rem; color:#666; font-size:0.85rem;">Contributed by Students and Well-Wishers of Srividya Veda Patashala, Ramamurthy Nagar, Bangalore</p>
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">TS Pada Paatam - Kandam 1</div>
+                            <div class="doc-meta"><span>Jun 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS1%20Kannada%20Pada%20Paatam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">TS Pada Paatam - Kandam 2</div>
+                            <div class="doc-meta"><span>Jun 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS2%20Kannada%20Pada%20Paatam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">TS Pada Paatam - Kandam 3</div>
+                            <div class="doc-meta"><span>Jun 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS3%20Kannada%20Pada%20Paatam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">TS Pada Paatam - Kandam 4</div>
+                            <div class="doc-meta"><span>Jun 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS4%20Kannada%20Pada%20Paatam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">TS Pada Paatam - Kandam 5</div>
+                            <div class="doc-meta"><span>Jun 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS5%20Kannada%20Pada%20Paatam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">TS Pada Paatam - Kandam 6</div>
+                            <div class="doc-meta"><span>Jun 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS6%20Kannada%20Pada%20Paatam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">TS Pada Paatam - Kandam 7</div>
+                            <div class="doc-meta"><span>Jun 30, 2022</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/kannada/TS7%20Kannada%20Pada%20Paatam.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div><!-- End Kannada Content -->
+
+        <!-- TELUGU CONTENT -->
+        <div id="content-telugu" class="language-content" style="display:none;">
+        <div class="important-notes">
+            <h3>📌 Important Notes</h3>
+            <ul>
+                <li>Telugu documents are in <strong>trial/pilot</strong> stage</li>
+                <li>Some documents are through LaTeX platform (not Baraha Word format)</li>
+            </ul>
+        </div>
+
+        <div class="category open">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📚 Vedic Books by Subject <span class="category-count">10 docs</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">1) Shanti Japam - Telugu</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Mar 1, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/Shanti%20Japam%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">2) Taittiriya Upanishad - Telugu</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jun 1, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/Taittiriya%20Upanishad%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">3) Udaka Shanti - Telugu</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jun 1, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/Udaka%20Shanti%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">4) Siva Stuti - Telugu (without Kramam)</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jun 1, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/Siva%20Stuti%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">5) acChidram, aSvamedam & kAThakam - Telugu</div>
+                            <div class="doc-meta"><span>Mar 31, 2020</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/AAK-telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">6) AbhisravaNam - Telugu</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jun 30, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/abhisravaNam%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">7) Rudra Ghanam - Telugu</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>May 31, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/Rudra%20Ghanam%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">8) Chamaka Ghanam - Telugu</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>May 31, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/Chamaka%20Ghanam%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">9) Rudra Kramam Column - Telugu</div>
+                            <div class="doc-meta"><span>Jun 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/Rudra%20Kramam%20telugu%20Column.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">10) Chamaka Kramam Column - Telugu</div>
+                            <div class="doc-meta"><span>Jun 30, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/Chamaka%20Kramam%20telugu%20Column.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📖 Taittiriya Brahmana <span class="category-count">6 sections</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - TB 1.1-1.4</div>
+                            <div class="doc-meta"><span>Feb 28, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/TB%201.1-1.4%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - TB 1.5-1.8</div>
+                            <div class="doc-meta"><span>Feb 28, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/TB%201.5-1.8%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - TB 2.1-2.4</div>
+                            <div class="doc-meta"><span>Feb 28, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/TB%202.1-2.4%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - TB 2.5-2.8</div>
+                            <div class="doc-meta"><span>Feb 28, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/TB%202.5-2.8%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - TB 3.1-3.6</div>
+                            <div class="doc-meta"><span>Feb 28, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/TB%203.1-3.6%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">Taittiriya Brahmana - TB 3.7-3.12</div>
+                            <div class="doc-meta"><span>Feb 28, 2021</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/telugu/TB%203.7-3.12%20telugu.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div><!-- End Telugu Content -->
+
+        <!-- ENGLISH CONTENT -->
+        <div id="content-english" class="language-content" style="display:none;">
+        <div class="important-notes">
+            <h3>📌 Important Notes</h3>
+            <ul>
+                <li>English documents use <strong>IAST transliteration</strong></li>
+                <li>Limited selection available - more coming soon</li>
+            </ul>
+        </div>
+
+        <div class="category open">
+            <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
+                <h3>📚 Vedic Books by Subject <span class="category-count">3 docs</span></h3>
+                <span class="category-toggle">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">1) Shanti Japam - English (IAST)</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Feb 29, 2020</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/English/Shanti%20Japam%20English.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">2) Udaka Shanti - English (IAST)</div>
+                            <div class="doc-meta"><span class="version-badge">V0.0</span><span>Jun 30, 2019</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/English/Udaka%20Shanti%20English.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-info">
+                            <div class="doc-title">3) Taittiriya Upanishad - English (IAST)</div>
+                            <div class="doc-meta"><span class="version-badge">V1.0</span><span>Dec 31, 2020</span></div>
+                        </div>
+                        <div class="doc-actions">
+                            <a href="https://vedavms.in/docs/English/Taittiriya%20Upanishad%20English.pdf" target="_blank" class="dl-btn primary">📄 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div><!-- End English Content -->
+
+    </main>
+
+    <footer class="footer">
+        <a href="index.html">Home</a>
+        <a href="videos.html">Videos</a>
+        <a href="articles.html">Articles</a>
+        <a href="about.html">About</a>
+        <a href="mailto:vedavms@gmail.com">vedavms@gmail.com</a>
+        <div style="margin-top:1rem; font-size:0.8rem; opacity:0.7;">&copy; 2025 VedaVMS</div>
+    </footer>
+
+    <script>
+        function showLanguage(lang) {
+            // Hide all content sections
+            document.querySelectorAll('.language-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.language-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected content
+            document.getElementById('content-' + lang).style.display = 'block';
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById('content-' + hash)) {
+                showLanguage(hash);
+            }
+        });
+
+        function searchDocs() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const activeContent = document.querySelector('.language-content[style*="block"], .language-content.active:not([style*="none"])') || document.getElementById('content-sanskrit');
+            const cards = activeContent.querySelectorAll('.doc-card');
+            const categories = activeContent.querySelectorAll('.category');
+            
+            if (query.length < 2) {
+                cards.forEach(c => c.style.display = 'flex');
+                return;
+            }
+            
+            categories.forEach(cat => cat.classList.add('open'));
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.doc-title').textContent.toLowerCase();
+                card.style.display = title.includes(query) ? 'flex' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

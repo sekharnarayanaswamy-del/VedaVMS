@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VedaVMS - Krishna Yajurveda Resources</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --saffron: #E65100;
+            --maroon: #800000;
+            --cream: #FFF8F0;
+            --gold: #DAA520;
+            --dark-brown: #4E342E;
+            --white: #FFFFFF;
+            --light-orange: #FFF3E0;
+        }
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            color: var(--dark-brown);
+            background: var(--cream);
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(rgba(62, 39, 25, 0.92), rgba(62, 39, 25, 0.92)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%238B4513" width="100" height="100"/><rect fill="%23A0522D" x="0" y="0" width="5" height="100"/><rect fill="%23A0522D" x="10" y="0" width="3" height="100"/><rect fill="%23A0522D" x="20" y="0" width="6" height="100"/><rect fill="%23A0522D" x="30" y="0" width="4" height="100"/><rect fill="%23A0522D" x="40" y="0" width="5" height="100"/><rect fill="%23A0522D" x="50" y="0" width="3" height="100"/><rect fill="%23A0522D" x="60" y="0" width="6" height="100"/><rect fill="%23A0522D" x="70" y="0" width="4" height="100"/><rect fill="%23A0522D" x="80" y="0" width="5" height="100"/><rect fill="%23A0522D" x="90" y="0" width="3" height="100"/></svg>');
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+        }
+        .logo {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: white;
+        }
+        .om-symbol { font-size: 2rem; color: var(--gold); }
+        .blessing { font-size: 0.85rem; opacity: 0.9; font-style: italic; margin-top: 0.5rem; }
+        .nav {
+            background: var(--white);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .nav a {
+            color: var(--dark-brown);
+            text-decoration: none;
+            padding: 1rem 1.25rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        .nav a:hover, .nav a.active {
+            color: var(--saffron);
+            border-bottom-color: var(--saffron);
+            background: var(--light-orange);
+        }
+        .nav .donate-btn {
+            background: var(--saffron);
+            color: white !important;
+            border-radius: 4px;
+            margin: 0.5rem;
+            padding: 0.5rem 1rem;
+        }
+        .nav .donate-btn:hover { background: var(--maroon); }
+        .hero {
+            background: linear-gradient(135deg, var(--maroon) 0%, #4a1a1a 100%);
+            color: white;
+            padding: 4rem 1rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.95;
+        }
+        .cta-btn {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--dark-brown);
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .cta-btn:hover { background: #c9941a; transform: translateY(-2px); }
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--maroon);
+            margin-bottom: 0.5rem;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .language-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--dark-brown);
+            border: 2px solid transparent;
+        }
+        .language-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            border-color: var(--saffron);
+        }
+        .language-card .script {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 1.8rem;
+            color: var(--maroon);
+            margin-bottom: 0.5rem;
+        }
+        .language-card .name { font-weight: 600; }
+        .language-card .count { font-size: 0.85rem; color: #888; margin-top: 0.25rem; }
+        .updates-section { background: var(--white); padding: 3rem 0; }
+        .updates-list {
+            display: grid;
+            gap: 1rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .update-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--light-orange);
+            border-radius: 8px;
+            border-left: 4px solid var(--saffron);
+            text-decoration: none;
+            color: var(--dark-brown);
+            transition: all 0.2s;
+        }
+        .update-item:hover { background: #FFE0B2; }
+        .update-date {
+            background: var(--saffron);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            min-width: 65px;
+            text-align: center;
+            line-height: 1.3;
+        }
+        .update-info h4 { font-size: 0.95rem; margin-bottom: 0.25rem; }
+        .update-info span { font-size: 0.8rem; color: #666; }
+        .new-badge {
+            background: #4CAF50;
+            color: white;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+        }
+        .about-section {
+            background: linear-gradient(135deg, #f5f0e8 0%, #ebe5db 100%);
+            padding: 3rem 0;
+        }
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 1rem;
+        }
+        .about-content p { font-size: 1.05rem; line-height: 1.8; margin-bottom: 1rem; }
+        .footer {
+            background: var(--dark-brown);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .footer-links a { color: white; text-decoration: none; opacity: 0.8; }
+        .footer-links a:hover { opacity: 1; }
+        .footer-bottom { font-size: 0.85rem; opacity: 0.7; }
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.8rem; }
+            .nav a { padding: 0.75rem 0.75rem; font-size: 0.8rem; }
+            .update-item { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <span class="om-symbol">ॐ</span>
+            <span>VedaVMS</span>
+        </a>
+        <div class="blessing">
+            ॐ श्री महागणपतये नमः || श्री गुरुभ्यो नमः ||
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="active">Home</a>
+            <a href="documents.html">Documents</a>
+            <a href="videos.html">Videos</a>
+            <a href="articles.html">Articles</a>
+            <a href="about.html">About</a>
+            <a href="https://vedavms.in/Donations.html" target="_blank" class="donate-btn">Donate</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>कृष्ण यजुर्वेद ग्रन्थाः</h1>
+        <h1 style="font-size:1.5rem; margin-top:-0.5rem;">Krishna Yajurveda Resources</h1>
+        <p>A comprehensive collection of Vedic texts in Sanskrit, Tamil, Malayalam, Kannada, Telugu and English - prepared by dedicated volunteers for Veda students worldwide.</p>
+        <a href="documents.html" class="cta-btn">Browse Documents</a>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Download by Language</h2>
+        <p class="section-subtitle">Select your preferred script to browse available documents</p>
+        
+        <div class="language-grid">
+            <a href="documents.html#sanskrit" class="language-card">
+                <div class="script">संस्कृत</div>
+                <div class="name">Sanskrit</div>
+                <div class="count">131 documents</div>
+            </a>
+            <a href="documents.html#tamil" class="language-card">
+                <div class="script">தமிழ்</div>
+                <div class="name">Tamil</div>
+                <div class="count">125 documents</div>
+            </a>
+            <a href="documents.html#malayalam" class="language-card">
+                <div class="script">മലയാളം</div>
+                <div class="name">Malayalam</div>
+                <div class="count">128 documents</div>
+            </a>
+            <a href="documents.html#kannada" class="language-card">
+                <div class="script">ಕನ್ನಡ</div>
+                <div class="name">Kannada</div>
+                <div class="count">30 documents</div>
+            </a>
+            <a href="documents.html#telugu" class="language-card">
+                <div class="script">తెలుగు</div>
+                <div class="name">Telugu</div>
+                <div class="count">16 documents</div>
+            </a>
+            <a href="documents.html#english" class="language-card">
+                <div class="script">ABC</div>
+                <div class="name">English</div>
+                <div class="count">3 documents</div>
+            </a>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+        <h2 class="section-title">Pilot Projects & Special Editions</h2>
+        <p class="section-subtitle">Advanced recitations, classical SikShA lessons, and special manuscript archives</p>
+        
+        <div class="language-grid">
+            <a href="documents.html#tsj" class="language-card" style="border-left: 4px solid var(--saffron);">
+                <div class="script">𑌜𑌟𑌾</div>
+                <div class="name">TS Samhita Jatai</div>
+                <div class="count">132 docs (258 PDFs)</div>
+            </a>
+            <a href="documents.html#tsg" class="language-card" style="border-left: 4px solid var(--maroon);">
+                <div class="script">𑌘𑌨</div>
+                <div class="name">TS Samhita Ghanam</div>
+                <div class="count">132 docs (258 PDFs)</div>
+            </a>
+            <a href="documents.html#siksha" class="language-card" style="border-left: 4px solid var(--gold);">
+                <div class="script">📖</div>
+                <div class="name">SikShA & Lessons</div>
+                <div class="count">Gana Sandhi & Classics</div>
+            </a>
+            <a href="documents.html#kanva" class="language-card" style="border-left: 4px solid var(--dark-brown);">
+                <div class="script">📜</div>
+                <div class="name">Kanva Samhita</div>
+                <div class="count">44 Manuscript PDFs</div>
+            </a>
+            <a href="documents.html#inprogress" class="language-card" style="border-left: 4px solid var(--saffron);">
+                <div class="script">⚙️</div>
+                <div class="name">In Progress & Pilot</div>
+                <div class="count">61 Work-in-progress PDFs</div>
+            </a>
+            <a href="documents.html#latin" class="language-card" style="border-left: 4px solid var(--maroon);">
+                <div class="script">ĀĒĪ</div>
+                <div class="name">Latin (IAST) Coding</div>
+                <div class="count">17 Romanized PDFs</div>
+            </a>
+        </div>
+    </section>
+
+    <section class="updates-section">
+        <div class="section">
+            <h2 class="section-title">Recent Updates</h2>
+            <p class="section-subtitle">Latest document releases and corrections</p>
+            
+            <div class="updates-list">
+                <a href="https://vedavms.in/docs/Ghanam/Chamaka%20Ghanam%20Sanskrit.pdf" target="_blank" class="update-item">
+                    <div class="update-date">Nov 30<br>2025</div>
+                    <div class="update-info">
+                        <h4>Chamaka Ghanam - Sanskrit V2.0 <span class="new-badge">NEW</span></h4>
+                        <span>Vedic Books by Subject</span>
+                    </div>
+                </a>
+                <a href="https://vedavms.in/docs/Ghanam/Rudra%20Ghanam%20Sanskrit.pdf" target="_blank" class="update-item">
+                    <div class="update-date">Nov 30<br>2025</div>
+                    <div class="update-info">
+                        <h4>Rudra Ghanam - Sanskrit V2.0 <span class="new-badge">NEW</span></h4>
+                        <span>Vedic Books by Subject</span>
+                    </div>
+                </a>
+                <a href="https://vedavms.in/docs/Ghanam/Rudra%20Jatai%20Sanskrit.pdf" target="_blank" class="update-item">
+                    <div class="update-date">Nov 30<br>2025</div>
+                    <div class="update-info">
+                        <h4>Rudra Jatai - Sanskrit V2.0 <span class="new-badge">NEW</span></h4>
+                        <span>Vedic Books by Subject</span>
+                    </div>
+                </a>
+                <a href="https://vedavms.in/docs/TB/TB%202.1-2.4%20Sanskrit.pdf" target="_blank" class="update-item">
+                    <div class="update-date">Nov 30<br>2025</div>
+                    <div class="update-info">
+                        <h4>Taittiriya Brahmana 2.1-2.4 - Sanskrit V3.0</h4>
+                        <span>Taittiriya Brahmana</span>
+                    </div>
+                </a>
+                <a href="https://vedavms.in/docs/ekAgni/Ekaagni%20Kaandam%20Sanskrit.pdf" target="_blank" class="update-item">
+                    <div class="update-date">Oct 31<br>2025</div>
+                    <div class="update-info">
+                        <h4>Ekaagni Kaandam (with Padam) - Sanskrit V1.0</h4>
+                        <span>Vedic Books by Subject</span>
+                    </div>
+                </a>
+                <a href="https://vedavms.in/docs/TA/TA%205-6%20Sanskrit.pdf" target="_blank" class="update-item">
+                    <div class="update-date">Sep 30<br>2025</div>
+                    <div class="update-info">
+                        <h4>Taittiriya Aranyakam 5-6 - Sanskrit V2.0</h4>
+                        <span>Taittiriya Aranyakam</span>
+                    </div>
+                </a>
+                <a href="https://vedavms.in/docs/Shanti-Japam/Shanti%20Japam%20Sanskrit.pdf" target="_blank" class="update-item">
+                    <div class="update-date">Sep 30<br>2025</div>
+                    <div class="update-info">
+                        <h4>Shanti Japam - Sanskrit V5.0</h4>
+                        <span>Vedic Books by Subject - Major update</span>
+                    </div>
+                </a>
+                <a href="https://vedavms.in/docs/TS/TS%201%20Sanskrit.pdf" target="_blank" class="update-item">
+                    <div class="update-date">Jul 31<br>2025</div>
+                    <div class="update-info">
+                        <h4>Taittiriya Samhita Kandam 1 - Sanskrit V3.1</h4>
+                        <span>Taittiriya Samhita</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="about-content">
+            <h2 class="section-title">Who We Are</h2>
+            <p>We are a group of working professionals collaborating to prepare and compile Veda books on specific subjects. We are geographically distributed across many locations, united by our dedication to helping Veda students.</p>
+            <p>We focus exclusively on <strong>Krishna Yajur Veda</strong> mantras, providing materials and articles that assist learners at various stages of their Vedic studies. We do not cover karma kanda or procedures - only the mantras and their learning materials.</p>
+            <a href="about.html" class="cta-btn" style="background: var(--maroon); color: white;">Learn More About Us</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="about.html">About Us</a>
+            <a href="articles.html">Articles</a>
+            <a href="videos.html">Videos</a>
+            <a href="https://vedavms.in/Donations.html" target="_blank">Donate</a>
+            <a href="mailto:vedavms@gmail.com">vedavms@gmail.com</a>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 VedaVMS. Designed with devotion for Veda students worldwide.
+        </div>
+    </footer>
+</body>
+</html>
