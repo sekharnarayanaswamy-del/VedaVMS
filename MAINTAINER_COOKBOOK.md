@@ -75,6 +75,6 @@ If you are publishing a new edition or adding an errata/corrections PDF:
 
 ### 3. When Do Changes Go Live?
 - **Immediately from the Google Sheet**: Click **`🚀 VedaVMS`** ➔ **`Publish to Staging (new.vedavms.in)`** in the top menu of the sheet. Changes will be live in 1–2 minutes!
-- **Automatically every night at 5:30 AM IST** without clicking anything.
-- Or immediately via GitHub Actions (**Run workflow**) or from an admin's laptop (`python scripts/sync_staging.py`).
+- Or via GitHub Actions (**Run workflow**) or from an admin's laptop (`python scripts/sync_staging.py`).
+
 

@@ -77,17 +77,14 @@ Maintainers can publish changes directly from the Google Sheet without touching 
 3. Confirm the prompt by clicking **Yes**.
 4. A popup will confirm that GitHub Actions has started rebuilding the site, and updates will be live in 1–2 minutes.
 
-### Method B: Automatic Nightly Update via GitHub
-- Every night at 00:00 UTC (5:30 AM IST), GitHub Actions automatically downloads the Google Sheet, rebuilds the site, and deploys to `new.vedavms.in`.
-
-### Method C: Instant Trigger via GitHub Actions (Web UI)
+### Method B: Instant Trigger via GitHub Actions (Web UI)
 1. Go to the GitHub repository in your browser.
 2. Click the **Actions** tab at the top.
 3. In the left sidebar, click **Deploy to Staging (new.vedavms.in)**.
 4. Click **Run workflow** > **Run workflow**.
 5. Within ~1 minute, the build runs and publishes to staging.
 
-### Method D: One-Command Sync from Laptop (Developer / Admin)
+### Method C: One-Command Sync from Laptop (Developer / Admin)
 If you want to immediately update the staging site directly from your computer without waiting for GitHub Actions:
 ```powershell
 # Full fetch, regeneration, and upload:
