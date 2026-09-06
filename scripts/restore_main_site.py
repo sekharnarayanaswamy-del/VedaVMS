@@ -27,6 +27,7 @@ def restore():
 
     repo_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     orig_index = os.path.join(repo_dir, "original_index.html")
+    orig_conv = os.path.join(repo_dir, "original_convention.html")
     orig_donations = os.path.join(repo_dir, "original_Donations.html")
 
     if not os.path.isfile(orig_index) or not os.path.isfile(orig_conv) or not os.path.isfile(orig_donations):
