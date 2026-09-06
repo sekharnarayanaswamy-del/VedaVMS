@@ -68,9 +68,26 @@ This guide explains how non-technical maintainers can update documents on **Veda
 
 ## ⚡ Step 3: Publishing Changes to the Staging Site (`new.vedavms.in`)
 
-There are three ways changes get published to staging:
+There are four ways changes get published to staging:
 
-### Method A: One-Command Sync from Laptop
+### Method A: One-Click Trigger from Google Sheets (Recommended for Maintainers)
+Maintainers can publish changes directly from the Google Sheet without touching code or GitHub:
+1. Open the [VedaVMS Google Sheet](https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/).
+2. In the top menu, click **`🚀 VedaVMS`** ➔ **`Publish to Staging (new.vedavms.in)`**.
+3. Confirm the prompt by clicking **Yes**.
+4. A popup will confirm that GitHub Actions has started rebuilding the site, and updates will be live in 1–2 minutes.
+
+### Method B: Automatic Nightly Update via GitHub
+- Every night at 00:00 UTC (5:30 AM IST), GitHub Actions automatically downloads the Google Sheet, rebuilds the site, and deploys to `new.vedavms.in`.
+
+### Method C: Instant Trigger via GitHub Actions (Web UI)
+1. Go to the GitHub repository in your browser.
+2. Click the **Actions** tab at the top.
+3. In the left sidebar, click **Deploy to Staging (new.vedavms.in)**.
+4. Click **Run workflow** > **Run workflow**.
+5. Within ~1 minute, the build runs and publishes to staging.
+
+### Method D: One-Command Sync from Laptop (Developer / Admin)
 If you want to immediately update the staging site directly from your computer without waiting for GitHub Actions:
 ```powershell
 # Full fetch, regeneration, and upload:
@@ -84,15 +101,59 @@ This command will:
 2. Regenerate all files in `build/` (filtering out hidden items, applying dynamic hierarchical numbering, and formatting 760+ documents).
 3. Upload all updated pages to `new.vedavms.in` (`/new.vedavms.in/`) using native Windows transfer tools (`curl.exe`).
 
-### Method B: Automatic Nightly Update via GitHub
-- Every night at 00:00 UTC (5:30 AM IST), GitHub Actions automatically downloads the Google Sheet, rebuilds the site, and deploys to `new.vedavms.in`.
+---
 
-### Method C: Instant Trigger via GitHub Actions (One-Click)
-1. Go to the GitHub repository in your browser.
-2. Click the **Actions** tab at the top.
-3. In the left sidebar, click **Deploy to Staging (new.vedavms.in)**.
-4. Click **Run workflow** > **Run workflow**.
-5. Within ~1 minute, the build runs and publishes to staging.
+## 🛡️ Security Considerations & Access Control
+
+Because the repository is public and multiple team members collaborate, the following safeguards are built in:
+
+### 1. Repository Access & Protection
+- **Read-Only to the Public**: Strangers can view and clone the repository, but **cannot** push commits, edit code, or run workflows.
+- **Push Protection**: Only authenticated repository owners/collaborators with explicit write access can commit to `main`.
+- **Pull Requests**: Pull requests opened by external contributors from forks **do not** have access to repository secrets and cannot trigger deployments.
+
+### 2. Secret Encryption & Isolation
+- **No Passwords in Git**: All FTP credentials reside in GitHub Secrets (encrypted with libsodium) and in the local gitignored `.env` file. Credentials never appear in plaintext or workflow logs (automatically masked as `***`).
+- **Server Isolation**: Staging builds are strictly constrained to `/new.vedavms.in/`. The automated workflow has no access to modify the live production directory (`/httpdocs/`).
+
+### 3. Google Sheets Access Control
+- **General Access**: The Google Sheet's general link access must remain **Viewer**. This allows the automated build script to read CSV data while preventing random people from altering the sheet.
+- **Maintainer Invitations**: Only specific, trusted maintainers should be added as **Editors** via their Google email addresses.
+
+### 4. GitHub Personal Access Token (PAT) Security
+- The token used by Google Sheets Apps Script must be kept secure.
+- **Fine-Grained Scoping (Least Privilege)**: When creating or updating the token, scope it strictly to the `VedaVMS` repository with permissions restricted to **Actions: Read and write**.
+- **Apps Script Properties**: To prevent spreadsheet editors from reading the token in plain text, store it in Apps Script **Project Settings ➔ Script Properties** rather than directly inside the JavaScript file.
+
+---
+
+## 📋 Administrator "To-Do" Checklist
+
+Use this checklist to complete the autonomous setup:
+
+- [ ] **1. Disable "Required Reviewers" for Staging**:
+  - Go to **GitHub Repo ➔ Settings ➔ Environments ➔ `staging`**.
+  - Under *Deployment protection rules*, uncheck or delete **Required reviewers**.
+  - Click **Save protection rules**.
+  - *(Outcome: Maintainers can trigger deploys from Google Sheets without waiting for your manual approval each time).*
+
+- [ ] **2. Verify Google Sheet Sharing Settings**:
+  - Open the [Google Sheet](https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/).
+  - Click **Share** (top right).
+  - Verify *General access* is **"Anyone with the link" ➔ Role: Viewer**.
+  - Under *People with access*, add your content maintainers' Gmail addresses as **Editor**.
+
+- [ ] **3. Install Apps Script in Google Sheet**:
+  - In the sheet, go to **Extensions ➔ Apps Script**.
+  - Paste the `triggerDeploy` script.
+  - Insert your generated GitHub token (`GITHUB_TOKEN = 'ghp_...'`).
+  - Save (`Ctrl + S`) and reload the sheet to verify the **`🚀 VedaVMS`** menu appears.
+
+- [ ] **4. (Optional Future Hardening) Migrate Token to Script Properties**:
+  - Once working smoothly, switch to a GitHub **Fine-grained Personal Access Token** scoped strictly to `VedaVMS` (`Actions: Read and write`).
+  - In Apps Script, open **Project Settings (gear icon) ➔ Script Properties**.
+  - Add property `GITHUB_TOKEN` with the token value.
+  - Update the script to fetch it via `PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN')` so editors cannot view the token in the script editor.
 
 ---
 
@@ -129,4 +190,4 @@ python generate_documents.py --source-csv "https://docs.google.com/spreadsheets/
 # Rebuild using local fallback CSV
 python generate_documents.py --source-csv data/vedavms_documents.csv
 ```
-```
+

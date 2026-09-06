@@ -74,5 +74,7 @@ If you are publishing a new edition or adding an errata/corrections PDF:
 - The website will automatically hide it and renumber the remaining books seamlessly starting from `1)`.
 
 ### 3. When Do Changes Go Live?
-- **Automatically every night at 5:30 AM IST**.
-- Or immediately if you click **"Run workflow"** under GitHub's **Actions** tab, or run `python scripts/sync_staging.py` from your laptop.
+- **Immediately from the Google Sheet**: Click **`🚀 VedaVMS`** ➔ **`Publish to Staging (new.vedavms.in)`** in the top menu of the sheet. Changes will be live in 1–2 minutes!
+- **Automatically every night at 5:30 AM IST** without clicking anything.
+- Or immediately via GitHub Actions (**Run workflow**) or from an admin's laptop (`python scripts/sync_staging.py`).
+
