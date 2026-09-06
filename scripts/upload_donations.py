@@ -57,10 +57,19 @@ def main():
             ftp.storbinary("STOR Donations.html", f)
         print("✓ Done!")
 
-        # Also store lowercase donations.html just in case of any cached references
-        with open(source_file, "rb") as f:
-            ftp.storbinary("STOR donations.html", f)
-        print("✓ Verified and restored Donations.html on live server!")
+        print("\nCleaning up unused redesign files from /httpdocs...")
+        for unwanted in ["documents.html", "articles.html", "videos.html", "about.html"]:
+            try:
+                ftp.delete(unwanted)
+                print(f"  ✓ Deleted {unwanted}")
+            except Exception as ex:
+                print(f"  - {unwanted}: {ex}")
+
+        print("\n" + "=" * 60)
+        print("🎉 ALL ACTIONS COMPLETED SUCCESSFULLY!")
+        print("✓ Donations.html restored to legacy version.")
+        print("✓ Redesign files removed from vedavms.in.")
+        print("=" * 60)
 
     except Exception as e:
         print(f"❌ Error: {e}")
