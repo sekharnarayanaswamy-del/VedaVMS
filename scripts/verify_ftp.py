@@ -15,16 +15,33 @@ def test_ftp():
     print(" VedaVMS FTP / FTPS Diagnostic & Deployment Utility")
     print("=" * 60)
 
-    server = input("FTP Server [default: 103.69.196.157]: ").strip() or "103.69.196.157"
-    port_str = input("FTP Port [default: 21]: ").strip() or "21"
-    port = int(port_str)
-    user = input("FTP Username: ").strip()
+    import argparse
+    parser = argparse.ArgumentParser(description="VedaVMS FTP Verification Tool")
+    parser.add_argument("--server", default=None, help="FTP Server host")
+    parser.add_argument("--port", type=int, default=21, help="FTP Port")
+    parser.add_argument("--user", default=None, help="FTP Username")
+    parser.add_argument("--password", default=None, help="FTP Password")
+    parser.add_argument("--dir", default=None, help="Remote Directory")
+    parser.add_argument("--deploy", action="store_true", help="Automatically upload build/ files if test passes")
+    args = parser.parse_args()
+
+    server = args.server or input("FTP Server [default: 103.69.196.157]: ").strip() or "103.69.196.157"
+    port = args.port
+    user = args.user or input("FTP Username: ").strip()
     if not user:
         print("Username is required.")
         return
 
-    password = getpass.getpass("FTP Password: ")
-    remote_dir = input("Remote Directory [default: /httpdocs]: ").strip() or "/httpdocs"
+    if args.password:
+        password = args.password
+    else:
+        print("Note: Password characters are intentionally hidden while typing/pasting.")
+        try:
+            password = getpass.getpass("FTP Password: ")
+        except Exception:
+            password = input("FTP Password (visible): ")
+
+    remote_dir = args.dir or input("Remote Directory [default: /httpdocs]: ").strip() or "/httpdocs"
 
     print("\n--- Step 1: Testing Connection & Protocol ---")
     ftp = None
@@ -98,7 +115,10 @@ def test_ftp():
         print(f"Working Directory: {ftp.pwd()}")
         print("=" * 60)
 
-        deploy_now = input("\nWould you like to upload all files from local 'build/' to the server right now? [y/N]: ").strip().lower()
+        if args.deploy:
+            deploy_now = "y"
+        else:
+            deploy_now = input("\nWould you like to upload all files from local 'build/' to the server right now? [y/N]: ").strip().lower()
         if deploy_now == "y":
             build_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "build")
             if not os.path.exists(build_dir):
