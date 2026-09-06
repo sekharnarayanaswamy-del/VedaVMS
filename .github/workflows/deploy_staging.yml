@@ -13,6 +13,8 @@ on:
         description: 'Google Sheet CSV Export URL (Leave empty to use repository secret or data/vedavms_documents.csv)'
         required: false
         type: string
+  repository_dispatch:
+    types: [deploy_staging, google_sheet_update]
 
 jobs:
   build-and-deploy:
