@@ -7,8 +7,23 @@ and optional file deployment.
 
 import os
 import sys
+import ssl
 import getpass
 from ftplib import FTP, FTP_TLS, error_perm
+
+class ReusedSessionFTP_TLS(FTP_TLS):
+    """Subclass of FTP_TLS that reuses the TLS session on data connections.
+    Required by Windows IIS FTP servers to prevent data connection timeouts.
+    """
+    def ntransfercmd(self, cmd, rest=None):
+        conn, size = FTP.ntransfercmd(self, cmd, rest)
+        if self._cnx:
+            conn = self.context.wrap_socket(
+                conn,
+                server_hostname=self.host,
+                session=self.sock.session
+            )
+        return conn, size
 
 def test_ftp():
     print("=" * 60)
@@ -50,7 +65,7 @@ def test_ftp():
     # Try FTPS (FTP over explicit TLS) first
     try:
         print(f"Connecting to {server}:{port} via FTPS (FTP_TLS)...")
-        ftp_tls = FTP_TLS()
+        ftp_tls = ReusedSessionFTP_TLS()
         ftp_tls.connect(server, port, timeout=15)
         ftp_tls.login(user, password)
         ftp_tls.prot_p()  # Switch data connection to TLS

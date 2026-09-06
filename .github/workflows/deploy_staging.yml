@@ -56,6 +56,9 @@ jobs:
           server: ${{ env.STAGING_FTP_SERVER }}
           username: ${{ env.STAGING_FTP_USERNAME }}
           password: ${{ env.STAGING_FTP_PASSWORD }}
-          server-dir: ${{ env.STAGING_REMOTE_DIR }}
+          server-dir: ${{ env.STAGING_REMOTE_DIR != '' && env.STAGING_REMOTE_DIR || '/httpdocs/' }}
+          protocol: ftps
+          security: loose
           local-dir: ./build/
+
 
