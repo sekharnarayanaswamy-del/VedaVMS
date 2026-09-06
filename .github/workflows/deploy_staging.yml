@@ -30,9 +30,10 @@ jobs:
       - name: Generate Website
         env:
           INPUT_URL: ${{ github.event.inputs.google_sheet_csv_url }}
-          SECRET_URL: ${{ secrets.GOOGLE_SHEET_CSV_URL || vars.GOOGLE_SHEET_CSV_URL }}
+          SECRET_URL: ${{ secrets.GOOGLE_SHEET_CSV_URL }}
+          VAR_URL: ${{ vars.GOOGLE_SHEET_CSV_URL }}
         run: |
-          SHEET_URL="${INPUT_URL:-${SECRET_URL:-data/vedavms_documents.csv}}"
+          SHEET_URL="${INPUT_URL:-${SECRET_URL:-${VAR_URL:-data/vedavms_documents.csv}}}"
           echo "Generating documents using source: $SHEET_URL"
           python generate_documents.py --source-csv "$SHEET_URL"
 
@@ -44,12 +45,12 @@ jobs:
           retention-days: 7
 
       - name: Deploy to Staging Web Server (FTP / SFTP)
-        if: ${{ (secrets.STAGING_FTP_SERVER != '' || vars.STAGING_FTP_SERVER != '') && (secrets.STAGING_FTP_USERNAME != '' || vars.STAGING_FTP_USERNAME != '') }}
+        if: (secrets.STAGING_FTP_SERVER != '' || vars.STAGING_FTP_SERVER != '') && (secrets.STAGING_FTP_USERNAME != '' || vars.STAGING_FTP_USERNAME != '')
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.STAGING_FTP_SERVER || vars.STAGING_FTP_SERVER }}
-          username: ${{ secrets.STAGING_FTP_USERNAME || vars.STAGING_FTP_USERNAME }}
-          password: ${{ secrets.STAGING_FTP_PASSWORD || vars.STAGING_FTP_PASSWORD }}
-          server-dir: ${{ secrets.STAGING_REMOTE_DIR || vars.STAGING_REMOTE_DIR || '/' }}
+          server: ${{ secrets.STAGING_FTP_SERVER != '' && secrets.STAGING_FTP_SERVER || vars.STAGING_FTP_SERVER }}
+          username: ${{ secrets.STAGING_FTP_USERNAME != '' && secrets.STAGING_FTP_USERNAME || vars.STAGING_FTP_USERNAME }}
+          password: ${{ secrets.STAGING_FTP_PASSWORD != '' && secrets.STAGING_FTP_PASSWORD || vars.STAGING_FTP_PASSWORD }}
+          server-dir: ${{ secrets.STAGING_REMOTE_DIR != '' && secrets.STAGING_REMOTE_DIR || vars.STAGING_REMOTE_DIR || '/' }}
           local-dir: ./build/
 
