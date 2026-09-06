@@ -1,0 +1,56 @@
+name: Deploy to Staging (new.vedavms.in)
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # Run every day at 00:00 UTC (05:30 AM IST)
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      google_sheet_csv_url:
+        description: 'Google Sheet CSV Export URL (Leave empty to use repository secret or data/vedavms_documents.csv)'
+        required: false
+        type: string
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate Website
+        env:
+          INPUT_URL: ${{ github.event.inputs.google_sheet_csv_url }}
+          SECRET_URL: ${{ secrets.GOOGLE_SHEET_CSV_URL }}
+        run: |
+          SHEET_URL="${INPUT_URL:-${SECRET_URL:-data/vedavms_documents.csv}}"
+          echo "Generating documents using source: $SHEET_URL"
+          python generate_documents.py --source-csv "$SHEET_URL"
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vedavms-staging-build
+          path: build/
+          retention-days: 7
+
+      - name: Deploy to Staging Web Server (FTP / SFTP)
+        if: env.STAGING_FTP_SERVER != '' && env.STAGING_FTP_USERNAME != ''
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        env:
+          STAGING_FTP_SERVER: ${{ secrets.STAGING_FTP_SERVER }}
+          STAGING_FTP_USERNAME: ${{ secrets.STAGING_FTP_USERNAME }}
+        with:
+          server: ${{ secrets.STAGING_FTP_SERVER }}
+          username: ${{ secrets.STAGING_FTP_USERNAME }}
+          password: ${{ secrets.STAGING_FTP_PASSWORD }}
+          server-dir: ${{ secrets.STAGING_REMOTE_DIR || '/' }}
+          local-dir: ./build/

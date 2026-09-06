@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support & Donations - VedaVMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --saffron: #E65100;
+            --maroon: #800000;
+            --cream: #FFF8F0;
+            --gold: #DAA520;
+            --dark-brown: #4E342E;
+            --white: #FFFFFF;
+            --light-orange: #FFF3E0;
+            --border-color: #E0D5C9;
+        }
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            color: var(--dark-brown);
+            background: var(--cream);
+            line-height: 1.7;
+        }
+        .header {
+            background: linear-gradient(rgba(62, 39, 25, 0.92), rgba(62, 39, 25, 0.92)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%238B4513" width="100" height="100"/></svg>');
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        .logo {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: white;
+        }
+        .om-symbol { font-size: 1.5rem; color: var(--gold); }
+        .blessing { font-size: 0.8rem; opacity: 0.9; font-style: italic; margin-top: 0.25rem; }
+        
+        .nav {
+            background: var(--white);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .nav a {
+            color: var(--dark-brown);
+            text-decoration: none;
+            padding: 0.85rem 1.25rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .nav a:hover, .nav a.active {
+            color: var(--saffron);
+            border-bottom-color: var(--saffron);
+            background: var(--light-orange);
+        }
+        .nav .donate-btn {
+            background: transparent;
+            color: var(--saffron) !important;
+            border: 1.5px solid var(--saffron);
+            border-radius: 4px;
+            margin: 0.35rem 0.5rem;
+            padding: 0.45rem 0.9rem;
+        }
+        .nav .donate-btn:hover, .nav .donate-btn.active {
+            background: var(--saffron);
+            color: white !important;
+            border: 1.5px solid var(--saffron);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--maroon) 0%, #4a1a1a 100%);
+            color: white;
+            padding: 2.2rem 1rem;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2rem;
+            margin-bottom: 0.35rem;
+        }
+        .page-header p {
+            opacity: 0.92;
+            font-size: 1rem;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.75rem 2rem;
+            margin-bottom: 1.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--border-color);
+        }
+        .section-card h2 {
+            color: var(--maroon);
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-orange);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section-card p {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        /* Payment Details Box */
+        .payment-box {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFF3E0 100%);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 3px 12px rgba(218, 165, 32, 0.15);
+        }
+        .payment-box h3 {
+            color: var(--maroon);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .payment-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin: 1rem 0;
+        }
+        .payment-item {
+            background: white;
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        .payment-item-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #795548;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .payment-item-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--maroon);
+            word-break: break-all;
+        }
+        .upi-badge {
+            display: inline-block;
+            background: var(--saffron);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 700;
+            vertical-align: middle;
+            margin-left: 0.5rem;
+        }
+
+        .highlight-box {
+            background: var(--light-orange);
+            border-left: 4px solid var(--saffron);
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.95rem;
+        }
+        .info-card {
+            background: #EFEBE9;
+            border-left: 4px solid var(--dark-brown);
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.92rem;
+        }
+        .tax-note {
+            background: #FFFDE7;
+            border: 1px solid #FFF59D;
+            border-left: 4px solid var(--gold);
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.92rem;
+            color: #4E342E;
+        }
+
+        .contact-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--maroon);
+            color: white;
+            padding: 0.65rem 1.25rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.92rem;
+            margin-top: 0.5rem;
+            transition: all 0.2s;
+        }
+        .contact-action:hover {
+            background: var(--saffron);
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            background: var(--dark-brown);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.85;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        .footer-links a:hover { opacity: 1; text-decoration: underline; }
+        .footer-bottom { font-size: 0.85rem; opacity: 0.7; }
+
+        @media (max-width: 600px) {
+            .page-header h1 { font-size: 1.6rem; }
+            .section-card { padding: 1.25rem 1rem; }
+            .payment-box { padding: 1.25rem 1rem; }
+            .nav a { padding: 0.65rem 0.75rem; font-size: 0.78rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <span class="om-symbol">ॐ</span>
+            <span>VedaVMS</span>
+        </a>
+        <div class="blessing">ॐ श्री महागणपतये नमः || श्री गुरुभ्यो नमः ||</div>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html">Home</a>
+            <a href="documents.html">Documents</a>
+            <a href="videos.html">Videos</a>
+            <a href="articles.html">Articles</a>
+            <a href="convention.html">Conventions</a>
+            <a href="about.html">About</a>
+            <a href="donations.html" class="donate-btn active">Donate</a>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <h1>समर्पणम् | Support & Donations</h1>
+        <p>Supporting the maintenance and welfare of traditional Agnihotris' Patashalas</p>
+    </section>
+
+    <main class="main-content">
+        <article class="section-card">
+            <h2><span>🙏</span> Patron Appreciation</h2>
+            <p><strong>VedaVMS would like to thank its patrons, well-wishers, and students for their continued support and encouragement.</strong></p>
+            <p>Our digital repository, books, transliterations, and video lectures are prepared entirely on a voluntary basis for the benefit of Veda students worldwide, without any commercial intent.</p>
+        </article>
+
+        <article class="section-card">
+            <h2><span>🔥</span> Cause: Support for Agnihotris' Patashalas</h2>
+            <p>Our respected Guide and Guruji supports <strong>three Agnihotris' Patashalas</strong> for their ongoing maintenance, student welfare, and sustenance of traditional Vedic learning and practices.</p>
+            <p>Interested Veda learners, well-wishers, and patrons can directly contribute to support these noble institutions through the details below:</p>
+
+            <div class="payment-box">
+                <h3><span>💳</span> Direct Contribution Details</h3>
+                <div class="payment-details-grid">
+                    <div class="payment-item">
+                        <div class="payment-item-label">UPI / Payment ID</div>
+                        <div class="payment-item-value">
+                            panaiyur@icici
+                            <span class="upi-badge">UPI</span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 0.35rem;">
+                            Valid across all UPI apps (BHIM, GPay, PhonePe, Paytm, etc.) and bank transactions.
+                        </div>
+                    </div>
+
+                    <div class="payment-item">
+                        <div class="payment-item-label">Account Holder</div>
+                        <div class="payment-item-value" style="font-size: 1.05rem;">
+                            Sethuraman Krishnamurthi
+                        </div>
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 0.35rem;">
+                            Coordinator of VedaVMS (held for various welfare initiatives).
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 1rem; margin-bottom: 0;">
+                    <strong>✉ Payment Confirmation:</strong> Kindly email the payment details or transaction screenshot to 
+                    <a href="mailto:vedavms@gmail.com" style="color: var(--saffron); font-weight: 700;">vedavms@gmail.com</a> for our records and acknowledgement.
+                </div>
+            </div>
+
+            <div class="info-card">
+                <strong>Allocation of Funds:</strong> Donations received through VedaVMS are periodically transferred in full to our Guide’s account for his direct allocation to the desired welfare and maintenance needs among these Patashalas.
+            </div>
+
+            <div class="tax-note">
+                <strong>📌 Important Tax Information:</strong> Kindly note that no Income-tax exemption (such as 80G benefit) is available, as all participating entities and traditional Patashalas involved are not registered corporate entities.
+            </div>
+
+            <p style="margin-top: 1.5rem; text-align: center; font-size: 1.05rem; font-weight: 600; color: var(--maroon);">
+                We would like to thank you in advance for your support, devotion, and generosity.
+            </p>
+            <p style="text-align: center; font-style: italic; color: #666;">
+                — VedaVMS Team
+            </p>
+
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <a href="mailto:vedavms@gmail.com?subject=VedaVMS%20Patashala%20Donation%20Details" class="contact-action">
+                    ✉ Send Confirmation Email
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="documents.html">Documents</a>
+            <a href="videos.html">Videos</a>
+            <a href="articles.html">Articles</a>
+            <a href="convention.html">Conventions</a>
+            <a href="about.html">About</a>
+            <a href="donations.html">Donate</a>
+        </div>
+        <div class="footer-bottom">&copy; 2026 VedaVMS — Preserving Vedic Heritage Worldwide</div>
+    </footer>
+</body>
+</html>

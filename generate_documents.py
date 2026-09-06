@@ -19,9 +19,12 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import csv
 import html
 import http.client
+import io
 import itertools
+import json
 import os
 import re
 import sys
@@ -656,6 +659,153 @@ def check_links(urls: list[str], progress: bool = True) -> list[tuple[str, str]]
 
 
 # --------------------------------------------------------------------------
+# CSV / JSON export & import
+# --------------------------------------------------------------------------
+
+CSV_HEADERS = [
+    "Language",
+    "Section",
+    "Title",
+    "PDF_URL",
+    "Version",
+    "Date",
+    "Corrections_URL",
+    "Status",
+    "Notes",
+]
+
+
+def export_to_csv(filepath: str, lang_sections: dict[str, list[Section]]) -> None:
+    """Export parsed document hierarchy to a UTF-8 with BOM CSV for Google Sheets / Excel."""
+    os.makedirs(os.path.dirname(os.path.abspath(filepath)), exist_ok=True)
+    lang_map = {key: label for key, _page, label, _tab in LANGUAGES}
+    with open(filepath, "w", newline="", encoding="utf-8-sig") as fh:
+        writer = csv.writer(fh)
+        writer.writerow(CSV_HEADERS)
+        for lang_key, sections in lang_sections.items():
+            lang_name = lang_map.get(lang_key, lang_key)
+            for section in sections:
+                for doc in section.docs:
+                    writer.writerow([
+                        lang_name,
+                        section.title,
+                        doc.title,
+                        doc.url,
+                        doc.version,
+                        doc.date,
+                        doc.corrections,
+                        "Active",
+                        "",
+                    ])
+
+
+def export_to_json(filepath: str, lang_sections: dict[str, list[Section]]) -> None:
+    """Export parsed document hierarchy to structured JSON."""
+    os.makedirs(os.path.dirname(os.path.abspath(filepath)), exist_ok=True)
+    lang_map = {key: {"label": label, "tab": tab} for key, _page, label, tab in LANGUAGES}
+    data = {}
+    for lang_key, sections in lang_sections.items():
+        data[lang_key] = {
+            "label": lang_map.get(lang_key, {}).get("label", lang_key),
+            "tab": lang_map.get(lang_key, {}).get("tab", lang_key),
+            "sections": [
+                {
+                    "title": s.title,
+                    "docs": [
+                        {
+                            "title": d.title,
+                            "url": d.url,
+                            "version": d.version,
+                            "date": d.date,
+                            "corrections": d.corrections,
+                        }
+                        for d in s.docs
+                    ],
+                }
+                for s in sections
+            ],
+        }
+    with open(filepath, "w", encoding="utf-8") as fh:
+        json.dump(data, fh, indent=2, ensure_ascii=False)
+
+
+def load_from_csv(source: str) -> dict[str, list[Section]]:
+    """Load documents from a local CSV file path or a Google Sheets / HTTP CSV export URL."""
+    if source.startswith("http://") or source.startswith("https://"):
+        content = fetch(source)
+    else:
+        with open(source, "r", encoding="utf-8-sig") as fh:
+            content = fh.read()
+
+    lookup: dict[str, str] = {}
+    for key, _page, label, tab in LANGUAGES:
+        lookup[key.lower()] = key
+        lookup[label.lower()] = key
+        lookup[tab.lower()] = key
+
+    sections_by_lang: dict[str, dict[str, Section]] = {k: {} for k, _, _, _ in LANGUAGES}
+
+    reader = csv.DictReader(io.StringIO(content))
+    for row in reader:
+        raw_lang = (row.get("Language") or row.get("language") or "").strip()
+        lang_key = lookup.get(raw_lang.lower())
+        if not lang_key:
+            for candidate_key, _, candidate_label, candidate_tab in LANGUAGES:
+                if (
+                    candidate_key.lower() in raw_lang.lower()
+                    or candidate_label.lower() in raw_lang.lower()
+                    or candidate_tab.lower() in raw_lang.lower()
+                ):
+                    lang_key = candidate_key
+                    break
+        if not lang_key:
+            continue
+
+        status = (row.get("Status") or row.get("status") or "Active").strip()
+        if status.lower() in ("hidden", "inactive", "draft", "deleted"):
+            continue
+
+        sec_title = (row.get("Section") or row.get("section") or "Documents").strip()
+        title = (row.get("Title") or row.get("title") or "").strip()
+        url = (
+            row.get("PDF_URL")
+            or row.get("pdf_url")
+            or row.get("URL")
+            or row.get("url")
+            or ""
+        ).strip()
+        if not url and not title:
+            continue
+        if not url:
+            url = "#"
+        if not title:
+            title = os.path.basename(url)
+
+        version = (row.get("Version") or row.get("version") or "").strip()
+        date = (row.get("Date") or row.get("date") or "").strip()
+        corrections = (
+            row.get("Corrections_URL") or row.get("corrections_url") or ""
+        ).strip()
+
+        doc = Doc(
+            title=title,
+            url=url,
+            version=version,
+            date=date,
+            corrections=corrections,
+        )
+
+        if sec_title not in sections_by_lang[lang_key]:
+            sections_by_lang[lang_key][sec_title] = Section(title=sec_title)
+        sections_by_lang[lang_key][sec_title].docs.append(doc)
+
+    out: dict[str, list[Section]] = {}
+    for key, _, _, _ in LANGUAGES:
+        out[key] = list(sections_by_lang[key].values())
+    return out
+
+
+# --------------------------------------------------------------------------
 # main
 # --------------------------------------------------------------------------
 
@@ -666,6 +816,12 @@ def main() -> int:
                     help="use cached pages in .cache/ instead of fetching")
     ap.add_argument("--check", action="store_true",
                     help="verify every emitted PDF link returns 200 application/pdf")
+    ap.add_argument("--source-csv", default="",
+                    help="path or Google Sheets URL to load documents from CSV instead of scraping")
+    ap.add_argument("--export-csv", default="",
+                    help="path to export current extracted documents to CSV (e.g. for Google Sheets)")
+    ap.add_argument("--export-json", default="",
+                    help="path to export current extracted documents to JSON")
     ap.add_argument("--out", default=OUT_DEFAULT,
                     help=f"output path (default: {os.path.relpath(OUT_DEFAULT, ROOT)})")
     ap.add_argument("--template", default=TEMPLATE,
@@ -677,22 +833,49 @@ def main() -> int:
 
     rendered: dict[str, str] = {}
     all_urls: list[str] = []
+    lang_sections: dict[str, list[Section]] = {}
     total = 0
 
-    for i, (lang, page, label, _tab_title) in enumerate(LANGUAGES):
-        source = load_page(page, args.offline)
-        sections = subdivide(parse_page(source, label))
-        notes = extract_notes(template, lang)
-        rendered[lang] = render_language(lang, notes, sections, first=(i == 0))
+    if args.source_csv:
+        print(f"  loading documents from CSV: {args.source_csv}")
+        lang_sections = load_from_csv(args.source_csv)
+        for i, (lang, _page, label, _tab_title) in enumerate(LANGUAGES):
+            sections = lang_sections.get(lang, [])
+            notes = extract_notes(template, lang)
+            rendered[lang] = render_language(lang, notes, sections, first=(i == 0))
 
-        count = sum(len(s.docs) for s in sections)
-        total += count
-        for section in sections:
-            for doc in section.docs:
-                all_urls.append(doc.url)
-                if doc.corrections:
-                    all_urls.append(doc.corrections)
-        print(f"  {label:<10} {count:>4} documents in {len(sections):>2} sections")
+            count = sum(len(s.docs) for s in sections)
+            total += count
+            for section in sections:
+                for doc in section.docs:
+                    all_urls.append(doc.url)
+                    if doc.corrections:
+                        all_urls.append(doc.corrections)
+            print(f"  {label:<10} {count:>4} documents in {len(sections):>2} sections")
+    else:
+        for i, (lang, page, label, _tab_title) in enumerate(LANGUAGES):
+            source = load_page(page, args.offline)
+            sections = subdivide(parse_page(source, label))
+            lang_sections[lang] = sections
+            notes = extract_notes(template, lang)
+            rendered[lang] = render_language(lang, notes, sections, first=(i == 0))
+
+            count = sum(len(s.docs) for s in sections)
+            total += count
+            for section in sections:
+                for doc in section.docs:
+                    all_urls.append(doc.url)
+                    if doc.corrections:
+                        all_urls.append(doc.corrections)
+            print(f"  {label:<10} {count:>4} documents in {len(sections):>2} sections")
+
+    if args.export_csv:
+        export_to_csv(args.export_csv, lang_sections)
+        print(f"  exported {total} documents to CSV: {args.export_csv}")
+
+    if args.export_json:
+        export_to_json(args.export_json, lang_sections)
+        print(f"  exported {total} documents to JSON: {args.export_json}")
 
     page = harden_tab_switching(splice(template, rendered))
 
@@ -704,14 +887,15 @@ def main() -> int:
     build_dir = os.path.dirname(os.path.abspath(args.out))
     mockup_dir = os.path.join(ROOT, "mockup")
     copied_pages = []
-    for fname in os.listdir(mockup_dir):
-        if fname.endswith(".html") and fname != "documents.html":
-            src = os.path.join(mockup_dir, fname)
-            dst = os.path.join(build_dir, fname)
-            if os.path.abspath(src) != os.path.abspath(dst):
-                import shutil
-                shutil.copy2(src, dst)
-                copied_pages.append(fname)
+    if os.path.exists(mockup_dir):
+        for fname in os.listdir(mockup_dir):
+            if fname.endswith(".html") and fname != "documents.html":
+                src = os.path.join(mockup_dir, fname)
+                dst = os.path.join(build_dir, fname)
+                if os.path.abspath(src) != os.path.abspath(dst):
+                    import shutil
+                    shutil.copy2(src, dst)
+                    copied_pages.append(fname)
 
     unique = sorted(set(all_urls))
     print(f"\n  {total} documents, {len(unique)} unique PDF links")
@@ -734,3 +918,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+

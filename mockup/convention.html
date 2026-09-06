@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Conventions - VedaVMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --saffron: #E65100;
+            --maroon: #800000;
+            --cream: #FFF8F0;
+            --gold: #DAA520;
+            --dark-brown: #4E342E;
+            --white: #FFFFFF;
+            --light-orange: #FFF3E0;
+            --border-color: #E0D5C9;
+        }
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            color: var(--dark-brown);
+            background: var(--cream);
+            line-height: 1.7;
+        }
+        .header {
+            background: linear-gradient(rgba(62, 39, 25, 0.92), rgba(62, 39, 25, 0.92)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%238B4513" width="100" height="100"/></svg>');
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        .logo {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: white;
+        }
+        .om-symbol { font-size: 1.5rem; color: var(--gold); }
+        .blessing { font-size: 0.8rem; opacity: 0.9; font-style: italic; margin-top: 0.25rem; }
+        
+        .nav {
+            background: var(--white);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .nav a {
+            color: var(--dark-brown);
+            text-decoration: none;
+            padding: 0.85rem 1.25rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .nav a:hover, .nav a.active {
+            color: var(--saffron);
+            border-bottom-color: var(--saffron);
+            background: var(--light-orange);
+        }
+        .nav .donate-btn {
+            background: var(--saffron);
+            color: white !important;
+            border-radius: 4px;
+            margin: 0.4rem;
+            padding: 0.5rem 1rem;
+        }
+        .nav .donate-btn:hover { background: var(--maroon); }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--maroon) 0%, #4a1a1a 100%);
+            color: white;
+            padding: 2.2rem 1rem;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2rem;
+            margin-bottom: 0.35rem;
+        }
+        .page-header p {
+            opacity: 0.92;
+            font-size: 1rem;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .download-banner {
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+            border: 2px solid var(--saffron);
+            border-radius: 8px;
+            padding: 1.25rem 1.75rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 3px 10px rgba(230, 81, 0, 0.12);
+        }
+        .download-info h3 {
+            color: var(--maroon);
+            font-size: 1.15rem;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .download-info p {
+            font-size: 0.9rem;
+            color: var(--dark-brown);
+            margin: 0;
+        }
+        .pdf-download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--saffron);
+            color: white;
+            padding: 0.75rem 1.4rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.92rem;
+            transition: all 0.25s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .pdf-download-btn:hover {
+            background: var(--maroon);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .section-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.75rem 2rem;
+            margin-bottom: 1.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--border-color);
+        }
+        .section-card h2 {
+            color: var(--maroon);
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-orange);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .section-card h2 .sec-num {
+            color: var(--saffron);
+            font-weight: 700;
+        }
+        .section-card p {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        .highlight-box {
+            background: var(--light-orange);
+            border-left: 4px solid var(--saffron);
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.95rem;
+        }
+        .alert-box {
+            background: #FFEBEE;
+            border-left: 4px solid #C62828;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            border-radius: 0 6px 6px 0;
+            color: #5C0000;
+            font-size: 0.95rem;
+        }
+
+        .convention-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 1.25rem;
+        }
+        .convention-item {
+            background: var(--cream);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 6px 6px 0;
+            padding: 1rem 1.25rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .convention-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .convention-item-title {
+            font-weight: 700;
+            color: var(--maroon);
+            font-size: 1rem;
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .convention-item-desc {
+            font-size: 0.92rem;
+            color: var(--dark-brown);
+            line-height: 1.6;
+        }
+        .code-pill {
+            display: inline-block;
+            background: #EFEBE9;
+            color: var(--maroon);
+            padding: 0.1rem 0.45rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        /* Tamil Guide Table */
+        .tamil-table-wrapper {
+            overflow-x: auto;
+            margin-top: 1.25rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        .tamil-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            background: white;
+        }
+        .tamil-table th {
+            background: var(--dark-brown);
+            color: white;
+            padding: 0.85rem 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        .tamil-table td {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+        .tamil-table tr:nth-child(even) td {
+            background: #FAF7F2;
+        }
+        .tamil-script {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--maroon);
+        }
+        .tamil-sub {
+            font-size: 0.85rem;
+            color: var(--saffron);
+            font-weight: 700;
+            vertical-align: sub;
+        }
+        .sanskrit-char {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 1.2rem;
+            color: var(--saffron);
+            font-weight: bold;
+        }
+
+        .footer {
+            background: var(--dark-brown);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.85;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        .footer-links a:hover { opacity: 1; text-decoration: underline; }
+        .footer-bottom { font-size: 0.85rem; opacity: 0.7; }
+
+        @media (max-width: 700px) {
+            .page-header h1 { font-size: 1.6rem; }
+            .section-card { padding: 1.25rem 1rem; }
+            .download-banner { flex-direction: column; align-items: flex-start; }
+            .pdf-download-btn { width: 100%; justify-content: center; }
+            .nav a { padding: 0.65rem 0.75rem; font-size: 0.78rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <span class="om-symbol">ॐ</span>
+            <span>VedaVMS</span>
+        </a>
+        <div class="blessing">ॐ श्री महागणपतये नमः || श्री गुरुभ्यो नमः ||</div>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html">Home</a>
+            <a href="documents.html">Documents</a>
+            <a href="videos.html">Videos</a>
+            <a href="articles.html">Articles</a>
+            <a href="convention.html" class="active">Conventions</a>
+            <a href="about.html">About</a>
+            <a href="donations.html" class="donate-btn">Donate</a>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <h1>ग्रन्थ सम्प्रदायः | Document Conventions</h1>
+        <p>Standards, notations, and transliteration conventions used across VedaVMS books</p>
+    </section>
+
+    <main class="main-content">
+        <!-- PDF DOWNLOAD CALLOUT -->
+        <div class="download-banner">
+            <div class="download-info">
+                <h3>📄 Official Document Conventions Guide</h3>
+                <p>Download the complete conventions and notation manual in PDF format for offline study and reference.</p>
+            </div>
+            <a href="https://vedavms.in/conventions.pdf" target="_blank" class="pdf-download-btn">
+                <span>⬇ Download PDF (135 KB)</span>
+            </a>
+        </div>
+
+        <!-- 1.1 INTRODUCTION -->
+        <article class="section-card">
+            <h2><span class="sec-num">1.1</span> Introduction</h2>
+            <p>The subject matters in our books pertain to <strong>Krishna Yajur Veda</strong> only. If mantras from other Vedic texts are included, a note has been added. Kindly refer to your Guru for the rendering techniques.</p>
+            <p>We started with the compilation of books in three languages: <strong>Sanskrit</strong>, <strong>Malayalam</strong>, and <strong>Tamil</strong> (and subsequently expanded to <strong>Kannada</strong>, <strong>Telugu</strong>, and <strong>English / Latin IAST</strong>). We have adhered to standards and conventions in letters and notations common across all books. However, minor differences occur in the representation of letters across these languages.</p>
+            <div class="highlight-box">
+                <strong>Our Commitment:</strong> We are committed to standardising areas where there are minor gaps and limitations. We continuously incorporate feedback from Veda Learning Groups and respected Gurus with whom we have shared our compiled materials.
+            </div>
+            <div class="alert-box">
+                <strong>Important:</strong> Our books are not meant for self-learning. Always refer to your Veda Guru or senior practitioners regarding the precise pronunciation and traditional delivery of Vedic mantras.
+            </div>
+        </article>
+
+        <!-- 1.2 COMMON CONVENTIONS AND STANDARDS -->
+        <article class="section-card">
+            <h2><span class="sec-num">1.2</span> Common Conventions and Standards</h2>
+            <p>To ensure consistency, readability, and ease of multi-language study groups, the following standards are systematically applied:</p>
+
+            <div class="convention-grid">
+                <div class="convention-item">
+                    <div class="convention-item-title">
+                        <span>📄</span> 1. Page Integrity (No Split Mantras)
+                    </div>
+                    <div class="convention-item-desc">
+                        A Mantra or a Ruk shall not be split across pages so that it remains reader-friendly. Where exceptionally long mantras occur (such as in the Mahanarayana Upanishad) that cannot easily fit onto a single page, appropriate continuity formatting is provided.
+                    </div>
+                </div>
+
+                <div class="convention-item">
+                    <div class="convention-item-title">
+                        <span>🔢</span> 2. Synchronized Multi-Language Numbering
+                    </div>
+                    <div class="convention-item-desc">
+                        Paragraph numbers and numbering conventions across books are kept identical across all languages. This allows students in a study group using texts in different scripts (Sanskrit, Tamil, Malayalam, Kannada, Telugu) to cross-reference and follow along seamlessly.
+                    </div>
+                </div>
+
+                <div class="convention-item">
+                    <div class="convention-item-title">
+                        <span>⏸</span> 3. Separator Symbols <span class="code-pill">|</span> and <span class="code-pill">||</span>
+                    </div>
+                    <div class="convention-item-desc">
+                        We use the single separator symbol <span class="code-pill">|</span> to indicate the end of a <strong>Ruk</strong>. The double separator symbol <span class="code-pill">||</span> is used to indicate the end of a <strong>mantra</strong> rather than a Chandas as per traditional Vedic convention. This convention is chosen purely for reader convenience.
+                    </div>
+                </div>
+
+                <div class="convention-item">
+                    <div class="convention-item-title">
+                        <span>🔤</span> 4. Standard Transliteration & Typography
+                    </div>
+                    <div class="convention-item-desc">
+                        Standard conversion software is used for the transliteration of source words into Sanskrit, Tamil, Malayalam, Kannada, and Telugu. Specific phonetic font representations and symbols are adapted to the nuances of each language.
+                    </div>
+                </div>
+
+                <div class="convention-item">
+                    <div class="convention-item-title">
+                        <span>🏷</span> 5. Four-Digit Hierarchical Reference System
+                    </div>
+                    <div class="convention-item-desc">
+                        Wherever possible, references to the <strong>Taittiriya Samhita</strong>, <strong>Brahmanam</strong>, and <strong>Aranyakam</strong> are provided via a four-digit standard notation:
+                        <ul style="margin: 0.5rem 0 0.5rem 1.5rem;">
+                            <li><strong>1st digit:</strong> Kandam (major section)</li>
+                            <li><strong>2nd digit:</strong> Prasna (subject)</li>
+                            <li><strong>3rd digit:</strong> Anuvakam (chapter number in that subject)</li>
+                            <li><strong>4th digit:</strong> Serial number of the Mantra or Panchaati</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="convention-item">
+                    <div class="convention-item-title">
+                        <span>📈</span> 6. Running Total Notation
+                    </div>
+                    <div class="convention-item-desc">
+                        In select subjects, the fourth digit is replaced with the sequential running number of the paragraph to indicate the cumulative total number of Panchaatis in that subject.
+                    </div>
+                </div>
+
+                <div class="convention-item">
+                    <div class="convention-item-title">
+                        <span>🔄</span> 7. Pada Bhedham (Text Variations in Brackets)
+                    </div>
+                    <div class="convention-item-desc">
+                        Alternate words are provided in brackets whenever there are recognized <em>Pada bhedhams</em> (recitation differences) between reputable traditional sources, or where grammatical rules permit two valid representations of letters.
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 1.3 COMMON SYMBOLS USED -->
+        <article class="section-card">
+            <h2><span class="sec-num">1.3</span> Common Symbols Used</h2>
+            <p><strong>The Hyphen (<span class="code-pill">–</span>):</strong> Used between words to indicate that the word has parts which need to be rendered together as per your Guru’s teachings.</p>
+            <p>This sign is used to split long compound words, words constructed through Sandhis resulting in joined letters, and to assist visual parsing and fluent chanting. Usages of hyphens slightly vary in Sanskrit, Malayalam, and Tamil books based on linguistic requirements.</p>
+            <div class="alert-box">
+                <strong>Critical Rule:</strong> The <strong>hyphen should NOT be taken as a break or pause</strong>. Chanting should continue smoothly across hyphenated components as taught by your Guru.
+            </div>
+        </article>
+
+        <!-- 1.4 SPECIAL NOTES FOR TAMIL BOOK READERS -->
+        <article class="section-card">
+            <h2><span class="sec-num">1.4</span> Special Notes for Tamil Book Readers</h2>
+            <p>Because the Tamil script traditionally possesses a single glyph for each varga consonant, special notations are introduced in VedaVMS Tamil editions to faithfully represent the four Sanskrit consonant variants and subtle Vedic phonetic distinctions:</p>
+
+            <div class="tamil-table-wrapper">
+                <table class="tamil-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 32%;">Tamil Notation</th>
+                            <th style="width: 68%;">Phonetic Explanation & Usage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="tamil-script">க<span class="tamil-sub">2</span></span>, 
+                                <span class="tamil-script">ச<span class="tamil-sub">2</span></span>, 
+                                <span class="tamil-script">ட<span class="tamil-sub">2</span></span>, 
+                                <span class="tamil-script">த<span class="tamil-sub">3</span></span>, 
+                                <span class="tamil-script">ப<span class="tamil-sub">4</span></span>
+                            </td>
+                            <td>
+                                <strong>Consonant Varga Variants (Subscript Numbers):</strong><br>
+                                To represent the four phonetic variants of <span class="tamil-script">க, ச, ட, த, ப</span>, a subscript number is appended after the consonant (e.g. <span class="tamil-script">க<span class="tamil-sub">2</span></span> = ख, <span class="tamil-script">த<span class="tamil-sub">3</span></span> = द, <span class="tamil-script">ப<span class="tamil-sub">4</span></span> = भ) to indicate whether it is the 2nd, 3rd, or 4th phonetic variant.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="tamil-script"><em>ரு</em></span> <em>(in italics)</em>
+                            </td>
+                            <td>
+                                <strong>Vocalic 'Ru':</strong><br>
+                                Rendered as in <em>Rushi</em>, <em>Amrutam</em>, chanted <strong>without lips converging</strong>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="tamil-script">ஶ வர்க்கம்</span>
+                            </td>
+                            <td>
+                                <strong>Talavya Sibilant:</strong><br>
+                                Pronounced as the <em>"sha"</em> in Shankar (represented as <span class="sanskrit-char">श</span> in Sanskrit Devanagari).
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="tamil-script">‘ந’</span> and <span class="tamil-script">‘ன’</span>
+                            </td>
+                            <td>
+                                <strong>Nasal Consonant representation:</strong><br>
+                                In Sanskrit there is only a single dental nasal <span class="sanskrit-char">न</span>. In Tamil editions, both <span class="tamil-script">‘ந’</span> and <span class="tamil-script">‘ன’</span> are employed based on Tamil orthographic context, but both represent the exact same Sanskrit sound.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="documents.html">Documents</a>
+            <a href="videos.html">Videos</a>
+            <a href="articles.html">Articles</a>
+            <a href="convention.html">Conventions</a>
+            <a href="about.html">About</a>
+            <a href="donations.html">Donate</a>
+        </div>
+        <div class="footer-bottom">&copy; 2026 VedaVMS — Preserving Vedic Heritage Worldwide</div>
+    </footer>
+</body>
+</html>
