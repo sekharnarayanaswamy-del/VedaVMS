@@ -142,7 +142,7 @@ Use this checklist to complete the autonomous setup:
 
 - [ ] **3. Install Apps Script in Google Sheet**:
   - In the sheet, go to **Extensions ➔ Apps Script**.
-  - Paste the `triggerDeploy` script.
+  - Paste the enhanced `triggerDeploy` script (which monitors progress, displays a live completion popup, and writes `✅ Live: [Timestamp]` into cell `J2`).
   - Insert your generated GitHub token (`GITHUB_TOKEN = 'ghp_...'`).
   - Save (`Ctrl + S`) and reload the sheet to verify the **`🚀 VedaVMS`** menu appears.
 
@@ -150,7 +150,7 @@ Use this checklist to complete the autonomous setup:
   - Once working smoothly, switch to a GitHub **Fine-grained Personal Access Token** scoped strictly to `VedaVMS` (`Actions: Read and write`).
   - In Apps Script, open **Project Settings (gear icon) ➔ Script Properties**.
   - Add property `GITHUB_TOKEN` with the token value.
-  - Update the script to fetch it via `PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN')` so editors cannot view the token in the script editor.
+  - The script will automatically pick it up from Script Properties if `GITHUB_TOKEN` in the code is set to `'PASTE_YOUR_GITHUB_TOKEN_HERE'`.
 
 ---
 
