@@ -50,16 +50,34 @@ jobs:
           path: build/
           retention-days: 7
 
+      - name: Prepare FTP Configuration
+        id: ftp-config
+        run: |
+          RAW_SERVER="${{ env.STAGING_FTP_SERVER }}"
+          # Strip protocol prefix (e.g. ftp://, ftps://), trailing path, port, quotes and whitespace
+          CLEAN_SERVER=$(echo "$RAW_SERVER" | sed -e 's|^[a-zA-Z0-9\+\.\-]*://||' -e 's|/.*$||' -e 's|:.*$||' | tr -d '[:space:]"')
+          if [ -z "$CLEAN_SERVER" ]; then
+            CLEAN_SERVER="103.69.196.157"
+          fi
+          # If the hostname fails DNS resolution, fall back to known server IP
+          if ! getent hosts "$CLEAN_SERVER" > /dev/null 2>&1; then
+            echo "::warning::Configured server '$CLEAN_SERVER' failed DNS lookup. Falling back to 103.69.196.157"
+            CLEAN_SERVER="103.69.196.157"
+          fi
+          echo "clean_server=$CLEAN_SERVER" >> $GITHUB_OUTPUT
+
       - name: Deploy to Staging Web Server (FTP / SFTP)
-        if: env.STAGING_FTP_SERVER != '' && env.STAGING_FTP_USERNAME != ''
+        if: env.STAGING_FTP_PASSWORD != ''
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ env.STAGING_FTP_SERVER }}
+          server: ${{ steps.ftp-config.outputs.clean_server }}
           username: ${{ env.STAGING_FTP_USERNAME }}
           password: ${{ env.STAGING_FTP_PASSWORD }}
           server-dir: /new.vedavms.in/
           protocol: ftps
+          port: 21
           security: loose
           local-dir: ./build/
+
 
 
