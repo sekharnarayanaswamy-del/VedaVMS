@@ -17,7 +17,7 @@ class ReusedSessionFTP_TLS(FTP_TLS):
     """
     def ntransfercmd(self, cmd, rest=None):
         conn, size = FTP.ntransfercmd(self, cmd, rest)
-        if self._cnx:
+        if getattr(self, '_prot_p', False) and hasattr(self.sock, 'session'):
             conn = self.context.wrap_socket(
                 conn,
                 server_hostname=self.host,

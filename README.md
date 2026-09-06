@@ -10,6 +10,9 @@ This repository contains tools, data snapshots, and redesign mockups for [VedaVM
 vedavms/
 ├── generate_documents.py               # Main document page generator script
 ├── scripts/
+│   ├── sync_staging.py                 # One-step Google Sheets fetch, build, and deploy to staging
+│   ├── deploy_staging.py               # Direct deployment script for new.vedavms.in
+│   ├── upload_donations.py             # Live production site restore/update utility
 │   └── check_pages.py                  # Live page inspection utility
 ├── mockup/                             # Redesign mockup templates
 │   ├── index.html
@@ -44,9 +47,18 @@ vedavms/
 
 ## 🚀 Usage
 
-### Regenerate Document Pages
+### 1. One-Step Sync to Staging (`new.vedavms.in`)
+Fetches the live Google Sheet, regenerates all 760+ documents into `build/` (with dynamic hierarchical numbering), and deploys directly to the staging site:
+```bash
+# Full fetch, build, and deploy:
+python scripts/sync_staging.py
 
-The generator fetches the live pages from `vedavms.in`, parses document metadata, builds language filter tabs, and renders `build/documents.html` using `mockup/documents.html` as the design template:
+# Or jump straight to uploading existing build/ files without rebuilding:
+python scripts/sync_staging.py --skip-build
+```
+
+### 2. Regenerate Document Pages Locally
+The generator fetches the live pages or Google Sheets CSV, parses document metadata, builds language filter tabs, and renders `build/documents.html` using `mockup/documents.html` as the design template:
 
 ```bash
 # Generate build/documents.html directly from master CSV / Google Sheets
@@ -68,7 +80,8 @@ python generate_documents.py --offline
 python generate_documents.py --check
 ```
 
-See [MAINTAINER_GUIDE.md](MAINTAINER_GUIDE.md) for non-technical maintainer workflow using Google Sheets and GitHub Actions staging deployment.
+- See **[MAINTAINER_COOKBOOK.md](MAINTAINER_COOKBOOK.md)** for a short 3-step recipe on uploading PDFs and updating Google Sheets.
+- See **[MAINTAINER_GUIDE.md](MAINTAINER_GUIDE.md)** for the full maintainer workflow, technical details, and GitHub Actions staging deployment.
 
 ---
 

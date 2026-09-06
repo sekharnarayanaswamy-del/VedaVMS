@@ -19,10 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     env:
-      STAGING_FTP_SERVER: ${{ secrets.STAGING_FTP_SERVER || vars.STAGING_FTP_SERVER }}
-      STAGING_FTP_USERNAME: ${{ secrets.STAGING_FTP_USERNAME || vars.STAGING_FTP_USERNAME }}
-      STAGING_FTP_PASSWORD: ${{ secrets.STAGING_FTP_PASSWORD || vars.STAGING_FTP_PASSWORD }}
-      STAGING_REMOTE_DIR: ${{ secrets.STAGING_REMOTE_DIR || vars.STAGING_REMOTE_DIR || '/' }}
+      STAGING_FTP_SERVER: ${{ secrets.STAGING_FTP_SERVER || vars.STAGING_FTP_SERVER || secrets.FTP_SERVER || vars.FTP_SERVER || '103.69.196.157' }}
+      STAGING_FTP_USERNAME: ${{ secrets.STAGING_FTP_USERNAME || vars.STAGING_FTP_USERNAME || secrets.FTP_USERNAME || vars.FTP_USERNAME || 'vedavmsi' }}
+      STAGING_FTP_PASSWORD: ${{ secrets.STAGING_FTP_PASSWORD || vars.STAGING_FTP_PASSWORD || secrets.FTP_PASSWORD || vars.FTP_PASSWORD }}
+      STAGING_REMOTE_DIR: ${{ secrets.STAGING_REMOTE_DIR || vars.STAGING_REMOTE_DIR || '/new.vedavms.in/' }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -38,7 +38,8 @@ jobs:
           SECRET_URL: ${{ secrets.GOOGLE_SHEET_CSV_URL }}
           VAR_URL: ${{ vars.GOOGLE_SHEET_CSV_URL }}
         run: |
-          SHEET_URL="${INPUT_URL:-${SECRET_URL:-${VAR_URL:-data/vedavms_documents.csv}}}"
+          DEFAULT_SHEET="https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/export?format=csv&gid=548744990"
+          SHEET_URL="${INPUT_URL:-${SECRET_URL:-${VAR_URL:-$DEFAULT_SHEET}}}"
           echo "Generating documents using source: $SHEET_URL"
           python generate_documents.py --source-csv "$SHEET_URL"
 
@@ -56,7 +57,7 @@ jobs:
           server: ${{ env.STAGING_FTP_SERVER }}
           username: ${{ env.STAGING_FTP_USERNAME }}
           password: ${{ env.STAGING_FTP_PASSWORD }}
-          server-dir: ${{ env.STAGING_REMOTE_DIR != '' && env.STAGING_REMOTE_DIR || '/httpdocs/' }}
+          server-dir: ${{ env.STAGING_REMOTE_DIR != '' && env.STAGING_REMOTE_DIR || '/new.vedavms.in/' }}
           protocol: ftps
           security: loose
           local-dir: ./build/

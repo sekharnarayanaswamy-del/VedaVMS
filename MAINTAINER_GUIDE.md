@@ -2,6 +2,8 @@
 
 This guide explains how non-technical maintainers can update documents on **VedaVMS** without writing code, running scripts, or managing web servers.
 
+> 💡 **Looking for a fast, simple recipe?** See the **[Maintainer Cookbook](MAINTAINER_COOKBOOK.md)** for a 3-step guide to uploading PDFs and updating Google Sheets.
+
 ---
 
 ## 📋 Overview of the Process
@@ -57,45 +59,74 @@ This guide explains how non-technical maintainers can update documents on **Veda
 - Instead of deleting the row, you can simply change **Status** from `Active` to `Hidden`.
 - The document will immediately disappear from the website on the next build, while keeping your historical record safely preserved in the spreadsheet.
 
+### Automatic Dynamic Numbering (Hierarchical)
+- You **do not** need to manually renumber rows in the Google Sheet when hiding or adding documents.
+- In numbered sections like *Vedic Books by Subject*, the build system dynamically assigns contiguous numbers (`1)`, `2)`, `3)`...) and preserves sub-document hierarchy (`1A)`, `2A)`, `2B)`...).
+- **Example**: When `1) Shanti Japam` is set to `Hidden`, the next active book (`2) TaittirIyopanishat`) automatically displays as `1)`, its sub-book `2A) Surya namaskara` automatically becomes `1A)`, and `3) Udaka Shanti` becomes `2)`. If `Shanti Japam` is later unhidden, the numbering automatically shifts back.
+
 ---
 
 ## ⚡ Step 3: Publishing Changes to the Staging Site (`new.vedavms.in`)
 
-There are two ways changes get published:
+There are three ways changes get published to staging:
 
-1. **Automatic Nightly Update**:
-   - Every night at 5:30 AM IST, GitHub Actions automatically downloads the Google Sheet and refreshes `new.vedavms.in`.
-2. **Instant Manual Publish (Optional One-Click Trigger)**:
-   - Go to the GitHub repository page in your browser.
-   - Click the **Actions** tab at the top.
-   - In the left sidebar, click **Deploy to Staging (new.vedavms.in)**.
-   - Click **Run workflow** > **Run workflow**.
-   - Within 1–2 minutes, the updated pages are generated and published to staging.
+### Method A: One-Command Sync from Laptop
+If you want to immediately update the staging site directly from your computer without waiting for GitHub Actions:
+```powershell
+# Full fetch, regeneration, and upload:
+python scripts/sync_staging.py
+
+# Skip Google Sheets fetch and upload existing build/ folder immediately:
+python scripts/sync_staging.py --skip-build
+```
+This command will:
+1. Automatically fetch the latest data from the live Google Sheet.
+2. Regenerate all files in `build/` (filtering out hidden items, applying dynamic hierarchical numbering, and formatting 760+ documents).
+3. Upload all updated pages to `new.vedavms.in` (`/new.vedavms.in/`) using native Windows transfer tools (`curl.exe`).
+
+### Method B: Automatic Nightly Update via GitHub
+- Every night at 00:00 UTC (5:30 AM IST), GitHub Actions automatically downloads the Google Sheet, rebuilds the site, and deploys to `new.vedavms.in`.
+
+### Method C: Instant Trigger via GitHub Actions (One-Click)
+1. Go to the GitHub repository in your browser.
+2. Click the **Actions** tab at the top.
+3. In the left sidebar, click **Deploy to Staging (new.vedavms.in)**.
+4. Click **Run workflow** > **Run workflow**.
+5. Within ~1 minute, the build runs and publishes to staging.
 
 ---
 
-## 🔒 Managing Staging Credentials in GitHub (For Administrator)
+## 🔒 Staging Server Configuration & Credentials
 
-To enable automated FTP/SFTP deployment to `new.vedavms.in`, add these Secrets in your GitHub repository (**Settings > Secrets and variables > Actions > New repository secret**):
+The staging site resides on the same Windows IIS / Plesk server as production, but in its own dedicated document root folder:
 
-| Secret Name | Description | Example |
+| Parameter | Setting | Description |
 | :--- | :--- | :--- |
-| `GOOGLE_SHEET_CSV_URL` | Live Google Sheet CSV URL | `https://docs.google.com/spreadsheets/d/.../export?format=csv` |
-| `STAGING_FTP_SERVER` | FTP / SFTP Server Host | `ftp.vedavms.in` or `new.vedavms.in` |
-| `STAGING_FTP_USERNAME` | FTP Username | `staging_user` |
-| `STAGING_FTP_PASSWORD` | FTP Password | `********` |
-| `STAGING_REMOTE_DIR` | Directory path on server | `/public_html` or `/staging` |
+| **Server Host** | `103.69.196.157` | Plesk hosting server |
+| **Protocol** | FTPS (FTP over TLS) | Port 21 with TLS Session Resumption |
+| **Username** | `vedavmsi` | System FTP account |
+| **Production Directory** | `/httpdocs/` | Serves the main live site (`vedavms.in`) |
+| **Staging Directory** | `/new.vedavms.in/` | Serves the redesigned staging site (`new.vedavms.in`) |
+
+### GitHub Secrets for Staging Pipeline:
+Configure these in GitHub under **Settings > Secrets and variables > Actions**:
+- `STAGING_FTP_SERVER`: `103.69.196.157`
+- `STAGING_FTP_USERNAME`: `vedavmsi`
+- `STAGING_FTP_PASSWORD`: `(your FTP password)`
+- `STAGING_REMOTE_DIR`: `/new.vedavms.in/`
 
 ---
 
-## 🧪 Testing Locally (For Developers)
-
-To test the generator locally with the spreadsheet or CSV file:
+## 🧪 Testing & Regeneration Locally
 
 ```bash
-# Generate from local CSV
-python generate_documents.py --source-csv data/vedavms_documents.csv
+# Full sync & deploy to new.vedavms.in in one step
+python scripts/sync_staging.py
 
-# Generate directly from live Google Sheet CSV URL
-python generate_documents.py --source-csv "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/export?format=csv"
+# Rebuild files locally only without uploading
+python generate_documents.py --source-csv "https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/export?format=csv&gid=548744990"
+
+# Rebuild using local fallback CSV
+python generate_documents.py --source-csv data/vedavms_documents.csv
+```
 ```

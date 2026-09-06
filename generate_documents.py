@@ -385,6 +385,55 @@ def slugify(text: str) -> str:
     return slug or "section"
 
 
+NUM_HIERARCHY_RE = re.compile(r"^(\d+)([A-Za-z]?)\s*[\)\.\-]\s*(.*)$")
+LETTER_SUB_RE = re.compile(r"^([A-Za-z])\s*[\)\.\-]\s*(.*)$")
+
+def apply_dynamic_numbering(sections: list[Section]) -> None:
+    """Dynamically renumber hierarchical documents (e.g. 1), 1A), 2), 2A), 2B)) within each section.
+    
+    When a document is marked Hidden (like 1) Shanti Japam), the next document dynamically becomes 1),
+    and sub-documents under it become 1A), 1B), preserving the hierarchy contiguously.
+    """
+    for section in sections:
+        numbered_count = sum(1 for doc in section.docs if NUM_HIERARCHY_RE.match(doc.title.strip()))
+        if numbered_count < 2:
+            continue
+
+        major_map: dict[str, int] = {}
+        next_major = 1
+        last_assigned_major = 1
+
+        for doc in section.docs:
+            t = doc.title.strip()
+            m = NUM_HIERARCHY_RE.match(t)
+            if m:
+                orig_major = m.group(1)
+                sub_suffix = m.group(2).upper()
+                clean_title = m.group(3).strip()
+
+                if orig_major not in major_map:
+                    major_map[orig_major] = next_major
+                    next_major += 1
+
+                assigned_major = major_map[orig_major]
+                last_assigned_major = assigned_major
+                prefix = f"{assigned_major}{sub_suffix})" if sub_suffix else f"{assigned_major})"
+                doc.title = f"{prefix} {clean_title}"
+            else:
+                m_sub = LETTER_SUB_RE.match(t)
+                if m_sub and major_map:
+                    sub_suffix = m_sub.group(1).upper()
+                    clean_title = m_sub.group(2).strip()
+                    doc.title = f"{last_assigned_major}{sub_suffix}) {clean_title}"
+                else:
+                    # Default: treat unnumbered title as a new main book!
+                    assigned_major = next_major
+                    next_major += 1
+                    last_assigned_major = assigned_major
+                    clean_t = re.sub(r"\.pdf$", "", t, flags=re.I).strip()
+                    doc.title = f"{assigned_major}) {clean_t}"
+
+
 # --------------------------------------------------------------------------
 # rendering
 # --------------------------------------------------------------------------
@@ -747,7 +796,17 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
 
     reader = csv.DictReader(io.StringIO(content))
     for row in reader:
-        raw_lang = (row.get("Language") or row.get("language") or "").strip()
+        raw_lang = (
+            row.get("Language")
+            or row.get("language")
+            or row.get("Supersection")
+            or row.get("supersection")
+            or row.get("SuperSection")
+            or row.get("Super Section")
+            or row.get("Category")
+            or (list(row.values())[0] if row else "")
+            or ""
+        ).strip()
         lang_key = lookup.get(raw_lang.lower())
         if not lang_key:
             for candidate_key, _, candidate_label, candidate_tab in LANGUAGES:
@@ -841,6 +900,7 @@ def main() -> int:
         lang_sections = load_from_csv(args.source_csv)
         for i, (lang, _page, label, _tab_title) in enumerate(LANGUAGES):
             sections = lang_sections.get(lang, [])
+            apply_dynamic_numbering(sections)
             notes = extract_notes(template, lang)
             rendered[lang] = render_language(lang, notes, sections, first=(i == 0))
 
@@ -856,6 +916,7 @@ def main() -> int:
         for i, (lang, page, label, _tab_title) in enumerate(LANGUAGES):
             source = load_page(page, args.offline)
             sections = subdivide(parse_page(source, label))
+            apply_dynamic_numbering(sections)
             lang_sections[lang] = sections
             notes = extract_notes(template, lang)
             rendered[lang] = render_language(lang, notes, sections, first=(i == 0))
