@@ -267,11 +267,34 @@ Google Sheets runs on Google's cloud servers, completely independent of GitHub. 
       - All other permissions remain set to **`No access`**.
     - **Expiration**: Can be set to expire automatically (e.g., 90 days or 1 year) for enhanced security.
 
+#### How to Generate a Fine-Grained PAT (Step-by-Step)
+
+A Personal Access Token is generated from your **Personal GitHub Account Settings** (not repository settings):
+
+1. **Direct URL**: Go directly to [github.com/settings/tokens?type=beta](https://github.com/settings/tokens?type=beta)  
+   *(Or click your **Profile Picture (top-right)** ➔ **Settings** ➔ scroll down the left sidebar to **Developer settings** ➔ **Personal access tokens** ➔ **Fine-grained tokens**).*
+2. Click the **Generate new token** button.
+3. Configure the token:
+   * **Token name**: `VedaVMS-Google-Sheet-Trigger`
+   * **Expiration**: Choose `90 days`, `1 year`, or custom.
+   * **Repository access**: Select **"Only select repositories"** ➔ choose **`sekharnarayanaswamy-del/VedaVMS`**.
+   * **Permissions**:
+     * Expand **Repository permissions**.
+     * Find **Actions**: change from *No access* to **`Read and write`** *(allows triggering `workflow_dispatch` and monitoring build status)*.
+     * *(GitHub will automatically set `Metadata` to `Read-only`, which is normal and required).*
+     * Leave all other permissions as *No access*.
+4. Scroll to the bottom and click **Generate token**.
+5. **Copy the token immediately** (it begins with `github_pat_...`). GitHub will only show it once.
+
 #### Securing the Token in Google Sheets
 To prevent other Google Sheet editors from viewing the token text in the Apps Script editor:
-- Open Apps Script ➔ **Project Settings (gear icon)** ➔ **Script Properties**.
-- Store the token as property `GITHUB_TOKEN`.
-- In the script, it is loaded dynamically via `PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN')`.
+- Open Apps Script (from Google Sheets: **Extensions** ➔ **Apps Script**).
+- In the left sidebar, click **Project Settings** (the gear icon ⚙️).
+- Scroll to **Script Properties** and click **Edit script properties** ➔ **Add script property**:
+  - **Property**: `GITHUB_TOKEN`
+  - **Value**: `github_pat_...` (paste your copied token)
+- Click **Save script properties**.
+- In the script code, it is loaded dynamically via `PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN')`.
 
 ---
 
