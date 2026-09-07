@@ -294,7 +294,7 @@ Use this checklist to complete the autonomous setup:
 - [x] **1. Disable "Required Reviewers" for Staging**:
   - Done. *(Staging deployments run automatically without requiring manual review).*
 
-- [ ] **2. Verify Google Sheet Sharing Settings**:
+- [x] **2. Verify Google Sheet Sharing Settings**:
   - Open the [Google Sheet](https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/).
   - Click **Share** (top right).
   - Verify *General access* is **"Anyone with the link" ➔ Role: Viewer** (needed for automated build script to fetch CSV without 401 errors).
@@ -303,7 +303,7 @@ Use this checklist to complete the autonomous setup:
 - [x] **3. Install Apps Script in Google Sheet**:
   - Done. *(Menu `🚀 VedaVMS` with live progress tracking and cell `J2` timestamp is installed).*
 
-- [ ] **4. (Optional Future Hardening) Migrate Token to Script Properties**:
+- [x] **4. (Optional Future Hardening) Migrate Token to Script Properties**:
   - Once working smoothly, switch to a GitHub **Fine-grained Personal Access Token** scoped strictly to `VedaVMS` (`Actions: Read and write`).
   - In Apps Script, open **Project Settings (gear icon) ➔ Script Properties**.
   - Add property `GITHUB_TOKEN` with the token value.

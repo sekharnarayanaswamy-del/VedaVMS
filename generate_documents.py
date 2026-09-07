@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import concurrent.futures
 import csv
+import datetime
 import html
 import http.client
 import io
@@ -865,6 +866,119 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
 
 
 # --------------------------------------------------------------------------
+# Dynamic Recent Updates (Home Page)
+# --------------------------------------------------------------------------
+
+def parse_doc_date(date_str: str) -> datetime.datetime | None:
+    if not date_str or not date_str.strip():
+        return None
+    d = date_str.strip()
+    for fmt in ("%b %d, %Y", "%b %d %Y", "%B %d, %Y", "%d-%b-%Y", "%Y-%m-%d", "%b %Y", "%B %Y"):
+        try:
+            return datetime.datetime.strptime(d, fmt)
+        except Exception:
+            pass
+    return None
+
+
+def get_recent_updates(lang_sections: dict[str, list[Section]], max_days: int = 90, limit: int = 10) -> list[dict]:
+    """Retrieve active documents whose release/update date is less than 3 months old."""
+    now = datetime.datetime.now()
+    cutoff = now - datetime.timedelta(days=max_days)
+
+    all_candidates: list[dict] = []
+    seen: set[tuple[str, str]] = set()
+
+    for _lang, sections in lang_sections.items():
+        for sec in sections:
+            for doc in sec.docs:
+                if not doc.url or doc.url == "#":
+                    continue
+                dt = parse_doc_date(doc.date)
+                if not dt:
+                    continue
+                key = (doc.title, doc.url)
+                if key in seen:
+                    continue
+                seen.add(key)
+                all_candidates.append({
+                    "dt": dt,
+                    "date_str": doc.date,
+                    "title": doc.title,
+                    "section": sec.title,
+                    "version": doc.version,
+                    "url": doc.url,
+                    "is_new": (now - dt).days <= 30 and dt <= now + datetime.timedelta(days=2),
+                })
+
+    # Sort descending (newest first)
+    all_candidates.sort(key=lambda x: x["dt"], reverse=True)
+
+    # Filter documents released within the last 3 months
+    within_window = [c for c in all_candidates if cutoff <= c["dt"] <= now + datetime.timedelta(days=2)]
+
+    if within_window:
+        return within_window[:limit]
+
+    # Fallback if no updates exist in the last 3 months
+    return all_candidates[:5]
+
+
+def render_recent_updates_html(updates: list[dict]) -> str:
+    if not updates:
+        return '                <p style="text-align:center; color:#666; padding:1.5rem 0;">No updates in the last 3 months.</p>'
+
+    items = []
+    for u in updates:
+        dt: datetime.datetime = u["dt"]
+        month_day = dt.strftime("%b %d")
+        year = dt.strftime("%Y")
+
+        ver_html = f" {html.escape(u['version'])}" if u.get("version") else ""
+        new_badge = ' <span class="new-badge">NEW</span>' if u.get("is_new") else ""
+
+        item_html = (
+            f'                <a href="{html.escape(u["url"])}" target="_blank" class="update-item">\n'
+            f'                    <div class="update-date">{month_day}<br>{year}</div>\n'
+            f'                    <div class="update-info">\n'
+            f'                        <h4>{html.escape(u["title"])}{ver_html}{new_badge}</h4>\n'
+            f'                        <span>{html.escape(u["section"])}</span>\n'
+            f'                    </div>\n'
+            f'                </a>'
+        )
+        items.append(item_html)
+
+    return "\n".join(items)
+
+
+def generate_index_html(src_path: str, dst_path: str, lang_sections: dict[str, list[Section]]) -> int:
+    with open(src_path, "r", encoding="utf-8") as fh:
+        content = fh.read()
+
+    updates = get_recent_updates(lang_sections, max_days=90, limit=10)
+    updates_html = render_recent_updates_html(updates)
+
+    # Replace <div class="updates-list">...</div>
+    pattern = re.compile(r'(<div class="updates-list">)(.*?)(</div>\s*</div>\s*</section>)', re.DOTALL)
+    if pattern.search(content):
+        content = pattern.sub(rf'\1\n{updates_html}\n            \3', content)
+
+    # Also update language card document counts dynamically
+    for lang, sections in lang_sections.items():
+        doc_count = sum(len(s.docs) for s in sections)
+        card_pattern = re.compile(
+            rf'(<a\s+href="documents\.html#{re.escape(lang)}"[^>]*>.*?<div class="count">)[^<]*(</div>)',
+            re.DOTALL
+        )
+        content = card_pattern.sub(rf'\g<1>{doc_count} documents\g<2>', content)
+
+    with open(dst_path, "w", encoding="utf-8") as fh:
+        fh.write(content)
+
+    return len(updates)
+
+
+# --------------------------------------------------------------------------
 # main
 # --------------------------------------------------------------------------
 
@@ -944,7 +1058,7 @@ def main() -> int:
     with open(args.out, "w", encoding="utf-8") as fh:
         fh.write(page)
 
-    # Copy all other mockup pages (index, about, articles, videos) to build dir
+    # Generate dynamic index.html with Recent Updates (< 3 months old) and copy other companion pages
     build_dir = os.path.dirname(os.path.abspath(args.out))
     mockup_dir = os.path.join(ROOT, "mockup")
     copied_pages = []
@@ -953,7 +1067,10 @@ def main() -> int:
             if fname.endswith(".html") and fname != "documents.html":
                 src = os.path.join(mockup_dir, fname)
                 dst = os.path.join(build_dir, fname)
-                if os.path.abspath(src) != os.path.abspath(dst):
+                if fname == "index.html":
+                    num_updates = generate_index_html(src, dst, lang_sections)
+                    copied_pages.append(f"index.html ({num_updates} recent updates < 3 mo)")
+                elif os.path.abspath(src) != os.path.abspath(dst):
                     import shutil
                     shutil.copy2(src, dst)
                     copied_pages.append(fname)
