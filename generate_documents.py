@@ -18,6 +18,7 @@ The mockup is the template and is never written to. Output goes to build/.
 from __future__ import annotations
 
 import argparse
+from collections import defaultdict
 import concurrent.futures
 import csv
 import datetime
@@ -121,6 +122,7 @@ class Doc:
 class Section:
     title: str
     docs: list[Doc] = field(default_factory=list)
+    subsections: list[Section] = field(default_factory=list)
 
 
 # --------------------------------------------------------------------------
@@ -374,6 +376,83 @@ def subdivide(sections: list[Section]) -> list[Section]:
     return out
 
 
+KANDAM_NUM_RE = re.compile(r"kandam\s*(\d+)", re.I)
+TS_NUM_RE = re.compile(r"TS\s*(\d+)\.", re.I)
+URL_KANDAM_RE = re.compile(r"/TSK?(\d+)-(?:Padam|Kramam)/", re.I)
+
+
+def extract_kandam_num(sec_title: str, doc: Doc | None = None) -> int | None:
+    m = KANDAM_NUM_RE.search(sec_title)
+    if m:
+        return int(m.group(1))
+    if doc:
+        m = URL_KANDAM_RE.search(doc.url)
+        if m:
+            return int(m.group(1))
+        m = TS_NUM_RE.search(doc.title)
+        if m:
+            return int(m.group(1))
+    return None
+
+
+def nest_hierarchical_sections(sections: list[Section]) -> list[Section]:
+    """Nest Pada and Krama Kandam sections under top-level accordion containers."""
+    out: list[Section] = []
+    pada_sections: list[Section] = []
+    krama_sections: list[Section] = []
+
+    def is_pada(sec_title: str) -> bool:
+        return bool(
+            re.search(r"pada\s*p[aA]tam", sec_title, re.I)
+            and re.search(r"samhit", sec_title, re.I)
+        )
+
+    def is_krama(sec_title: str) -> bool:
+        return bool(
+            re.search(r"krama\s*p[aA]tam", sec_title, re.I)
+            and re.search(r"samhit", sec_title, re.I)
+        )
+
+    def build_container(container_title: str, matched_sections: list[Section]) -> Section:
+        kandam_map: dict[int, list[Doc]] = {}
+        for s in matched_sections:
+            for d in s.docs:
+                k = extract_kandam_num(s.title, d) or 1
+                kandam_map.setdefault(k, []).append(d)
+        subs = []
+        for k in sorted(kandam_map.keys()):
+            subs.append(Section(title=f"Kandam {k}", docs=kandam_map[k]))
+        return Section(title=container_title, subsections=subs)
+
+    for s in sections:
+        if s.subsections:
+            continue
+        if is_pada(s.title):
+            pada_sections.append(s)
+        elif is_krama(s.title):
+            krama_sections.append(s)
+
+    pada_inserted = False
+    krama_inserted = False
+
+    for s in sections:
+        if s.subsections:
+            out.append(s)
+            continue
+        if is_pada(s.title):
+            if not pada_inserted:
+                out.append(build_container("TaittirIya SamhitA pada pAtam", pada_sections))
+                pada_inserted = True
+        elif is_krama(s.title):
+            if not krama_inserted:
+                out.append(build_container("TaittirIya SamhitA krama pAtam", krama_sections))
+                krama_inserted = True
+        else:
+            out.append(s)
+
+    return out
+
+
 def icon_for(title: str) -> str:
     for pattern, icon in SECTION_ICONS:
         if re.search(pattern, title, re.I):
@@ -396,6 +475,8 @@ def apply_dynamic_numbering(sections: list[Section]) -> None:
     and sub-documents under it become 1A), 1B), preserving the hierarchy contiguously.
     """
     for section in sections:
+        if section.subsections:
+            apply_dynamic_numbering(section.subsections)
         numbered_count = sum(1 for doc in section.docs if NUM_HIERARCHY_RE.match(doc.title.strip()))
         if numbered_count < 2:
             continue
@@ -477,12 +558,63 @@ def render_card(doc: Doc, indent: str) -> str:
 
 
 def render_section(section: Section, lang: str, index: int) -> str:
-    count = len(section.docs)
+    count = len(section.docs) + sum(len(sub.docs) for sub in section.subsections)
     noun = "doc" if count == 1 else "docs"
     open_class = " open" if index == 0 else ""
     cat_id = f"cat-{lang}-{slugify(section.title)}"
-    cards = "\n".join(render_card(doc, " " * 24) for doc in section.docs)
 
+    if section.subsections:
+        sub_blocks = []
+        for sub in section.subsections:
+            sub_count = len(sub.docs)
+            sub_noun = "doc" if sub_count == 1 else "docs"
+            sub_id = f"subcat-{lang}-{slugify(section.title)}-{slugify(sub.title)}"
+            sub_cards = "\n".join(render_card(doc, " " * 32) for doc in sub.docs)
+            sub_html = (
+                f'                    <div class="sub-category" id="{sub_id}">\n'
+                f'                        <div class="sub-category-header" '
+                f"onclick=\"this.parentElement.classList.toggle('open')\">\n"
+                f'                            <h4>\U0001F4D6 {esc(sub.title)} '
+                f'<span class="sub-category-count">{sub_count} {sub_noun}</span></h4>\n'
+                f'                            <span class="sub-category-toggle">▼</span>\n'
+                f'                        </div>\n'
+                f'                        <div class="sub-category-content">\n'
+                f'                            <div class="doc-grid">\n'
+                f"{sub_cards}\n"
+                f'                            </div>\n'
+                f'                        </div>\n'
+                f'                    </div>'
+            )
+            sub_blocks.append(sub_html)
+
+        subs_rendered = "\n".join(sub_blocks)
+        direct_cards = ""
+        if section.docs:
+            cards = "\n".join(render_card(doc, " " * 24) for doc in section.docs)
+            direct_cards = (
+                f'                <div class="doc-grid" style="margin-bottom:0.75rem;">\n'
+                f"{cards}\n"
+                f"                </div>\n"
+            )
+
+        return (
+            f'        <div class="category{open_class}" id="{cat_id}">\n'
+            f'            <div class="category-header" '
+            f"onclick=\"this.parentElement.classList.toggle('open')\">\n"
+            f"                <h3>{icon_for(section.title)} {esc(section.title)} "
+            f'<span class="category-count">{count} {noun}</span></h3>\n'
+            f'                <span class="category-toggle">▼</span>\n'
+            f"            </div>\n"
+            f'            <div class="category-content">\n'
+            f"{direct_cards}"
+            f'                <div class="sub-category-list">\n'
+            f"{subs_rendered}\n"
+            f"                </div>\n"
+            f"            </div>\n"
+            f"        </div>"
+        )
+
+    cards = "\n".join(render_card(doc, " " * 24) for doc in section.docs)
     return (
         f'        <div class="category{open_class}" id="{cat_id}">\n'
         f'            <div class="category-header" '
@@ -735,18 +867,33 @@ def export_to_csv(filepath: str, lang_sections: dict[str, list[Section]]) -> Non
         for lang_key, sections in lang_sections.items():
             lang_name = lang_map.get(lang_key, lang_key)
             for section in sections:
-                for doc in section.docs:
-                    writer.writerow([
-                        lang_name,
-                        section.title,
-                        doc.title,
-                        doc.url,
-                        doc.version,
-                        doc.date,
-                        doc.corrections,
-                        "Active",
-                        "",
-                    ])
+                if section.subsections:
+                    for sub in section.subsections:
+                        for doc in sub.docs:
+                            writer.writerow([
+                                lang_name,
+                                f"{section.title} — {sub.title}",
+                                doc.title,
+                                doc.url,
+                                doc.version,
+                                doc.date,
+                                doc.corrections,
+                                "Active",
+                                "",
+                            ])
+                else:
+                    for doc in section.docs:
+                        writer.writerow([
+                            lang_name,
+                            section.title,
+                            doc.title,
+                            doc.url,
+                            doc.version,
+                            doc.date,
+                            doc.corrections,
+                            "Active",
+                            "",
+                        ])
 
 
 def export_to_json(filepath: str, lang_sections: dict[str, list[Section]]) -> None:
@@ -755,25 +902,44 @@ def export_to_json(filepath: str, lang_sections: dict[str, list[Section]]) -> No
     lang_map = {key: {"label": label, "tab": tab} for key, _page, label, tab in LANGUAGES}
     data = {}
     for lang_key, sections in lang_sections.items():
+        lang_sections_json = []
+        for s in sections:
+            sec_dict = {
+                "title": s.title,
+                "docs": [
+                    {
+                        "title": d.title,
+                        "url": d.url,
+                        "version": d.version,
+                        "date": d.date,
+                        "corrections": d.corrections,
+                    }
+                    for d in s.docs
+                ],
+            }
+            if s.subsections:
+                sec_dict["subsections"] = [
+                    {
+                        "title": sub.title,
+                        "docs": [
+                            {
+                                "title": d.title,
+                                "url": d.url,
+                                "version": d.version,
+                                "date": d.date,
+                                "corrections": d.corrections,
+                            }
+                            for d in sub.docs
+                        ],
+                    }
+                    for sub in s.subsections
+                ]
+            lang_sections_json.append(sec_dict)
+
         data[lang_key] = {
             "label": lang_map.get(lang_key, {}).get("label", lang_key),
             "tab": lang_map.get(lang_key, {}).get("tab", lang_key),
-            "sections": [
-                {
-                    "title": s.title,
-                    "docs": [
-                        {
-                            "title": d.title,
-                            "url": d.url,
-                            "version": d.version,
-                            "date": d.date,
-                            "corrections": d.corrections,
-                        }
-                        for d in s.docs
-                    ],
-                }
-                for s in sections
-            ],
+            "sections": lang_sections_json,
         }
     with open(filepath, "w", encoding="utf-8") as fh:
         json.dump(data, fh, indent=2, ensure_ascii=False)
@@ -881,91 +1047,225 @@ def parse_doc_date(date_str: str) -> datetime.datetime | None:
     return None
 
 
-def get_recent_updates(lang_sections: dict[str, list[Section]], max_days: int = 90, limit: int = 10) -> list[dict]:
-    """Retrieve active documents whose release/update date is less than 3 months old."""
+LANG_ICONS = {
+    "sanskrit": "🕉️",
+    "tamil": "🪔",
+    "malayalam": "🌴",
+    "kannada": "📜",
+    "telugu": "📜",
+    "english": "📖",
+    "tsj": "📑",
+    "tsg": "📑",
+    "siksha": "📖",
+    "kanva": "📜",
+    "inprogress": "⚙️",
+    "latin": "Ā",
+}
+
+
+def get_recent_updates_grouped(lang_sections: dict[str, list[Section]], max_days: int = 90) -> list[dict]:
+    """Group active document updates by Month -> Language collection."""
     now = datetime.datetime.now()
     cutoff = now - datetime.timedelta(days=max_days)
 
-    all_candidates: list[dict] = []
+    lang_map = {key: tab for key, _page, _label, tab in LANGUAGES}
+    by_month: dict[tuple[str, str], dict[str, list[dict]]] = defaultdict(lambda: defaultdict(list))
     seen: set[tuple[str, str]] = set()
 
-    for _lang, sections in lang_sections.items():
+    for lang_key, sections in lang_sections.items():
+        tab_title = lang_map.get(lang_key, lang_key)
         for sec in sections:
-            for doc in sec.docs:
+            all_sec_docs = list(sec.docs)
+            for sub in sec.subsections:
+                all_sec_docs.extend(sub.docs)
+            for doc in all_sec_docs:
                 if not doc.url or doc.url == "#":
                     continue
                 dt = parse_doc_date(doc.date)
                 if not dt:
                     continue
+                if not (cutoff <= dt <= now + datetime.timedelta(days=2)):
+                    continue
                 key = (doc.title, doc.url)
                 if key in seen:
                     continue
                 seen.add(key)
-                all_candidates.append({
+
+                month_key = dt.strftime("%B %Y")
+                sort_key = dt.strftime("%Y-%m")
+                is_new = (now - dt).days <= 30 and dt <= now + datetime.timedelta(days=2)
+
+                by_month[(sort_key, month_key)][lang_key].append({
                     "dt": dt,
                     "date_str": doc.date,
                     "title": doc.title,
                     "section": sec.title,
                     "version": doc.version,
                     "url": doc.url,
-                    "is_new": (now - dt).days <= 30 and dt <= now + datetime.timedelta(days=2),
+                    "is_new": is_new,
+                    "lang_key": lang_key,
+                    "lang_title": tab_title,
                 })
 
-    # Sort descending (newest first)
-    all_candidates.sort(key=lambda x: x["dt"], reverse=True)
+    # Fallback if no updates exist in window
+    if not by_month:
+        all_candidates: list[dict] = []
+        for lang_key, sections in lang_sections.items():
+            tab_title = lang_map.get(lang_key, lang_key)
+            for sec in sections:
+                all_sec_docs = list(sec.docs)
+                for sub in sec.subsections:
+                    all_sec_docs.extend(sub.docs)
+                for doc in all_sec_docs:
+                    if not doc.url or doc.url == "#":
+                        continue
+                    dt = parse_doc_date(doc.date)
+                    if not dt:
+                        continue
+                    key = (doc.title, doc.url)
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    all_candidates.append({
+                        "dt": dt,
+                        "date_str": doc.date,
+                        "title": doc.title,
+                        "section": sec.title,
+                        "version": doc.version,
+                        "url": doc.url,
+                        "is_new": False,
+                        "lang_key": lang_key,
+                        "lang_title": tab_title,
+                    })
+        all_candidates.sort(key=lambda x: x["dt"], reverse=True)
+        for cand in all_candidates[:10]:
+            dt = cand["dt"]
+            month_key = dt.strftime("%B %Y")
+            sort_key = dt.strftime("%Y-%m")
+            by_month[(sort_key, month_key)][cand["lang_key"]].append(cand)
 
-    # Filter documents released within the last 3 months
-    within_window = [c for c in all_candidates if cutoff <= c["dt"] <= now + datetime.timedelta(days=2)]
+    months_out = []
+    for (sort_key, month_name), langs_dict in sorted(by_month.items(), reverse=True):
+        total_in_month = sum(len(docs) for docs in langs_dict.values())
+        lang_list = []
+        for l_key, docs in langs_dict.items():
+            docs.sort(key=lambda x: x["dt"], reverse=True)
+            lang_list.append({
+                "lang_key": l_key,
+                "lang_title": docs[0]["lang_title"] if docs else l_key,
+                "icon": LANG_ICONS.get(l_key, "📄"),
+                "docs": docs,
+            })
+        months_out.append({
+            "sort_key": sort_key,
+            "month_name": month_name,
+            "total_count": total_in_month,
+            "languages": lang_list,
+        })
 
-    if within_window:
-        return within_window[:limit]
-
-    # Fallback if no updates exist in the last 3 months
-    return all_candidates[:5]
+    return months_out
 
 
-def render_recent_updates_html(updates: list[dict]) -> str:
-    if not updates:
+def render_recent_updates_html(months_data: list[dict]) -> str:
+    if not months_data:
         return '                <p style="text-align:center; color:#666; padding:1.5rem 0;">No updates in the last 3 months.</p>'
 
-    items = []
-    for u in updates:
-        dt: datetime.datetime = u["dt"]
-        month_day = dt.strftime("%b %d")
-        year = dt.strftime("%Y")
+    month_blocks = []
+    for m_idx, month in enumerate(months_data):
+        m_name = month["month_name"]
+        m_count = month["total_count"]
+        m_noun = "update" if m_count == 1 else "updates"
+        # First (latest) month is open by default
+        open_cls = " open" if m_idx == 0 else ""
+        m_id = f"updates-month-{slugify(m_name)}"
 
-        ver_html = f" {html.escape(u['version'])}" if u.get("version") else ""
-        new_badge = ' <span class="new-badge">NEW</span>' if u.get("is_new") else ""
+        sub_blocks = []
+        for l_idx, lang_group in enumerate(month["languages"]):
+            l_key = lang_group["lang_key"]
+            l_title = lang_group["lang_title"]
+            l_icon = lang_group["icon"]
+            l_docs = lang_group["docs"]
+            l_count = len(l_docs)
+            l_noun = "update" if l_count == 1 else "updates"
+            # In the first month, keep language sub-accordions open
+            sub_open_cls = " open" if m_idx == 0 else ""
+            sub_id = f"updates-{slugify(m_name)}-{slugify(l_key)}"
 
-        item_html = (
-            f'                <a href="{html.escape(u["url"])}" target="_blank" class="update-item">\n'
-            f'                    <div class="update-date">{month_day}<br>{year}</div>\n'
-            f'                    <div class="update-info">\n'
-            f'                        <h4>{html.escape(u["title"])}{ver_html}{new_badge}</h4>\n'
-            f'                        <span>{html.escape(u["section"])}</span>\n'
+            items = []
+            for u in l_docs:
+                dt: datetime.datetime = u["dt"]
+                month_day = dt.strftime("%b %d")
+                year = dt.strftime("%Y")
+                ver_html = f" {html.escape(u['version'])}" if u.get("version") else ""
+                new_badge = ' <span class="new-badge">NEW</span>' if u.get("is_new") else ""
+
+                card_html = (
+                    f'                                    <a href="{html.escape(u["url"])}" target="_blank" class="update-item">\n'
+                    f'                                        <div class="update-date">{month_day}<br>{year}</div>\n'
+                    f'                                        <div class="update-info">\n'
+                    f'                                            <h4>{html.escape(u["title"])}{ver_html}{new_badge}</h4>\n'
+                    f'                                            <span>{html.escape(u["section"])}</span>\n'
+                    f'                                        </div>\n'
+                    f'                                    </a>'
+                )
+                items.append(card_html)
+
+            cards_html = "\n".join(items)
+            sub_html = (
+                f'                        <div class="sub-category{sub_open_cls}" id="{sub_id}">\n'
+                f'                            <div class="sub-category-header" onclick="this.parentElement.classList.toggle(\'open\')">\n'
+                f'                                <h4>{l_icon} {html.escape(l_title)} <span class="sub-category-count">{l_count} {l_noun}</span></h4>\n'
+                f'                                <span class="sub-category-toggle">▼</span>\n'
+                f'                            </div>\n'
+                f'                            <div class="sub-category-content">\n'
+                f'                                <div class="updates-grid">\n'
+                f"{cards_html}\n"
+                f'                                </div>\n'
+                f'                            </div>\n'
+                f'                        </div>'
+            )
+            sub_blocks.append(sub_html)
+
+        subs_rendered = "\n".join(sub_blocks)
+        month_html = (
+            f'                <div class="category{open_cls}" id="{m_id}">\n'
+            f'                    <div class="category-header" onclick="this.parentElement.classList.toggle(\'open\')">\n'
+            f'                        <h3>📅 {html.escape(m_name)} <span class="category-count">{m_count} {m_noun}</span></h3>\n'
+            f'                        <span class="category-toggle">▼</span>\n'
             f'                    </div>\n'
-            f'                </a>'
+            f'                    <div class="category-content">\n'
+            f'                        <div class="sub-category-list">\n'
+            f"{subs_rendered}\n"
+            f'                        </div>\n'
+            f'                    </div>\n'
+            f'                </div>'
         )
-        items.append(item_html)
+        month_blocks.append(month_html)
 
-    return "\n".join(items)
+    return "\n".join(month_blocks)
 
 
 def generate_index_html(src_path: str, dst_path: str, lang_sections: dict[str, list[Section]]) -> int:
     with open(src_path, "r", encoding="utf-8") as fh:
         content = fh.read()
 
-    updates = get_recent_updates(lang_sections, max_days=90, limit=10)
-    updates_html = render_recent_updates_html(updates)
+    months_data = get_recent_updates_grouped(lang_sections, max_days=90)
+    total_updates = sum(m["total_count"] for m in months_data)
+    updates_html = render_recent_updates_html(months_data)
 
     # Replace <div class="updates-list">...</div>
     pattern = re.compile(r'(<div class="updates-list">)(.*?)(</div>\s*</div>\s*</section>)', re.DOTALL)
     if pattern.search(content):
         content = pattern.sub(rf'\1\n{updates_html}\n            \3', content)
 
+    # Update subtitle with total count
+    sub_pattern = re.compile(r'(<p class="section-subtitle">)[^<]*(</p>)')
+    if sub_pattern.search(content):
+        content = sub_pattern.sub(rf'\g<1>Latest document releases and corrections ({total_updates} updates in last 3 months)\g<2>', content)
+
     # Also update language card document counts dynamically
     for lang, sections in lang_sections.items():
-        doc_count = sum(len(s.docs) for s in sections)
+        doc_count = sum(len(s.docs) + sum(len(sub.docs) for sub in s.subsections) for s in sections)
         card_pattern = re.compile(
             rf'(<a\s+href="documents\.html#{re.escape(lang)}"[^>]*>.*?<div class="count">)[^<]*(</div>)',
             re.DOTALL
@@ -975,7 +1275,7 @@ def generate_index_html(src_path: str, dst_path: str, lang_sections: dict[str, l
     with open(dst_path, "w", encoding="utf-8") as fh:
         fh.write(content)
 
-    return len(updates)
+    return total_updates
 
 
 # --------------------------------------------------------------------------
@@ -1014,14 +1314,19 @@ def main() -> int:
         lang_sections = load_from_csv(args.source_csv)
         for i, (lang, _page, label, _tab_title) in enumerate(LANGUAGES):
             sections = lang_sections.get(lang, [])
+            sections = nest_hierarchical_sections(sections)
             apply_dynamic_numbering(sections)
+            lang_sections[lang] = sections
             notes = extract_notes(template, lang)
             rendered[lang] = render_language(lang, notes, sections, first=(i == 0))
 
-            count = sum(len(s.docs) for s in sections)
+            count = sum(len(s.docs) + sum(len(sub.docs) for sub in s.subsections) for s in sections)
             total += count
             for section in sections:
-                for doc in section.docs:
+                all_docs = list(section.docs)
+                for sub in section.subsections:
+                    all_docs.extend(sub.docs)
+                for doc in all_docs:
                     all_urls.append(doc.url)
                     if doc.corrections:
                         all_urls.append(doc.corrections)
@@ -1030,15 +1335,19 @@ def main() -> int:
         for i, (lang, page, label, _tab_title) in enumerate(LANGUAGES):
             source = load_page(page, args.offline)
             sections = subdivide(parse_page(source, label))
+            sections = nest_hierarchical_sections(sections)
             apply_dynamic_numbering(sections)
             lang_sections[lang] = sections
             notes = extract_notes(template, lang)
             rendered[lang] = render_language(lang, notes, sections, first=(i == 0))
 
-            count = sum(len(s.docs) for s in sections)
+            count = sum(len(s.docs) + sum(len(sub.docs) for sub in s.subsections) for s in sections)
             total += count
             for section in sections:
-                for doc in section.docs:
+                all_docs = list(section.docs)
+                for sub in section.subsections:
+                    all_docs.extend(sub.docs)
+                for doc in all_docs:
                     all_urls.append(doc.url)
                     if doc.corrections:
                         all_urls.append(doc.corrections)

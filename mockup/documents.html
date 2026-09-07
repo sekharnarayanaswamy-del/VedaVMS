@@ -195,6 +195,73 @@
         .category.open .category-toggle { transform: rotate(180deg); }
         .category-content { display: none; padding: 0.75rem; }
         .category.open .category-content { display: block; }
+        .sub-category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .sub-category {
+            background: #FAFAF8;
+            border: 1px solid #E6DFD5;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .sub-category:hover {
+            border-color: var(--gold);
+        }
+        .sub-category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.55rem 0.85rem;
+            background: #F4ECE1;
+            color: var(--dark-brown);
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .sub-category-header:hover {
+            background: #EBDDCF;
+        }
+        .sub-category.open .sub-category-header {
+            background: #E8D9C8;
+            border-bottom: 1px solid #DFCEBB;
+        }
+        .sub-category-header h4 {
+            font-size: 0.92rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0;
+            color: var(--dark-brown);
+        }
+        .sub-category-count {
+            background: rgba(62, 39, 35, 0.08);
+            color: var(--dark-brown);
+            padding: 0.1rem 0.45rem;
+            border-radius: 3px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+        .sub-category-toggle {
+            font-size: 0.85rem;
+            color: var(--dark-brown);
+            opacity: 0.7;
+            transition: transform 0.25s ease;
+        }
+        .sub-category.open .sub-category-toggle {
+            transform: rotate(180deg);
+        }
+        .sub-category-content {
+            display: none;
+            padding: 0.6rem;
+            background: #FCFBF9;
+        }
+        .sub-category.open .sub-category-content {
+            display: block;
+        }
         .doc-grid { display: grid; gap: 0.5rem; }
         .doc-card {
             display: flex;
@@ -2166,6 +2233,7 @@
             const activeContent = document.querySelector('.language-content[style*="block"], .language-content.active:not([style*="none"])') || document.getElementById('content-sanskrit');
             const cards = activeContent.querySelectorAll('.doc-card');
             const categories = activeContent.querySelectorAll('.category');
+            const subCategories = activeContent.querySelectorAll('.sub-category');
             
             if (query.length < 2) {
                 cards.forEach(c => c.style.display = 'flex');
@@ -2173,6 +2241,7 @@
             }
             
             categories.forEach(cat => cat.classList.add('open'));
+            subCategories.forEach(sub => sub.classList.add('open'));
             
             cards.forEach(card => {
                 const title = card.querySelector('.doc-title').textContent.toLowerCase();
