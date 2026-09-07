@@ -166,155 +166,145 @@
             max-width: 900px;
             margin: 0 auto;
         }
-        /* Accordion Controls for Recent Updates (Brighter Saffron & Warm Tones) */
+        /* Accordion Controls for Recent Updates (Aligned with Documents Page) */
         .category {
             margin-bottom: 0.75rem;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(230, 81, 0, 0.08);
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             overflow: hidden;
-            border: 1px solid #FFE0B2;
         }
         .category-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.85rem 1.15rem;
-            background: linear-gradient(135deg, #C04400 0%, #E65100 50%, #F57C00 100%);
+            padding: 0.75rem 1rem;
+            background: var(--dark-brown);
             color: white;
             cursor: pointer;
             user-select: none;
-            transition: all 0.25s ease;
+            transition: background 0.2s;
         }
-        .category-header:hover {
-            background: linear-gradient(135deg, #A83800 0%, #D84315 50%, #E65100 100%);
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.05);
-        }
-        .category-header h3 {
-            font-size: 1.05rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            margin: 0;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
+        .category-header:hover { background: var(--maroon); }
+        .category-header h3 { font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; margin: 0; }
         .category-count {
-            background: rgba(255,255,255,0.25);
-            color: white;
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            letter-spacing: 0.3px;
+            background: rgba(255,255,255,0.2);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
         }
-        .category-toggle {
-            font-size: 1rem;
-            transition: transform 0.3s ease;
-            opacity: 0.9;
-        }
+        .category-toggle { font-size: 1.25rem; transition: transform 0.3s; }
         .category.open .category-toggle { transform: rotate(180deg); }
-        .category-content { display: none; padding: 0.85rem; background: #FFFDF9; }
+        .category-content { display: none; padding: 0.75rem; }
         .category.open .category-content { display: block; }
         
         .sub-category-list {
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 0.5rem;
         }
         .sub-category {
-            background: #FFFFFF;
-            border: 1px solid #FFE5CC;
-            border-radius: 6px;
+            background: #FAFAF8;
+            border: 1px solid #E6DFD5;
+            border-radius: 5px;
             overflow: hidden;
-            transition: all 0.2s ease;
+            transition: border-color 0.2s;
         }
-        .sub-category:hover { border-color: var(--saffron); }
+        .sub-category:hover { border-color: var(--gold); }
         .sub-category-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.65rem 0.95rem;
-            background: #FFF3E0;
+            padding: 0.55rem 0.85rem;
+            background: #F4ECE1;
             color: var(--dark-brown);
             cursor: pointer;
             user-select: none;
-            transition: background 0.2s ease;
+            transition: background 0.2s;
         }
-        .sub-category-header:hover { background: #FFE0B2; }
+        .sub-category-header:hover { background: #EBDDCF; }
         .sub-category.open .sub-category-header {
-            background: #FFE8CC;
-            border-bottom: 1px solid #FFD699;
+            background: #E8D9C8;
+            border-bottom: 1px solid #DFCEBB;
         }
         .sub-category-header h4 {
-            font-size: 0.94rem;
+            font-size: 0.92rem;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             margin: 0;
-            color: #8C2D00;
+            color: var(--dark-brown);
         }
         .sub-category-count {
-            background: rgba(140, 45, 0, 0.08);
-            color: #8C2D00;
-            padding: 0.12rem 0.5rem;
-            border-radius: 10px;
-            font-size: 0.74rem;
+            background: rgba(62, 39, 35, 0.08);
+            color: var(--dark-brown);
+            padding: 0.1rem 0.45rem;
+            border-radius: 3px;
+            font-size: 0.72rem;
             font-weight: 600;
         }
         .sub-category-toggle {
             font-size: 0.85rem;
-            color: #8C2D00;
-            opacity: 0.75;
+            color: var(--dark-brown);
+            opacity: 0.7;
             transition: transform 0.25s ease;
         }
         .sub-category.open .sub-category-toggle { transform: rotate(180deg); }
         .sub-category-content {
             display: none;
-            padding: 0.75rem;
-            background: #FFFDF9;
+            padding: 0.6rem;
+            background: #FCFBF9;
         }
         .sub-category.open .sub-category-content { display: block; }
-        
-        .updates-grid {
-            display: grid;
-            gap: 0.5rem;
-        }
-        .update-item {
+
+        .doc-grid { display: grid; gap: 0.5rem; }
+        .doc-card {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--light-orange);
-            border-radius: 8px;
-            border-left: 4px solid var(--saffron);
-            text-decoration: none;
-            color: var(--dark-brown);
+            justify-content: space-between;
+            padding: 0.6rem 0.75rem;
+            background: var(--cream);
+            border-radius: 4px;
+            border: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 0.5rem;
             transition: all 0.2s;
         }
-        .update-item:hover { background: #FFE0B2; }
-        .update-date {
+        .doc-card:hover { border-color: var(--saffron); }
+        .doc-info { flex: 1; min-width: 200px; }
+        .doc-title { font-weight: 600; font-size: 0.9rem; color: var(--dark-brown); }
+        .doc-meta { font-size: 0.75rem; color: #666; display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.2rem; align-items: center; }
+        .version-badge {
             background: var(--saffron);
             color: white;
-            padding: 0.5rem;
-            border-radius: 4px;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
             font-size: 0.7rem;
             font-weight: 600;
-            min-width: 65px;
-            text-align: center;
-            line-height: 1.3;
         }
-        .update-info h4 { font-size: 0.95rem; margin-bottom: 0.25rem; }
-        .update-info span { font-size: 0.8rem; color: #666; }
         .new-badge {
             background: #4CAF50;
             color: white;
-            padding: 0.15rem 0.4rem;
+            padding: 0.1rem 0.35rem;
             border-radius: 3px;
-            font-size: 0.7rem;
-            margin-left: 0.5rem;
+            font-size: 0.65rem;
+            font-weight: 600;
         }
+        .doc-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+        .dl-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            padding: 0.35rem 0.6rem;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .dl-btn.primary { background: var(--saffron); color: white; }
+        .dl-btn.primary:hover { background: var(--maroon); }
         .about-section {
             background: linear-gradient(135deg, #f5f0e8 0%, #ebe5db 100%);
             padding: 3rem 0;

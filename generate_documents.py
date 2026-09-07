@@ -1193,20 +1193,27 @@ def render_recent_updates_html(months_data: list[dict]) -> str:
 
             items = []
             for u in l_docs:
-                dt: datetime.datetime = u["dt"]
-                month_day = dt.strftime("%b %d")
-                year = dt.strftime("%Y")
-                ver_html = f" {html.escape(u['version'])}" if u.get("version") else ""
-                new_badge = ' <span class="new-badge">NEW</span>' if u.get("is_new") else ""
+                meta_spans = []
+                if u.get("version"):
+                    meta_spans.append(f'<span class="version-badge">{html.escape(u["version"])}</span>')
+                if u.get("is_new"):
+                    meta_spans.append('<span class="new-badge">NEW</span>')
+                if u.get("date_str"):
+                    meta_spans.append(f'<span>{html.escape(u["date_str"])}</span>')
+                if u.get("section"):
+                    meta_spans.append(f'<span>{html.escape(u["section"])}</span>')
+                meta_html = f'<div class="doc-meta">{"".join(meta_spans)}</div>' if meta_spans else ""
 
                 card_html = (
-                    f'                                    <a href="{html.escape(u["url"])}" target="_blank" class="update-item">\n'
-                    f'                                        <div class="update-date">{month_day}<br>{year}</div>\n'
-                    f'                                        <div class="update-info">\n'
-                    f'                                            <h4>{html.escape(u["title"])}{ver_html}{new_badge}</h4>\n'
-                    f'                                            <span>{html.escape(u["section"])}</span>\n'
+                    f'                                    <div class="doc-card">\n'
+                    f'                                        <div class="doc-info">\n'
+                    f'                                            <div class="doc-title">{html.escape(u["title"])}</div>\n'
+                    f'                                            {meta_html}\n'
                     f'                                        </div>\n'
-                    f'                                    </a>'
+                    f'                                        <div class="doc-actions">\n'
+                    f'                                            <a href="{html.escape(u["url"])}" target="_blank" rel="noopener" class="dl-btn primary">\U0001F4C4 Download</a>\n'
+                    f'                                        </div>\n'
+                    f'                                    </div>'
                 )
                 items.append(card_html)
 
@@ -1218,7 +1225,7 @@ def render_recent_updates_html(months_data: list[dict]) -> str:
                 f'                                <span class="sub-category-toggle">▼</span>\n'
                 f'                            </div>\n'
                 f'                            <div class="sub-category-content">\n'
-                f'                                <div class="updates-grid">\n'
+                f'                                <div class="doc-grid">\n'
                 f"{cards_html}\n"
                 f'                                </div>\n'
                 f'                            </div>\n'
