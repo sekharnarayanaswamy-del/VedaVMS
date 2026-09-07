@@ -541,7 +541,11 @@ def nest_hierarchical_sections(sections: list[Section]) -> list[Section]:
     return out
 
 
-def icon_for(title: str) -> str:
+def icon_for(title: str, lang: str = "") -> str:
+    if lang == "tsj" or re.search(r"jat[aA]|jatai", title, re.I):
+        return SVG_JATA
+    if lang == "tsg" or re.search(r"ghan[aA]|ghanam", title, re.I):
+        return SVG_GHANA
     for pattern, icon in SECTION_ICONS:
         if re.search(pattern, title, re.I):
             return icon
@@ -689,7 +693,7 @@ def render_section(section: Section, lang: str, index: int) -> str:
             f'        <div class="category{open_class}" id="{cat_id}">\n'
             f'            <div class="category-header" '
             f"onclick=\"this.parentElement.classList.toggle('open')\">\n"
-            f"                <h3>{icon_for(section.title)} {esc(section.title)} "
+            f"                <h3>{icon_for(section.title, lang)} {esc(section.title)} "
             f'<span class="category-count">{count} {noun}</span></h3>\n'
             f'                <span class="category-toggle">▼</span>\n'
             f"            </div>\n"
@@ -707,7 +711,7 @@ def render_section(section: Section, lang: str, index: int) -> str:
         f'        <div class="category{open_class}" id="{cat_id}">\n'
         f'            <div class="category-header" '
         f"onclick=\"this.parentElement.classList.toggle('open')\">\n"
-        f"                <h3>{icon_for(section.title)} {esc(section.title)} "
+        f"                <h3>{icon_for(section.title, lang)} {esc(section.title)} "
         f'<span class="category-count">{count} {noun}</span></h3>\n'
         f'                <span class="category-toggle">▼</span>\n'
         f"            </div>\n"
