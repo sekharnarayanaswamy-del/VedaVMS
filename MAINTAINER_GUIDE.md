@@ -376,6 +376,52 @@ To prevent other Google Sheet editors from viewing the token text in the Apps Sc
 
 ---
 
+## 🎨 UI Color Palette & Visual Fine-Tuning Guide
+
+This section documents the visual styling standards across the VedaVMS website and exactly where to adjust colors, gradients, and typography.
+
+### 1. Active Color Palette
+
+| Component | Visual Element | Color Token / Value | Notes |
+| :--- | :--- | :--- | :--- |
+| **Top Global Header** | Site title band (`header`) | `linear-gradient(135deg, #153E75 0%, #1D5296 50%, #2563A8 100%)` | Royal blue (a touch lighter), bottom border: `2px solid var(--gold)` |
+| **Main Banner (All Pages)** | Homepage Hero (`.hero`) & Companion headers (`.page-header`) | `linear-gradient(135deg, #8E3B18 0%, #A84D24 45%, #BD6336 100%)` | **Muted Saffron** — warm, earthy, traditional kesari with subtle inset shadow |
+| **Banner CTA Button** | "Browse Documents" button (`.cta-btn`) | Background: `#FFFFFF`, Text: `#8E3B18` (hover: `#FFF8F0`, `#6E2A0E`) | High-contrast white card button standing out against muted saffron |
+| **Navigation Bar** | Links & Hover (`.nav a`, `.nav .donate-btn`) | Nav text: `var(--dark-brown)` (`#2C1810`), Hover/Active: `var(--saffron)` (`#C45A1A`) | Clean ivory bar with saffron hover highlights |
+| **Accordion Headers (Level 1)** | Month / Main category bar (`.category-header`) | `linear-gradient(135deg, #6B1724 0%, #831D2C 50%, #992334 100%)` | Deep maroon bar with white title and gold pill count |
+| **Accordion Headers (Level 2)** | Sub-category / Language bar (`.sub-category-header`) | Background: `#FDF2F4`, Text: `#6B1724`, Border: `rgba(107, 23, 36, 0.12)` | Subtle rosy-cream tint providing clean visual hierarchy |
+| **Primary Accents** | Accent gold | `var(--gold)` (`#C49A45`) | Used for trims, borders, and badge counts |
+
+### 2. File Location Mapping: Where to Fine-Tune Styles
+
+All source HTML templates live under the `mockup/` folder. When `generate_documents.py` runs, it reads these templates and compiles them into `build/`.
+
+> [!IMPORTANT]
+> **Always edit templates in `mockup/`**; never directly edit files in `build/`, as `build/` is automatically overwritten during code pushes and Google Sheet syncs.
+
+| Visual Section | Source File(s) to Edit | Relevant CSS Selectors |
+| :--- | :--- | :--- |
+| **Top Global Header** | All files in `mockup/*.html` | `header { background: ...; }`, `header h1`, `header .subtitle` |
+| **Homepage Hero Banner** | `mockup/index.html` | `.hero { background: ...; }`, `.hero h1`, `.hero p`, `.cta-btn` |
+| **All Other Page Banners** | `mockup/documents.html`, `mockup/about.html`, `mockup/articles.html`, `mockup/convention.html`, `mockup/donations.html`, `mockup/videos.html` | `.page-header { background: ...; }`, `.page-header h1`, `.page-header p` |
+| **Recent Updates Accordions (Home)** | `mockup/index.html` | `.category-header`, `.category-count`, `.sub-category-header`, `.sub-category-count` |
+| **Document Browser Accordions** | `mockup/documents.html` | `.category-header`, `.category-count`, `.sub-category-header`, `.sub-category-count` |
+| **Navigation & Links** | All files in `mockup/*.html` | `.nav`, `.nav a`, `.nav a:hover`, `.nav .donate-btn` |
+
+### 3. Applying and Verifying Changes
+After modifying any template in `mockup/`, regenerate the `build/` folder and test locally:
+```bash
+# Regenerate build/ with live data from Google Sheets:
+python generate_documents.py --source-csv "https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/export?format=csv&gid=548744990"
+
+# Commit and push to main (triggers automatic staging deployment to new.vedavms.in):
+git add mockup/ MAINTAINER_GUIDE.md
+git commit -m "style: fine-tune banner and palette styles"
+git push origin main
+```
+
+---
+
 ## 📋 Administrator "To-Do" Checklist
 
 Use this checklist to complete the autonomous setup:
