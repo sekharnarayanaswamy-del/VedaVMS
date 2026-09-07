@@ -291,29 +291,27 @@ To prevent other Google Sheet editors from viewing the token text in the Apps Sc
 
 Use this checklist to complete the autonomous setup:
 
-- [ ] **1. Disable "Required Reviewers" for Staging**:
-  - Go to **GitHub Repo ➔ Settings ➔ Environments ➔ `staging`**.
-  - Under *Deployment protection rules*, uncheck or delete **Required reviewers**.
-  - Click **Save protection rules**.
-  - *(Outcome: Maintainers can trigger deploys from Google Sheets without waiting for your manual approval each time).*
+- [x] **1. Disable "Required Reviewers" for Staging**:
+  - Done. *(Staging deployments run automatically without requiring manual review).*
 
 - [ ] **2. Verify Google Sheet Sharing Settings**:
   - Open the [Google Sheet](https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/).
   - Click **Share** (top right).
-  - Verify *General access* is **"Anyone with the link" ➔ Role: Viewer**.
-  - Under *People with access*, add your content maintainers' Gmail addresses as **Editor**.
+  - Verify *General access* is **"Anyone with the link" ➔ Role: Viewer** (needed for automated build script to fetch CSV without 401 errors).
+  - Under *People with access*, add content maintainers' Gmail addresses as **Editor**.
 
-- [ ] **3. Install Apps Script in Google Sheet**:
-  - In the sheet, go to **Extensions ➔ Apps Script**.
-  - Paste the enhanced `triggerDeploy` script (which monitors progress, displays a live completion popup, and writes `✅ Live: [Timestamp]` into cell `J2`).
-  - Insert your generated GitHub token (`GITHUB_TOKEN = 'ghp_...'`).
-  - Save (`Ctrl + S`) and reload the sheet to verify the **`🚀 VedaVMS`** menu appears.
+- [x] **3. Install Apps Script in Google Sheet**:
+  - Done. *(Menu `🚀 VedaVMS` with live progress tracking and cell `J2` timestamp is installed).*
 
 - [ ] **4. (Optional Future Hardening) Migrate Token to Script Properties**:
   - Once working smoothly, switch to a GitHub **Fine-grained Personal Access Token** scoped strictly to `VedaVMS` (`Actions: Read and write`).
   - In Apps Script, open **Project Settings (gear icon) ➔ Script Properties**.
   - Add property `GITHUB_TOKEN` with the token value.
   - The script will automatically pick it up from Script Properties if `GITHUB_TOKEN` in the code is set to `'PASTE_YOUR_GITHUB_TOKEN_HERE'`.
+
+- [ ] **5. Add Pre-Deploy Safeguards & Live Rollback Snapshot**:
+  - **Minimum Document Threshold Gate**: Update `generate_documents.py` to enforce a minimum document count check (e.g. abort with an error if total records < 500), preventing accidental deletions in the Google Sheet from wiping out the live website.
+  - **Pre-Deploy Live Site Snapshot**: Update `.github/workflows/deploy_staging.yml` to automatically download and archive the current live `documents.html` from `https://new.vedavms.in` before uploading new files, providing a 1-click fallback snapshot.
 
 ---
 
