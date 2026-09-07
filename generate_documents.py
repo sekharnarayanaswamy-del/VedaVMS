@@ -67,14 +67,102 @@ LANGUAGES = [
     ("latin",      "docs_latin.html",      "Latin (IAST)",        "Latin (IAST)"),
 ]
 
+# --------------------------------------------------------------------------
+# Traditional Vedic Recitation Mode (Pāṭha) SVGs
+# --------------------------------------------------------------------------
+SVG_SAMHITA = (
+    '<svg class="patha-icon patha-samhita" width="20" height="20" viewBox="0 0 24 24" '
+    'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" '
+    'style="flex-shrink:0; vertical-align:-3px;">'
+    '<path d="M2 12c2.5-5 5.5-5 8 0s5.5 5 8 0 3-3 4-2" />'
+    '<circle cx="6" cy="12" r="1.75" fill="currentColor" />'
+    '<circle cx="14" cy="12" r="1.75" fill="currentColor" />'
+    '</svg>'
+)
+
+SVG_PADA = (
+    '<svg class="patha-icon patha-pada" width="20" height="20" viewBox="0 0 24 24" '
+    'fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" '
+    'style="flex-shrink:0; vertical-align:-3px;">'
+    '<line x1="3" y1="12" x2="7" y2="12" />'
+    '<line x1="10" y1="12" x2="14" y2="12" />'
+    '<line x1="17" y1="12" x2="21" y2="12" />'
+    '</svg>'
+)
+
+SVG_KRAMA = (
+    '<svg class="patha-icon patha-krama" width="20" height="20" viewBox="0 0 24 24" '
+    'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" '
+    'style="flex-shrink:0; vertical-align:-3px;">'
+    '<path d="M3 14h6a3 3 0 0 0 3-3v0a3 3 0 0 0-3-3H6" />'
+    '<path d="M15 10h3a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3h-6" />'
+    '</svg>'
+)
+
+SVG_JATA = (
+    '<svg class="patha-icon patha-jata" width="20" height="20" viewBox="0 0 24 24" '
+    'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" '
+    'style="flex-shrink:0; vertical-align:-3px;">'
+    '<circle cx="5" cy="12" r="2" fill="currentColor" />'
+    '<circle cx="19" cy="12" r="2" fill="currentColor" />'
+    '<path d="M5 10c3-5 11-5 14 0" />'
+    '<path d="M19 12c-3 3-11 3-14 0" />'
+    '<path d="M5 14c3 5 11 5 14 0" />'
+    '</svg>'
+)
+
+SVG_GHANA = (
+    '<svg class="patha-icon patha-ghana" width="20" height="20" viewBox="0 0 24 24" '
+    'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" '
+    'style="flex-shrink:0; vertical-align:-3px;">'
+    '<circle cx="5" cy="18" r="2" fill="currentColor" />'
+    '<circle cx="12" cy="6" r="2" fill="currentColor" />'
+    '<circle cx="19" cy="18" r="2" fill="currentColor" />'
+    '<path d="M7 17l4-9" />'
+    '<path d="M13 8l4 9" />'
+    '<path d="M17 18H7" />'
+    '<path d="M12 9v6" stroke-dasharray="1.5 2" />'
+    '<path d="M9 15h6" />'
+    '</svg>'
+)
+
+SVG_TAB_JATA = (
+    '<svg class="patha-icon patha-jata" width="16" height="16" viewBox="0 0 24 24" '
+    'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" '
+    'style="flex-shrink:0; vertical-align:-2px; margin-right:4px;">'
+    '<circle cx="5" cy="12" r="2" fill="currentColor" />'
+    '<circle cx="19" cy="12" r="2" fill="currentColor" />'
+    '<path d="M5 10c3-5 11-5 14 0" />'
+    '<path d="M19 12c-3 3-11 3-14 0" />'
+    '<path d="M5 14c3 5 11 5 14 0" />'
+    '</svg>'
+)
+
+SVG_TAB_GHANA = (
+    '<svg class="patha-icon patha-ghana" width="16" height="16" viewBox="0 0 24 24" '
+    'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" '
+    'style="flex-shrink:0; vertical-align:-2px; margin-right:4px;">'
+    '<circle cx="5" cy="18" r="2" fill="currentColor" />'
+    '<circle cx="12" cy="6" r="2" fill="currentColor" />'
+    '<circle cx="19" cy="18" r="2" fill="currentColor" />'
+    '<path d="M7 17l4-9" />'
+    '<path d="M13 8l4 9" />'
+    '<path d="M17 18H7" />'
+    '<path d="M12 9v6" stroke-dasharray="1.5 2" />'
+    '<path d="M9 15h6" />'
+    '</svg>'
+)
+
 # Icons follow the mockup's existing convention for these section names.
 SECTION_ICONS = [
+    (r"jat[aA]|jatai",          SVG_JATA),
+    (r"ghan[aA]|ghanam",        SVG_GHANA),
+    (r"krama\s*p[aA]tam",       SVG_KRAMA),
+    (r"pada\s*p[aA]tam",        SVG_PADA),
+    (r"samhit[aA]",             SVG_SAMHITA),
     (r"vedic books",            "\U0001F4DA"),  # books
-    (r"krama\s*p[aA]tam",       "\U0001F503"),  # cycle
-    (r"pada\s*p[aA]tam",        "\U0001F517"),  # link
     (r"br[aA]hma[nN]am",        "\U0001F4DC"),  # scroll
     (r"aranyakam",              "\U0001F332"),  # tree
-    (r"samhit[aA]",             "\U0001F4D6"),  # open book
 ]
 DEFAULT_ICON = "\U0001F4C4"  # page
 
@@ -688,8 +776,13 @@ def splice(template: str, rendered: dict[str, str]) -> str:
     tab_spans = []
     for i, (lang, _page, _label, tab_title) in enumerate(LANGUAGES):
         active_cls = " active" if i == 0 else ""
+        tab_icon = ""
+        if lang == "tsj":
+            tab_icon = SVG_TAB_JATA
+        elif lang == "tsg":
+            tab_icon = SVG_TAB_GHANA
         tab_spans.append(
-            f'        <span class="language-tab{active_cls}" onclick="showLanguage(\'{lang}\', event)" data-lang="{lang}">{tab_title}</span>'
+            f'        <span class="language-tab{active_cls}" onclick="showLanguage(\'{lang}\', event)" data-lang="{lang}">{tab_icon}{tab_title}</span>'
         )
     tabs_html = '<div class="language-tabs">\n' + "\n".join(tab_spans) + '\n    </div>'
 
@@ -1054,8 +1147,8 @@ LANG_ICONS = {
     "kannada": "📜",
     "telugu": "📜",
     "english": "📖",
-    "tsj": "📑",
-    "tsg": "📑",
+    "tsj": SVG_TAB_JATA,
+    "tsg": SVG_TAB_GHANA,
     "siksha": "📖",
     "kanva": "📜",
     "inprogress": "⚙️",

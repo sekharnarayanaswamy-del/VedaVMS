@@ -136,6 +136,9 @@
             border-bottom: 1px solid #ddd;
         }
         .language-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
             padding: 0.4rem 0.8rem;
             border: 2px solid transparent;
             border-radius: 4px;
@@ -387,8 +390,8 @@
         <span class="language-tab" onclick="showLanguage('kannada', event)" data-lang="kannada">ಕನ್ನಡ Kannada</span>
         <span class="language-tab" onclick="showLanguage('telugu', event)" data-lang="telugu">తెలుగు Telugu</span>
         <span class="language-tab" onclick="showLanguage('english', event)" data-lang="english">English</span>
-        <span class="language-tab" onclick="showLanguage('tsj', event)" data-lang="tsj">TS Jatai (Pilot)</span>
-        <span class="language-tab" onclick="showLanguage('tsg', event)" data-lang="tsg">TS Ghanam (Pilot)</span>
+        <span class="language-tab" onclick="showLanguage('tsj', event)" data-lang="tsj"><svg class="patha-icon patha-jata" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; vertical-align:-2px; margin-right:4px;"><circle cx="5" cy="12" r="2" fill="currentColor" /><circle cx="19" cy="12" r="2" fill="currentColor" /><path d="M5 10c3-5 11-5 14 0" /><path d="M19 12c-3 3-11 3-14 0" /><path d="M5 14c3 5 11 5 14 0" /></svg>TS Jatai (Pilot)</span>
+        <span class="language-tab" onclick="showLanguage('tsg', event)" data-lang="tsg"><svg class="patha-icon patha-ghana" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; vertical-align:-2px; margin-right:4px;"><circle cx="5" cy="18" r="2" fill="currentColor" /><circle cx="12" cy="6" r="2" fill="currentColor" /><circle cx="19" cy="18" r="2" fill="currentColor" /><path d="M7 17l4-9" /><path d="M13 8l4 9" /><path d="M17 18H7" /><path d="M12 9v6" stroke-dasharray="1.5 2" /><path d="M9 15h6" /></svg>TS Ghanam (Pilot)</span>
         <span class="language-tab" onclick="showLanguage('siksha', event)" data-lang="siksha">SikShA & Lessons</span>
         <span class="language-tab" onclick="showLanguage('kanva', event)" data-lang="kanva">Kanva Samhita</span>
         <span class="language-tab" onclick="showLanguage('inprogress', event)" data-lang="inprogress">In Progress</span>
@@ -613,7 +616,7 @@
 
         <div class="category" id="cat-sanskrit-taittiriya-samhita">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-                <h3>📖 TaittirIya SamhitA <span class="category-count">10 docs</span></h3>
+                <h3><svg class="patha-icon patha-samhita" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; vertical-align:-3px;"><path d="M2 12c2.5-5 5.5-5 8 0s5.5 5 8 0 3-3 4-2" /><circle cx="6" cy="12" r="1.75" fill="currentColor" /><circle cx="14" cy="12" r="1.75" fill="currentColor" /></svg> TaittirIya SamhitA <span class="category-count">10 docs</span></h3>
                 <span class="category-toggle">▼</span>
             </div>
             <div class="category-content">
@@ -867,7 +870,7 @@
 
         <div class="category" id="cat-sanskrit-taittiriya-samhita-pada-patam">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-                <h3>🔗 TaittirIya SamhitA pada pAtam <span class="category-count">44 docs</span></h3>
+                <h3><svg class="patha-icon patha-pada" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0; vertical-align:-3px;"><line x1="3" y1="12" x2="7" y2="12" /><line x1="10" y1="12" x2="14" y2="12" /><line x1="17" y1="12" x2="21" y2="12" /></svg> TaittirIya SamhitA pada pAtam <span class="category-count">44 docs</span></h3>
                 <span class="category-toggle">▼</span>
             </div>
             <div class="category-content">
@@ -1388,7 +1391,7 @@
 
         <div class="category" id="cat-sanskrit-taittiriya-samhita-krama-patam">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-                <h3>🔃 TaittirIya SamhitA krama pAtam <span class="category-count">44 docs</span></h3>
+                <h3><svg class="patha-icon patha-krama" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; vertical-align:-3px;"><path d="M3 14h6a3 3 0 0 0 3-3v0a3 3 0 0 0-3-3H6" /><path d="M15 10h3a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3h-6" /></svg> TaittirIya SamhitA krama pAtam <span class="category-count">44 docs</span></h3>
                 <span class="category-toggle">▼</span>
             </div>
             <div class="category-content">
@@ -2111,7 +2114,7 @@
 
         <div class="category" id="cat-tamil-taittiriya-samhita">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-                <h3>📖 TaittirIya SamhitA <span class="category-count">18 docs</span></h3>
+                <h3><svg class="patha-icon patha-samhita" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; vertical-align:-3px;"><path d="M2 12c2.5-5 5.5-5 8 0s5.5 5 8 0 3-3 4-2" /><circle cx="6" cy="12" r="1.75" fill="currentColor" /><circle cx="14" cy="12" r="1.75" fill="currentColor" /></svg> TaittirIya SamhitA <span class="category-count">18 docs</span></h3>
                 <span class="category-toggle">▼</span>
             </div>
             <div class="category-content">
@@ -2298,7 +2301,7 @@
 
         <div class="category" id="cat-tamil-taittiriya-samhita-pada-patam">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-                <h3>🔗 TaittirIya SamhitA pada pAtam <span class="category-count">44 docs</span></h3>
+                <h3><svg class="patha-icon patha-pada" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0; vertical-align:-3px;"><line x1="3" y1="12" x2="7" y2="12" /><line x1="10" y1="12" x2="14" y2="12" /><line x1="17" y1="12" x2="21" y2="12" /></svg> TaittirIya SamhitA pada pAtam <span class="category-count">44 docs</span></h3>
                 <span class="category-toggle">▼</span>
             </div>
             <div class="category-content">
@@ -2819,7 +2822,7 @@
 
         <div class="category" id="cat-tamil-taittiriya-samhita-krama-patam">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-                <h3>🔃 TaittirIya SamhitA krama pAtam <span class="category-count">44 docs</span></h3>
+                <h3><svg class="patha-icon patha-krama" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; vertical-align:-3px;"><path d="M3 14h6a3 3 0 0 0 3-3v0a3 3 0 0 0-3-3H6" /><path d="M15 10h3a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3h-6" /></svg> TaittirIya SamhitA krama pAtam <span class="category-count">44 docs</span></h3>
                 <span class="category-toggle">▼</span>
             </div>
             <div class="category-content">
@@ -3540,7 +3543,7 @@
 
         <div class="category" id="cat-malayalam-taittiriya-samhita">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-                <h3>📖 TaittirIya SamhitA <span class="category-count">15 docs</span></h3>
+                <h3><svg class="patha-icon patha-samhita" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; vertical-align:-3px;"><path d="M2 12c2.5-5 5.5-5 8 0s5.5 5 8 0 3-3 4-2" /><circle cx="6" cy="12" r="1.75" fill="currentColor" /><circle cx="14" cy="12" r="1.75" fill="currentColor" /></svg> TaittirIya SamhitA <span class="category-count">15 docs</span></h3>
                 <span class="category-toggle">▼</span>
             </div>
             <div class="category-content">
@@ -3746,7 +3749,7 @@
 
         <div class="category" id="cat-malayalam-taittiriya-samhita-pada-patam">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-                <h3>🔗 TaittirIya SamhitA pada pAtam <span class="category-count">46 docs</span></h3>
+                <h3><svg class="patha-icon patha-pada" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0; vertical-align:-3px;"><line x1="3" y1="12" x2="7" y2="12" /><line x1="10" y1="12" x2="14" y2="12" /><line x1="17" y1="12" x2="21" y2="12" /></svg> TaittirIya SamhitA pada pAtam <span class="category-count">46 docs</span></h3>
                 <span class="category-toggle">▼</span>
             </div>
             <div class="category-content">
@@ -4282,7 +4285,7 @@
 
         <div class="category" id="cat-malayalam-taittiriya-samhita-krama-patam">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-                <h3>🔃 TaittirIya SamhitA krama pAtam <span class="category-count">44 docs</span></h3>
+                <h3><svg class="patha-icon patha-krama" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; vertical-align:-3px;"><path d="M3 14h6a3 3 0 0 0 3-3v0a3 3 0 0 0-3-3H6" /><path d="M15 10h3a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3h-6" /></svg> TaittirIya SamhitA krama pAtam <span class="category-count">44 docs</span></h3>
                 <span class="category-toggle">▼</span>
             </div>
             <div class="category-content">
@@ -7965,7 +7968,7 @@
         <div id="content-siksha" class="language-content" style="display:none;">
         <div class="category open" id="cat-siksha-kindly-check-font-issues-font-dv-ttsurekh-used-in-source-documents-of-jata-and-ghana-darpanam">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-                <h3>📄 (Kindly Check Font Issues;Font DV-TTSurekh used in Source documents of Jata and Ghana Darpanam) <span class="category-count">8 docs</span></h3>
+                <h3><svg class="patha-icon patha-jata" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; vertical-align:-3px;"><circle cx="5" cy="12" r="2" fill="currentColor" /><circle cx="19" cy="12" r="2" fill="currentColor" /><path d="M5 10c3-5 11-5 14 0" /><path d="M19 12c-3 3-11 3-14 0" /><path d="M5 14c3 5 11 5 14 0" /></svg> (Kindly Check Font Issues;Font DV-TTSurekh used in Source documents of Jata and Ghana Darpanam) <span class="category-count">8 docs</span></h3>
                 <span class="category-toggle">▼</span>
             </div>
             <div class="category-content">
@@ -8050,7 +8053,7 @@
         <div id="content-kanva" class="language-content" style="display:none;">
         <div class="category open" id="cat-kanva-kanva-samhita-manuscript-malayalam-contributed">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-                <h3>📖 Kanva SamhitA Manuscript- Malayalam Contributed <span class="category-count">44 docs</span></h3>
+                <h3><svg class="patha-icon patha-samhita" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; vertical-align:-3px;"><path d="M2 12c2.5-5 5.5-5 8 0s5.5 5 8 0 3-3 4-2" /><circle cx="6" cy="12" r="1.75" fill="currentColor" /><circle cx="14" cy="12" r="1.75" fill="currentColor" /></svg> Kanva SamhitA Manuscript- Malayalam Contributed <span class="category-count">44 docs</span></h3>
                 <span class="category-toggle">▼</span>
             </div>
             <div class="category-content">
@@ -8591,7 +8594,7 @@
 
         <div class="category" id="cat-latin-taittiriya-samhita">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-                <h3>📖 TaittirIya samhitA <span class="category-count">6 docs</span></h3>
+                <h3><svg class="patha-icon patha-samhita" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; vertical-align:-3px;"><path d="M2 12c2.5-5 5.5-5 8 0s5.5 5 8 0 3-3 4-2" /><circle cx="6" cy="12" r="1.75" fill="currentColor" /><circle cx="14" cy="12" r="1.75" fill="currentColor" /></svg> TaittirIya samhitA <span class="category-count">6 docs</span></h3>
                 <span class="category-toggle">▼</span>
             </div>
             <div class="category-content">
