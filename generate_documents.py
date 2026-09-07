@@ -1234,10 +1234,11 @@ def render_recent_updates_html(months_data: list[dict]) -> str:
             sub_blocks.append(sub_html)
 
         subs_rendered = "\n".join(sub_blocks)
+        cal_svg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.95;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>'
         month_html = (
             f'                <div class="category{open_cls}" id="{m_id}">\n'
             f'                    <div class="category-header" onclick="this.parentElement.classList.toggle(\'open\')">\n'
-            f'                        <h3>📅 {html.escape(m_name)} <span class="category-count">{m_count} {m_noun}</span></h3>\n'
+            f'                        <h3>{cal_svg} {html.escape(m_name)} <span class="category-count">{m_count} {m_noun}</span></h3>\n'
             f'                        <span class="category-toggle">▼</span>\n'
             f'                    </div>\n'
             f'                    <div class="category-content">\n'
