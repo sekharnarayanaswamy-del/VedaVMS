@@ -6,12 +6,67 @@ This guide explains how non-technical maintainers can update documents on **Veda
 
 ---
 
-## 📋 Overview of the Process
+## 🏛️ System Architecture Diagram
 
+The diagram below illustrates the relationship between the different roles, tools, and systems involved in maintaining and publishing VedaVMS:
+
+```mermaid
+flowchart TD
+    subgraph Users["👥 Roles & Actors"]
+        M["Content Maintainer<br/>(Edits Sheets, Uploads PDFs)"]
+        A["Technical Admin / Dev<br/>(Git, Secrets, Local Sync)"]
+        V["Public Visitors / Students"]
+    end
+
+    subgraph ContentLayer["📝 Content & Asset Management"]
+        GS["Google Sheets<br/>(Master Metadata DB)"]
+        GAS["Google Apps Script<br/>('🚀 VedaVMS' Menu)"]
+        PDF["Plesk File Manager<br/>(Uploads /docs/*.pdf)"]
+    end
+
+    subgraph GitHubLayer["⚙️ GitHub CI/CD Automation"]
+        PAT["Personal Access Token (PAT)<br/>(Actions: Read & Write)"]
+        GHA["GitHub Actions Runner<br/>(deploy_staging.yml)"]
+        SECRETS["GitHub Secrets<br/>(STAGING_FTP_PASSWORD, etc.)"]
+        GEN["Static Generator<br/>(generate_documents.py)"]
+    end
+
+    subgraph ServerLayer["🌐 Web Server (103.69.196.157)"]
+        IIS["Windows IIS / Plesk Hosting"]
+        STAGING["Staging Site Directory<br/>(/new.vedavms.in/)"]
+        PROD["Production Directory<br/>(/httpdocs/)"]
+    end
+
+    %% Maintainer workflow
+    M -->|"1. Uploads PDF"| PDF
+    PDF -->|"Stores files in"| PROD
+    M -->|"2. Enters link & metadata"| GS
+    M -->|"3. Clicks 'Publish to Staging'"| GAS
+
+    %% Deployment trigger & CI/CD flow
+    GAS -->|"POST workflow_dispatch (Auth via PAT)"| PAT
+    PAT -->|"Triggers workflow"| GHA
+    SECRETS -.->|"Injected securely into"| GHA
+    GHA -->|"Fetches live CSV"| GS
+    GHA -->|"Builds site"| GEN
+    GEN -->|"Produces HTML (build/)"| GHA
+    GHA -->|"Uploads via FTPS (Port 21)"| STAGING
+
+    %% Admin & Local paths
+    A -->|"Code push (main branch)"| GHA
+    A -->|"Direct sync (scripts/sync_staging.py)"| STAGING
+
+    %% Visitors
+    V -->|"Views redesigned staging site"| STAGING
+    V -->|"Views live production site"| PROD
 ```
-1. Edit Google Sheet  ──>  2. Automated Sync (GitHub)  ──>  3. Live on Website
-   (Add / Edit / Remove)      (Runs automatically / daily)       (new.vedavms.in)
-```
+
+### Flow Summary
+1. **PDF Upload**: Maintainer uploads the PDF document using Plesk File Manager into the `/httpdocs/docs/` directory.
+2. **Sheet Update**: Maintainer enters the document title, version, category, and PDF link into the Google Sheet.
+3. **One-Click Trigger**: Maintainer clicks **`🚀 VedaVMS` ➔ `Publish to Staging`** inside Google Sheets.
+4. **Automated Pipeline**: Google Apps Script calls GitHub using a **Personal Access Token (PAT)**. GitHub Actions pulls secrets (**STAGING_FTP_PASSWORD**), fetches the latest Google Sheet data, runs `generate_documents.py` to regenerate all HTML pages, and uploads the files to `/new.vedavms.in/`.
+5. **Live Verification**: Google Sheets monitors the build to completion, confirms success with a popup, and logs a live timestamp into cell `J2`.
 
 ---
 
@@ -102,25 +157,74 @@ This command will:
 
 ## 🛡️ Security Considerations & Access Control
 
-Because the repository is public and multiple team members collaborate, the following safeguards are built in:
+Because the repository is public and multiple team members collaborate, the following security architecture and access control mechanisms are in place:
 
-### 1. Repository Access & Protection
-- **Read-Only to the Public**: Strangers can view and clone the repository, but **cannot** push commits, edit code, or run workflows.
-- **Push Protection**: Only authenticated repository owners/collaborators with explicit write access can commit to `main`.
-- **Pull Requests**: Pull requests opened by external contributors from forks **do not** have access to repository secrets and cannot trigger deployments.
+---
 
-### 2. Secret Encryption & Isolation
-- **No Passwords in Git**: All FTP credentials reside in GitHub Secrets (encrypted with libsodium) and in the local gitignored `.env` file. Credentials never appear in plaintext or workflow logs (automatically masked as `***`).
-- **Server Isolation**: Staging builds are strictly constrained to `/new.vedavms.in/`. The automated workflow has no access to modify the live production directory (`/httpdocs/`).
+### 1. GitHub Secrets: Repository Secrets vs. Environment Secrets
 
-### 3. Google Sheets Access Control
-- **General Access**: The Google Sheet's general link access must remain **Viewer**. This allows the automated build script to read CSV data while preventing random people from altering the sheet.
-- **Maintainer Invitations**: Only specific, trusted maintainers should be added as **Editors** via their Google email addresses.
+#### What are GitHub Secrets?
+GitHub Secrets are encrypted key-value pairs stored securely within GitHub's infrastructure using 256-bit AES encryption (libsodium). Once created:
+- Neither repository owners nor team members can view the secret value in plaintext in GitHub Settings.
+- GitHub Actions automatically scrubs secret values from console logs, replacing them with `***`.
 
-### 4. GitHub Personal Access Token (PAT) Security
-- The token used by Google Sheets Apps Script must be kept secure.
-- **Fine-Grained Scoping (Least Privilege)**: When creating or updating the token, scope it strictly to the `VedaVMS` repository with permissions restricted to **Actions: Read and write**.
-- **Apps Script Properties**: To prevent spreadsheet editors from reading the token in plain text, store it in Apps Script **Project Settings ➔ Script Properties** rather than directly inside the JavaScript file.
+#### Repository Secrets vs. Environment Secrets
+
+| Feature | Repository Secrets | Environment Secrets (`staging`) |
+| :--- | :--- | :--- |
+| **Where Configured** | **Settings ➔ Secrets and variables ➔ Actions** | **Settings ➔ Environments ➔ staging** |
+| **Scope** | Available to all workflows across all branches in the repo. | Only available to jobs explicitly declaring `environment: staging`. |
+| **Precedence** | Lower. Overridden if an environment secret of the same name exists. | Higher. Overrides repository secrets of the same name. |
+| **Protection Rules** | None. Workflows run immediately upon trigger. | Can have deployment protection rules (e.g. required reviewers, wait timers). |
+
+#### Why We Use Them in VedaVMS
+1. **Public Repository Protection**: The VedaVMS repository is public. Hardcoding FTP passwords or server keys in code would expose them to the internet. Secrets allow the CI/CD pipeline to deploy securely without committing sensitive data.
+2. **Target Isolation**: By configuring secrets under the `staging` environment (`STAGING_FTP_SERVER`, `STAGING_FTP_USERNAME`, `STAGING_FTP_PASSWORD`, `STAGING_REMOTE_DIR`), we ensure that staging deployments are strictly isolated to `/new.vedavms.in/` and have zero permission or ability to overwrite the live production website (`/httpdocs/`).
+
+---
+
+### 2. Personal Access Tokens (PAT): What and Why
+
+#### What is a Personal Access Token?
+A Personal Access Token (PAT) is a secure, revocable token that serves as an API password. It allows external applications—in our case, **Google Apps Script** running inside Google Sheets—to authenticate directly against the GitHub REST API.
+
+#### Why is it Needed for VedaVMS?
+Google Sheets runs on Google's cloud servers, completely independent of GitHub. When a maintainer clicks **`🚀 VedaVMS` ➔ `Publish to Staging`**:
+1. Google Apps Script makes an HTTP POST request to GitHub's REST API (`/actions/workflows/deploy_staging.yml/dispatches`).
+2. GitHub must authenticate that this request comes from an authorized repository administrator and not a stranger.
+3. The Personal Access Token is included in the request header (`Authorization: Bearer <PAT>`), giving Google Sheets permission to trigger the workflow on-demand.
+
+#### Classic Tokens vs. Fine-Grained Tokens
+
+* **Classic PAT (`ghp_...`)**:
+  - Legacy token type with broad account-wide access.
+  - Requires the `repo` scope to trigger dispatches.
+* **Fine-Grained PAT (`github_pat_...`) (Recommended)**:
+  - Modern token implementing the principle of **least privilege**:
+    - **Repository Access**: Restricted strictly to the `VedaVMS` repository (cannot touch any other repos in your account).
+    - **Repository Permissions**:
+      - **`Actions`**: Set to **`Read and write`** (allows triggering `workflow_dispatch` and reading run status).
+      - **`Metadata`**: Set to **`Read-only`** (mandatory by GitHub to identify the repository).
+      - All other permissions remain set to **`No access`**.
+    - **Expiration**: Can be set to expire automatically (e.g., 90 days or 1 year) for enhanced security.
+
+#### Securing the Token in Google Sheets
+To prevent other Google Sheet editors from viewing the token text in the Apps Script editor:
+- Open Apps Script ➔ **Project Settings (gear icon)** ➔ **Script Properties**.
+- Store the token as property `GITHUB_TOKEN`.
+- In the script, it is loaded dynamically via `PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN')`.
+
+---
+
+### 3. Repository & Google Sheet Permissions Summary
+
+1. **Git Repository (Read-Only to Public)**:
+   - External visitors can browse and clone code, but **cannot** push commits or run workflows.
+   - Pull requests from forks do not have access to repository secrets and cannot trigger staging deployments.
+2. **Google Sheet Link Access (Viewer Only)**:
+   - General access link is set to **Viewer** so anyone with the link can view the master list and the build script can read the CSV export.
+   - Only trusted team members are invited as **Editors** by their Google email address.
+
 
 ---
 
