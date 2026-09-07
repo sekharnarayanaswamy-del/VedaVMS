@@ -171,29 +171,48 @@
             margin-bottom: 0.75rem;
             background: white;
             border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 4px rgba(184, 56, 0, 0.08);
             overflow: hidden;
+            border: 1px solid #FFE0B2;
         }
         .category-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem 1rem;
-            background: var(--dark-brown);
+            padding: 0.8rem 1.1rem;
+            background: linear-gradient(135deg, #C43800 0%, #E65100 45%, #F57C00 100%);
             color: white;
             cursor: pointer;
+            user-select: none;
+            transition: all 0.25s ease;
         }
-        .category-header:hover { background: var(--maroon); }
-        .category-header h3 { font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .category-header:hover {
+            background: linear-gradient(135deg, #A82E00 0%, #D84315 45%, #EA580C 100%);
+        }
+        .category-header h3 {
+            font-size: 1.02rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+        }
         .category-count {
-            background: rgba(255,255,255,0.2);
-            padding: 0.15rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
+            background: rgba(255,255,255,0.28);
+            color: white;
+            padding: 0.18rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.76rem;
+            font-weight: 600;
         }
-        .category-toggle { font-size: 1.25rem; transition: transform 0.3s; }
+        .category-toggle {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+            opacity: 0.95;
+        }
         .category.open .category-toggle { transform: rotate(180deg); }
-        .category-content { display: none; padding: 0.75rem; }
+        .category-content { display: none; padding: 0.75rem; background: #FFFDF9; }
         .category.open .category-content { display: block; }
         .sub-category-list {
             display: flex;
@@ -201,32 +220,32 @@
             gap: 0.5rem;
         }
         .sub-category {
-            background: #FAFAF8;
-            border: 1px solid #E6DFD5;
+            background: #FFFFFF;
+            border: 1px solid #FFE5CC;
             border-radius: 5px;
             overflow: hidden;
             transition: border-color 0.2s;
         }
         .sub-category:hover {
-            border-color: var(--gold);
+            border-color: var(--saffron);
         }
         .sub-category-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.55rem 0.85rem;
-            background: #F4ECE1;
-            color: var(--dark-brown);
+            padding: 0.6rem 0.9rem;
+            background: #FFF3E0;
+            color: #8A2D00;
             cursor: pointer;
             user-select: none;
             transition: background 0.2s;
         }
         .sub-category-header:hover {
-            background: #EBDDCF;
+            background: #FFE6CC;
         }
         .sub-category.open .sub-category-header {
-            background: #E8D9C8;
-            border-bottom: 1px solid #DFCEBB;
+            background: #FFE0B2;
+            border-bottom: 1px solid #FFCC80;
         }
         .sub-category-header h4 {
             font-size: 0.92rem;
@@ -235,20 +254,20 @@
             align-items: center;
             gap: 0.5rem;
             margin: 0;
-            color: var(--dark-brown);
+            color: #8A2D00;
         }
         .sub-category-count {
-            background: rgba(62, 39, 35, 0.08);
-            color: var(--dark-brown);
-            padding: 0.1rem 0.45rem;
-            border-radius: 3px;
+            background: rgba(196, 56, 0, 0.12);
+            color: #8A2D00;
+            padding: 0.12rem 0.5rem;
+            border-radius: 10px;
             font-size: 0.72rem;
             font-weight: 600;
         }
         .sub-category-toggle {
             font-size: 0.85rem;
-            color: var(--dark-brown);
-            opacity: 0.7;
+            color: #8A2D00;
+            opacity: 0.8;
             transition: transform 0.25s ease;
         }
         .sub-category.open .sub-category-toggle {
@@ -257,7 +276,7 @@
         .sub-category-content {
             display: none;
             padding: 0.6rem;
-            background: #FCFBF9;
+            background: #FFFDF9;
         }
         .sub-category.open .sub-category-content {
             display: block;
