@@ -155,6 +155,65 @@ This command will:
 
 ---
 
+## ⚙️ The GitHub Actions Build & Deploy Pipeline (Deep Dive)
+
+The entire build and deployment process is automated by the workflow defined in [`.github/workflows/deploy_staging.yml`](.github/workflows/deploy_staging.yml).
+
+### Focused Pipeline Flow Diagram
+
+```mermaid
+flowchart TD
+    subgraph TriggerSource["1. Trigger Sources"]
+        T1["Google Sheets Menu<br/>(workflow_dispatch API)"]
+        T2["Git Push to main<br/>(Code commit)"]
+        T3["GitHub Web UI<br/>('Run workflow' button)"]
+    end
+
+    subgraph GitHubRunner["2. Ephemeral Compute (GitHub Azure Cloud)"]
+        VM["Provision Fresh VM<br/>(Ubuntu / 2-core / 7GB RAM)"]
+        CHECKOUT["actions/checkout@v4<br/>(Clones VedaVMS repo)"]
+        PYSETUP["actions/setup-python@v5<br/>(Configures Python 3.11)"]
+        
+        subgraph BuildStep["Generate Website (generate_documents.py)"]
+            FETCH["Download Live CSV<br/>(Google Sheets export URL)"]
+            FILTER["Filter Documents<br/>(Exclude Status: Hidden)"]
+            RENUMBER["Dynamic Numbering<br/>(Recompute 1, 1A, 2...)"]
+            RENDER["Template Injection<br/>(Generate build/*.html)"]
+        end
+        
+        ARTIFACT["actions/upload-artifact@v4<br/>(Archives build/ for 7 days)"]
+        PREP["Sanitize FTP Host<br/>(Clean server name & DNS check)"]
+        DEPLOY["FTP-Deploy-Action@v4.3.5<br/>(Uploads via FTPS Port 21)"]
+        DESTROY["Destroy Virtual Machine<br/>(Zero lingering data/secrets)"]
+    end
+
+    subgraph StagingServer["3. Staging Web Server (103.69.196.157)"]
+        IIS["Windows IIS Server"]
+        WEBROOT["/new.vedavms.in/<br/>(Live Staging Site)"]
+    end
+
+    T1 --> VM
+    T2 --> VM
+    T3 --> VM
+    VM --> CHECKOUT --> PYSETUP --> FETCH --> FILTER --> RENUMBER --> RENDER --> ARTIFACT --> PREP --> DEPLOY
+    DEPLOY -->|"Uploads HTML"| IIS --> WEBROOT
+    DEPLOY --> DESTROY
+```
+
+### Cloud Compute & Infrastructure Details
+
+| Aspect | Specification | Details |
+| :--- | :--- | :--- |
+| **Provider** | **GitHub (Microsoft Azure)** | Hosted in GitHub's global Azure cloud data centers. |
+| **Runner Environment** | `ubuntu-latest` | Clean Ubuntu Linux environment provisioned for each run. |
+| **Hardware Specs** | **2-core CPU, 7 GB RAM, 14 GB SSD** | Fast SSD storage and multi-threaded Python execution. |
+| **Network Speed** | High-bandwidth datacenter pipe | Downloads sheets and uploads files via FTPS in seconds. |
+| **Cost** | **100% Free** | GitHub provides unlimited runner minutes for public repositories. |
+| **Execution Time** | **~35 to 45 seconds** | From button click in Google Sheets to live on staging. |
+| **Lifecycle** | **Ephemeral (Single-Use)** | The virtual machine is created on-demand and wiped immediately after the build completes. No secrets, credentials, or data persist on the runner. |
+
+---
+
 ## 🛡️ Security Considerations & Access Control
 
 Because the repository is public and multiple team members collaborate, the following security architecture and access control mechanisms are in place:
