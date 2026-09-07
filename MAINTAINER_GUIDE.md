@@ -155,6 +155,72 @@ This command will:
 
 ---
 
+## 🎨 Step 4: UI Styling & Design Fine-Tuning (Templates, Colors & Controls)
+
+If you need to fine-tune the look and feel, color schemes, banners, or accordion controls on the website, follow this guide.
+
+### ⚠️ The Golden Rule: Edit `mockup/`, Never `build/`
+* The files inside **`build/`** (`build/index.html`, `build/documents.html`) are **generated output artifacts**.
+* Any direct edits made to files in `build/` will be **permanently overwritten** whenever `generate_documents.py` runs or when a build triggers on GitHub Actions.
+* **Always make UI and design edits in the template files inside `mockup/`**:
+  * Home page template: [`mockup/index.html`](mockup/index.html)
+  * Documents page template: [`mockup/documents.html`](mockup/documents.html)
+  * Other companion pages: [`mockup/about.html`](mockup/about.html), [`mockup/articles.html`](mockup/articles.html), [`mockup/convention.html`](mockup/convention.html), [`mockup/donations.html`](mockup/donations.html), [`mockup/videos.html`](mockup/videos.html)
+
+---
+
+### 🎨 Where to Fine-Tune Specific UI Elements
+
+| UI Component | File to Edit | CSS Selector | Current Specification |
+| :--- | :--- | :--- | :--- |
+| **Top Header (Logo & Quote)** | `mockup/index.html` (and companion pages) | `.header` | `background: linear-gradient(135deg, #153E75 0%, #1D5296 50%, #2563A8 100%);` (Royal Blue, touch lighter) + `border-bottom: 2px solid var(--gold);` |
+| **Main Hero Banner** | `mockup/index.html` | `.hero` | `background: linear-gradient(135deg, #6B1724 0%, #831D2C 50%, #992334 100%);` (Shade of Maroon) |
+| **Hero "Browse Documents" Button** | `mockup/index.html` | `.cta-btn` | `background: var(--gold); color: #3A0C12;` (Hover: `#E5B232`) |
+| **Recent Updates Accordion (Home)** | `mockup/index.html` | `.category-header` | `background: linear-gradient(135deg, #6B1724 0%, #831D2C 50%, #992334 100%);` (Shade of Maroon) |
+| **Recent Updates Sub-Language (Home)** | `mockup/index.html` | `.sub-category-header` | `background: #FDF2F4; color: #6B1724;` (Rosy-cream) |
+| **Category Accordion (Documents)** | `mockup/documents.html` | `.category-header` | `background: linear-gradient(135deg, #6B1724 0%, #831D2C 50%, #992334 100%);` (Shade of Maroon) |
+| **Sub-Kandam Accordion (Documents)** | `mockup/documents.html` | `.sub-category-header` | `background: #FDF2F4; color: #6B1724;` (Rosy-cream) |
+| **Page Header (Companion Pages)** | `mockup/*.html` | `.page-header` | `background: linear-gradient(135deg, #6B1724 0%, #831D2C 50%, #992334 100%);` (Shade of Maroon) |
+| **Brand Color Variables** | `<style>` in templates | `:root` | `--saffron: #E65100; --maroon: #800000; --gold: #DAA520; --cream: #FFF8F0;` |
+
+---
+
+### ⚙️ Fine-Tuning Business Logic & Hierarchy Rules
+
+If you need to change **how data is grouped, filtered, or displayed**, fine-tuning is done in [`generate_documents.py`](generate_documents.py):
+
+1. **Recent Updates Time Window (e.g. 3 months / 90 days)**:
+   - File: [`generate_documents.py`](generate_documents.py) (inside `generate_index_html`)
+   - Calls `get_recent_updates_grouped(lang_sections, max_days=90)`.
+   - Change `max_days=90` (e.g., `max_days=60` for 2 months, or `max_days=180` for 6 months) to adjust how far back recent updates look.
+
+2. **Pada & Krama Patam Hierarchical Nesting**:
+   - File: [`generate_documents.py`](generate_documents.py) (inside `nest_hierarchical_sections`)
+   - Automatically groups `TaittirIya SamhitA pada pAtam` and `TaittirIya SamhitA krama pAtam` into Kandams 1 through 7, nesting sub-kandams and prasnas.
+
+3. **Dynamic Hierarchical Numbering (1, 1A, 2...)**:
+   - File: [`generate_documents.py`](generate_documents.py) (inside `apply_dynamic_numbering`)
+   - Numbers top-level books contiguously and prefixes sub-books with parent numbers.
+
+---
+
+### 🧪 How to Rebuild and Test Locally
+
+After making changes in `mockup/` or `generate_documents.py`, run:
+```powershell
+python generate_documents.py --source-csv "https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/export?format=csv&gid=548744990"
+```
+Open `build/index.html` or `build/documents.html` in your browser to inspect the visual changes.
+
+Once satisfied, commit and push to `main` — GitHub Actions will automatically deploy the changes to staging (`https://new.vedavms.in`):
+```powershell
+git add mockup/ generate_documents.py build/
+git commit -m "style: update homepage and document styling"
+git push origin main
+```
+
+---
+
 ## ⚙️ The GitHub Actions Build & Deploy Pipeline (Deep Dive)
 
 The entire build and deployment process is automated by the workflow defined in [`.github/workflows/deploy_staging.yml`](.github/workflows/deploy_staging.yml).
