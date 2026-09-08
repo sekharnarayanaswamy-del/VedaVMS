@@ -1233,6 +1233,18 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
         lookup[label.lower()] = key
         lookup[tab.lower()] = key
     # Aliases for backward compatibility and common variations
+    lookup["ts jatai"] = "tsj"
+    lookup["ts jatai (pilot)"] = "tsj"
+    lookup["ts samhita jatai"] = "tsj"
+    lookup["ts samhita jatai (pilot)"] = "tsj"
+    lookup["jatai"] = "tsj"
+    lookup["ts ghanam"] = "tsg"
+    lookup["ts ghanam (pilot)"] = "tsg"
+    lookup["ts samhita ghanam"] = "tsg"
+    lookup["ts samhita ghanam (pilot)"] = "tsg"
+    lookup["ghanam"] = "tsg"
+    lookup["kanva"] = "kanva"
+    lookup["kanva samhita"] = "kanva"
     lookup["gana sandhi"] = "siksha"
     lookup["ghana sandhi"] = "siksha"
     lookup["siksha"] = "siksha"
@@ -1269,14 +1281,33 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
         ).strip()
         lang_key = lookup.get(raw_lang.lower())
         if not lang_key:
-            for candidate_key, _, candidate_label, candidate_tab in LANGUAGES:
-                if (
-                    candidate_key.lower() in raw_lang.lower()
-                    or candidate_label.lower() in raw_lang.lower()
-                    or candidate_tab.lower() in raw_lang.lower()
-                ):
-                    lang_key = candidate_key
-                    break
+            rl = raw_lang.lower()
+            if "jatai" in rl:
+                lang_key = "tsj"
+            elif "ghanam" in rl:
+                lang_key = "tsg"
+            elif "sandhi" in rl:
+                lang_key = "siksha"
+            elif "parayanam" in rl or "reference" in rl:
+                lang_key = "parayanam"
+            elif "maala" in rl or "inprogress" in rl:
+                lang_key = "inprogress"
+            elif "baraha" in rl:
+                lang_key = "baraha"
+            elif "kanva" in rl:
+                lang_key = "kanva"
+            else:
+                for candidate_key, _, candidate_label, candidate_tab in LANGUAGES:
+                    if (
+                        candidate_key.lower() in rl
+                        or candidate_label.lower() in rl
+                        or candidate_tab.lower() in rl
+                        or rl in candidate_key.lower()
+                        or rl in candidate_label.lower()
+                        or rl in candidate_tab.lower()
+                    ):
+                        lang_key = candidate_key
+                        break
         if not lang_key:
             continue
 
