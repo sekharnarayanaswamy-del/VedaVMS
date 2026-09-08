@@ -956,6 +956,8 @@ def splice(template: str, rendered: dict[str, str]) -> str:
     # 1. Dynamically rebuild the language-tabs bar
     tab_spans = []
     for i, (lang, _page, _label, tab_title) in enumerate(LANGUAGES):
+        if lang == "tsj":
+            tab_spans.append('        <span class="tab-break" style="flex-basis: 100%; height: 0; margin: 0; display: inline-block;"></span>')
         active_cls = " active" if i == 0 else ""
         tab_icon = ""
         if lang == "tsj":
@@ -968,8 +970,8 @@ def splice(template: str, rendered: dict[str, str]) -> str:
     tabs_html = '<div class="language-tabs">\n' + "\n".join(tab_spans) + '\n    </div>'
 
     out = re.sub(
-        r'<div class="language-tabs">[\s\S]*?</div>',
-        tabs_html,
+        r'<div class="language-tabs">(?:(?!<main)[\s\S])*?</div>\s*(?=\s*<main)',
+        tabs_html + "\n\n    ",
         out,
         count=1,
     )
