@@ -484,8 +484,8 @@ def parse_baraha(page_html: str) -> list[Section]:
 
 
 def parse_siksha_gs(page_html: str) -> list[Section]:
-    """Extract Section 2 (TS Gana Sandhi PDFs) from docs_SikShA.html."""
-    sec_gs = Section(title="TaittirIya SamhitA Gana Sandhi (Sanskrit)")
+    """Extract Section 2 (TS Ghana Sandhi PDFs) from docs_SikShA.html."""
+    sec_gs = Section(title="TaittirIya SamhitA Ghana Sandhi (Sanskrit)")
     t2_m = re.search(r"Second Section[^<]*(?:<[^>]+>[^<]*)*?<table[^>]*>(.*?)</table>", page_html, re.I | re.S)
     if t2_m:
         t2_html = t2_m.group(0)
@@ -493,6 +493,8 @@ def parse_siksha_gs(page_html: str) -> list[Section]:
             href, label = doc_link.group(1), doc_link.group(2)
             url = absolutise(href)
             title, version, date = split_meta(label)
+            # Normalize Gana -> Ghana
+            title = re.sub(r"\bGana\b", "Ghana", title, flags=re.I)
             sec_gs.docs.append(Doc(title=title, url=url, version=version, date=date))
     return [sec_gs] if sec_gs.docs else []
 
@@ -1203,6 +1205,25 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
         lookup[key.lower()] = key
         lookup[label.lower()] = key
         lookup[tab.lower()] = key
+    # Aliases for backward compatibility and common variations
+    lookup["gana sandhi"] = "siksha"
+    lookup["ghana sandhi"] = "siksha"
+    lookup["siksha"] = "siksha"
+    lookup["siksha & lessons"] = "siksha"
+    lookup["siksha and lessons"] = "siksha"
+    lookup["parayanam"] = "parayanam"
+    lookup["parayanam & references"] = "parayanam"
+    lookup["parayanam and references"] = "parayanam"
+    lookup["references"] = "parayanam"
+    lookup["ghana maala"] = "inprogress"
+    lookup["ghana maala pilot"] = "inprogress"
+    lookup["in progress & pilot"] = "inprogress"
+    lookup["in progress"] = "inprogress"
+    lookup["baraha"] = "baraha"
+    lookup["baraha source"] = "baraha"
+    lookup["iast"] = "latin"
+    lookup["latin"] = "latin"
+    lookup["latin (iast)"] = "latin"
 
     sections_by_lang: dict[str, dict[str, Section]] = {k: {} for k, _, _, _ in LANGUAGES}
 
