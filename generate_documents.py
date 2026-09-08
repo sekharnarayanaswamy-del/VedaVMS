@@ -1504,8 +1504,8 @@ def render_recent_updates_html(months_data: list[dict]) -> str:
         m_name = month["month_name"]
         m_count = month["total_count"]
         m_noun = "update" if m_count == 1 else "updates"
-        # First (latest) month is open by default
-        open_cls = " open" if m_idx == 0 else ""
+        # All months collapsed by default
+        open_cls = ""
         m_id = f"updates-month-{slugify(m_name)}"
 
         sub_blocks = []
@@ -1516,8 +1516,8 @@ def render_recent_updates_html(months_data: list[dict]) -> str:
             l_docs = lang_group["docs"]
             l_count = len(l_docs)
             l_noun = "update" if l_count == 1 else "updates"
-            # In the first month, keep language sub-accordions open
-            sub_open_cls = " open" if m_idx == 0 else ""
+            # All language sub-accordions collapsed by default
+            sub_open_cls = ""
             sub_id = f"updates-{slugify(m_name)}-{slugify(l_key)}"
 
             items = []
