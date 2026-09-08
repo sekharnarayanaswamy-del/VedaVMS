@@ -94,15 +94,37 @@ flowchart TD
 1. Open the **VedaVMS Document Master Database** Google Sheet.
 2. Scroll to the relevant section (or add a row where you want it to appear).
 3. Fill in the columns:
-   - **Language**: Choose the language tab (e.g. `Sanskrit`, `Tamil`, `Telugu`, `Kannada`, `Malayalam`, `English`, `TS Jatai`, `TS Ghanam`, `SikShA & Lessons`, `Kanva Samhita`, `Pilot & In-Progress`, `Latin (IAST)`).
-   - **Section**: The accordion heading (e.g. `Vedic Books by Subject`, `Taittiriya Samhita — Kandam 1`, `Pada Patam`, etc.).
+   - **Language / Supersection**: Choose the language tab (e.g. `Sanskrit`, `Tamil`, `Malayalam`, `Kannada`, `Telugu`, `Latin (IAST)`, `Baraha Source`, `English`, `TS Jatai`, `TS Ghanam`, `Kanva Samhita`, `Parayanam & References`, `Ghana Sandhi`, `Ghana Maala Pilot`).
+   - **Section**: The accordion heading (e.g. `Vedic Books by Subject`, `Taittiriya Samhita — Kandam 1`, `Pada Patam`, `Classical Texts & References`, etc.).
    - **Title**: The display name of the document.
-   - **PDF_URL**: The web link to the PDF file (e.g., `https://vedavms.in/docs/...` or Google Drive shared link).
-   - **Version**: (Optional) e.g., `V1.0`, `V2.1`.
-   - **Date**: (Optional) e.g., `Oct 31, 2026`.
-   - **Corrections_URL**: (Optional) Link to errata or corrections PDF.
-   - **Status**: Set to `Active`.
+   - **PDF_URL**: The web link to the PDF file (e.g., `https://vedavms.in/docs/...`), Word doc (`.docx`), spreadsheet (`.xlsx`), or external link.
+   - **Version**: Edition number (e.g. `V1.0`, `V2.1`).
+   - **Date**: Release / upload date (e.g. `Sep 2026`).
+   - **Corrections_URL**: (Optional) Link to errata / corrections PDF. (Dedicated button displayed on Sanskrit, Tamil, and Malayalam tabs).
+   - **Status**: Set to `Active` (or `Hidden` to temporarily unpublish without deleting).
    - **Notes**: (Optional) Internal notes for your team.
+
+---
+
+## 🔄 Step 3: Google Sheets & CSV Synchronization
+
+### When to use Google Sheets vs. CSV Export
+- **Day-to-day updates**: **Edit Google Sheets directly.** When you click **`🚀 VedaVMS` ➔ `Publish to Staging`**, GitHub Actions pulls rows straight from the Google Sheet and deploys in ~1–2 minutes.
+- **Bulk code migrations / new scrapers**: Run the Python export command to generate a fresh CSV of all 986 records and import it into Google Sheets once.
+
+### Exporting Document Catalog to CSV
+To generate a clean UTF-8 with BOM CSV (which preserves Sanskrit & Indic unicode in Excel and Google Sheets):
+```bash
+# Export all 986 documents from current scrapers / cache:
+python generate_documents.py --offline --export-csv data/vedavms_documents.csv --export-json data/vedavms_documents.json
+```
+
+### Importing CSV into Google Sheets
+1. Open the [VedaVMS Google Sheet](https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/edit?gid=548744990#gid=548744990).
+2. Click **File ➔ Import ➔ Upload**.
+3. Select `data/vedavms_documents.csv`.
+4. Choose **"Replace current sheet"** (or *Insert new sheet* to review first).
+5. Set separator to **"Detect automatically"** and click **Import data**.
 
 ### Updating an Existing Document (New Version / Errata)
 - Find the document row.

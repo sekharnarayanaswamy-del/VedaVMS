@@ -73,8 +73,21 @@ If you are publishing a new edition or adding an errata/corrections PDF:
 - **Never delete the row.** Simply change **Status** from `Active` to **`Hidden`**.
 - The website will automatically hide it and renumber the remaining books seamlessly starting from `1)`.
 
-### 3. When Do Changes Go Live?
+### 3. Valid Supersection / Language Names
+Use any of these 14 category names in the **`Supersection`** (or **`Language`**) column:
+- **Languages**: `Sanskrit`, `Tamil`, `Malayalam`, `Kannada`, `Telugu`, `Latin (IAST)`
+- **Special Editions**: `Baraha Source`, `English`, `TS Jatai`, `TS Ghanam`, `Kanva Samhita`, `Parayanam & References`, `Ghana Sandhi`, `Ghana Maala Pilot`
+
+### 4. Bulk Data Migration & CSV Export
+If you need to extract all documents into a fresh CSV spreadsheet:
+```bash
+python generate_documents.py --offline --export-csv data/vedavms_documents.csv
+```
+Import `data/vedavms_documents.csv` into Google Sheets via **File ➔ Import ➔ Upload**.
+
+### 5. When Do Changes Go Live?
 - **Immediately from the Google Sheet**: Click **`🚀 VedaVMS`** ➔ **`Publish to Staging (new.vedavms.in)`** in the top menu of the sheet. Changes will be live in 1–2 minutes!
 - Or via GitHub Actions (**Run workflow**) or from an admin's laptop (`python scripts/sync_staging.py`).
+
 
 

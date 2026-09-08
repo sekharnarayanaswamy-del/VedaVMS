@@ -48,7 +48,7 @@ vedavms/
 ## 🚀 Usage
 
 ### 1. One-Step Sync to Staging (`new.vedavms.in`)
-Fetches the live Google Sheet, regenerates all 760+ documents into `build/` (with dynamic hierarchical numbering), and deploys directly to the staging site:
+Fetches the live Google Sheet, regenerates all 980+ documents into `build/` (with dynamic hierarchical numbering), and deploys directly to the staging site:
 ```bash
 # Full fetch, build, and deploy:
 python scripts/sync_staging.py
@@ -58,7 +58,7 @@ python scripts/sync_staging.py --skip-build
 ```
 
 ### 2. Regenerate Document Pages Locally
-The generator fetches the live pages or Google Sheets CSV, parses document metadata, builds language filter tabs, and renders `build/documents.html` using `mockup/documents.html` as the design template:
+The generator fetches the live pages, local cache, or Google Sheets CSV, parses document metadata, builds language filter tabs, and renders `build/documents.html` using `mockup/documents.html` as the design template:
 
 ```bash
 # Generate build/documents.html directly from master CSV / Google Sheets
@@ -67,10 +67,10 @@ python generate_documents.py --source-csv data/vedavms_documents.csv
 # Or generate directly from live Google Sheet CSV export URL
 python generate_documents.py --source-csv "https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/export?format=csv&gid=548744990"
 
-# Export current documents to CSV / JSON
-python generate_documents.py --export-csv data/vedavms_documents.csv --export-json data/vedavms_documents.json
+# Export current scraped/parsed documents to CSV & JSON for Google Sheets
+python generate_documents.py --offline --export-csv data/vedavms_documents.csv --export-json data/vedavms_documents.json
 
-# Fetch live pages and generate build/documents.html (legacy scraper mode)
+# Fetch live pages and generate build/documents.html (scraper mode)
 python generate_documents.py
 
 # Offline mode (reuses cached pages from .cache/)
@@ -80,14 +80,40 @@ python generate_documents.py --offline
 python generate_documents.py --check
 ```
 
-- See **[MAINTAINER_COOKBOOK.md](MAINTAINER_COOKBOOK.md)** for a short 3-step recipe on uploading PDFs and updating Google Sheets.
-- See **[MAINTAINER_GUIDE.md](MAINTAINER_GUIDE.md)** for the full maintainer workflow, technical details, and GitHub Actions staging deployment.
+- See **[MAINTAINER_COOKBOOK.md](MAINTAINER_COOKBOOK.md)** for a short recipe on uploading PDFs and updating Google Sheets.
+- See **[MAINTAINER_GUIDE.md](MAINTAINER_GUIDE.md)** for the full maintainer workflow, technical architecture, and Google Sheets + GitHub Actions pipeline.
 
 ---
 
-## 🎯 Project Goals
+## 🎯 Catalog Structure (986 Documents Across 14 Tabs)
 
-1. **Modern Responsive UI**: Clean, mobile-friendly interface with dark/light visual harmony and clear typography.
-2. **Dynamic Search & Filtering**: Fast client-side search across 700+ Vedic PDFs, audio files, and video lessons by language, kanda, and title.
+### Download by Language (6 Tabs)
+- **Sanskrit** (131 docs): Vedic Books by Subject, Samhita, Brahmana, Aranyaka, Upanishads
+- **Tamil** (125 docs): With errata / corrections tracking
+- **Malayalam** (128 docs): With errata / corrections tracking
+- **Kannada** (30 docs): Recensions
+- **Telugu** (16 docs): Recensions
+- **Latin (IAST)** (27 docs): Transliterated texts
+
+### Pilot Projects & Special Editions (8 Tabs)
+- **Row 1**:
+  - **Baraha Source** (201 docs): Source `.docx` documents across 8 Kandam sections
+  - **English** (3 docs): Explanatory texts
+  - **TS Samhita Jatai** (132 docs): TS Jatai recitations
+  - **TS Samhita Ghanam** (132 docs): TS Ghanam recitations
+  - **Kanva Samhita** (44 docs): Kanva recensions
+  - **Parayanam and References** (9 items): Classical text web references + TTD recitation spreadsheets
+- **Row 2**:
+  - **Ghana Sandhi** (7 docs): TS Gana Sandhi lessons
+  - **Ghana Maala Pilot** (1 doc): Pilot project text
+
+---
+
+## 🎯 Key Design & Architectural Highlights
+
+1. **Modern Responsive UI**: Clean, mobile-friendly interface with warm Vedic aesthetic, collapsible accordions, and refined typography.
+2. **Dynamic Search & Filtering**: Fast client-side instant search across 980+ documents, audio recitations, and video lessons by language, kanda, and title.
 3. **Automated Maintenance**: Python scripts and Google Sheets + GitHub Actions pipeline to keep document indexes synchronized with live content without manual HTML editing.
+4. **Resilient CSV Sync**: Full bidirectional export (`--export-csv`) and import (`--source-csv`) supporting UTF-8 with BOM for Indic unicode.
+
 
