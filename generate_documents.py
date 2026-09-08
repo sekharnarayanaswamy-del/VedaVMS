@@ -337,6 +337,31 @@ def section_labels(page_html: str) -> list[tuple[int, str]]:
     return found
 
 
+DISCLAIMER_SECTION_RE = re.compile(
+    r"(?:kindly do not use|meant only for proof reading|documents in progress|check font issues)",
+    re.I
+)
+
+
+def clean_section_title(title: str, lang_label: str = "") -> str:
+    """Normalize raw or disclaimer section headings into clean canonical Vedic section titles."""
+    # Retain Kandam suffix if present
+    k_match = re.search(r"—\s*(Kandam\s*\d+)", title, re.I)
+    k_suffix = f" — {k_match.group(1)}" if k_match else ""
+
+    if not title or DISCLAIMER_SECTION_RE.search(title):
+        if "jatai" in lang_label.lower():
+            return f"TaittirIya SamhitA jatA pAtam{k_suffix}"
+        elif "ghanam" in lang_label.lower():
+            return f"TaittirIya SamhitA ghana pAtam{k_suffix}"
+        elif "ghana maala" in lang_label.lower() or "pilot" in lang_label.lower():
+            return "TaittirIya SamhitA Ghana Maala (Pilot)"
+        elif "kanva" in lang_label.lower():
+            return "Kanva SamhitA"
+        return "Vedic Documents"
+    return title.strip()
+
+
 def parse_page(page_html: str, lang_label: str) -> list[Section]:
     """Turn one live language page into ordered sections of documents."""
     labels = section_labels(page_html)
@@ -349,11 +374,13 @@ def parse_page(page_html: str, lang_label: str) -> list[Section]:
     sections: list[Section] = []
     by_pos: list[tuple[int, Section]] = []
     for pos, text in labels:
-        section = Section(title=text)
+        cleaned_text = clean_section_title(text, lang_label)
+        section = Section(title=cleaned_text)
         sections.append(section)
         by_pos.append((pos, section))
 
-    fallback = Section(title="Documents")
+    fallback_title = clean_section_title("", lang_label)
+    fallback = Section(title=fallback_title)
 
     def section_for(offset: int) -> Section:
         current = fallback
@@ -1258,6 +1285,7 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
             continue
 
         sec_title = (row.get("Section") or row.get("section") or "Documents").strip()
+        sec_title = clean_section_title(sec_title, raw_lang)
         title = (row.get("Title") or row.get("title") or "").strip()
         url = (
             row.get("PDF_URL")
