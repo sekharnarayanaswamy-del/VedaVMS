@@ -318,20 +318,45 @@
             border-radius: 3px;
             font-size: 0.65rem;
         }
-        .doc-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+        .doc-actions {
+            display: flex;
+            gap: 0.4rem;
+            align-items: center;
+            justify-content: flex-end;
+            flex-shrink: 0;
+        }
+        #content-sanskrit .doc-actions,
+        #content-tamil .doc-actions,
+        #content-malayalam .doc-actions {
+            min-width: 220px;
+            justify-content: flex-start;
+        }
         .dl-btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.2rem;
-            padding: 0.35rem 0.6rem;
+            justify-content: center;
+            gap: 0.25rem;
+            padding: 0.35rem 0.65rem;
             border-radius: 3px;
             text-decoration: none;
             font-size: 0.75rem;
             font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s;
         }
-        .dl-btn.primary { background: var(--saffron); color: white; }
+        .dl-btn.primary {
+            background: var(--saffron);
+            color: white;
+            min-width: 105px;
+            text-align: center;
+        }
         .dl-btn.primary:hover { background: var(--maroon); }
-        .dl-btn.secondary { background: #e0e0e0; color: var(--dark-brown); }
+        .dl-btn.secondary {
+            background: #e0e0e0;
+            color: var(--dark-brown);
+            min-width: 95px;
+            text-align: center;
+        }
         .dl-btn.secondary:hover { background: #bdbdbd; }
         .footer {
             background: var(--dark-brown);
@@ -344,8 +369,11 @@
         .footer a:hover { opacity: 1; }
         @media (max-width: 600px) {
             .doc-card { flex-direction: column; align-items: flex-start; }
-            .doc-actions { width: 100%; }
-            .dl-btn { flex: 1; justify-content: center; }
+            .doc-actions,
+            #content-sanskrit .doc-actions,
+            #content-tamil .doc-actions,
+            #content-malayalam .doc-actions { min-width: auto; width: 100%; justify-content: flex-start; }
+            .dl-btn { flex: 1; min-width: auto; justify-content: center; }
             .nav a { padding: 0.6rem 0.6rem; font-size: 0.75rem; }
         }
     </style>
@@ -389,7 +417,15 @@
         <span class="language-tab" onclick="showLanguage('malayalam')">മലയാളം Malayalam</span>
         <span class="language-tab" onclick="showLanguage('kannada')">ಕನ್ನಡ Kannada</span>
         <span class="language-tab" onclick="showLanguage('telugu')">తెలుగు Telugu</span>
-        <span class="language-tab" onclick="showLanguage('english')">English (IAST)</span>
+        <span class="language-tab" onclick="showLanguage('latin')">Latin (IAST)</span>
+        <span class="language-tab" onclick="showLanguage('baraha')">Baraha Source</span>
+        <span class="language-tab" onclick="showLanguage('english')">English</span>
+        <span class="language-tab" onclick="showLanguage('tsj')">TS Jatai (Pilot)</span>
+        <span class="language-tab" onclick="showLanguage('tsg')">TS Ghanam (Pilot)</span>
+        <span class="language-tab" onclick="showLanguage('kanva')">Kanva Samhita</span>
+        <span class="language-tab" onclick="showLanguage('parayanam')">Parayanam and References</span>
+        <span class="language-tab" onclick="showLanguage('siksha')">Ghana Sandhi</span>
+        <span class="language-tab" onclick="showLanguage('inprogress')">Ghana Maala Pilot</span>
     </div>
 
     <main class="main-content">
@@ -407,7 +443,7 @@
         </div>
 
         <!-- VEDIC BOOKS BY SUBJECT -->
-        <div class="category open" id="cat-vedic">
+        <div class="category" id="cat-vedic">
             <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
                 <h3>📚 Vedic Books by Subject <span class="category-count">15 docs</span></h3>
                 <span class="category-toggle">▼</span>

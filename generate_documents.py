@@ -58,13 +58,15 @@ LANGUAGES = [
     ("malayalam",  "docs_malayalam.html",  "Malayalam",           "മലയാളം Malayalam"),
     ("kannada",    "docs_kannada.html",    "Kannada",             "ಕನ್ನಡ Kannada"),
     ("telugu",     "docs_telugu.html",     "Telugu",              "తెలుగు Telugu"),
+    ("latin",      "docs_latin.html",      "Latin (IAST)",        "Latin (IAST)"),
+    ("baraha",     "docs_baraha.html",     "Baraha Source",       "Baraha Source"),
     ("english",    "docs_english.html",    "English",             "English"),
     ("tsj",        "docs_tsj.html",        "TS Jatai",            "TS Jatai (Pilot)"),
     ("tsg",        "docs_tsg.html",        "TS Ghanam",           "TS Ghanam (Pilot)"),
-    ("siksha",     "docs_SikShA.html",     "SikShA & Lessons",    "SikShA & Lessons"),
     ("kanva",      "docs_Kanva.html",      "Kanva Samhita",       "Kanva Samhita"),
-    ("inprogress", "docs_inprogress.html", "Pilot & In-Progress", "In Progress"),
-    ("latin",      "docs_latin.html",      "Latin (IAST)",        "Latin (IAST)"),
+    ("parayanam",  "docs_SikShA.html",     "Parayanam & References", "Parayanam and References"),
+    ("siksha",     "docs_SikShA.html",     "Ghana Sandhi",        "Ghana Sandhi"),
+    ("inprogress", "docs_inprogress.html", "Ghana Maala Pilot",   "Ghana Maala Pilot"),
 ]
 
 # --------------------------------------------------------------------------
@@ -153,7 +155,6 @@ SVG_TAB_GHANA = (
     '</svg>'
 )
 
-# Icons follow the mockup's existing convention for these section names.
 SECTION_ICONS = [
     (r"jat[aA]|jatai",          SVG_JATA),
     (r"ghan[aA]|ghanam",        SVG_GHANA),
@@ -163,6 +164,8 @@ SECTION_ICONS = [
     (r"vedic books",            "\U0001F4DA"),  # books
     (r"br[aA]hma[nN]am",        "\U0001F4DC"),  # scroll
     (r"aranyakam",              "\U0001F332"),  # tree
+    (r"parayanam",              "\U0001F3A7"),  # headphones
+    (r"reference",              "\U0001F517"),  # link
 ]
 DEFAULT_ICON = "\U0001F4C4"  # page
 
@@ -184,7 +187,7 @@ DATE_RE = re.compile(
 VERSION_RE = re.compile(r"\b(?:version|ver|v)\s*\.?\s*(\d+(?:\.\d+)?)\b", re.I)
 CORRECTION_RE = re.compile(r"correction", re.I)
 PDF_LINK_RE = re.compile(
-    r"<a\b[^>]*?href=\"([^\"]*?\.pdf)\"[^>]*>(.*?)</a>", re.I | re.S
+    r'<a\b[^>]*?href=["\']([^"\']+\.(?:pdf|docx|xlsx))["\'][^>]*>(.*?)</a>', re.I | re.S
 )
 # Innermost rows only: the site nests tables inside table cells, so a plain
 # non-greedy <tr>...</tr> matches an outer row but stops at the inner row's
@@ -204,6 +207,7 @@ class Doc:
     version: str = ""
     date: str = ""
     corrections: str = ""
+    ref_url: str = ""
 
 
 @dataclass
@@ -431,36 +435,148 @@ def parse_page(page_html: str, lang_label: str) -> list[Section]:
     return [s for s in sections if s.docs]
 
 
+def parse_baraha(page_html: str) -> list[Section]:
+    """Parse Baraha source documents page into sections."""
+    section_defs = [
+        ("Vedic Books by Subject", r"Vedic Books by Subject"),
+        ("TaittirIya SamhitA", r"TaittirItya SamhitA|TaittirIya SamhitA"),
+        ("TaittirIya BrAhmaNam", r"TaittirIya BrAhmaNam"),
+        ("TaittirIya AraNyakam", r"TaittirIya AryaNyakaM|TaittirIya AraNyakaM"),
+        ("TaittirIya SamhitA - Pada Paatam", r"TaittirIya SamhitA - Pada Paatam"),
+        ("TaittirIya SamhitA - Krama Paatam", r"TaittirIya SamhitA - Krama Paatam"),
+        ("TaittirIya SamhitA - JatA Paatam", r"TaittirIya SamhitA - JatA Paatam"),
+        ("TaittirIya SamhitA - Ghana Paatam", r"TaittirIya SamhitA - Ghana Paatam"),
+    ]
+
+    positions: list[tuple[int, str]] = []
+    for title, pat in section_defs:
+        m = re.search(pat, page_html, re.I)
+        if m:
+            positions.append((m.start(), title))
+    positions.sort(key=lambda p: p[0])
+
+    sections = [Section(title=title) for _, title in positions]
+    link_re = re.compile(r'<a\b[^>]*?href=["\']([^"\']+\.docx)["\'][^>]*>(.*?)</a>', re.I | re.S)
+
+    for m in link_re.finditer(page_html):
+        href = m.group(1)
+        label = m.group(2)
+        pos = m.start()
+
+        target = sections[0]
+        for (spos, _), s in zip(positions, sections):
+            if spos <= pos:
+                target = s
+            else:
+                break
+
+        url = absolutise(href)
+        title, version, date = split_meta(label)
+        doc = Doc(
+            title=title or urllib.parse.unquote(os.path.basename(url)),
+            url=url,
+            version=version,
+            date=date,
+        )
+        target.docs.append(doc)
+
+    return [s for s in sections if s.docs]
+
+
+def parse_siksha_gs(page_html: str) -> list[Section]:
+    """Extract Section 2 (TS Gana Sandhi PDFs) from docs_SikShA.html."""
+    sec_gs = Section(title="TaittirIya SamhitA Gana Sandhi (Sanskrit)")
+    t2_m = re.search(r"Second Section[^<]*(?:<[^>]+>[^<]*)*?<table[^>]*>(.*?)</table>", page_html, re.I | re.S)
+    if t2_m:
+        t2_html = t2_m.group(0)
+        for doc_link in re.finditer(r'<a\b[^>]*?href=["\']([^"\']+\.pdf)["\'][^>]*>(.*?)</a>', t2_html, re.I | re.S):
+            href, label = doc_link.group(1), doc_link.group(2)
+            url = absolutise(href)
+            title, version, date = split_meta(label)
+            sec_gs.docs.append(Doc(title=title, url=url, version=version, date=date))
+    return [sec_gs] if sec_gs.docs else []
+
+
+def parse_parayanam(page_html: str) -> list[Section]:
+    """Extract Section 1 (References) and Section 3 (Parayanam Links) from docs_SikShA.html."""
+    sec1 = Section(title="References")
+    row_re = re.compile(r"<tr\b(?:(?!<tr\b)[\s\S])*?</tr>", re.I)
+    t1_m = re.search(r"<table[^>]*>(.*?)</table>", page_html, re.I | re.S)
+    if t1_m:
+        t1_html = t1_m.group(1)
+        for r in row_re.findall(t1_html):
+            doc_link = re.search(r'<a\b[^>]*?href=["\']([^"\']+\.(?:docx|pdf))["\'][^>]*>(.*?)</a>', r, re.I | re.S)
+            ext_m = re.search(r'<a\b[^>]*?href=["\'](https?://[^"\']+)["\'][^>]*>', r, re.I | re.S)
+            if doc_link and ext_m:
+                label = doc_link.group(2)
+                title, version, date = split_meta(label)
+                ref_url = ext_m.group(1)
+                # Drop download button; retain only the external reference link
+                sec1.docs.append(Doc(title=title, url=ref_url, version=version, date=date))
+            elif doc_link:
+                href, label = doc_link.group(1), doc_link.group(2)
+                url = absolutise(href)
+                title, version, date = split_meta(label)
+                sec1.docs.append(Doc(title=title, url=url, version=version, date=date))
+
+    sec3 = Section(title="Veda Parayanam Links (TTD Recitation)")
+    t3_m = re.search(r"Third Section[^<]*(?:<[^>]+>[^<]*)*?<table[^>]*>(.*?)</table>", page_html, re.I | re.S)
+    if t3_m:
+        t3_html = t3_m.group(0)
+        for doc_link in re.finditer(r'<a\b[^>]*?href=["\']([^"\']+\.(?:xlsx|pdf))["\'][^>]*>(.*?)</a>', t3_html, re.I | re.S):
+            href, label = doc_link.group(1), doc_link.group(2)
+            if "Kolatu" in href or "Request Books" in label:
+                # User requested to drop the book request letter
+                continue
+            url = absolutise(href)
+            title, version, date = split_meta(label)
+            sec3.docs.append(Doc(title=title, url=url, version=version, date=date))
+
+    return [s for s in (sec1, sec3) if s.docs]
+
+
 # --------------------------------------------------------------------------
 # restructuring
 # --------------------------------------------------------------------------
 
-def subdivide(sections: list[Section]) -> list[Section]:
-    """Break the very large Pada/Krama sections into per-kandam subsections.
+def kandam_of(doc: Doc) -> str:
+    m = KANDAM_RE.search(doc.url)
+    if m:
+        return m.group(1)
+    m = re.search(r"TS(?:%20|\s+)(\d)\.", doc.url, re.I)
+    if m:
+        return m.group(1)
+    m = re.search(r"\bTS\s*(\d)\.", doc.title, re.I)
+    if m:
+        return m.group(1)
+    return ""
 
-    These run to 250+ documents on a single page, which is the exact problem the
-    redesign set out to fix; an accordion holding 250 cards is still a wall. The
-    kandam number is already in the URL, so the split costs nothing.
-    """
+
+def subdivide(sections: list[Section]) -> list[Section]:
+    """Break the very large Pada/Krama/Jatai/Ghanam sections into per-kandam subsections."""
     out: list[Section] = []
     for section in sections:
         if len(section.docs) <= SPLIT_THRESHOLD:
             out.append(section)
             continue
 
-        groups: dict[str, list[Doc]] = {}
+        by_k: dict[str, list[Doc]] = defaultdict(list)
+        leftovers: list[Doc] = []
         for doc in section.docs:
-            m = KANDAM_RE.search(doc.url)
-            groups.setdefault(m.group(1) if m else "", []).append(doc)
+            k = kandam_of(doc)
+            if k:
+                by_k[k].append(doc)
+            else:
+                leftovers.append(doc)
 
-        if len(groups) < 2:
+        if len(by_k) > 1:
+            for k in sorted(by_k.keys(), key=lambda x: (int(x) if x.isdigit() else 999, x)):
+                title = f"{section.title} — Kandam {k}"
+                out.append(Section(title=title, docs=by_k[k]))
+            if leftovers:
+                out.append(Section(title=f"{section.title} — Other", docs=leftovers))
+        else:
             out.append(section)
-            continue
-
-        for key in sorted(groups, key=lambda k: (k == "", k)):
-            docs = groups[key]
-            title = f"{section.title} — Kandam {key}" if key else section.title
-            out.append(Section(title=title, docs=docs))
     return out
 
 
@@ -480,26 +596,31 @@ def extract_kandam_num(sec_title: str, doc: Doc | None = None) -> int | None:
         m = TS_NUM_RE.search(doc.title)
         if m:
             return int(m.group(1))
+        m = re.search(r"TS(?:%20|\s+)(\d)\.", doc.url, re.I)
+        if m:
+            return int(m.group(1))
     return None
 
 
 def nest_hierarchical_sections(sections: list[Section]) -> list[Section]:
-    """Nest Pada and Krama Kandam sections under top-level accordion containers."""
+    """Nest Pada, Krama, Jatai, and Ghanam Kandam sections under top-level accordion containers."""
     out: list[Section] = []
     pada_sections: list[Section] = []
     krama_sections: list[Section] = []
+    jatai_sections: list[Section] = []
+    ghanam_sections: list[Section] = []
 
     def is_pada(sec_title: str) -> bool:
-        return bool(
-            re.search(r"pada\s*p[aA]tam", sec_title, re.I)
-            and re.search(r"samhit", sec_title, re.I)
-        )
+        return bool(re.search(r"pada\s*p[aA]+th?[aA]+m", sec_title, re.I) and re.search(r"samhit", sec_title, re.I))
 
     def is_krama(sec_title: str) -> bool:
-        return bool(
-            re.search(r"krama\s*p[aA]tam", sec_title, re.I)
-            and re.search(r"samhit", sec_title, re.I)
-        )
+        return bool(re.search(r"krama\s*p[aA]+th?[aA]+m", sec_title, re.I) and re.search(r"samhit", sec_title, re.I))
+
+    def is_jatai(sec_title: str) -> bool:
+        return bool(re.search(r"jat[aA]+\s*p[aA]+th?[aA]+m", sec_title, re.I) and re.search(r"samhit", sec_title, re.I))
+
+    def is_ghanam(sec_title: str) -> bool:
+        return bool(re.search(r"ghan[aA]+\s*p[aA]+th?[aA]+m", sec_title, re.I) and re.search(r"samhit", sec_title, re.I))
 
     def build_container(container_title: str, matched_sections: list[Section]) -> Section:
         kandam_map: dict[int, list[Doc]] = {}
@@ -519,9 +640,15 @@ def nest_hierarchical_sections(sections: list[Section]) -> list[Section]:
             pada_sections.append(s)
         elif is_krama(s.title):
             krama_sections.append(s)
+        elif is_jatai(s.title):
+            jatai_sections.append(s)
+        elif is_ghanam(s.title):
+            ghanam_sections.append(s)
 
     pada_inserted = False
     krama_inserted = False
+    jatai_inserted = False
+    ghanam_inserted = False
 
     for s in sections:
         if s.subsections:
@@ -535,6 +662,14 @@ def nest_hierarchical_sections(sections: list[Section]) -> list[Section]:
             if not krama_inserted:
                 out.append(build_container("TaittirIya SamhitA krama pAtam", krama_sections))
                 krama_inserted = True
+        elif is_jatai(s.title):
+            if not jatai_inserted:
+                out.append(build_container("TaittirIya SamhitA jatA pAtam", jatai_sections))
+                jatai_inserted = True
+        elif is_ghanam(s.title):
+            if not ghanam_inserted:
+                out.append(build_container("TaittirIya SamhitA ghana pAtam", ghanam_sections))
+                ghanam_inserted = True
         else:
             out.append(s)
 
@@ -542,9 +677,9 @@ def nest_hierarchical_sections(sections: list[Section]) -> list[Section]:
 
 
 def icon_for(title: str, lang: str = "") -> str:
-    if lang == "tsj" or re.search(r"jat[aA]|jatai", title, re.I):
+    if lang in ("tsj", "baraha") and re.search(r"jat[aA]|jatai", title, re.I):
         return SVG_JATA
-    if lang == "tsg" or re.search(r"ghan[aA]|ghanam", title, re.I):
+    if lang in ("tsg", "siksha", "baraha") and re.search(r"ghan[aA]|ghanam", title, re.I):
         return SVG_GHANA
     for pattern, icon in SECTION_ICONS:
         if re.search(pattern, title, re.I):
@@ -604,7 +739,7 @@ def apply_dynamic_numbering(sections: list[Section]) -> None:
                     assigned_major = next_major
                     next_major += 1
                     last_assigned_major = assigned_major
-                    clean_t = re.sub(r"\.pdf$", "", t, flags=re.I).strip()
+                    clean_t = re.sub(r"\.(?:pdf|docx|xlsx)$", "", t, flags=re.I).strip()
                     doc.title = f"{assigned_major}) {clean_t}"
 
 
@@ -626,10 +761,23 @@ def render_card(doc: Doc, indent: str) -> str:
         f'\n{indent}        <div class="doc-meta">{"".join(meta)}</div>' if meta else ""
     )
 
+    lower_url = doc.url.lower()
+    if (doc.url.startswith("http://") or doc.url.startswith("https://")) and not any(
+        lower_url.endswith(ext) for ext in (".pdf", ".docx", ".xlsx")
+    ):
+        btn_label = "🔗 Visit Link"
+    else:
+        btn_label = "📄 Download"
+
     actions = [
         f'<a href="{esc(doc.url)}" target="_blank" rel="noopener" '
-        f'class="dl-btn primary">\U0001F4C4 Download</a>'
+        f'class="dl-btn primary">{btn_label}</a>'
     ]
+    if doc.ref_url:
+        actions.append(
+            f'<a href="{esc(doc.ref_url)}" target="_blank" rel="noopener" '
+            f'class="dl-btn secondary">🔗 Web Ref</a>'
+        )
     if doc.corrections:
         actions.append(
             f'<a href="{esc(doc.corrections)}" target="_blank" rel="noopener" '
@@ -652,7 +800,7 @@ def render_card(doc: Doc, indent: str) -> str:
 def render_section(section: Section, lang: str, index: int) -> str:
     count = len(section.docs) + sum(len(sub.docs) for sub in section.subsections)
     noun = "doc" if count == 1 else "docs"
-    open_class = " open" if index == 0 else ""
+    open_class = ""
     cat_id = f"cat-{lang}-{slugify(section.title)}"
 
     if section.subsections:
@@ -783,7 +931,7 @@ def splice(template: str, rendered: dict[str, str]) -> str:
         tab_icon = ""
         if lang == "tsj":
             tab_icon = SVG_TAB_JATA
-        elif lang == "tsg":
+        elif lang in ("tsg", "siksha"):
             tab_icon = SVG_TAB_GHANA
         tab_spans.append(
             f'        <span class="language-tab{active_cls}" onclick="showLanguage(\'{lang}\', event)" data-lang="{lang}">{tab_icon}{tab_title}</span>'
@@ -1153,10 +1301,12 @@ LANG_ICONS = {
     "english": "📖",
     "tsj": SVG_TAB_JATA,
     "tsg": SVG_TAB_GHANA,
-    "siksha": "📖",
+    "siksha": SVG_TAB_GHANA,
+    "parayanam": "🎧",
     "kanva": "📜",
     "inprogress": "⚙️",
     "latin": "Ā",
+    "baraha": "💻",
 }
 
 
@@ -1439,7 +1589,16 @@ def main() -> int:
     else:
         for i, (lang, page, label, _tab_title) in enumerate(LANGUAGES):
             source = load_page(page, args.offline)
-            sections = subdivide(parse_page(source, label))
+            if lang == "baraha":
+                raw_sections = parse_baraha(source)
+            elif lang == "siksha":
+                raw_sections = parse_siksha_gs(source)
+            elif lang == "parayanam":
+                raw_sections = parse_parayanam(source)
+            else:
+                raw_sections = parse_page(source, label)
+
+            sections = subdivide(raw_sections)
             sections = nest_hierarchical_sections(sections)
             apply_dynamic_numbering(sections)
             lang_sections[lang] = sections

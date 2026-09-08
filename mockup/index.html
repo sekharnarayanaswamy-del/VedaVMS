@@ -451,28 +451,46 @@
         .doc-actions {
             display: flex;
             gap: 0.4rem;
-            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-start;
+            min-width: 220px;
+            flex-shrink: 0;
         }
 
         .dl-btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.2rem;
-            padding: 0.35rem 0.6rem;
+            justify-content: center;
+            gap: 0.25rem;
+            padding: 0.35rem 0.65rem;
             border-radius: 3px;
             text-decoration: none;
             font-size: 0.75rem;
             font-weight: 600;
+            white-space: nowrap;
             transition: all 0.2s;
         }
 
         .dl-btn.primary {
             background: var(--saffron);
             color: white;
+            min-width: 105px;
+            text-align: center;
         }
 
         .dl-btn.primary:hover {
             background: var(--maroon);
+        }
+
+        .dl-btn.secondary {
+            background: #e0e0e0;
+            color: var(--dark-brown);
+            min-width: 95px;
+            text-align: center;
+        }
+
+        .dl-btn.secondary:hover {
+            background: #bdbdbd;
         }
 
         .about-section {
@@ -536,6 +554,23 @@
             .update-item {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+
+            .doc-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .doc-actions {
+                min-width: auto;
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .dl-btn {
+                flex: 1;
+                min-width: auto;
+                justify-content: center;
             }
         }
     </style>
@@ -602,10 +637,10 @@
                 <div class="name">Telugu</div>
                 <div class="count">16 documents</div>
             </a>
-            <a href="documents.html#english" class="language-card">
-                <div class="script">ABC</div>
-                <div class="name">English</div>
-                <div class="count">3 documents</div>
+            <a href="documents.html#latin" class="language-card">
+                <div class="script">ĀĒĪ</div>
+                <div class="name">Latin (IAST)</div>
+                <div class="count">27 documents</div>
             </a>
         </div>
     </section>
@@ -613,6 +648,16 @@
     <section class="section" style="padding-top:0;">
         <h2 class="section-title">Pilot Projects & Special Editions</h2>
         <div class="language-grid">
+            <a href="documents.html#baraha" class="language-card" style="border-left: 4px solid var(--maroon);">
+                <div class="script">💻</div>
+                <div class="name">Baraha Source</div>
+                <div class="count">201 documents</div>
+            </a>
+            <a href="documents.html#english" class="language-card" style="border-left: 4px solid var(--gold);">
+                <div class="script">ABC</div>
+                <div class="name">English</div>
+                <div class="count">3 documents</div>
+            </a>
             <a href="documents.html#tsj" class="language-card" style="border-left: 4px solid var(--saffron);">
                 <div class="script">
                     <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--saffron)" stroke-width="2"
@@ -644,25 +689,37 @@
                 <div class="name">TS Samhita Ghanam</div>
                 <div class="count">132 documents</div>
             </a>
-            <a href="documents.html#siksha" class="language-card" style="border-left: 4px solid var(--gold);">
-                <div class="script">📖</div>
-                <div class="name">SikShA & Lessons</div>
-                <div class="count">8 documents</div>
-            </a>
             <a href="documents.html#kanva" class="language-card" style="border-left: 4px solid var(--dark-brown);">
                 <div class="script">📜</div>
                 <div class="name">Kanva Samhita</div>
                 <div class="count">44 documents</div>
             </a>
+            <a href="documents.html#parayanam" class="language-card" style="border-left: 4px solid var(--saffron);">
+                <div class="script">🎧</div>
+                <div class="name">Parayanam and References</div>
+                <div class="count">9 documents</div>
+            </a>
+            <a href="documents.html#siksha" class="language-card" style="border-left: 4px solid var(--gold);">
+                <div class="script">
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="5" cy="18" r="2" fill="var(--gold)" />
+                        <circle cx="12" cy="6" r="2" fill="var(--gold)" />
+                        <circle cx="19" cy="18" r="2" fill="var(--gold)" />
+                        <path d="M7 17l4-9" />
+                        <path d="M13 8l4 9" />
+                        <path d="M17 18H7" />
+                        <path d="M12 9v6" stroke-dasharray="1.5 2" />
+                        <path d="M9 15h6" />
+                    </svg>
+                </div>
+                <div class="name">Ghana Sandhi</div>
+                <div class="count">7 documents</div>
+            </a>
             <a href="documents.html#inprogress" class="language-card" style="border-left: 4px solid var(--saffron);">
                 <div class="script">⚙️</div>
-                <div class="name">In Progress & Pilot</div>
+                <div class="name">Ghana Maala Pilot</div>
                 <div class="count">1 documents</div>
-            </a>
-            <a href="documents.html#latin" class="language-card" style="border-left: 4px solid var(--maroon);">
-                <div class="script">ĀĒĪ</div>
-                <div class="name">Latin (IAST) Coding</div>
-                <div class="count">17 documents</div>
             </a>
         </div>
     </section>
