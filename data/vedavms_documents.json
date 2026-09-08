@@ -5175,8 +5175,8 @@
     ]
   },
   "tsj": {
-    "label": "TS Jatai",
-    "tab": "TS Jatai (Pilot)",
+    "label": "TS Samhita Jatai",
+    "tab": "TS Samhita Jatai",
     "sections": [
       {
         "title": "TaittirIya SamhitA jatA pAtam",
@@ -6146,8 +6146,8 @@
     ]
   },
   "tsg": {
-    "label": "TS Ghanam",
-    "tab": "TS Ghanam (Pilot)",
+    "label": "TS Samhita Ghanam",
+    "tab": "TS Samhita Ghanam",
     "sections": [
       {
         "title": "TaittirIya SamhitA ghana pAtam",
@@ -7436,7 +7436,7 @@
     ]
   },
   "parayanam": {
-    "label": "Parayanam & References",
+    "label": "Parayanam and References",
     "tab": "Parayanam and References",
     "sections": [
       {

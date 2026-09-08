@@ -61,10 +61,10 @@ LANGUAGES = [
     ("latin",      "docs_latin.html",      "Latin (IAST)",        "Latin (IAST)"),
     ("baraha",     "docs_baraha.html",     "Baraha Source",       "Baraha Source"),
     ("english",    "docs_english.html",    "English",             "English"),
-    ("tsj",        "docs_tsj.html",        "TS Jatai",            "TS Jatai (Pilot)"),
-    ("tsg",        "docs_tsg.html",        "TS Ghanam",           "TS Ghanam (Pilot)"),
+    ("tsj",        "docs_tsj.html",        "TS Samhita Jatai",    "TS Samhita Jatai"),
+    ("tsg",        "docs_tsg.html",        "TS Samhita Ghanam",   "TS Samhita Ghanam"),
     ("kanva",      "docs_Kanva.html",      "Kanva Samhita",       "Kanva Samhita"),
-    ("parayanam",  "docs_SikShA.html",     "Parayanam & References", "Parayanam and References"),
+    ("parayanam",  "docs_SikShA.html",     "Parayanam and References", "Parayanam and References"),
     ("siksha",     "docs_SikShA.html",     "Ghana Sandhi",        "Ghana Sandhi"),
     ("inprogress", "docs_inprogress.html", "Ghana Maala Pilot",   "Ghana Maala Pilot"),
 ]
