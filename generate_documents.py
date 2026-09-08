@@ -181,10 +181,10 @@ MONTHS = {
 }
 DATE_RE = re.compile(
     r"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?\s*"
-    r"(\d{1,2})\s*,?\s*(\d{4})\b",
+    r"(\d{1,2})\s*[,.]?\s*(\d{4})\b",
     re.I,
 )
-VERSION_RE = re.compile(r"\b(?:version|ver|v)\s*\.?\s*(\d+(?:\.\d+)?)\b", re.I)
+VERSION_RE = re.compile(r"\b(?:version|ver|v)\s*\.?\s*(\d+(?:[.,]\d+)?)\b", re.I)
 CORRECTION_RE = re.compile(r"correction", re.I)
 PDF_LINK_RE = re.compile(
     r'<a\b[^>]*?href=["\']([^"\']+\.(?:pdf|docx|xlsx))["\'][^>]*>(.*?)</a>', re.I | re.S
@@ -286,7 +286,7 @@ def split_meta(raw: str) -> tuple[str, str, str]:
     version = ""
     vm = VERSION_RE.search(title)
     if vm:
-        version = "V" + vm.group(1)
+        version = "V" + vm.group(1).replace(",", ".")
 
     date = ""
     dm = DATE_RE.search(title)
@@ -299,6 +299,12 @@ def split_meta(raw: str) -> tuple[str, str, str]:
         title = title[:start] + title[end:]
 
     # Tidy the punctuation the removals leave behind.
+    title = re.sub(
+        r"\(?\s*(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\s*$",
+        "",
+        title,
+        flags=re.I,
+    )
     title = re.sub(r"\(\s*[,\-]?\s*\)", "", title)
     title = re.sub(r"\(\s*$", "", title)
     title = re.sub(r"^\s*\)", "", title)
@@ -428,18 +434,36 @@ def parse_page(page_html: str, lang_label: str) -> list[Section]:
         pending: Doc | None = None
 
         for url, label in merged:
+            lbl_clean = text_of(label)
             is_correction = bool(
-                CORRECTION_RE.search(text_of(label)) or CORRECTION_RE.search(url)
+                CORRECTION_RE.search(lbl_clean) or CORRECTION_RE.search(url)
             )
             if is_correction and pending is not None and url not in emitted:
                 if not pending.corrections:
                     pending.corrections = url
+                    if not pending.date:
+                        dm = DATE_RE.search(lbl_clean)
+                        if dm:
+                            pending.date = f"{MONTHS[dm.group(1).lower()]} {int(dm.group(2))}, {dm.group(3)}"
                     continue
                 if pending.corrections == url:
                     continue
                 # The row already contributed a corrections link, and a later
                 # row may reference this document again. Give the extra one its
                 # own card rather than overwriting and losing a link.
+
+            t, v, d = split_meta(label)
+            if not t or re.match(r"^[\d\s,.\-–—()]+$", t) or len(t) < 3:
+                # Stray anchor snippet (e.g. " 31,2025")
+                if pending is not None:
+                    if not pending.date:
+                        dm = DATE_RE.search(label)
+                        if dm:
+                            pending.date = f"{MONTHS[dm.group(1).lower()]} {int(dm.group(2))}, {dm.group(3)}"
+                    if not pending.version and v:
+                        pending.version = v
+                continue
+
             pending = add(url, label, target)
 
     rows = list(ROW_RE.finditer(page_html))
