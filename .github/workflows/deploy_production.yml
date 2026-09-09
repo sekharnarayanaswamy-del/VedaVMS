@@ -47,8 +47,13 @@ jobs:
           SECRET_URL: ${{ secrets.GOOGLE_SHEET_CSV_URL }}
           VAR_URL: ${{ vars.GOOGLE_SHEET_CSV_URL }}
         run: |
-          DEFAULT_SHEET="https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/export?format=csv&gid=548744990"
-          SHEET_URL="${SECRET_URL:-${VAR_URL:-$DEFAULT_SHEET}}"
+          if [ -n "$SECRET_URL" ]; then
+            SHEET_URL="$SECRET_URL"
+          elif [ -n "$VAR_URL" ]; then
+            SHEET_URL="$VAR_URL"
+          else
+            SHEET_URL="data/vedavms_documents.csv"
+          fi
           echo "Generating website from: $SHEET_URL"
           python generate_documents.py --source-csv "$SHEET_URL"
 
