@@ -316,28 +316,54 @@ def split_meta(raw: str) -> tuple[str, str, str]:
 def section_labels(page_html: str) -> list[tuple[int, str]]:
     """Locate section headings, in document order.
 
-    The site marks sections two ways: an <h3>, or bare text sitting between a
-    closing and an opening <table>. Some <h3> tags wrap a document link instead
-    of a heading, so those are excluded.
+    The live site marks sections in varied ways across language pages:
+    - Standard closed <h2> or <h3> tags
+    - Unclosed <h3> tags before <table> (e.g. docs_tamil.html, docs_malayalam.html)
+    - Bare text sitting between </table> and <table with interspersed <br /> tags
+    - Headings wrapped in <div><center> tags
     """
     found: list[tuple[int, str]] = []
 
+    # 1. Standard closed headings
     for m in re.finditer(r"<h([23])\b[^>]*>(.*?)</h\1>", page_html, re.I | re.S):
         inner = m.group(2)
         if PDF_LINK_RE.search(inner):
             continue
         label = text_of(inner)
-        if label:
+        if label and len(label) < 90 and not label.lower().startswith("http"):
             found.append((m.start(), label))
 
+    # 2. Section text between table / div / center / h2 / h3 / etc.
     for m in re.finditer(
-        r"</table>((?:\s|<br\s*/?>)*)([^<>\n][^<>]{3,90}?)((?:\s|<br\s*/?>)*)<table",
+        r"(?:</table>|<h[23]\b[^>]*>|<div\b[^>]*>|<center\b[^>]*>)"
+        r"(?:[\s\r\n]|<br\s*/?>|&nbsp;)*"
+        r"(?:<center\b[^>]*>|<h[23]\b[^>]*>|<div\b[^>]*>)?"
+        r"(?:[\s\r\n]|<br\s*/?>|&nbsp;)*"
+        r"([^<>\r\n]{3,80}?)"
+        r"(?:[\s\r\n]|<br\s*/?>|&nbsp;)*"
+        r"(?:</h[23]>|</center>|</div>|<table\b|<br\s*/?>)",
         page_html,
         re.I,
     ):
-        label = text_of(m.group(2))
-        if label:
-            found.append((m.start(2), label))
+        label_raw = m.group(1).strip()
+        label = text_of(label_raw)
+        if any(
+            w in label.lower()
+            for w in [
+                "vedic books",
+                "samhita",
+                "brahmanam",
+                "aranyakam",
+                "pada",
+                "krama",
+                "jatai",
+                "ghanam",
+                "kanva",
+            ]
+        ):
+            pos = m.start()
+            if not any(abs(pos - p) < 60 for p, _ in found):
+                found.append((pos, label))
 
     found.sort(key=lambda pair: pair[0])
     return found
@@ -397,20 +423,21 @@ def parse_page(page_html: str, lang_label: str) -> list[Section]:
                 break
         return current
 
-    # A document may be linked from more than one row. Keep the first card for
-    # it and let later rows enrich that same object, so a corrections link is
-    # never lost just because its partner was a repeat.
-    emitted: dict[str, Doc] = {}
+    # A document may be linked from more than one row within a section.
+    # Scope deduplication per section so that a document appearing in multiple
+    # sections is retained in each, and corrections links are never orphaned.
+    emitted: dict[tuple[int, str], Doc] = {}
 
     def add(url: str, label: str, target: Section) -> Doc:
-        doc = emitted.get(url)
+        key = (id(target), url.lower())
+        doc = emitted.get(key)
         if doc is None:
             title, version, date = split_meta(label)
             doc = Doc(
                 title=title or urllib.parse.unquote(os.path.basename(url)),
                 url=url, version=version, date=date,
             )
-            emitted[url] = doc
+            emitted[key] = doc
             target.docs.append(doc)
         return doc
 
@@ -438,15 +465,16 @@ def parse_page(page_html: str, lang_label: str) -> list[Section]:
             is_correction = bool(
                 CORRECTION_RE.search(lbl_clean) or CORRECTION_RE.search(url)
             )
-            if is_correction and pending is not None and url not in emitted:
-                if not pending.corrections:
-                    pending.corrections = url
-                    if not pending.date:
+            corr_target = pending if pending is not None else (target.docs[-1] if target.docs and not target.docs[-1].corrections else None)
+            if is_correction and corr_target is not None:
+                if not corr_target.corrections:
+                    corr_target.corrections = url
+                    if not corr_target.date:
                         dm = DATE_RE.search(lbl_clean)
                         if dm:
-                            pending.date = f"{MONTHS[dm.group(1).lower()]} {int(dm.group(2))}, {dm.group(3)}"
+                            corr_target.date = f"{MONTHS[dm.group(1).lower()]} {int(dm.group(2))}, {dm.group(3)}"
                     continue
-                if pending.corrections == url:
+                if corr_target.corrections.lower() == url.lower():
                     continue
                 # The row already contributed a corrections link, and a later
                 # row may reference this document again. Give the extra one its
@@ -834,7 +862,7 @@ def render_card(doc: Doc, indent: str) -> str:
     if doc.corrections:
         actions.append(
             f'<a href="{esc(doc.corrections)}" target="_blank" rel="noopener" '
-            f'class="dl-btn secondary">Corrections</a>'
+            f'class="dl-btn secondary corrections-btn">Corrections</a>'
         )
     actions_html = "".join(f"\n{indent}        {a}" for a in actions)
 
