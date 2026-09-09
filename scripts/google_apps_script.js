@@ -61,16 +61,22 @@ function monitorWorkflowRun(workflowFile, targetName, targetUrl, cellRow) {
             ss.toast('Generating website & deploying to ' + targetName + ' (' + elapsed + 's)...', '⚙️ Building', checkInterval + 1);
           } else if (status === 'completed') {
             if (conclusion === 'success') {
-              // Log timestamp into sheet
+              // Log timestamp into both active sheet and first sheet
+              var cellRef = "I" + cellRow + ":J" + cellRow;
               try {
-                var sheet = ss.getSheets()[0];
                 var nowStr = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
-                if (cellRow === 2) {
-                  sheet.getRange("I2").setValue("Last Staging Deploy:");
-                  sheet.getRange("J2").setValue(nowStr);
-                } else if (cellRow === 3) {
-                  sheet.getRange("I3").setValue("Last Production Deploy:");
-                  sheet.getRange("J3").setValue(nowStr);
+                var targetSheets = [ss.getActiveSheet(), ss.getSheets()[0]];
+                for (var i = 0; i < targetSheets.length; i++) {
+                  var sh = targetSheets[i];
+                  if (sh) {
+                    if (cellRow === 2) {
+                      sh.getRange("I2").setValue("Last Staging Deploy:").setFontWeight("bold");
+                      sh.getRange("J2").setValue(nowStr).setFontWeight("bold").setBackground("#E6F4EA");
+                    } else if (cellRow === 3) {
+                      sh.getRange("I3").setValue("Last Production Deploy:").setFontWeight("bold");
+                      sh.getRange("J3").setValue(nowStr).setFontWeight("bold").setBackground("#FCE8E6");
+                    }
+                  }
                 }
                 SpreadsheetApp.flush();
               } catch (ex) {}
@@ -81,7 +87,8 @@ function monitorWorkflowRun(workflowFile, targetName, targetUrl, cellRow) {
                 '• Live URL: ' + targetUrl + '\n' +
                 '• Duration: ' + elapsed + ' seconds\n' +
                 '• Status: HTTP 200 OK\n' +
-                '• GitHub Run ID: ' + runId,
+                '• Logged to Cell: ' + cellRef + '\n\n' +
+                '💡 Note: If your browser still displays the old page, do a hard refresh (Ctrl + F5 or Cmd + Shift + R) to clear cached HTML.',
                 ui.ButtonSet.OK
               );
               return;
