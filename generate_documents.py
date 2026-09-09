@@ -1368,6 +1368,16 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
 
         sec_title = clean_section_title(sec_title, raw_lang)
         title = (row.get("Title") or row.get("title") or "").strip()
+
+        # Automatically normalize Samhita, Brahmana, Aranyaka across all languages
+        if sec_title in ("TaittirIya SamhitA", "TaittirIya brAhmaNam", "TaittirIya Aranyakam"):
+            tl = title.lower()
+            if "brahmanam" in tl or "brAhmaNam" in title or "TB " in title:
+                sec_title = "TaittirIya brAhmaNam"
+            elif "aranyakam" in tl or "Aranyakam" in title:
+                sec_title = "TaittirIya Aranyakam"
+            else:
+                sec_title = "TaittirIya SamhitA"
         url = (
             row.get("PDF_URL")
             or row.get("pdf_url")
