@@ -29,7 +29,7 @@ function monitorWorkflowRun(workflowFile, targetName, targetUrl, isProduction) {
   var ui = SpreadsheetApp.getUi();
   var token = getGitHubToken();
 
-  ss.toast('Connecting to GitHub Actions...', '🚀 VedaVMS Pipeline', 5);
+  ss.toast('Deployment triggered on GitHub Actions. Waiting for completion...', '🚀 VedaVMS', 15);
   Utilities.sleep(3000);
 
   var runsUrl = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/actions/workflows/' + workflowFile + '/runs?per_page=1';
@@ -40,9 +40,9 @@ function monitorWorkflowRun(workflowFile, targetName, targetUrl, isProduction) {
   };
 
   var runId = null;
-  var maxWaitSeconds = 150;
+  var maxWaitSeconds = 180;
   var elapsed = 0;
-  var checkInterval = 4;
+  var checkInterval = 5;
 
   while (elapsed < maxWaitSeconds) {
     try {
@@ -55,11 +55,7 @@ function monitorWorkflowRun(workflowFile, targetName, targetUrl, isProduction) {
           var status = latest.status;
           var conclusion = latest.conclusion;
 
-          if (status === 'queued') {
-            ss.toast('Waiting in GitHub queue (' + elapsed + 's)...', '⏳ ' + targetName, checkInterval + 1);
-          } else if (status === 'in_progress') {
-            ss.toast('Generating website & deploying to ' + targetName + ' (' + elapsed + 's)...', '⚙️ Building', checkInterval + 1);
-          } else if (status === 'completed') {
+          if (status === 'completed') {
             if (conclusion === 'success') {
               // Format timestamp: DD-MMM-YYYY, hh:mm:ss a IST
               var now = new Date();
