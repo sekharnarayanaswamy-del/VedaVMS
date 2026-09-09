@@ -1,0 +1,69 @@
+name: Deploy to Production (vedavms.in)
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_dir:
+        description: 'Target Remote Directory on Web Server'
+        required: true
+        default: '/httpdocs/'
+        type: string
+      confirm_deploy:
+        description: 'Type "DEPLOY" to confirm live production rollout'
+        required: true
+        default: 'DEPLOY'
+        type: string
+
+jobs:
+  promote-to-production:
+    if: github.event.inputs.confirm_deploy == 'DEPLOY'
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      PROD_FTP_SERVER: ${{ secrets.PROD_FTP_SERVER || vars.PROD_FTP_SERVER || secrets.FTP_SERVER || vars.FTP_SERVER || '103.69.196.157' }}
+      PROD_FTP_USERNAME: ${{ secrets.PROD_FTP_USERNAME || vars.PROD_FTP_USERNAME || secrets.FTP_USERNAME || vars.FTP_USERNAME || 'vedavmsi' }}
+      PROD_FTP_PASSWORD: ${{ secrets.PROD_FTP_PASSWORD || vars.PROD_FTP_PASSWORD || secrets.FTP_PASSWORD || vars.FTP_PASSWORD }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate Website Bundle
+        env:
+          SECRET_URL: ${{ secrets.GOOGLE_SHEET_CSV_URL }}
+          VAR_URL: ${{ vars.GOOGLE_SHEET_CSV_URL }}
+        run: |
+          DEFAULT_SHEET="https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/export?format=csv&gid=548744990"
+          SHEET_URL="${SECRET_URL:-${VAR_URL:-$DEFAULT_SHEET}}"
+          echo "Generating website from: $SHEET_URL"
+          python generate_documents.py --source-csv "$SHEET_URL"
+
+      - name: Prepare FTP Configuration
+        id: ftp-config
+        run: |
+          RAW_SERVER="${{ env.PROD_FTP_SERVER }}"
+          CLEAN_SERVER=$(echo "$RAW_SERVER" | sed -e 's|^[a-zA-Z0-9\+\.\-]*://||' -e 's|/.*$||' -e 's|:.*$||' | tr -d '[:space:]"')
+          if [ -z "$CLEAN_SERVER" ]; then
+            CLEAN_SERVER="103.69.196.157"
+          fi
+          if ! getent hosts "$CLEAN_SERVER" > /dev/null 2>&1; then
+            CLEAN_SERVER="103.69.196.157"
+          fi
+          echo "clean_server=$CLEAN_SERVER" >> $GITHUB_OUTPUT
+
+      - name: Deploy to Production Web Server
+        if: env.PROD_FTP_PASSWORD != ''
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ steps.ftp-config.outputs.clean_server }}
+          username: ${{ env.PROD_FTP_USERNAME }}
+          password: ${{ env.PROD_FTP_PASSWORD }}
+          server-dir: ${{ github.event.inputs.target_dir }}
+          protocol: ftps
+          port: 21
+          security: loose
+          local-dir: ./build/

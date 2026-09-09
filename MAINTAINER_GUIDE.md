@@ -472,24 +472,40 @@ Use this checklist to complete the autonomous setup:
 
 ---
 
-## 🔒 Staging Server Configuration & Credentials
+## 🔒 Server Configuration & Directory Paths
 
-The staging site resides on the same Windows IIS / Plesk server as production, but in its own dedicated document root folder:
+The website files reside on the Windows IIS / Plesk hosting server at `103.69.196.157`:
 
-| Parameter | Setting | Description |
-| :--- | :--- | :--- |
-| **Server Host** | `103.69.196.157` | Plesk hosting server |
-| **Protocol** | FTPS (FTP over TLS) | Port 21 with TLS Session Resumption |
-| **Username** | `vedavmsi` | System FTP account |
-| **Production Directory** | `/httpdocs/` | Serves the main live site (`vedavms.in`) |
-| **Staging Directory** | `/new.vedavms.in/` | Serves the redesigned staging site (`new.vedavms.in`) |
+| Environment | Web Root Folder | URL | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Live Production** | `/httpdocs/` | `https://vedavms.in` | Main live website |
+| **Staging Preview** | `/new.vedavms.in/` | `https://new.vedavms.in` | Redesign testing & review area |
 
-### GitHub Secrets for Staging Pipeline:
-Configure these in GitHub under **Settings > Secrets and variables > Actions**:
-- `STAGING_FTP_SERVER`: `103.69.196.157`
-- `STAGING_FTP_USERNAME`: `vedavmsi`
-- `STAGING_FTP_PASSWORD`: `(your FTP password)`
-- `STAGING_REMOTE_DIR`: `/new.vedavms.in/`
+---
+
+## 🚀 Deploying to Staging or Production
+
+We provide a parameterized deployment script `scripts/deploy_site.py` that takes the target directory as a parameter, creates an automatic backup snapshot of existing remote files before overwriting, and uploads the `build/` files via secure FTPS:
+
+```bash
+# 1. Deploy to Staging (new.vedavms.in at /new.vedavms.in)
+python scripts/deploy_site.py --staging
+# or explicitly:
+python scripts/deploy_site.py --dir /new.vedavms.in
+
+# 2. Promote to Live Production (vedavms.in at /httpdocs)
+# Automatically creates a pre-deploy backup snapshot in backups/ before deploying!
+python scripts/deploy_site.py --production
+# or explicitly:
+python scripts/deploy_site.py --dir /httpdocs
+
+# 3. Dry-run mode (preview which files would be deployed without modifying server)
+python scripts/deploy_site.py --production --dry-run
+```
+
+### GitHub Actions Deployment:
+- **Automatic Staging Rollout**: Pushes to `main` automatically deploy to `/new.vedavms.in/`.
+- **Manual Production Promotion**: Under GitHub **Actions ➔ Deploy to Production (vedavms.in)**, click **Run workflow** to promote the current build to `/httpdocs/` with explicit confirmation.
 
 ---
 
