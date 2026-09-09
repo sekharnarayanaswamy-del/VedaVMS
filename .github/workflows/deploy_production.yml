@@ -20,7 +20,7 @@ jobs:
   promote-to-production:
     if: github.event_name == 'repository_dispatch' || github.event.inputs.confirm_deploy == 'DEPLOY'
     runs-on: ubuntu-latest
-    environment: production
+    environment: staging
     env:
       PROD_FTP_SERVER: ${{ secrets.PROD_FTP_SERVER || vars.PROD_FTP_SERVER || secrets.STAGING_FTP_SERVER || vars.STAGING_FTP_SERVER || secrets.FTP_SERVER || vars.FTP_SERVER || '103.69.196.157' }}
       PROD_FTP_USERNAME: ${{ secrets.PROD_FTP_USERNAME || vars.PROD_FTP_USERNAME || secrets.STAGING_FTP_USERNAME || vars.STAGING_FTP_USERNAME || secrets.FTP_USERNAME || vars.FTP_USERNAME || 'vedavmsi' }}
@@ -33,6 +33,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
+      - name: Verify FTP Credentials
+        run: |
+          if [ -z "${{ env.PROD_FTP_PASSWORD }}" ]; then
+            echo "::error::FTP Password secret is missing! Please configure STAGING_FTP_PASSWORD or PROD_FTP_PASSWORD in GitHub Secrets."
+            exit 1
+          fi
+          echo "✓ FTP credentials verified."
 
       - name: Generate Website Bundle
         env:
@@ -65,7 +73,6 @@ jobs:
           echo "clean_server=$CLEAN_SERVER" >> $GITHUB_OUTPUT
 
       - name: Deploy to Production Web Server
-        if: env.PROD_FTP_PASSWORD != ''
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ steps.ftp-config.outputs.clean_server }}

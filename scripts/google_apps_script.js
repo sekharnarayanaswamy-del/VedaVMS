@@ -1,15 +1,9 @@
 /**
  * VedaVMS Google Sheet Automation Suite (Google Apps Script)
  * 
- * Provides a custom menu in Google Sheets:
+ * Provides a custom menu in Google Sheets with live status tracking:
  *  - 🚀 Publish to Staging (new.vedavms.in)
  *  - 🔴 Publish to Production (vedavms.in)
- * 
- * Features:
- *  - Real-time progress tracking with Google Sheets toast notifications
- *  - Live polling of GitHub Actions run status until complete
- *  - Instant confirmation popup showing whether the deployment succeeded or failed
- *  - Automatic logging of last deployment timestamp in the spreadsheet
  */
 
 const REPO_OWNER = 'sekharnarayanaswamy-del';
@@ -30,10 +24,7 @@ function onOpen() {
     .addToUi();
 }
 
-/**
- * Polls GitHub Actions workflow run until completion and reports final status.
- */
-function monitorWorkflowRun(workflowFile, targetName, targetUrl, cellCoord) {
+function monitorWorkflowRun(workflowFile, targetName, targetUrl, cellRow) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var ui = SpreadsheetApp.getUi();
   var token = getGitHubToken();
@@ -49,11 +40,10 @@ function monitorWorkflowRun(workflowFile, targetName, targetUrl, cellCoord) {
   };
 
   var runId = null;
-  var maxWaitSeconds = 120;
+  var maxWaitSeconds = 150;
   var elapsed = 0;
   var checkInterval = 4;
 
-  // Poll until run finishes
   while (elapsed < maxWaitSeconds) {
     try {
       var resp = UrlFetchApp.fetch(runsUrl, { method: 'get', headers: headers, muteHttpExceptions: true });
@@ -62,29 +52,35 @@ function monitorWorkflowRun(workflowFile, targetName, targetUrl, cellCoord) {
         if (data.workflow_runs && data.workflow_runs.length > 0) {
           var latest = data.workflow_runs[0];
           runId = latest.id;
-          var status = latest.status;         // 'queued', 'in_progress', 'completed'
-          var conclusion = latest.conclusion; // 'success', 'failure', etc.
+          var status = latest.status;
+          var conclusion = latest.conclusion;
 
           if (status === 'queued') {
             ss.toast('Waiting in GitHub queue (' + elapsed + 's)...', '⏳ ' + targetName, checkInterval + 1);
           } else if (status === 'in_progress') {
-            ss.toast('Generating HTML & deploying via FTPS (' + elapsed + 's)...', '⚙️ ' + targetName, checkInterval + 1);
+            ss.toast('Generating website & deploying to ' + targetName + ' (' + elapsed + 's)...', '⚙️ Building', checkInterval + 1);
           } else if (status === 'completed') {
             if (conclusion === 'success') {
-              // Log timestamp in cell
+              // Log timestamp into sheet
               try {
-                var sheet = ss.getActiveSheet();
-                if (cellCoord) {
-                  var nowStr = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
-                  sheet.getRange(cellCoord).setValue('Last ' + targetName + ': ' + nowStr);
+                var sheet = ss.getSheets()[0];
+                var nowStr = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
+                if (cellRow === 2) {
+                  sheet.getRange("I2").setValue("Last Staging Deploy:");
+                  sheet.getRange("J2").setValue(nowStr);
+                } else if (cellRow === 3) {
+                  sheet.getRange("I3").setValue("Last Production Deploy:");
+                  sheet.getRange("J3").setValue(nowStr);
                 }
+                SpreadsheetApp.flush();
               } catch (ex) {}
 
               ui.alert(
                 '🎉 Deployment Successful!',
-                'The changes have been published to ' + targetName + ' successfully!\n\n' +
+                'The website has been published to ' + targetName + ' successfully!\n\n' +
                 '• Live URL: ' + targetUrl + '\n' +
-                '• Completed in: ' + elapsed + ' seconds\n' +
+                '• Duration: ' + elapsed + ' seconds\n' +
+                '• Status: HTTP 200 OK\n' +
                 '• GitHub Run ID: ' + runId,
                 ui.ButtonSet.OK
               );
@@ -94,7 +90,7 @@ function monitorWorkflowRun(workflowFile, targetName, targetUrl, cellCoord) {
                 '❌ Deployment Failed (' + conclusion + ')',
                 'GitHub Actions encountered an issue during deployment.\n\n' +
                 '• Run ID: ' + runId + '\n' +
-                '• Logs: ' + latest.html_url,
+                '• View Run Logs: ' + latest.html_url,
                 ui.ButtonSet.OK
               );
               return;
@@ -102,9 +98,7 @@ function monitorWorkflowRun(workflowFile, targetName, targetUrl, cellCoord) {
           }
         }
       }
-    } catch (e) {
-      // Continue polling on transient fetch glitch
-    }
+    } catch (e) {}
 
     Utilities.sleep(checkInterval * 1000);
     elapsed += checkInterval;
@@ -129,13 +123,11 @@ function triggerStagingDeploy() {
 
   var token = getGitHubToken();
   if (!token || token === 'PASTE_YOUR_GITHUB_TOKEN_HERE') {
-    ui.alert('❌ Error: GITHUB_TOKEN is not configured.\n\nPlease open Extensions > Apps Script > Project Settings (gear icon) > Script Properties and add GITHUB_TOKEN.');
+    ui.alert('❌ Error: GITHUB_TOKEN is not configured in Script Properties.');
     return;
   }
 
   var url = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/actions/workflows/deploy_staging.yml/dispatches';
-  var payload = { ref: 'main' };
-
   var options = {
     method: 'post',
     contentType: 'application/json',
@@ -144,7 +136,7 @@ function triggerStagingDeploy() {
       'Accept': 'application/vnd.github.v3+json',
       'User-Agent': 'Google-Apps-Script-VedaVMS'
     },
-    payload: JSON.stringify(payload),
+    payload: JSON.stringify({ ref: 'main' }),
     muteHttpExceptions: true
   };
 
@@ -152,8 +144,7 @@ function triggerStagingDeploy() {
     var resp = UrlFetchApp.fetch(url, options);
     var code = resp.getResponseCode();
     if (code === 204 || code === 200) {
-      // Start live monitoring
-      monitorWorkflowRun('deploy_staging.yml', 'Staging (new.vedavms.in)', 'https://new.vedavms.in', 'J2');
+      monitorWorkflowRun('deploy_staging.yml', 'Staging (new.vedavms.in)', 'https://new.vedavms.in', 2);
     } else {
       ui.alert('❌ GitHub API Error (HTTP ' + code + '):\n' + resp.getContentText());
     }
@@ -174,16 +165,11 @@ function triggerProductionDeploy() {
 
   var token = getGitHubToken();
   if (!token || token === 'PASTE_YOUR_GITHUB_TOKEN_HERE') {
-    ui.alert('❌ Error: GITHUB_TOKEN is not configured.\n\nPlease open Extensions > Apps Script > Project Settings (gear icon) > Script Properties and add GITHUB_TOKEN.');
+    ui.alert('❌ Error: GITHUB_TOKEN is not configured in Script Properties.');
     return;
   }
 
   var url = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/actions/workflows/deploy_production.yml/dispatches';
-  var payload = {
-    ref: 'main',
-    inputs: { confirm_deploy: 'DEPLOY' }
-  };
-
   var options = {
     method: 'post',
     contentType: 'application/json',
@@ -192,7 +178,7 @@ function triggerProductionDeploy() {
       'Accept': 'application/vnd.github.v3+json',
       'User-Agent': 'Google-Apps-Script-VedaVMS'
     },
-    payload: JSON.stringify(payload),
+    payload: JSON.stringify({ ref: 'main', inputs: { confirm_deploy: 'DEPLOY' } }),
     muteHttpExceptions: true
   };
 
@@ -200,8 +186,7 @@ function triggerProductionDeploy() {
     var resp = UrlFetchApp.fetch(url, options);
     var code = resp.getResponseCode();
     if (code === 204 || code === 200) {
-      // Start live monitoring
-      monitorWorkflowRun('deploy_production.yml', 'Production (vedavms.in)', 'https://vedavms.in', 'J3');
+      monitorWorkflowRun('deploy_production.yml', 'Production (vedavms.in)', 'https://vedavms.in', 3);
     } else {
       ui.alert('❌ GitHub API Error (HTTP ' + code + '):\n' + resp.getContentText());
     }
