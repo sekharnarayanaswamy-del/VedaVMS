@@ -64,7 +64,6 @@ LANGUAGES = [
     ("tsj",        "docs_tsj.html",        "TS Samhita Jatai",    "TS Samhita Jatai"),
     ("tsg",        "docs_tsg.html",        "TS Samhita Ghanam",   "TS Samhita Ghanam"),
     ("kanva",      "docs_Kanva.html",      "Kanva Samhita",       "Kanva Samhita"),
-    ("parayanam",  "docs_SikShA.html",     "Parayanam and References", "Parayanam and References"),
     ("siksha",     "docs_SikShA.html",     "Ghana Sandhi",        "Ghana Sandhi"),
     ("inprogress", "docs_inprogress.html", "Ghana Maala Pilot",   "Ghana Maala Pilot"),
 ]
