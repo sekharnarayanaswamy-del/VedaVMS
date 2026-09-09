@@ -1277,9 +1277,6 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
     lookup["siksha & lessons"] = "siksha"
     lookup["siksha and lessons"] = "siksha"
     lookup["parayanam"] = "parayanam"
-    lookup["parayanam & references"] = "parayanam"
-    lookup["parayanam and references"] = "parayanam"
-    lookup["references"] = "parayanam"
     lookup["ghana maala"] = "inprogress"
     lookup["ghana maala pilot"] = "inprogress"
     lookup["in progress & pilot"] = "inprogress"
@@ -1339,7 +1336,7 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
             elif "sandhi" in rl:
                 lang_key = "siksha"
             elif "parayanam" in rl or "reference" in rl:
-                lang_key = "parayanam"
+                continue
             elif "maala" in rl or "inprogress" in rl:
                 lang_key = "inprogress"
             elif "baraha" in rl:
@@ -1358,7 +1355,7 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
                     ):
                         lang_key = candidate_key
                         break
-        if not lang_key:
+        if not lang_key or lang_key not in sections_by_lang:
             continue
 
         status = (row.get("Status") or row.get("status") or "Active").strip()
