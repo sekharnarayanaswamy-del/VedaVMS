@@ -1217,7 +1217,12 @@
             "version": "V0.0",
             "date": "Jun 30, 2025",
             "corrections": ""
-          },
+          }
+        ]
+      },
+      {
+        "title": "TaittirIya brAhmaNam",
+        "docs": [
           {
             "title": "TaittirIya BrAhmaNam aShtakam 1 - prapAtakam 1- 4 - Tamil",
             "url": "https://vedavms.in/docs/TB/TB%201.1-1.4%20Tamil.pdf",
@@ -1259,7 +1264,12 @@
             "version": "",
             "date": "Aug 31, 2026",
             "corrections": ""
-          },
+          }
+        ]
+      },
+      {
+        "title": "TaittirIya Aranyakam",
+        "docs": [
           {
             "title": "TaittirIya Aranyakam - prapAtakam 1- 4 - Tamil",
             "url": "https://vedavms.in/docs/TA/TA%201-4%20Tamil.pdf",
@@ -2190,7 +2200,12 @@
             "version": "V0.0",
             "date": "Jun 30, 2025",
             "corrections": ""
-          },
+          }
+        ]
+      },
+      {
+        "title": "TaittirIya brAhmaNam",
+        "docs": [
           {
             "title": "TaittirIya brAhmaNam ashtakam 1 - PRAPAATKAM 1- 4 - Malayalam",
             "url": "https://vedavms.in/docs/TB/TB%201.1-1.4%20Malayalam.pdf",
@@ -7393,85 +7408,6 @@
       }
     ]
   },
-  "parayanam": {
-    "label": "Parayanam and References",
-    "tab": "Parayanam and References",
-    "sections": [
-      {
-        "title": "References",
-        "docs": [
-          {
-            "title": "1) TaittirIya PrAtiSAkyam",
-            "url": "http://sanskritweb.net/yajurveda/index.html#TP",
-            "version": "",
-            "date": "",
-            "corrections": ""
-          },
-          {
-            "title": "2) Swara SIkShA",
-            "url": "https://vedicreserve.miu.edu/shiksha/shiksha_vedicreserve.html",
-            "version": "",
-            "date": "",
-            "corrections": ""
-          },
-          {
-            "title": "3) JatA Mani",
-            "url": "https://vedicreserve.miu.edu/shiksha/shiksha_vedicreserve.html",
-            "version": "",
-            "date": "",
-            "corrections": ""
-          },
-          {
-            "title": "4) JatA DarpaNam",
-            "url": "https://www.wilbourhall.org/sansknet/vedas/yajurveda/jatadarpana/index.htm",
-            "version": "",
-            "date": "",
-            "corrections": ""
-          },
-          {
-            "title": "5) Ghana DarpaNam",
-            "url": "https://www.wilbourhall.org/sansknet/vedas/yajurveda/jatadarpana/index.htm",
-            "version": "",
-            "date": "",
-            "corrections": ""
-          }
-        ]
-      },
-      {
-        "title": "Veda Parayanam Links (TTD Recitation)",
-        "docs": [
-          {
-            "title": "1) TTD SamhitA Parayanam links",
-            "url": "https://vedavms.in/docs/SIkShA/TTD%20Samhita%20PaaraayaNam.xlsx",
-            "version": "",
-            "date": "",
-            "corrections": ""
-          },
-          {
-            "title": "2) TTD SamhitA Pada Paata Parayanam links",
-            "url": "https://vedavms.in/docs/SIkShA/TTD%20Pada%20PaaraayaNam.xlsx",
-            "version": "",
-            "date": "",
-            "corrections": ""
-          },
-          {
-            "title": "3) TTD SamhitA Krama Parayanam links",
-            "url": "https://vedavms.in/docs/SIkShA/TTD%20Krama%20PaaraayaNam.xlsx",
-            "version": "",
-            "date": "",
-            "corrections": ""
-          },
-          {
-            "title": "4) TTD SamhitA Jata Paata Parayanam links",
-            "url": "https://vedavms.in/docs/SIkShA/TTD%20JatA%20PaaraayaNam.xlsx",
-            "version": "",
-            "date": "",
-            "corrections": ""
-          }
-        ]
-      }
-    ]
-  },
   "siksha": {
     "label": "Ghana Sandhi",
     "tab": "Ghana Sandhi",
@@ -7544,6 +7480,424 @@
             "url": "https://vedavms.in/docs/Pilot_Projects/Ghana%20Maala%20Sanskrit.pdf",
             "version": "V0.2",
             "date": "Jul 31, 2022",
+            "corrections": ""
+          }
+        ]
+      }
+    ]
+  },
+  "articles": {
+    "label": "articles",
+    "tab": "articles",
+    "sections": [
+      {
+        "title": "Veda Basics & Recital Rules",
+        "docs": [
+          {
+            "title": "1) Basics of Sanskrit Letters",
+            "url": "https://vedavms.in/docs/articles/00Sanskrit%20Letters.pdf",
+            "version": "V1.0",
+            "date": "Jan 31, 2026",
+            "corrections": ""
+          },
+          {
+            "title": "2) Basics of Veda Swaras",
+            "url": "https://vedavms.in/docs/articles/01Basics%20of%20Veda%20Swaras.pdf",
+            "version": "V1.0",
+            "date": "Jan 31, 2026",
+            "corrections": ""
+          },
+          {
+            "title": "3) Basics of Veda Recital",
+            "url": "https://vedavms.in/docs/articles/01ABasics%20of%20Veda%20Recital.pdf",
+            "version": "V1.0",
+            "date": "Feb 28, 2026",
+            "corrections": ""
+          },
+          {
+            "title": "4) Basics of Veda - Dheerga Swarita",
+            "url": "https://vedavms.in/docs/articles/02Basics%20of%20Veda-Dheerga%20Swaritam.pdf",
+            "version": "V1.0",
+            "date": "Feb 28, 2026",
+            "corrections": ""
+          },
+          {
+            "title": "5) Basics of Veda - Visarga Sandhi",
+            "url": "https://vedavms.in/docs/articles/03Basics%20of%20Veda-Visarga%20Sandhi.pdf",
+            "version": "V1.0",
+            "date": "Feb 28, 2026",
+            "corrections": ""
+          },
+          {
+            "title": "6) Basics of Veda - Avagraha",
+            "url": "https://vedavms.in/docs/articles/04Basics%20of%20Veda-avagraha.pdf",
+            "version": "V1.0",
+            "date": "March 31, 2026",
+            "corrections": ""
+          },
+          {
+            "title": "7) Basics of Veda - Chandas",
+            "url": "https://vedavms.in/docs/articles/05Basics%20of%20Veda-Chandas.pdf",
+            "version": "V0.1",
+            "date": "Mar 15, 2019",
+            "corrections": ""
+          },
+          {
+            "title": "8) Basics of Veda - Krama Paatam",
+            "url": "https://vedavms.in/docs/articles/06Basics%20of%20Veda-Krama%20Paatam.pdf",
+            "version": "V0.2",
+            "date": "Mar 8, 2019",
+            "corrections": ""
+          },
+          {
+            "title": "9) Basics of Veda - Ghana Paatam",
+            "url": "https://vedavms.in/docs/articles/07Basics%20of%20Veda-Ghana%20Paatam.pdf",
+            "version": "V0.2",
+            "date": "Mar 8, 2019",
+            "corrections": ""
+          },
+          {
+            "title": "10) Basics of Veda - Vowel Sandhi",
+            "url": "https://vedavms.in/docs/articles/08Basics%20of%20Veda-Vowel%20Sandhi.pdf",
+            "version": "V0.2",
+            "date": "Feb 23, 2019",
+            "corrections": ""
+          },
+          {
+            "title": "11) Basics of Veda - Consonant Sandhi",
+            "url": "https://vedavms.in/docs/articles/09Basics%20of%20Veda-Consonant%20Sandhi.pdf",
+            "version": "V0.2",
+            "date": "Mar 12, 2019",
+            "corrections": ""
+          },
+          {
+            "title": "12) Basics of Veda - Jata Paatam",
+            "url": "https://vedavms.in/docs/articles/10Basics%20of%20Veda-Jata%20Paatam.pdf",
+            "version": "V0.1",
+            "date": "Mar 11, 2019",
+            "corrections": ""
+          },
+          {
+            "title": "13) Basics of Veda - Pada Paatam and Swara Rules",
+            "url": "https://vedavms.in/docs/articles/11Basics%20of%20Veda-Pada%20Paatam.pdf",
+            "version": "V0.2",
+            "date": "Jan 08, 2019",
+            "corrections": ""
+          }
+        ]
+      }
+    ]
+  },
+  "videos_tamil": {
+    "label": "videos_tamil",
+    "tab": "videos_tamil",
+    "sections": [
+      {
+        "title": "Tamil Video Lessons",
+        "docs": [
+          {
+            "title": "VedaVMS Intro 1 - Tamil",
+            "url": "https://www.youtube.com/watch?v=oajxQ6SRV6s",
+            "version": "1",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "VedaVMS Intro 2 - Tamil",
+            "url": "https://www.youtube.com/watch?v=joZm04yIbPo",
+            "version": "2",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics 1 - Tamil",
+            "url": "https://www.youtube.com/watch?v=l4R3zZOnnyQ",
+            "version": "3",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics 2 - Tamil",
+            "url": "https://www.youtube.com/watch?v=MigkYi2Vxio",
+            "version": "4",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics 3 - Tamil",
+            "url": "https://www.youtube.com/watch?v=rys5C9qY5XQ",
+            "version": "5",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics KYV 1 - Tamil",
+            "url": "https://www.youtube.com/watch?v=VIc4C_Obr0Q",
+            "version": "6",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics KYV 2 - Tamil",
+            "url": "https://www.youtube.com/watch?v=LMZ8AkxWaXQ",
+            "version": "7",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Sanskrit Vowels",
+            "url": "https://www.youtube.com/watch?v=nHeH1mNF0AU",
+            "version": "8",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Sanskrit Consonants",
+            "url": "https://www.youtube.com/watch?v=s6vE_yEZGJM",
+            "version": "9",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Sanskrit Consonants 2",
+            "url": "https://www.youtube.com/watch?v=3nJ6qZfAGWM",
+            "version": "10",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Special Sounds/Letters",
+            "url": "https://www.youtube.com/watch?v=6xa1c5X_uhQ",
+            "version": "11",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Who can learn Vedas",
+            "url": "https://www.youtube.com/watch?v=pfPfsHkogyY",
+            "version": "12",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Women and Vedas",
+            "url": "https://www.youtube.com/watch?v=4iQg6F9oTsM",
+            "version": "13",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Swarams Part 1",
+            "url": "https://www.youtube.com/watch?v=BeAZufEwcZY",
+            "version": "14",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Swarams Part 2",
+            "url": "https://www.youtube.com/watch?v=CEAy2A2oPKA",
+            "version": "15",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Swarams Part 3",
+            "url": "https://www.youtube.com/watch?v=-LOzH8Oia4s",
+            "version": "16",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Swarams Part 4",
+            "url": "https://www.youtube.com/watch?v=FsrekkUoq6Y",
+            "version": "17",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Swarams Part 5",
+            "url": "https://www.youtube.com/watch?v=7x4agTAb_zw",
+            "version": "18",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Swarams Part 6",
+            "url": "https://www.youtube.com/watch?v=Aj_nttaHiwg",
+            "version": "19",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Swarams Part 7",
+            "url": "https://www.youtube.com/watch?v=bD8y433cGp0",
+            "version": "20",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Swarams Part 8",
+            "url": "https://www.youtube.com/watch?v=0QIwsJ3dKuo",
+            "version": "21",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Swarams Part 9",
+            "url": "https://www.youtube.com/watch?v=V5PEIMUtrRs",
+            "version": "22",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Swarams Part 10",
+            "url": "https://www.youtube.com/watch?v=SXVlsBz1Sqo",
+            "version": "23",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Swarams Part 11",
+            "url": "https://www.youtube.com/watch?v=Vj4WXEt1GO4",
+            "version": "24",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - VarNas and Profession",
+            "url": "https://www.youtube.com/watch?v=R7kuAyoS5D8",
+            "version": "25",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Type of Vedic Studies",
+            "url": "https://www.youtube.com/watch?v=zmz1yYinny4",
+            "version": "26",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Vedic Study in PAtaShAla",
+            "url": "https://www.youtube.com/watch?v=HItuiBhYk3g",
+            "version": "27",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Learning Vedas",
+            "url": "https://www.youtube.com/watch?v=uTe_cCYs--g",
+            "version": "28",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Useful sample links",
+            "url": "https://www.youtube.com/watch?v=2Acjecl6iwM",
+            "version": "29",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics - Do and Don't",
+            "url": "https://www.youtube.com/watch?v=z61Ne6iOfQY",
+            "version": "30",
+            "date": "",
+            "corrections": ""
+          }
+        ]
+      }
+    ]
+  },
+  "videos_english": {
+    "label": "videos_english",
+    "tab": "videos_english",
+    "sections": [
+      {
+        "title": "English Video Lessons",
+        "docs": [
+          {
+            "title": "VedaVMS Intro 1 - English",
+            "url": "https://www.youtube.com/watch?v=SHezL4bx8CQ",
+            "version": "E1",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "VedaVMS Intro 2 - English",
+            "url": "https://www.youtube.com/watch?v=bKCn8Gg6UC8",
+            "version": "E2",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics 1 - English",
+            "url": "https://www.youtube.com/watch?v=nEiw0eHom9I",
+            "version": "E3",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics 2 - English",
+            "url": "https://www.youtube.com/watch?v=0Y22o_O3ESI",
+            "version": "E4",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Veda Basics 3 - English",
+            "url": "https://www.youtube.com/watch?v=39XXXRaFFhE",
+            "version": "E5",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Basics of Krishna Yajur Veda 1 - English",
+            "url": "https://www.youtube.com/watch?v=_cd30E2m2ic",
+            "version": "E6",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Basics of Krishna Yajur Veda 2 - English",
+            "url": "https://www.youtube.com/watch?v=Pln-69xrW4E",
+            "version": "E7",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Women and Vedas - English",
+            "url": "https://www.youtube.com/watch?v=EQt9ZgU3Uvo",
+            "version": "E8",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Who can learn Vedas - English",
+            "url": "https://www.youtube.com/watch?v=99_GI0D7tBE",
+            "version": "E9",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "VarNas and Professions in Vedas - English",
+            "url": "https://www.youtube.com/watch?v=ndgD5FPdfIw",
+            "version": "E10",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Vedic Study Types and Purpose - English",
+            "url": "https://www.youtube.com/watch?v=8ZDEtsFHCOg",
+            "version": "E11",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "Vedic Study in a PaataShala - English",
+            "url": "https://www.youtube.com/watch?v=Vao1S3TJEGg",
+            "version": "E12",
+            "date": "",
             "corrections": ""
           }
         ]

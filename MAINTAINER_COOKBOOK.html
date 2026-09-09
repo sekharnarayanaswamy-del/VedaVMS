@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MAINTAINER_COOKBOOK.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="vedavms-maintainer-cookbook-%F0%9F%93%96">VedaVMS Maintainer Cookbook 📖</h1>
+<p><em>A quick recipe for maintainers who upload PDF documents and update the Google Sheet.</em></p>
+<blockquote>
+<p>📌 <strong>Note</strong>: This cookbook covers the everyday workflow. For the complete system architecture, one-time setup, or server credentials, see <strong><a href="MAINTAINER_GUIDE.md">MAINTAINER_GUIDE.md</a></strong>.</p>
+</blockquote>
+<hr>
+<h2 id="%F0%9F%8D%B3-the-3-step-recipe">🍳 The 3-Step Recipe</h2>
+<pre class="hljs"><code><div>Step 1: Upload PDF in Plesk  ──&gt;  Step 2: Copy Link from Browser  ──&gt;  Step 3: Paste in Google Sheet
+</div></code></pre>
+<hr>
+<h3 id="step-1-upload-the-pdf-file">Step 1: Upload the PDF File</h3>
+<ol>
+<li>Log into <strong>Plesk</strong> (<code>https://103.69.196.157:8443</code>).</li>
+<li>Go to <strong>Websites &amp; Domains</strong> → <strong>vedavms.in</strong> → <strong>File Manager</strong>.</li>
+<li>Open <strong><code>httpdocs</code></strong> → <strong><code>docs</code></strong> → open the relevant folder (e.g. <code>TU</code>, <code>sanskrit</code>, <code>Shiva-Stuti</code>, etc.).</li>
+<li>Click the blue <strong>+ (Upload)</strong> button and select your PDF file.</li>
+</ol>
+<hr>
+<h3 id="step-2-get-the-link-zero-typing">Step 2: Get the Link (Zero Typing)</h3>
+<ol>
+<li>Find your uploaded PDF in the list.</li>
+<li>Click the three-dots menu <strong><code>...</code></strong> on the right side of the row.</li>
+<li>Click <strong>&quot;Open in Browser&quot;</strong>.</li>
+<li>The PDF opens in a new browser tab.</li>
+<li><strong>Click the browser's address bar and copy the URL (<code>Ctrl + C</code>)</strong>.</li>
+</ol>
+<p><em>(Example copied link: <code>https://vedavms.in/docs/sanskrit/JSV_Samhita.pdf</code>)</em></p>
+<hr>
+<h3 id="step-3-add-to-google-sheets">Step 3: Add to Google Sheets</h3>
+<p>Open the <a href="https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/edit?gid=548744990#gid=548744990">VedaVMS Google Sheet</a> and add a row:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Column</th>
+<th style="text-align:left">What to enter</th>
+<th style="text-align:left">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Supersection</strong></td>
+<td style="text-align:left">Language name</td>
+<td style="text-align:left"><code>Sanskrit</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Section</strong></td>
+<td style="text-align:left">Category heading</td>
+<td style="text-align:left"><code>Vedic Books by Subject</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Title</strong></td>
+<td style="text-align:left">Clean name of the document</td>
+<td style="text-align:left"><code>JSV Samhita - Sanskrit</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>PDF_URL</strong></td>
+<td style="text-align:left">Paste the URL from Step 2</td>
+<td style="text-align:left"><code>https://vedavms.in/docs/sanskrit/JSV_Samhita.pdf</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Version</strong></td>
+<td style="text-align:left">Edition / Version number</td>
+<td style="text-align:left"><code>V1.0</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Date</strong></td>
+<td style="text-align:left">Release date</td>
+<td style="text-align:left"><code>Sep 7, 2026</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Corrections_URL</strong></td>
+<td style="text-align:left">(Optional) Errata PDF link</td>
+<td style="text-align:left"><em>(leave blank if none)</em></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Status</strong></td>
+<td style="text-align:left">Set to <code>Active</code></td>
+<td style="text-align:left"><code>Active</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="%F0%9F%93%9D-updating-an-existing-document">📝 Updating an Existing Document</h2>
+<p>If you are publishing a new edition or adding an errata/corrections PDF:</p>
+<ol>
+<li>Upload the new file to Plesk and copy its URL (Steps 1 &amp; 2 above).</li>
+<li>In Google Sheets, find the existing row for that document:
+<ul>
+<li>Update <strong><code>PDF_URL</code></strong> with the new link.</li>
+<li>Update <strong><code>Version</code></strong> (e.g. change <code>V1.0</code> → <code>V1.1</code>) and <strong><code>Date</code></strong>.</li>
+<li>If there is an errata sheet, paste its link into <strong><code>Corrections_URL</code></strong>.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="%F0%9F%92%A1-quick-rules-for-maintainers">💡 Quick Rules for Maintainers</h2>
+<h3 id="1-document-numbering-is-100-automatic">1. Document Numbering is 100% Automatic!</h3>
+<ul>
+<li>You <strong>do not</strong> need to type <code>1)</code>, <code>2)</code>, <code>3)</code> in the title. The website automatically numbers all main books in order.</li>
+<li>If your document is a <strong>sub-book</strong> belonging to the book above it, simply prefix it with <strong><code>A)</code></strong>, <strong><code>B)</code></strong>, etc.<br>
+<em>(e.g., <code>A) Surya Namaskaram</code> automatically displays as <code>1A) Surya Namaskaram</code>).</em></li>
+</ul>
+<h3 id="2-how-to-temporarily-remove-a-document">2. How to Temporarily Remove a Document</h3>
+<ul>
+<li><strong>Never delete the row.</strong> Simply change <strong>Status</strong> from <code>Active</code> to <strong><code>Hidden</code></strong>.</li>
+<li>The website will automatically hide it and renumber the remaining books seamlessly starting from <code>1)</code>.</li>
+</ul>
+<h3 id="3-valid-supersection--language-names">3. Valid Supersection / Language Names</h3>
+<p>Use any of these 14 category names in the <strong><code>Supersection</code></strong> (or <strong><code>Language</code></strong>) column:</p>
+<ul>
+<li><strong>Languages</strong>: <code>Sanskrit</code>, <code>Tamil</code>, <code>Malayalam</code>, <code>Kannada</code>, <code>Telugu</code>, <code>Latin (IAST)</code></li>
+<li><strong>Special Editions</strong>: <code>Baraha Source</code>, <code>English</code>, <code>TS Jatai</code>, <code>TS Ghanam</code>, <code>Kanva Samhita</code>, <code>Parayanam &amp; References</code>, <code>Ghana Sandhi</code>, <code>Ghana Maala Pilot</code></li>
+</ul>
+<h3 id="4-bulk-data-migration--csv-export">4. Bulk Data Migration &amp; CSV Export</h3>
+<p>If you need to extract all documents into a fresh CSV spreadsheet:</p>
+<pre class="hljs"><code><div>python generate_documents.py --offline --<span class="hljs-built_in">export</span>-csv data/vedavms_documents.csv
+</div></code></pre>
+<p>Import <code>data/vedavms_documents.csv</code> into Google Sheets via <strong>File ➔ Import ➔ Upload</strong>.</p>
+<h3 id="5-when-do-changes-go-live">5. When Do Changes Go Live?</h3>
+<ul>
+<li><strong>From Google Sheets</strong>:
+<ul>
+<li>Click <strong><code>🚀 VedaVMS</code> ➔ <code>1. 🚀 Publish to Staging (new.vedavms.in)</code></strong> to preview changes in 1–2 minutes (logs timestamp in cell <strong><code>J2</code></strong>).</li>
+<li>Click <strong><code>🚀 VedaVMS</code> ➔ <code>2. 🌐 Push Staging to Production (vedavms.in)</code></strong> after review to promote to the live website (logs timestamp in cell <strong><code>J3</code></strong>).</li>
+</ul>
+</li>
+<li><strong>From GitHub Actions</strong>: Go to <strong>Actions</strong> ➔ select <strong>Deploy to Staging</strong> or <strong>Deploy to Production</strong> ➔ click <strong>Run workflow</strong>.</li>
+<li><strong>From Laptop / CLI</strong>: Run <code>python scripts/deploy_site.py --staging</code> or <code>python scripts/deploy_site.py --production</code> (with instant rollback via <code>python scripts/deploy_site.py --rollback --production</code>).</li>
+</ul>
+<h3 id="6-recent-updates-rolling-90-day-window">6. Recent Updates Rolling 90-Day Window</h3>
+<ul>
+<li>The <strong>Recent Updates</strong> feed automatically shows documents released in the last 90 days.</li>
+<li>Because VedaVMS is a static site, this rolling window is computed when the site is <strong>built &amp; published</strong>. Deploying updates (via Google Sheets or GitHub) automatically refreshes the window for the current date.</li>
+</ul>
+
+</body>
+</html>
