@@ -23,6 +23,7 @@ ENV/
 
 # Temporary / Scratch
 x
+scratch/
 *.tmp
 *.temp
 
