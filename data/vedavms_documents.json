@@ -7487,8 +7487,8 @@
     ]
   },
   "articles": {
-    "label": "articles",
-    "tab": "articles",
+    "label": "Articles",
+    "tab": "Articles",
     "sections": [
       {
         "title": "Veda Basics & Recital Rules",
@@ -7589,8 +7589,8 @@
     ]
   },
   "videos_tamil": {
-    "label": "videos_tamil",
-    "tab": "videos_tamil",
+    "label": "Videos (Tamil)",
+    "tab": "Videos (Tamil)",
     "sections": [
       {
         "title": "Tamil Video Lessons",
@@ -7810,8 +7810,8 @@
     ]
   },
   "videos_english": {
-    "label": "videos_english",
-    "tab": "videos_english",
+    "label": "Videos (English)",
+    "tab": "Videos (English)",
     "sections": [
       {
         "title": "English Video Lessons",
@@ -7897,6 +7897,85 @@
             "title": "Vedic Study in a PaataShala - English",
             "url": "https://www.youtube.com/watch?v=Vao1S3TJEGg",
             "version": "E12",
+            "date": "",
+            "corrections": ""
+          }
+        ]
+      }
+    ]
+  },
+  "external_links": {
+    "label": "External Links",
+    "tab": "External Links",
+    "sections": [
+      {
+        "title": "Further Reading",
+        "docs": [
+          {
+            "title": "1) TaittirIya PrAtiSAkyam",
+            "url": "http://sanskritweb.net/yajurveda/index.html#TP",
+            "version": "",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "2) Swara SIkShA",
+            "url": "https://vedicreserve.miu.edu/shiksha/shiksha_vedicreserve.html",
+            "version": "",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "3) JatA Mani",
+            "url": "https://vedicreserve.miu.edu/shiksha/shiksha_vedicreserve.html",
+            "version": "",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "4) JatA DarpaNam",
+            "url": "https://www.wilbourhall.org/sansknet/vedas/yajurveda/jatadarpana/index.htm",
+            "version": "",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "5) Ghana DarpaNam",
+            "url": "https://www.wilbourhall.org/sansknet/vedas/yajurveda/jatadarpana/index.htm",
+            "version": "",
+            "date": "",
+            "corrections": ""
+          }
+        ]
+      },
+      {
+        "title": "Veda Parayanam Links (TTD Recitation)",
+        "docs": [
+          {
+            "title": "1) TTD SamhitA Parayanam links",
+            "url": "https://vedavms.in/docs/SIkShA/TTD%20Samhita%20PaaraayaNam.xlsx",
+            "version": "",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "2) TTD SamhitA Pada Paata Parayanam links",
+            "url": "https://vedavms.in/docs/SIkShA/TTD%20Pada%20PaaraayaNam.xlsx",
+            "version": "",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "3) TTD SamhitA Krama Parayanam links",
+            "url": "https://vedavms.in/docs/SIkShA/TTD%20Krama%20PaaraayaNam.xlsx",
+            "version": "",
+            "date": "",
+            "corrections": ""
+          },
+          {
+            "title": "4) TTD SamhitA Jata Paata Parayanam links",
+            "url": "https://vedavms.in/docs/SIkShA/TTD%20JatA%20PaaraayaNam.xlsx",
+            "version": "",
             "date": "",
             "corrections": ""
           }

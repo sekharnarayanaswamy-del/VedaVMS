@@ -551,8 +551,8 @@ def parse_siksha_gs(page_html: str) -> list[Section]:
 
 
 def parse_parayanam(page_html: str) -> list[Section]:
-    """Extract Section 1 (References) and Section 3 (Parayanam Links) from docs_SikShA.html."""
-    sec1 = Section(title="References")
+    """Extract Section 1 (Further Reading) and Section 3 (Parayanam Links) from docs_SikShA.html."""
+    sec1 = Section(title="Further Reading")
     row_re = re.compile(r"<tr\b(?:(?!<tr\b)[\s\S])*?</tr>", re.I)
     t1_m = re.search(r"<table[^>]*>(.*?)</table>", page_html, re.I | re.S)
     if t1_m:
@@ -1161,6 +1161,10 @@ def export_to_csv(filepath: str, lang_sections: dict[str, list[Section]]) -> Non
     """Export parsed document hierarchy to a UTF-8 with BOM CSV for Google Sheets / Excel."""
     os.makedirs(os.path.dirname(os.path.abspath(filepath)), exist_ok=True)
     lang_map = {key: label for key, _page, label, _tab in LANGUAGES}
+    lang_map["external_links"] = "External Links"
+    lang_map["articles"] = "Articles"
+    lang_map["videos_tamil"] = "Videos (Tamil)"
+    lang_map["videos_english"] = "Videos (English)"
     with open(filepath, "w", newline="", encoding="utf-8-sig") as fh:
         writer = csv.writer(fh)
         writer.writerow(CSV_HEADERS)
@@ -1200,6 +1204,10 @@ def export_to_json(filepath: str, lang_sections: dict[str, list[Section]]) -> No
     """Export parsed document hierarchy to structured JSON."""
     os.makedirs(os.path.dirname(os.path.abspath(filepath)), exist_ok=True)
     lang_map = {key: {"label": label, "tab": tab} for key, _page, label, tab in LANGUAGES}
+    lang_map["external_links"] = {"label": "External Links", "tab": "External Links"}
+    lang_map["articles"] = {"label": "Articles", "tab": "Articles"}
+    lang_map["videos_tamil"] = {"label": "Videos (Tamil)", "tab": "Videos (Tamil)"}
+    lang_map["videos_english"] = {"label": "Videos (English)", "tab": "Videos (English)"}
     data = {}
     for lang_key, sections in lang_sections.items():
         lang_sections_json = []
@@ -1276,7 +1284,13 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
     lookup["siksha"] = "siksha"
     lookup["siksha & lessons"] = "siksha"
     lookup["siksha and lessons"] = "siksha"
-    lookup["parayanam"] = "parayanam"
+    lookup["parayanam"] = "external_links"
+    lookup["parayanam and references"] = "external_links"
+    lookup["parayanam & references"] = "external_links"
+    lookup["external links"] = "external_links"
+    lookup["external link"] = "external_links"
+    lookup["external_links"] = "external_links"
+    lookup["further reading"] = "external_links"
     lookup["ghana maala"] = "inprogress"
     lookup["ghana maala pilot"] = "inprogress"
     lookup["in progress & pilot"] = "inprogress"
@@ -1289,8 +1303,8 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
 
     lookup["articles"] = "articles"
     lookup["article"] = "articles"
-    lookup["videos"] = "videos"
-    lookup["video"] = "videos"
+    lookup["videos"] = "videos_tamil"
+    lookup["video"] = "videos_tamil"
     lookup["videos (tamil)"] = "videos_tamil"
     lookup["tamil videos"] = "videos_tamil"
     lookup["tamil video lessons"] = "videos_tamil"
@@ -1300,7 +1314,7 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
     lookup["english video lessons"] = "videos_english"
     lookup["videos_english"] = "videos_english"
 
-    all_keys = [k for k, _, _, _ in LANGUAGES] + ["articles", "videos_tamil", "videos_english"]
+    all_keys = [k for k, _, _, _ in LANGUAGES] + ["articles", "videos_tamil", "videos_english", "external_links"]
     sections_by_lang: dict[str, dict[str, Section]] = {k: {} for k in all_keys}
 
     reader = csv.DictReader(io.StringIO(content))
@@ -1335,8 +1349,8 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
                 lang_key = "tsg"
             elif "sandhi" in rl:
                 lang_key = "siksha"
-            elif "parayanam" in rl or "reference" in rl:
-                continue
+            elif "parayanam" in rl or "reference" in rl or "external" in rl:
+                lang_key = "external_links"
             elif "maala" in rl or "inprogress" in rl:
                 lang_key = "inprogress"
             elif "baraha" in rl:
@@ -1880,6 +1894,14 @@ def main() -> int:
                     if doc.corrections:
                         all_urls.append(doc.corrections)
             print(f"  {label:<10} {count:>4} documents in {len(sections):>2} sections")
+
+        siksha_src = load_page("docs_SikShA.html", args.offline)
+        ext_sections = parse_parayanam(siksha_src)
+        if ext_sections:
+            lang_sections["external_links"] = ext_sections
+            ext_count = sum(len(s.docs) for s in ext_sections)
+            total += ext_count
+            print(f"  {'External Links':<10} {ext_count:>4} links in {len(ext_sections):>2} sections")
 
     if args.export_csv:
         export_to_csv(args.export_csv, lang_sections)
