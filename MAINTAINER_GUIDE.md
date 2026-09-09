@@ -448,27 +448,19 @@ git push origin main
 
 Use this checklist to complete the autonomous setup:
 
-- [x] **1. Disable "Required Reviewers" for Staging**:
-  - Done. *(Staging deployments run automatically without requiring manual review).*
-
-- [x] **2. Verify Google Sheet Sharing Settings**:
-  - Open the [Google Sheet](https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/).
-  - Click **Share** (top right).
-  - Verify *General access* is **"Anyone with the link" ➔ Role: Viewer** (needed for automated build script to fetch CSV without 401 errors).
-  - Under *People with access*, add content maintainers' Gmail addresses as **Editor**.
-
-- [x] **3. Install Apps Script in Google Sheet**:
-  - Done. *(Menu `🚀 VedaVMS` with live progress tracking and cell `J2` timestamp is installed).*
-
-- [x] **4. (Optional Future Hardening) Migrate Token to Script Properties**:
-  - Once working smoothly, switch to a GitHub **Fine-grained Personal Access Token** scoped strictly to `VedaVMS` (`Actions: Read and write`).
-  - In Apps Script, open **Project Settings (gear icon) ➔ Script Properties**.
-  - Add property `GITHUB_TOKEN` with the token value.
-  - The script will automatically pick it up from Script Properties if `GITHUB_TOKEN` in the code is set to `'PASTE_YOUR_GITHUB_TOKEN_HERE'`.
-
-- [ ] **5. Add Pre-Deploy Safeguards & Live Rollback Snapshot**:
+- [ ] **1. Add Pre-Deploy Safeguards & Live Rollback Snapshot**:
   - **Minimum Document Threshold Gate**: Update `generate_documents.py` to enforce a minimum document count check (e.g. abort with an error if total records < 500), preventing accidental deletions in the Google Sheet from wiping out the live website.
   - **Pre-Deploy Live Site Snapshot**: Update `.github/workflows/deploy_staging.yml` to automatically download and archive the current live `documents.html` from `https://new.vedavms.in` before uploading new files, providing a 1-click fallback snapshot.
+
+- [ ] **2. Future topics**:
+  - **WordPress**: For now, we can skip this. Later on, we can consider the following options:
+    1. **Hybrid WP-Generated site**:  Our "pdf-Catalog site" as part of WP site 
+    2. **WP as an authoring tool**: WP articles can then be served via the python web generator + Google sheet 
+    3. **Headless WordPress**: Set up WordPress as a headless CMS with an API and use a framework like React or Vue.js to display the content. This provides the most flexibility but is also the most complex option.
+ 
+- [ ] **3. Questions to VedaVMS team**:
+   1. Is there a daily backup for Vedavms site? 
+   2. Now we push the updates to Staging area  `new.vedavms.in`. Once we are done with testing we push the updates to the live site `vedavms.in`.  We will include a workflow where "explicit push to live site" is required after staging review. Then the previous baseline version is automatically archived and can be restored.  Is this OK? 
 
 ---
 
@@ -480,6 +472,13 @@ The website files reside on the Windows IIS / Plesk hosting server at `103.69.19
 | :--- | :--- | :--- | :--- |
 | **Live Production** | `/httpdocs/` | `https://vedavms.in` | Main live website |
 | **Staging Preview** | `/new.vedavms.in/` | `https://new.vedavms.in` | Redesign testing & review area |
+
+### GitHub Secrets for Pipeline:
+Configure these in GitHub under **Settings > Secrets and variables > Actions**:
+- `STAGING_FTP_SERVER`: `103.69.196.157`
+- `STAGING_FTP_USERNAME`: `vedavmsi`
+- `STAGING_FTP_PASSWORD`: `(your FTP password)`
+- `STAGING_REMOTE_DIR`: `/new.vedavms.in/`
 
 ---
 
