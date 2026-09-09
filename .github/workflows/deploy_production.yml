@@ -22,9 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     env:
-      PROD_FTP_SERVER: ${{ secrets.PROD_FTP_SERVER || vars.PROD_FTP_SERVER || secrets.FTP_SERVER || vars.FTP_SERVER || '103.69.196.157' }}
-      PROD_FTP_USERNAME: ${{ secrets.PROD_FTP_USERNAME || vars.PROD_FTP_USERNAME || secrets.FTP_USERNAME || vars.FTP_USERNAME || 'vedavmsi' }}
-      PROD_FTP_PASSWORD: ${{ secrets.PROD_FTP_PASSWORD || vars.PROD_FTP_PASSWORD || secrets.FTP_PASSWORD || vars.FTP_PASSWORD }}
+      PROD_FTP_SERVER: ${{ secrets.PROD_FTP_SERVER || vars.PROD_FTP_SERVER || secrets.STAGING_FTP_SERVER || vars.STAGING_FTP_SERVER || secrets.FTP_SERVER || vars.FTP_SERVER || '103.69.196.157' }}
+      PROD_FTP_USERNAME: ${{ secrets.PROD_FTP_USERNAME || vars.PROD_FTP_USERNAME || secrets.STAGING_FTP_USERNAME || vars.STAGING_FTP_USERNAME || secrets.FTP_USERNAME || vars.FTP_USERNAME || 'vedavmsi' }}
+      PROD_FTP_PASSWORD: ${{ secrets.PROD_FTP_PASSWORD || vars.PROD_FTP_PASSWORD || secrets.STAGING_FTP_PASSWORD || vars.STAGING_FTP_PASSWORD || secrets.FTP_PASSWORD || vars.FTP_PASSWORD }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
