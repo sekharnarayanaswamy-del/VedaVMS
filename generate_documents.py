@@ -1651,8 +1651,8 @@ def generate_index_html(src_path: str, dst_path: str, lang_sections: dict[str, l
     if pattern.search(content):
         content = pattern.sub(rf'\1\n{updates_html}\n            \3', content)
 
-    # Update subtitle with total count
-    sub_pattern = re.compile(r'(<p class="section-subtitle">)[^<]*(</p>)')
+    # Update subtitle with total count (scoped strictly within updates-section)
+    sub_pattern = re.compile(r'(<section class="updates-section">.*?<p class="section-subtitle">)[^<]*(</p>)', re.DOTALL)
     if sub_pattern.search(content):
         content = sub_pattern.sub(rf'\g<1>Latest document releases and corrections ({total_updates} updates in last 3 months)\g<2>', content)
 
