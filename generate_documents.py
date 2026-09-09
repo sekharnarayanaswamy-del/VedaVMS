@@ -208,6 +208,7 @@ class Doc:
     date: str = ""
     corrections: str = ""
     ref_url: str = ""
+    notes: str = ""
 
 
 @dataclass
@@ -1290,7 +1291,21 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
     lookup["latin"] = "latin"
     lookup["latin (iast)"] = "latin"
 
-    sections_by_lang: dict[str, dict[str, Section]] = {k: {} for k, _, _, _ in LANGUAGES}
+    lookup["articles"] = "articles"
+    lookup["article"] = "articles"
+    lookup["videos"] = "videos"
+    lookup["video"] = "videos"
+    lookup["videos (tamil)"] = "videos_tamil"
+    lookup["tamil videos"] = "videos_tamil"
+    lookup["tamil video lessons"] = "videos_tamil"
+    lookup["videos_tamil"] = "videos_tamil"
+    lookup["videos (english)"] = "videos_english"
+    lookup["english videos"] = "videos_english"
+    lookup["english video lessons"] = "videos_english"
+    lookup["videos_english"] = "videos_english"
+
+    all_keys = [k for k, _, _, _ in LANGUAGES] + ["articles", "videos_tamil", "videos_english"]
+    sections_by_lang: dict[str, dict[str, Section]] = {k: {} for k in all_keys}
 
     reader = csv.DictReader(io.StringIO(content))
     for row in reader:
@@ -1305,10 +1320,20 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
             or (list(row.values())[0] if row else "")
             or ""
         ).strip()
+        sec_title = (row.get("Section") or row.get("section") or "Documents").strip()
         lang_key = lookup.get(raw_lang.lower())
         if not lang_key:
             rl = raw_lang.lower()
-            if "jatai" in rl:
+            if "article" in rl:
+                lang_key = "articles"
+            elif "video" in rl:
+                if "tamil" in rl or "tamil" in sec_title.lower():
+                    lang_key = "videos_tamil"
+                elif "english" in rl or "english" in sec_title.lower():
+                    lang_key = "videos_english"
+                else:
+                    lang_key = "videos_tamil"
+            elif "jatai" in rl:
                 lang_key = "tsj"
             elif "ghanam" in rl:
                 lang_key = "tsg"
@@ -1341,7 +1366,6 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
         if status.lower() in ("hidden", "inactive", "draft", "deleted"):
             continue
 
-        sec_title = (row.get("Section") or row.get("section") or "Documents").strip()
         sec_title = clean_section_title(sec_title, raw_lang)
         title = (row.get("Title") or row.get("title") or "").strip()
         url = (
@@ -1363,6 +1387,7 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
         corrections = (
             row.get("Corrections_URL") or row.get("corrections_url") or ""
         ).strip()
+        notes = (row.get("Notes") or row.get("notes") or "").strip()
 
         doc = Doc(
             title=title,
@@ -1370,6 +1395,7 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
             version=version,
             date=date,
             corrections=corrections,
+            notes=notes,
         )
 
         if sec_title not in sections_by_lang[lang_key]:
@@ -1377,7 +1403,7 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
         sections_by_lang[lang_key][sec_title].docs.append(doc)
 
     out: dict[str, list[Section]] = {}
-    for key, _, _, _ in LANGUAGES:
+    for key in all_keys:
         out[key] = list(sections_by_lang[key].values())
     return out
 
@@ -1639,6 +1665,132 @@ def generate_index_html(src_path: str, dst_path: str, lang_sections: dict[str, l
     return total_updates
 
 
+def generate_articles_html(src_path: str, dst_path: str, article_sections: list[Section]) -> int:
+    with open(src_path, "r", encoding="utf-8") as fh:
+        content = fh.read()
+
+    docs: list[Doc] = []
+    for sec in article_sections:
+        docs.extend(sec.docs)
+        for sub in sec.subsections:
+            docs.extend(sub.docs)
+
+    if not docs:
+        with open(dst_path, "w", encoding="utf-8") as fh:
+            fh.write(content)
+        return 0
+
+    cards = []
+    for doc in docs:
+        meta_parts = []
+        if doc.version:
+            v_clean = doc.version.lstrip("Vv")
+            meta_parts.append(f"Version {v_clean}")
+        if doc.date:
+            meta_parts.append(doc.date)
+        meta_str = " | ".join(meta_parts)
+        meta_html = f'<div class="article-meta">{html.escape(meta_str)}</div>' if meta_str else ""
+        card = (
+            f'            <div class="article-card">\n'
+            f'                <div class="article-info">\n'
+            f'                    <div class="article-title">{html.escape(doc.title)}</div>\n'
+            f'                    {meta_html}\n'
+            f'                </div>\n'
+            f'                <a href="{html.escape(doc.url)}" target="_blank" class="dl-btn">📄 Download PDF</a>\n'
+            f'            </div>'
+        )
+        cards.append(card)
+
+    cards_html = "\n\n".join(cards)
+    pattern = re.compile(r'(<div class="article-grid">)(.*?)(</div>\s*</main>)', re.DOTALL)
+    if pattern.search(content):
+        content = pattern.sub(rf'\1\n{cards_html}\n        \3', content)
+
+    with open(dst_path, "w", encoding="utf-8") as fh:
+        fh.write(content)
+
+    return len(docs)
+
+
+def generate_videos_html(src_path: str, dst_path: str, tamil_sections: list[Section], english_sections: list[Section]) -> tuple[int, int]:
+    with open(src_path, "r", encoding="utf-8") as fh:
+        content = fh.read()
+
+    tamil_docs: list[Doc] = []
+    for sec in tamil_sections:
+        tamil_docs.extend(sec.docs)
+        for sub in sec.subsections:
+            tamil_docs.extend(sub.docs)
+
+    english_docs: list[Doc] = []
+    for sec in english_sections:
+        english_docs.extend(sec.docs)
+        for sub in sec.subsections:
+            english_docs.extend(sub.docs)
+
+    if not tamil_docs and not english_docs:
+        with open(dst_path, "w", encoding="utf-8") as fh:
+            fh.write(content)
+        return (0, 0)
+
+    # Update tab counts
+    content = re.sub(
+        r'(<div class="lang-tab[^"]*" onclick="showTab\(\'tamil\'\)">)[^<]*(</div>)',
+        rf'\g<1>தமிழ் Tamil Videos ({len(tamil_docs)})\g<2>',
+        content
+    )
+    content = re.sub(
+        r'(<div class="lang-tab[^"]*" onclick="showTab\(\'english\'\)">)[^<]*(</div>)',
+        rf'\g<1>English Videos ({len(english_docs)})\g<2>',
+        content
+    )
+
+    if tamil_docs:
+        t_cards = []
+        for idx, doc in enumerate(tamil_docs):
+            num_str = doc.version or str(idx + 1)
+            desc_html = f'\n                        <div class="video-desc">{html.escape(doc.notes)}</div>' if doc.notes else ''
+            card = (
+                f'                <a href="{html.escape(doc.url)}" target="_blank" class="video-card">\n'
+                f'                    <div class="video-num">{html.escape(num_str)}</div>\n'
+                f'                    <div class="video-info">\n'
+                f'                        <div class="video-title">{html.escape(doc.title)}</div>{desc_html}\n'
+                f'                    </div>\n'
+                f'                    <div class="yt-icon">▶</div>\n'
+                f'                </a>'
+            )
+            t_cards.append(card)
+        t_html = "\n".join(t_cards)
+        t_pattern = re.compile(r'(<div id="tamil"[^>]*>.*?<div class="video-grid">)(.*?)(</div>\s*</div>)', re.DOTALL)
+        if t_pattern.search(content):
+            content = t_pattern.sub(rf'\1\n{t_html}\n            \3', content)
+
+    if english_docs:
+        e_cards = []
+        for idx, doc in enumerate(english_docs):
+            num_str = doc.version or f"E{idx + 1}"
+            desc_html = f'\n                        <div class="video-desc">{html.escape(doc.notes)}</div>' if doc.notes else ''
+            card = (
+                f'                <a href="{html.escape(doc.url)}" target="_blank" class="video-card">\n'
+                f'                    <div class="video-num">{html.escape(num_str)}</div>\n'
+                f'                    <div class="video-info">\n'
+                f'                        <div class="video-title">{html.escape(doc.title)}</div>{desc_html}\n'
+                f'                    </div>\n'
+                f'                    <div class="yt-icon">▶</div>\n'
+                f'                </a>'
+            )
+            e_cards.append(card)
+        e_html = "\n".join(e_cards)
+        e_pattern = re.compile(r'(<div id="english"[^>]*>.*?<div class="video-grid">)(.*?)(</div>\s*</div>)', re.DOTALL)
+        if e_pattern.search(content):
+            content = e_pattern.sub(rf'\1\n{e_html}\n            \3', content)
+
+    with open(dst_path, "w", encoding="utf-8") as fh:
+        fh.write(content)
+
+    return (len(tamil_docs), len(english_docs))
+
+
 # --------------------------------------------------------------------------
 # main
 # --------------------------------------------------------------------------
@@ -1737,7 +1889,7 @@ def main() -> int:
     with open(args.out, "w", encoding="utf-8") as fh:
         fh.write(page)
 
-    # Generate dynamic index.html with Recent Updates (< 3 months old) and copy other companion pages
+    # Generate dynamic index.html, articles.html, videos.html, and copy other companion pages
     build_dir = os.path.dirname(os.path.abspath(args.out))
     mockup_dir = os.path.join(ROOT, "mockup")
     copied_pages = []
@@ -1749,6 +1901,16 @@ def main() -> int:
                 if fname == "index.html":
                     num_updates = generate_index_html(src, dst, lang_sections)
                     copied_pages.append(f"index.html ({num_updates} recent updates < 3 mo)")
+                elif fname == "articles.html":
+                    num_articles = generate_articles_html(src, dst, lang_sections.get("articles", []))
+                    copied_pages.append(f"articles.html ({num_articles} articles)")
+                elif fname == "videos.html":
+                    num_t, num_e = generate_videos_html(
+                        src, dst,
+                        lang_sections.get("videos_tamil", []),
+                        lang_sections.get("videos_english", [])
+                    )
+                    copied_pages.append(f"videos.html ({num_t} Tamil, {num_e} English)")
                 elif os.path.abspath(src) != os.path.abspath(dst):
                     import shutil
                     shutil.copy2(src, dst)
