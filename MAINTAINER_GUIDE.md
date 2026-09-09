@@ -160,6 +160,11 @@ python generate_documents.py --offline --export-csv data/vedavms_documents.csv -
 - In numbered sections like *Vedic Books by Subject*, the build system dynamically assigns contiguous numbers (`1)`, `2)`, `3)`...) and preserves sub-document hierarchy (`1A)`, `2A)`, `2B)`...).
 - **Example**: When `1) Shanti Japam` is set to `Hidden`, the next active book (`2) TaittirIyopanishat`) automatically displays as `1)`, its sub-book `2A) Surya namaskara` automatically becomes `1A)`, and `3) Udaka Shanti` becomes `2)`. If `Shanti Japam` is later unhidden, the numbering automatically shifts back.
 
+### 🕒 Recent Updates & Static Site Generation Constraint
+- **Rolling 90-Day Window**: The "Recent Updates" feed on the Home page automatically aggregates all active documents whose release/modification date falls within the last 90 days (`[today - 90 days, today]`).
+- **Build-Time Computation**: Because VedaVMS is a static HTML website (fast, secure, zero server overhead), this 90-day filter is evaluated at **build / deployment time** (when `generate_documents.py` executes during a deployment).
+- **Passage of Time**: As calendar time progresses, older documents age out and newer ones roll forward whenever a deployment is triggered (via Google Sheet one-click publish, GitHub Actions, or git push).
+
 ---
 
 ## ⚡ Step 3: Publishing Changes (Staging & Production)

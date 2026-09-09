@@ -92,5 +92,9 @@ Import `data/vedavms_documents.csv` into Google Sheets via **File ➔ Import ➔
 - **From GitHub Actions**: Go to **Actions** ➔ select **Deploy to Staging** or **Deploy to Production** ➔ click **Run workflow**.
 - **From Laptop / CLI**: Run `python scripts/deploy_site.py --staging` or `python scripts/deploy_site.py --production` (with instant rollback via `python scripts/deploy_site.py --rollback --production`).
 
+### 6. Recent Updates Rolling 90-Day Window
+- The **Recent Updates** feed automatically shows documents released in the last 90 days.
+- Because VedaVMS is a static site, this rolling window is computed when the site is **built & published**. Deploying updates (via Google Sheets or GitHub) automatically refreshes the window for the current date.
+
 
 
