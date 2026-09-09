@@ -13,10 +13,12 @@ on:
         required: true
         default: 'DEPLOY'
         type: string
+  repository_dispatch:
+    types: [deploy_production, google_sheet_production_deploy]
 
 jobs:
   promote-to-production:
-    if: github.event.inputs.confirm_deploy == 'DEPLOY'
+    if: github.event_name == 'repository_dispatch' || github.event.inputs.confirm_deploy == 'DEPLOY'
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -42,6 +44,13 @@ jobs:
           echo "Generating website from: $SHEET_URL"
           python generate_documents.py --source-csv "$SHEET_URL"
 
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vedavms-production-build
+          path: build/
+          retention-days: 14
+
       - name: Prepare FTP Configuration
         id: ftp-config
         run: |
@@ -62,7 +71,7 @@ jobs:
           server: ${{ steps.ftp-config.outputs.clean_server }}
           username: ${{ env.PROD_FTP_USERNAME }}
           password: ${{ env.PROD_FTP_PASSWORD }}
-          server-dir: ${{ github.event.inputs.target_dir }}
+          server-dir: ${{ github.event.inputs.target_dir || '/httpdocs/' }}
           protocol: ftps
           port: 21
           security: loose

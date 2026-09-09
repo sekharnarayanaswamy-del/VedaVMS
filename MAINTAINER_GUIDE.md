@@ -143,37 +143,39 @@ python generate_documents.py --offline --export-csv data/vedavms_documents.csv -
 
 ---
 
-## ⚡ Step 3: Publishing Changes to the Staging Site (`new.vedavms.in`)
+## ⚡ Step 3: Publishing Changes (Staging & Production)
 
-There are four ways changes get published to staging:
+There are three convenient methods to publish changes:
 
 ### Method A: One-Click Trigger from Google Sheets (Recommended for Maintainers)
-Maintainers can publish changes directly from the Google Sheet without touching code or GitHub:
+Maintainers can publish changes directly from the Google Sheet without touching code or command lines:
 1. Open the [VedaVMS Google Sheet](https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/).
-2. In the top menu, click **`🚀 VedaVMS`** ➔ **`Publish to Staging (new.vedavms.in)`**.
+2. In the top menu, click **`🚀 VedaVMS`**:
+   - **`🚀 Publish to Staging (new.vedavms.in)`**: Deploys the latest sheet updates to the staging preview area.
+   - **`🔴 Publish to Production (vedavms.in)`**: Deploys the latest sheet updates directly to the live production website.
 3. Confirm the prompt by clicking **Yes**.
-4. A popup will confirm that GitHub Actions has started rebuilding the site, and updates will be live in 1–2 minutes.
+4. A popup confirms that GitHub Actions has started rebuilding the site, and updates will be live in ~1 minute.
 
-### Method B: Instant Trigger via GitHub Actions (Web UI)
+### Method B: Trigger via GitHub Actions (Web UI)
 1. Go to the GitHub repository in your browser.
 2. Click the **Actions** tab at the top.
-3. In the left sidebar, click **Deploy to Staging (new.vedavms.in)**.
+3. Select either:
+   - **Deploy to Staging (new.vedavms.in)**
+   - **Deploy to Production (vedavms.in)**
 4. Click **Run workflow** > **Run workflow**.
-5. Within ~1 minute, the build runs and publishes to staging.
 
 ### Method C: One-Command Sync from Laptop (Developer / Admin)
-If you want to immediately update the staging site directly from your computer without waiting for GitHub Actions:
+To publish directly from your computer via Python:
 ```powershell
-# Full fetch, regeneration, and upload:
-python scripts/sync_staging.py
+# 1. Deploy to Staging (new.vedavms.in):
+python scripts/deploy_site.py --staging
 
-# Skip Google Sheets fetch and upload existing build/ folder immediately:
-python scripts/sync_staging.py --skip-build
+# 2. Promote to Live Production (vedavms.in) with automatic backup snapshot:
+python scripts/deploy_site.py --production
+
+# 3. Roll back to any archived snapshot:
+python scripts/deploy_site.py --rollback --production
 ```
-This command will:
-1. Automatically fetch the latest data from the live Google Sheet.
-2. Regenerate all files in `build/` (filtering out hidden items, applying dynamic hierarchical numbering, and formatting 760+ documents).
-3. Upload all updated pages to `new.vedavms.in` (`/new.vedavms.in/`) using native Windows transfer tools (`curl.exe`).
 
 ---
 
