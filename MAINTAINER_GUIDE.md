@@ -14,7 +14,7 @@ The diagram below illustrates the relationship between the different roles, tool
 flowchart TD
     subgraph Users["👥 Roles & Actors"]
         M["Content Maintainer<br/>(Edits Sheets, Uploads PDFs)"]
-        A["Technical Admin / Dev<br/>(Git, Secrets, Local Sync)"]
+        A["Technical Admin / Dev<br/>(Git, Laptop CLI, Rollbacks)"]
         V["Public Visitors / Students"]
     end
 
@@ -26,7 +26,8 @@ flowchart TD
 
     subgraph GitHubLayer["⚙️ GitHub CI/CD Automation"]
         PAT["Personal Access Token (PAT)<br/>(Actions: Read & Write)"]
-        GHA["GitHub Actions Runner<br/>(deploy_staging.yml)"]
+        GHA_STG["GitHub Actions Runner<br/>(deploy_staging.yml)"]
+        GHA_PRD["GitHub Actions Runner<br/>(deploy_production.yml)"]
         SECRETS["GitHub Secrets<br/>(STAGING_FTP_PASSWORD, etc.)"]
         GEN["Static Generator<br/>(generate_documents.py)"]
     end
@@ -35,26 +36,42 @@ flowchart TD
         IIS["Windows IIS / Plesk Hosting"]
         STAGING["Staging Site Directory<br/>(/new.vedavms.in/)"]
         PROD["Production Directory<br/>(/httpdocs/)"]
+        BK["Automatic Backup Snapshots<br/>(backups/backup_production_*)"]
     end
 
     %% Maintainer workflow
     M -->|"1. Uploads PDF"| PDF
     PDF -->|"Stores files in"| PROD
     M -->|"2. Enters link & metadata"| GS
-    M -->|"3. Clicks 'Publish to Staging'"| GAS
+    M -->|"3a. Clicks 'Publish to Staging'"| GAS
+    M -->|"3b. Clicks 'Push to Production'"| GAS
 
     %% Deployment trigger & CI/CD flow
-    GAS -->|"POST workflow_dispatch (Auth via PAT)"| PAT
-    PAT -->|"Triggers workflow"| GHA
-    SECRETS -.->|"Injected securely into"| GHA
-    GHA -->|"Fetches live CSV"| GS
-    GHA -->|"Builds site"| GEN
-    GEN -->|"Produces HTML (build/)"| GHA
-    GHA -->|"Uploads via FTPS (Port 21)"| STAGING
+    GAS -->|"POST workflow_dispatch (Staging)"| PAT
+    GAS -->|"POST workflow_dispatch (Production)"| PAT
+    PAT -->|"Triggers Staging"| GHA_STG
+    PAT -->|"Triggers Production"| GHA_PRD
+    SECRETS -.->|"Injected securely into"| GHA_STG
+    SECRETS -.->|"Injected securely into"| GHA_PRD
+    GHA_STG -->|"Fetches live CSV"| GS
+    GHA_PRD -->|"Fetches live CSV"| GS
+    GHA_STG -->|"Builds site"| GEN
+    GHA_PRD -->|"Builds site"| GEN
+    GEN -->|"Produces HTML (build/)"| GHA_STG
+    GEN -->|"Produces HTML (build/)"| GHA_PRD
+    GHA_STG -->|"Uploads via FTPS"| STAGING
+    GHA_PRD -->|"1. Archives existing live site"| BK
+    GHA_PRD -->|"2. Uploads via FTPS"| PROD
 
-    %% Admin & Local paths
-    A -->|"Code push (main branch)"| GHA
-    A -->|"Direct sync (scripts/sync_staging.py)"| STAGING
+    %% Live status & timestamps
+    GHA_STG -.->|"Logs Staging timestamp (J2)"| GS
+    GHA_PRD -.->|"Logs Production timestamp (J3)"| GS
+
+    %% Admin & Local Laptop paths
+    A -->|"Code push (main branch)"| GHA_STG
+    A -->|"scripts/deploy_site.py --staging"| STAGING
+    A -->|"scripts/deploy_site.py --production"| PROD
+    A -->|"scripts/deploy_site.py --rollback"| PROD
 
     %% Visitors
     V -->|"Views redesigned staging site"| STAGING
@@ -64,9 +81,11 @@ flowchart TD
 ### Flow Summary
 1. **PDF Upload**: Maintainer uploads the PDF document using Plesk File Manager into the `/httpdocs/docs/` directory.
 2. **Sheet Update**: Maintainer enters the document title, version, category, and PDF link into the Google Sheet.
-3. **One-Click Trigger**: Maintainer clicks **`🚀 VedaVMS` ➔ `Publish to Staging`** inside Google Sheets.
-4. **Automated Pipeline**: Google Apps Script calls GitHub using a **Personal Access Token (PAT)**. GitHub Actions pulls secrets (**STAGING_FTP_PASSWORD**), fetches the latest Google Sheet data, runs `generate_documents.py` to regenerate all HTML pages, and uploads the files to `/new.vedavms.in/`.
-5. **Live Verification**: Google Sheets monitors the build to completion, confirms success with a popup, and logs a live timestamp into cell `J2`.
+3. **One-Click Staging Trigger**: Maintainer clicks **`🚀 VedaVMS` ➔ `1. 🚀 Publish to Staging (new.vedavms.in)`** in Google Sheets.
+   - Google Apps Script calls GitHub Actions (`deploy_staging.yml`), builds the site from live CSV, uploads to `/new.vedavms.in/`, and logs the timestamp in cell **`J2`**.
+4. **One-Click Production Promotion**: After reviewing staging, maintainer clicks **`🚀 VedaVMS` ➔ `2. 🌐 Push Staging to Production (vedavms.in)`**.
+   - Google Apps Script requests explicit confirmation, triggers `deploy_production.yml`, automatically captures a pre-deploy backup snapshot, updates `/httpdocs/`, and logs the timestamp in cell **`J3`**.
+5. **Laptop Developer / Admin Tools**: Technical maintainers can run `python scripts/deploy_site.py --staging`, `python scripts/deploy_site.py --production`, or instant rollback via `python scripts/deploy_site.py --rollback --production`.
 
 ---
 
@@ -151,30 +170,50 @@ There are three convenient methods to publish changes:
 Maintainers can publish changes directly from the Google Sheet without touching code or command lines:
 1. Open the [VedaVMS Google Sheet](https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/).
 2. In the top menu, click **`🚀 VedaVMS`**:
-   - **`🚀 Publish to Staging (new.vedavms.in)`**: Deploys the latest sheet updates to the staging preview area.
-   - **`🔴 Publish to Production (vedavms.in)`**: Deploys the latest sheet updates directly to the live production website.
+   - **`1. 🚀 Publish to Staging (new.vedavms.in)`**:
+     - Deploys the latest sheet updates to the staging preview area (`/new.vedavms.in/`).
+     - Shows live build progress in the spreadsheet.
+     - Logs the completion timestamp in cell **`J2`** (IST).
+   - **`2. 🌐 Push Staging to Production (vedavms.in)`**:
+     - Requests explicit confirmation before modifying the live site.
+     - Promotes the build to the live production server (`/httpdocs/`).
+     - Automatically creates a timestamped pre-deploy backup snapshot in `backups/`.
+     - Logs the live production deployment timestamp in cell **`J3`** (IST).
+   - **`3. 🔄 Check Last Run Status`**:
+     - Checks whether the most recent GitHub Actions deployment succeeded or encountered an error.
+   - **`4. ⚙️ Setup GitHub Token`**:
+     - Configures or updates your Personal Access Token (PAT) securely inside Google Apps Script properties.
 3. Confirm the prompt by clicking **Yes**.
-4. A popup confirms that GitHub Actions has started rebuilding the site, and updates will be live in ~1 minute.
+4. A popup confirms when the build completes successfully.
 
 ### Method B: Trigger via GitHub Actions (Web UI)
-1. Go to the GitHub repository in your browser.
+1. Go to the GitHub repository in your browser: `sekharnarayanaswamy-del/VedaVMS`.
 2. Click the **Actions** tab at the top.
 3. Select either:
    - **Deploy to Staging (new.vedavms.in)**
    - **Deploy to Production (vedavms.in)**
-4. Click **Run workflow** > **Run workflow**.
+4. Click **Run workflow** ➔ **Run workflow**.
 
-### Method C: One-Command Sync from Laptop (Developer / Admin)
-To publish directly from your computer via Python:
+### Method C: Deploy & Rollback CLI from Laptop (Developer / Admin)
+Run `scripts/deploy_site.py` for direct deployment, dry-runs, and instant rollbacks:
 ```powershell
 # 1. Deploy to Staging (new.vedavms.in):
 python scripts/deploy_site.py --staging
 
-# 2. Promote to Live Production (vedavms.in) with automatic backup snapshot:
+# 2. Promote to Live Production (vedavms.in) with automatic pre-deploy backup snapshot:
 python scripts/deploy_site.py --production
 
-# 3. Roll back to any archived snapshot:
+# 3. Dry-run preview (see files without modifying server):
+python scripts/deploy_site.py --production --dry-run
+
+# 4. List available backup snapshots:
+python scripts/deploy_site.py --list-backups
+
+# 5. Interactive rollback to any snapshot:
 python scripts/deploy_site.py --rollback --production
+
+# 6. Instant rollback to original pre-redesign baseline:
+python scripts/deploy_site.py --rollback --production --snapshot backup_production_vedavms_in
 ```
 
 ---

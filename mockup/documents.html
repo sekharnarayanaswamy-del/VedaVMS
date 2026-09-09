@@ -44,10 +44,62 @@
         .blessing { font-size: 0.82rem; color: #F0F7FF; opacity: 0.95; font-style: italic; margin-top: 0.35rem; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
         .nav {
             background: var(--white);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+        }
+        .nav-mobile-bar {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.65rem 1rem;
+            background: var(--white);
+        }
+        .nav-mobile-brand {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--dark-brown);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .nav-mobile-brand .om-symbol {
+            color: var(--saffron);
+            font-size: 1.25rem;
+        }
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 22px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+        .hamburger-bar {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--dark-brown);
+            border-radius: 3px;
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
+        }
+        .nav-toggle.open .hamburger-bar:nth-child(1) {
+            transform: translateY(9.5px) rotate(45deg);
+        }
+        .nav-toggle.open .hamburger-bar:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .nav-toggle.open .hamburger-bar:nth-child(3) {
+            transform: translateY(-9.5px) rotate(-45deg);
         }
         .nav-container {
             max-width: 1200px;
@@ -367,6 +419,54 @@
         }
         .footer a { color: white; margin: 0 1rem; text-decoration: none; opacity: 0.8; }
         .footer a:hover { opacity: 1; }
+        @media (max-width: 768px) {
+            .nav-mobile-bar {
+                display: flex;
+            }
+            .nav-toggle {
+                display: flex;
+            }
+            .nav-container {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: var(--white);
+                border-top: 1px solid #eee;
+                border-bottom: 2px solid var(--saffron);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            }
+            .nav-container.active {
+                display: flex;
+                animation: navSlideDown 0.25s ease-out;
+            }
+            .nav a {
+                padding: 0.85rem 1.25rem;
+                font-size: 0.9rem;
+                border-bottom: 1px solid #f2ece4;
+                text-align: left;
+            }
+            .nav a.active {
+                border-left: 4px solid var(--saffron);
+            }
+            .nav .donate-btn {
+                margin: 0.75rem 1.25rem 1rem;
+                text-align: center;
+                background: var(--saffron);
+                color: white !important;
+                border: 1.5px solid var(--saffron);
+                padding: 0.6rem 1rem;
+            }
+            @keyframes navSlideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-8px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
         @media (max-width: 600px) {
             .doc-card { flex-direction: column; align-items: flex-start; }
             .doc-actions,
@@ -374,7 +474,6 @@
             #content-tamil .doc-actions,
             #content-malayalam .doc-actions { min-width: auto; width: 100%; justify-content: flex-start; }
             .dl-btn { flex: 1; min-width: auto; justify-content: center; }
-            .nav a { padding: 0.6rem 0.6rem; font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -388,7 +487,18 @@
     </header>
 
     <nav class="nav">
-        <div class="nav-container">
+        <div class="nav-mobile-bar">
+            <a href="index.html" class="nav-mobile-brand">
+                <span class="om-symbol">ॐ</span>
+                <span>VedaVMS</span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" type="button">
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+            </button>
+        </div>
+        <div class="nav-container" id="navContainer">
             <a href="index.html">Home</a>
             <a href="documents.html" class="active">Documents</a>
             <a href="videos.html">Videos</a>
@@ -2287,6 +2397,41 @@
             const hash = window.location.hash.replace('#', '');
             if (hash && document.getElementById('content-' + hash)) {
                 showLanguage(hash);
+            }
+
+            var navToggle = document.getElementById('navToggle');
+            var navContainer = document.getElementById('navContainer');
+            if (navToggle && navContainer) {
+                navToggle.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var isOpen = navContainer.classList.toggle('active');
+                    navToggle.classList.toggle('open', isOpen);
+                    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+
+                navContainer.querySelectorAll('a').forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        navContainer.classList.remove('active');
+                        navToggle.classList.remove('open');
+                        navToggle.setAttribute('aria-expanded', 'false');
+                    });
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!navContainer.contains(e.target) && !navToggle.contains(e.target)) {
+                        navContainer.classList.remove('active');
+                        navToggle.classList.remove('open');
+                        navToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape' && navContainer.classList.contains('active')) {
+                        navContainer.classList.remove('active');
+                        navToggle.classList.remove('open');
+                        navToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
             }
         });
 

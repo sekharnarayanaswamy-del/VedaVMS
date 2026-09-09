@@ -86,8 +86,11 @@ python generate_documents.py --offline --export-csv data/vedavms_documents.csv
 Import `data/vedavms_documents.csv` into Google Sheets via **File ➔ Import ➔ Upload**.
 
 ### 5. When Do Changes Go Live?
-- **Immediately from the Google Sheet**: Click **`🚀 VedaVMS`** ➔ **`Publish to Staging (new.vedavms.in)`** in the top menu of the sheet. Changes will be live in 1–2 minutes!
-- Or via GitHub Actions (**Run workflow**) or from an admin's laptop (`python scripts/sync_staging.py`).
+- **From Google Sheets**:
+  - Click **`🚀 VedaVMS` ➔ `1. 🚀 Publish to Staging (new.vedavms.in)`** to preview changes in 1–2 minutes (logs timestamp in cell **`J2`**).
+  - Click **`🚀 VedaVMS` ➔ `2. 🌐 Push Staging to Production (vedavms.in)`** after review to promote to the live website (logs timestamp in cell **`J3`**).
+- **From GitHub Actions**: Go to **Actions** ➔ select **Deploy to Staging** or **Deploy to Production** ➔ click **Run workflow**.
+- **From Laptop / CLI**: Run `python scripts/deploy_site.py --staging` or `python scripts/deploy_site.py --production` (with instant rollback via `python scripts/deploy_site.py --rollback --production`).
 
 
 

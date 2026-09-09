@@ -10,9 +10,10 @@ This repository contains tools, data snapshots, and redesign mockups for [VedaVM
 vedavms/
 ├── generate_documents.py               # Main document page generator script
 ├── scripts/
+│   ├── deploy_site.py                  # Unified deploy & rollback CLI (staging, production, backups)
 │   ├── sync_staging.py                 # One-step Google Sheets fetch, build, and deploy to staging
-│   ├── deploy_staging.py               # Direct deployment script for new.vedavms.in
-│   ├── upload_donations.py             # Live production site restore/update utility
+│   ├── google_apps_script.js           # Apps Script for 1-click deploy from Google Sheets
+│   ├── check_runs.py                   # GitHub Actions workflow run monitor
 │   └── check_pages.py                  # Live page inspection utility
 ├── mockup/                             # Redesign mockup templates
 │   ├── index.html
@@ -30,24 +31,46 @@ vedavms/
 │   ├── convention.html
 │   ├── donations.html
 │   └── about.html
+├── backups/                            # Local & pre-deploy server backup snapshots
 ├── data/                               # Snapshot texts and document metadata
-│   ├── sanskrit_snapshot.txt
-│   ├── tamil_docs.txt
-│   ├── malayalam_docs.txt
-│   ├── kannada_docs.txt
-│   ├── telugu_docs.txt
-│   ├── english_docs.txt
-│   ├── tamil_videos_snapshot.txt
-│   └── english_videos_snapshot.txt
-├── vedavms-redesign-recommendations.md # Full redesign strategy & architecture report
-└── current_status.pdf                  # Reference assessment of existing site
+│   └── vedavms_documents.csv           # Master documents database CSV
+├── .github/workflows/
+│   ├── deploy_staging.yml              # CI/CD automated staging deployment (new.vedavms.in)
+│   └── deploy_production.yml           # CI/CD production promotion workflow (vedavms.in)
+├── MAINTAINER_GUIDE.md                 # Complete technical & maintainer manual
+└── MAINTAINER_COOKBOOK.md              # 3-step quick recipe for everyday editors
 ```
 
 ---
 
-## 🚀 Usage
+## 🚀 Usage & Deployment CLI
 
-### 1. One-Step Sync to Staging (`new.vedavms.in`)
+### 1. Unified Deployment CLI (`scripts/deploy_site.py`)
+
+Deploy directly from your laptop to Staging or Production, with automated pre-deploy backups and instant rollback support:
+
+```bash
+# Deploy to Staging (new.vedavms.in at /new.vedavms.in)
+python scripts/deploy_site.py --staging
+
+# Deploy to Live Production (vedavms.in at /httpdocs)
+# Automatically downloads a pre-deploy backup snapshot before uploading!
+python scripts/deploy_site.py --production
+
+# Preview changes without modifying the server (Dry Run)
+python scripts/deploy_site.py --production --dry-run
+
+# List all available backup snapshots
+python scripts/deploy_site.py --list-backups
+
+# Interactive Rollback of Production
+python scripts/deploy_site.py --rollback --production
+
+# Instant Rollback to original pre-redesign baseline:
+python scripts/deploy_site.py --rollback --production --snapshot backup_production_vedavms_in
+```
+
+### 2. One-Step Sync to Staging from Laptop
 Fetches the live Google Sheet, regenerates all 980+ documents into `build/` (with dynamic hierarchical numbering), and deploys directly to the staging site:
 ```bash
 # Full fetch, build, and deploy:
@@ -57,7 +80,14 @@ python scripts/sync_staging.py
 python scripts/sync_staging.py --skip-build
 ```
 
-### 2. Regenerate Document Pages Locally
+### 3. One-Click Deployment from Google Sheets
+Maintainers can deploy directly from the spreadsheet without terminal access:
+- **`🚀 VedaVMS` ➔ `1. 🚀 Publish to Staging (new.vedavms.in)`**: Builds and pushes to staging; logs timestamp in cell **`J2`**.
+- **`🚀 VedaVMS` ➔ `2. 🌐 Push Staging to Production (vedavms.in)`**: Promotes build to live production; logs timestamp in cell **`J3`**.
+
+---
+
+### 4. Regenerate Document Pages Locally
 The generator fetches the live pages, local cache, or Google Sheets CSV, parses document metadata, builds language filter tabs, and renders `build/documents.html` using `mockup/documents.html` as the design template:
 
 ```bash
