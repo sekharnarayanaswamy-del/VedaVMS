@@ -2,8 +2,8 @@
  * VedaVMS Google Sheet Automation Suite (Google Apps Script)
  * 
  * Provides a custom menu in Google Sheets with live status tracking:
- *  - 🚀 Publish to Staging (new.vedavms.in)
- *  - 🔴 Publish to Production (vedavms.in)
+ *  - 🚀 Publish to Staging (new.vedavms.in)  -> updates Cell J2
+ *  - 🔴 Publish to Production (vedavms.in)  -> updates Cell J3
  */
 
 const REPO_OWNER = 'sekharnarayanaswamy-del';
@@ -24,7 +24,7 @@ function onOpen() {
     .addToUi();
 }
 
-function monitorWorkflowRun(workflowFile, targetName, targetUrl, cellRow) {
+function monitorWorkflowRun(workflowFile, targetName, targetUrl, isProduction) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var ui = SpreadsheetApp.getUi();
   var token = getGitHubToken();
@@ -61,22 +61,28 @@ function monitorWorkflowRun(workflowFile, targetName, targetUrl, cellRow) {
             ss.toast('Generating website & deploying to ' + targetName + ' (' + elapsed + 's)...', '⚙️ Building', checkInterval + 1);
           } else if (status === 'completed') {
             if (conclusion === 'success') {
-              // Log timestamp into both active sheet and first sheet
-              var cellRef = "I" + cellRow + ":J" + cellRow;
+              // Format timestamp: DD-MMM-YYYY, hh:mm:ss a IST
+              var now = new Date();
+              var nowStr = Utilities.formatDate(now, "Asia/Kolkata", "dd-MMM-yyyy, hh:mm:ss a 'IST'");
+
               try {
-                var nowStr = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
-                var targetSheets = [ss.getActiveSheet(), ss.getSheets()[0]];
-                for (var i = 0; i < targetSheets.length; i++) {
-                  var sh = targetSheets[i];
-                  if (sh) {
-                    if (cellRow === 2) {
-                      sh.getRange("I2").setValue("Last Staging Deploy:").setFontWeight("bold");
-                      sh.getRange("J2").setValue(nowStr).setFontWeight("bold").setBackground("#E6F4EA");
-                    } else if (cellRow === 3) {
-                      sh.getRange("I3").setValue("Last Production Deploy:").setFontWeight("bold");
-                      sh.getRange("J3").setValue(nowStr).setFontWeight("bold").setBackground("#FCE8E6");
-                    }
-                  }
+                var sheet = ss.getActiveSheet();
+                sheet.getRange("J1").setValue("Publish Status").setFontWeight("bold");
+
+                if (!isProduction) {
+                  // Staging in J2
+                  sheet.getRange("J2")
+                    .setValue("🟡 Staging: " + nowStr)
+                    .setFontWeight("normal")
+                    .setBackground("#FFF2CC")
+                    .setFontColor("#7F6000");
+                } else {
+                  // Production in J3
+                  sheet.getRange("J3")
+                    .setValue("🟢 Production: " + nowStr)
+                    .setFontWeight("normal")
+                    .setBackground("#E6F4EA")
+                    .setFontColor("#137333");
                 }
                 SpreadsheetApp.flush();
               } catch (ex) {}
@@ -85,10 +91,9 @@ function monitorWorkflowRun(workflowFile, targetName, targetUrl, cellRow) {
                 '🎉 Deployment Successful!',
                 'The website has been published to ' + targetName + ' successfully!\n\n' +
                 '• Live URL: ' + targetUrl + '\n' +
-                '• Duration: ' + elapsed + ' seconds\n' +
-                '• Status: HTTP 200 OK\n' +
-                '• Logged to Cell: ' + cellRef + '\n\n' +
-                '💡 Note: If your browser still displays the old page, do a hard refresh (Ctrl + F5 or Cmd + Shift + R) to clear cached HTML.',
+                '• Completed in: ' + elapsed + ' seconds\n' +
+                '• Timestamp logged to: ' + (isProduction ? 'Cell J3' : 'Cell J2') + '\n\n' +
+                '💡 Note: If your browser still shows the old page, press Ctrl + F5 (or Cmd + Shift + R) to hard-refresh.',
                 ui.ButtonSet.OK
               );
               return;
@@ -151,7 +156,7 @@ function triggerStagingDeploy() {
     var resp = UrlFetchApp.fetch(url, options);
     var code = resp.getResponseCode();
     if (code === 204 || code === 200) {
-      monitorWorkflowRun('deploy_staging.yml', 'Staging (new.vedavms.in)', 'https://new.vedavms.in', 2);
+      monitorWorkflowRun('deploy_staging.yml', 'Staging (new.vedavms.in)', 'https://new.vedavms.in', false);
     } else {
       ui.alert('❌ GitHub API Error (HTTP ' + code + '):\n' + resp.getContentText());
     }
@@ -193,7 +198,7 @@ function triggerProductionDeploy() {
     var resp = UrlFetchApp.fetch(url, options);
     var code = resp.getResponseCode();
     if (code === 204 || code === 200) {
-      monitorWorkflowRun('deploy_production.yml', 'Production (vedavms.in)', 'https://vedavms.in', 3);
+      monitorWorkflowRun('deploy_production.yml', 'Production (vedavms.in)', 'https://vedavms.in', true);
     } else {
       ui.alert('❌ GitHub API Error (HTTP ' + code + '):\n' + resp.getContentText());
     }
