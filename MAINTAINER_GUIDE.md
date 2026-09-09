@@ -484,7 +484,7 @@ Configure these in GitHub under **Settings > Secrets and variables > Actions**:
 
 ## 🚀 Deploying to Staging or Production
 
-We provide a parameterized deployment script `scripts/deploy_site.py` that takes the target directory as a parameter, creates an automatic backup snapshot of existing remote files before overwriting, and uploads the `build/` files via secure FTPS:
+We provide a parameterized deployment script `scripts/deploy_site.py` that takes the target directory as a parameter, creates an automatic backup snapshot of existing remote files before overwriting, uploads `build/` files, and provides 1-click rollbacks:
 
 ```bash
 # 1. Deploy to Staging (new.vedavms.in at /new.vedavms.in)
@@ -500,6 +500,26 @@ python scripts/deploy_site.py --dir /httpdocs
 
 # 3. Dry-run mode (preview which files would be deployed without modifying server)
 python scripts/deploy_site.py --production --dry-run
+```
+
+---
+
+## 🔄 Instant Rollback to Archived Snapshots
+
+You can restore any previous version or the original baseline website in one command:
+
+```bash
+# 1. List all available archived snapshots:
+python scripts/deploy_site.py --list-backups
+
+# 2. Interactive Rollback to Production (vedavms.in):
+python scripts/deploy_site.py --rollback --production
+
+# 3. Rollback to original pre-redesign baseline (or specific snapshot):
+python scripts/deploy_site.py --rollback --production --snapshot backup_production_vedavms_in
+
+# 4. Preview rollback without making changes:
+python scripts/deploy_site.py --rollback --production --dry-run
 ```
 
 ### GitHub Actions Deployment:
