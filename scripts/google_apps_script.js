@@ -5,11 +5,7 @@
  *  - 🚀 Publish to Staging (new.vedavms.in)
  *  - 🔴 Publish to Production (vedavms.in)
  * 
- * Installation Instructions:
- *  1. In your Google Sheet, click Extensions > Apps Script.
- *  2. Replace existing code with this file.
- *  3. In Project Settings (gear icon), click "Add script property" -> Name: GITHUB_TOKEN -> Value: (your GitHub Token).
- *  4. Click Save, then refresh your Google Sheet.
+ * Uses the workflow-specific dispatch API so tokens with "Actions: Read & Write" work seamlessly.
  */
 
 const REPO_OWNER = 'sekharnarayanaswamy-del';
@@ -46,9 +42,10 @@ function triggerStagingDeploy() {
     return;
   }
 
-  var url = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/dispatches';
+  // Trigger deploy_staging.yml workflow directly (uses Actions permission)
+  var url = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/actions/workflows/deploy_staging.yml/dispatches';
   var payload = {
-    event_type: 'deploy_staging'
+    ref: 'main'
   };
 
   var options = {
@@ -92,9 +89,13 @@ function triggerProductionDeploy() {
     return;
   }
 
-  var url = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/dispatches';
+  // Trigger deploy_production.yml workflow directly (uses Actions permission)
+  var url = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/actions/workflows/deploy_production.yml/dispatches';
   var payload = {
-    event_type: 'deploy_production'
+    ref: 'main',
+    inputs: {
+      confirm_deploy: 'DEPLOY'
+    }
   };
 
   var options = {
