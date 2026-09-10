@@ -297,7 +297,7 @@
                 <span>VedaVMS</span>
             </a>
             <div class="controls">
-                <a href="sanskrit_vedic_books.html" class="btn-ctrl">← Books Index</a>
+                <a href="documents.html" class="btn-ctrl">← Documents Index</a>
                 <button class="btn-ctrl" id="font-toggle-btn" onclick="toggleFont()" title="Toggle Sanskrit Font">Font: Noto Serif</button>
                 <button class="btn-ctrl" onclick="adjustFont(1)" title="Increase Font Size">A+</button>
                 <button class="btn-ctrl" onclick="adjustFont(-1)" title="Decrease Font Size">A-</button>
@@ -2976,11 +2976,7 @@
             document.documentElement.style.setProperty('--font-size', currentSize + 'rem');
         }
 
-        const fontList = [
-            { label: 'Noto Serif', font: "'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif", weight: '500' },
-            { label: 'Tiro Sanskrit', font: "'Tiro Devanagari Sanskrit', 'Noto Serif Devanagari', serif", weight: '400' },
-            { label: 'Noto Sans', font: "'Noto Sans Devanagari', sans-serif", weight: '500' }
-        ];
+        const fontList = [{"label": "Noto Serif", "font": "'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif", "weight": "500"}, {"label": "Tiro Sanskrit", "font": "'Tiro Devanagari Sanskrit', 'Noto Serif Devanagari', serif", "weight": "400"}, {"label": "Noto Sans", "font": "'Noto Sans Devanagari', sans-serif", "weight": "500"}];
         let currentFontIndex = 0;
         function toggleFont() {
             currentFontIndex = (currentFontIndex + 1) % fontList.length;

@@ -8,6 +8,11 @@ This repository contains tools, data snapshots, and redesign mockups for [VedaVM
 
 ```
 vedavms/
+├── src/                                # Baraha transliteration & Vedic Reader generator
+│   ├── __init__.py
+│   ├── transliterate.py                # Baraha to Devanagari Unicode transliterator
+│   ├── build_reader.py                 # DOCX to interactive Vedic HTML reader generator
+│   └── config.json                     # Multi-book configuration & font settings
 ├── generate_documents.py               # Main document page generator script
 ├── scripts/
 │   ├── deploy_site.py                  # Unified deploy & rollback CLI (staging, production, backups)
@@ -37,6 +42,7 @@ vedavms/
 ├── .github/workflows/
 │   ├── deploy_staging.yml              # CI/CD automated staging deployment (new.vedavms.in)
 │   └── deploy_production.yml           # CI/CD production promotion workflow (vedavms.in)
+├── BARAHA_READER_GUIDE.md              # Guide for generating Vedic HTML readers from Baraha DOCX
 ├── MAINTAINER_GUIDE.md                 # Complete technical & maintainer manual
 └── MAINTAINER_COOKBOOK.md              # 3-step quick recipe for everyday editors
 ```
@@ -112,6 +118,7 @@ python generate_documents.py --check
 
 - See **[MAINTAINER_COOKBOOK.md](MAINTAINER_COOKBOOK.md)** for a short recipe on uploading PDFs and updating Google Sheets.
 - See **[MAINTAINER_GUIDE.md](MAINTAINER_GUIDE.md)** for the full maintainer workflow, technical architecture, and Google Sheets + GitHub Actions pipeline.
+- See **[BARAHA_READER_GUIDE.md](BARAHA_READER_GUIDE.md)** for complete details on generating standalone interactive Vedic HTML readers from Baraha sources.
 
 ---
 
