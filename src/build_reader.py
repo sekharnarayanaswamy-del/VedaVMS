@@ -151,8 +151,8 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
     """Generate standalone responsive HTML reader with TOC navigation and typography controls."""
     title = book_meta.get("title", "Vedic Sanskrit Reader")
     subtitle = book_meta.get("subtitle", "कृष्ण यजुर्वेदीय आरण्यकम्")
-    back_link = book_meta.get("back_link", "documents.html")
-    back_label = book_meta.get("back_label", "← Documents Index")
+    back_link = book_meta.get("back_link", "index.html")
+    back_label = book_meta.get("back_label", "← Home")
 
     fonts_js = json.dumps(fonts, ensure_ascii=False)
 

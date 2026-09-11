@@ -8,6 +8,39 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'Adishila San';
+            src: local('Adishila San'), url('fonts/AdishilaSan.ttf') format('truetype');
+            font-weight: 400 500;
+            font-style: normal;
+            font-display: swap;
+            size-adjust: 125%;
+        }
+        @font-face {
+            font-family: 'Adishila San';
+            src: local('Adishila San Bold'), local('AdishilaSan-Bold'), url('fonts/AdishilaSanBoldB.ttf') format('truetype');
+            font-weight: 600 700;
+            font-style: normal;
+            font-display: swap;
+            size-adjust: 125%;
+        }
+        @font-face {
+            font-family: 'Adishila San';
+            src: local('Adishila San Italic'), local('AdishilaSan-Italic'), url('fonts/AdishilaSanItalic.ttf') format('truetype');
+            font-weight: 400 500;
+            font-style: italic;
+            font-display: swap;
+            size-adjust: 125%;
+        }
+        @font-face {
+            font-family: 'Adishila San';
+            src: local('Adishila San Bold Italic'), local('AdishilaSan-BoldItalic'), url('fonts/AdishilaSanBoldItalic.ttf') format('truetype');
+            font-weight: 600 700;
+            font-style: italic;
+            font-display: swap;
+            size-adjust: 125%;
+        }
+
         :root {
             --saffron: #D84315;
             --maroon: #7B1113;
@@ -21,6 +54,15 @@
             --font-size: 1.35rem;
             --verse-font: 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
             --verse-weight: 500;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 5rem;
+        }
+
+        .chapter-container, .anuvaka-block, [id] {
+            scroll-margin-top: 5rem;
         }
 
         * {
@@ -213,6 +255,16 @@
             font-weight: 600;
         }
 
+        .toc-sub-list a.active {
+            background: #FFE8D1 !important;
+            color: #B23600 !important;
+            font-weight: 700 !important;
+            border-left: 3.5px solid var(--saffron);
+            padding-left: 0.6rem;
+            border-radius: 0 4px 4px 0;
+            box-shadow: 0 1px 3px rgba(216, 67, 21, 0.12);
+        }
+
         /* Collapsible sidebar styles */
         .layout.sidebar-collapsed {
             grid-template-columns: 0 1fr;
@@ -254,6 +306,38 @@
             border-radius: 10px;
             padding: 2.25rem 2.75rem;
             box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            --font-size: 1.35rem;
+            font-size: var(--font-size);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 1.75rem;
+            right: 1.75rem;
+            width: 44px;
+            height: 44px;
+            background: var(--saffron);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(216,67,21,0.35);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            z-index: 999;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            background: var(--maroon);
+            transform: translateY(-2px);
         }
 
         .main-title {
@@ -300,6 +384,8 @@
             padding: 1.35rem 1.6rem;
             margin-bottom: 2rem;
             box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            content-visibility: auto;
+            contain-intrinsic-size: auto 220px;
         }
 
         .anuvaka-header {
@@ -360,22 +446,205 @@
                 font-size: 1.75rem;
             }
         }
+
+        /* Print Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(2px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-width: 520px;
+            width: 92%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .modal-header h3 {
+            color: var(--maroon);
+            font-size: 1.25rem;
+            font-family: 'Noto Serif Devanagari', serif;
+        }
+        .close-modal-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: #888;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        .close-modal-btn:hover {
+            color: var(--maroon);
+            background: #F5F0EB;
+        }
+        .print-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+        .btn-print-opt {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.1rem;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            background: #FFFDF9;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .btn-print-opt:hover {
+            border-color: var(--saffron);
+            background: #FFF8F0;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(216, 67, 21, 0.12);
+        }
+        .btn-print-opt.primary {
+            border-color: var(--saffron);
+            background: #FFF5EC;
+        }
+        .btn-opt-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .btn-opt-text strong {
+            display: block;
+            color: var(--dark-brown);
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+        .btn-opt-text span {
+            font-size: 0.82rem;
+            color: #666;
+        }
+
+        @page {
+            size: auto;
+            margin: 15mm 18mm 15mm 18mm;
+        }
+
+        @media print {
+            *, *::before, *::after {
+                box-sizing: border-box !important;
+            }
+            html, body {
+                background: white !important;
+                color: #111 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .header, .toc-sidebar, .back-to-top, .modal-overlay {
+                display: none !important;
+            }
+            .layout {
+                display: block !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .main-content {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .main-title {
+                text-align: center !important;
+                margin-bottom: 2rem !important;
+                padding-bottom: 1rem !important;
+                border-bottom: 2px solid var(--maroon) !important;
+            }
+            .chapter-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 0 2.5rem 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+            }
+            .chapter-heading {
+                break-after: avoid;
+                page-break-after: avoid;
+                margin: 1.5rem 0 1.2rem 0 !important;
+                padding: 0.6rem 1rem !important;
+                background: #7B1113 !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .anuvaka-block {
+                box-sizing: border-box !important;
+                width: calc(100% - 6px) !important;
+                max-width: calc(100% - 6px) !important;
+                margin: 0 3px 1.5rem 3px !important;
+                padding: 1.1rem 1.3rem !important;
+                background: #FFFAF5 !important;
+                border: 1px solid #D0C0B0 !important;
+                border-left: 5px solid var(--saffron) !important;
+                border-radius: 6px !important;
+                box-shadow: none !important;
+                content-visibility: visible !important;
+                contain-intrinsic-size: none !important;
+                contain: none !important;
+                break-inside: avoid;
+                page-break-inside: avoid;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .verse-text, .verse-p {
+                word-break: break-word !important;
+                overflow-wrap: break-word !important;
+            }
+        }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="header-content">
-            <a href="index.html" class="logo">
+            <a href="#" class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" title="Go to top of page">
                 <span class="om-symbol">ॐ</span>
                 <span>VedaVMS</span>
             </a>
             <div class="controls">
                 <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Toggle Contents Panel" id="sidebar-toggle-btn">☰ सूची</button>
-                <a href="documents.html" class="btn-ctrl">← Documents Index</a>
+                <a href="index.html" class="btn-ctrl">← Home</a>
                 <button class="btn-ctrl" id="font-toggle-btn" onclick="toggleFont()" title="Toggle Sanskrit Font">Font: Noto Serif</button>
-                <button class="btn-ctrl" onclick="adjustFont(1)" title="Increase Font Size">A+</button>
-                <button class="btn-ctrl" onclick="adjustFont(-1)" title="Decrease Font Size">A-</button>
-                <button class="btn-ctrl" onclick="window.print()" title="Print / Save PDF">🖨️ Print</button>
+                <button class="btn-ctrl" onclick="adjustFont(-1)" title="Decrease Font Size (A-)">A-</button>
+                <span id="font-size-val" onclick="resetFontSize()" style="font-size: 0.85rem; padding: 0.15rem 0.45rem; color: #FFF; font-family: monospace; font-weight: 600; min-width: 44px; text-align: center; display: inline-block; cursor: pointer; border-radius: 4px; background: rgba(255,255,255,0.14); transition: transform 0.15s ease;" title="Click to reset font size to 100%">100%</span>
+                <button class="btn-ctrl" onclick="adjustFont(1)" title="Increase Font Size (A+)">A+</button>
+                <button class="btn-ctrl" onclick="openPrintModal()" title="Print / Save PDF (Ctrl+P)">🖨️ Print</button>
+                <button class="btn-ctrl" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Go to top of page">▲ Top</button>
             </div>
         </div>
     </header>
@@ -3062,13 +3331,38 @@
     </div>
 
     <script>
-        let currentSize = 1.35;
-        function adjustFont(delta) {
-            currentSize = Math.max(0.9, Math.min(2.2, currentSize + (delta * 0.1)));
-            document.documentElement.style.setProperty('--font-size', currentSize + 'rem');
+        const defaultSize = 1.35;
+        let currentSize = defaultSize;
+
+        function updateFontSizeDisplay() {
+            const pct = Math.round((currentSize / defaultSize) * 100);
+            const valEl = document.getElementById('font-size-val');
+            if (valEl) {
+                valEl.textContent = pct + '%';
+                valEl.style.transform = 'scale(1.18)';
+                setTimeout(() => { valEl.style.transform = 'scale(1)'; }, 150);
+            }
         }
 
-        const fontList = [{"label": "Noto Serif", "font": "'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif", "weight": "500"}, {"label": "Tiro Sanskrit", "font": "'Tiro Devanagari Sanskrit', 'Noto Serif Devanagari', serif", "weight": "400"}, {"label": "Noto Sans", "font": "'Noto Sans Devanagari', sans-serif", "weight": "500"}];
+        function applyFontSize() {
+            const mainEl = document.querySelector('.main-content');
+            if (mainEl) mainEl.style.setProperty('--font-size', currentSize + 'rem');
+            document.documentElement.style.setProperty('--font-size', currentSize + 'rem');
+            updateFontSizeDisplay();
+            localStorage.setItem('reader-font-size', currentSize);
+        }
+
+        function adjustFont(delta) {
+            currentSize = Math.max(0.9, Math.min(2.4, +(currentSize + (delta * 0.15)).toFixed(2)));
+            applyFontSize();
+        }
+
+        function resetFontSize() {
+            currentSize = defaultSize;
+            applyFontSize();
+        }
+
+        const fontList = [{"label": "Noto Serif", "font": "'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif", "weight": "500"}, {"label": "Adishila San", "font": "'Adishila San', 'Noto Serif Devanagari', serif", "weight": "500"}, {"label": "Tiro Sanskrit", "font": "'Tiro Devanagari Sanskrit', 'Noto Serif Devanagari', serif", "weight": "400"}, {"label": "Noto Sans", "font": "'Noto Sans Devanagari', sans-serif", "weight": "500"}];
         let currentFontIndex = 0;
         function setFont(idx) {
             currentFontIndex = ((idx % fontList.length) + fontList.length) % fontList.length;
@@ -3102,9 +3396,382 @@
             btn.textContent = collapsed ? '☰' : '☰ सूची';
         }
 
-        (function() {
-            localStorage.removeItem('view-mode');
+        /* Context-aware Suchi / Index Scroll Synchronization */
+        let activeAnuvakaId = null;
+        let isUserInteractingWithToc = false;
 
+        /* Print Modal & High Performance Cached Printing */
+        let currentActiveSectionId = null;
+        let currentActiveSectionTitle = "";
+        let currentActiveChapterId = null;
+        let currentActiveChapterTitle = "";
+        let currentActiveChapterCount = 0;
+        const printSectionCache = new Map();
+
+        function scrollSidebarToTarget(targetLink) {
+            const sidebar = document.querySelector('.toc-sidebar');
+            if (!sidebar || isUserInteractingWithToc) return;
+            const linkRect = targetLink.getBoundingClientRect();
+            const sideRect = sidebar.getBoundingClientRect();
+            const margin = Math.min(70, sideRect.height * 0.2);
+            if (linkRect.top < sideRect.top + margin || linkRect.bottom > sideRect.bottom - margin) {
+                const currentScroll = sidebar.scrollTop;
+                const offset = (linkRect.top - sideRect.top) - (sideRect.height / 2) + (linkRect.height / 2);
+                sidebar.scrollTo({
+                    top: Math.max(0, currentScroll + offset),
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        function highlightAnuvakaInToc(anuvakaId) {
+            if (!anuvakaId || anuvakaId === activeAnuvakaId) return;
+            activeAnuvakaId = anuvakaId;
+
+            const targetLink = document.querySelector(`.toc-sub-list a[href="#${anuvakaId}"]`);
+            if (!targetLink) return;
+
+            document.querySelectorAll('.toc-sub-list a.active').forEach(el => el.classList.remove('active'));
+            targetLink.classList.add('active');
+
+            let wasCollapsed = false;
+            const parentCh = targetLink.closest('.toc-chapter');
+            if (parentCh && parentCh.classList.contains('collapsed')) {
+                parentCh.classList.remove('collapsed');
+                wasCollapsed = true;
+            }
+
+            if (wasCollapsed) {
+                setTimeout(() => scrollSidebarToTarget(targetLink), 150);
+            } else {
+                scrollSidebarToTarget(targetLink);
+            }
+        }
+
+        function openPrintModal() {
+            const modal = document.getElementById('print-modal');
+            const label = document.getElementById('current-section-print-name');
+            if (currentActiveChapterTitle && label) {
+                label.innerText = currentActiveChapterTitle + (currentActiveChapterCount ? ` (${currentActiveChapterCount} anuvakas)` : '');
+            } else if (label) {
+                label.innerText = 'Print active Section/Chapter';
+            }
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closePrintModal() {
+            const modal = document.getElementById('print-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        // Intercept Ctrl+P / Cmd+P to open fast print modal instead of freezing
+        window.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+                e.preventDefault();
+                openPrintModal();
+            }
+            if (e.key === 'Escape') {
+                closePrintModal();
+            }
+        });
+
+        function printHtmlContent(title, contentHtml) {
+            let iframe = document.getElementById('vms-print-frame');
+            if (!iframe) {
+                iframe = document.createElement('iframe');
+                iframe.id = 'vms-print-frame';
+                iframe.style.position = 'fixed';
+                iframe.style.left = '-9999px';
+                iframe.style.top = '0';
+                iframe.style.width = '800px';
+                iframe.style.height = '1000px';
+                iframe.style.border = 'none';
+                document.body.appendChild(iframe);
+            }
+            const doc = iframe.contentWindow.document;
+            const mainStyle = document.querySelector('style') ? document.querySelector('style').innerHTML : '';
+            doc.open();
+            doc.write(`<!DOCTYPE html>
+            <html lang="sa">
+            <head>
+                <meta charset="UTF-8">
+                <title>${title || document.title}</title>
+                <style>
+                    ${mainStyle}
+                    @page {
+                        size: auto;
+                        margin: 15mm 18mm 15mm 18mm;
+                    }
+                    *, *::before, *::after {
+                        box-sizing: border-box !important;
+                    }
+                    html, body {
+                        background: white !important;
+                        color: #111 !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        font-size: 1.15rem;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    .header, .toc-sidebar, .back-to-top, .modal-overlay {
+                        display: none !important;
+                    }
+                    .layout {
+                        display: block !important;
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+                    .print-container {
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        margin: 0 auto !important;
+                        padding: 0 3px !important;
+                        box-sizing: border-box !important;
+                    }
+                    .main-content {
+                        border: none !important;
+                        box-shadow: none !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                        width: 100% !important;
+                        max-width: 100% !important;
+                    }
+                    .chapter-container {
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        margin: 0 0 2.5rem 0 !important;
+                        padding: 0 !important;
+                        box-sizing: border-box !important;
+                    }
+                    .chapter-heading {
+                        break-after: avoid;
+                        page-break-after: avoid;
+                        margin: 1.5rem 0 1.2rem 0 !important;
+                        padding: 0.6rem 1rem !important;
+                        background: #7B1113 !important;
+                        color: white !important;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    .anuvaka-block {
+                        box-sizing: border-box !important;
+                        width: calc(100% - 6px) !important;
+                        max-width: calc(100% - 6px) !important;
+                        margin: 0 3px 1.5rem 3px !important;
+                        padding: 1.1rem 1.3rem !important;
+                        background: #FFFAF5 !important;
+                        border: 1px solid #D0C0B0 !important;
+                        border-left: 5px solid var(--saffron) !important;
+                        border-radius: 6px !important;
+                        box-shadow: none !important;
+                        content-visibility: visible !important;
+                        contain-intrinsic-size: none !important;
+                        contain: none !important;
+                        break-inside: avoid;
+                        page-break-inside: avoid;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    .verse-text, .verse-p {
+                        word-break: break-word !important;
+                        overflow-wrap: break-word !important;
+                    }
+                    @media print {
+                        body { margin: 0 !important; padding: 0 !important; }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="print-container">
+                    ${contentHtml}
+                </div>
+            </body>
+            </html>`);
+            doc.close();
+
+            setTimeout(() => {
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+            }, 120);
+        }
+
+        function getSectionPrintableHtml(target) {
+            if (!target) return "";
+            const targetId = target.id;
+            if (printSectionCache.has(targetId)) {
+                return printSectionCache.get(targetId);
+            }
+            const docTitleHtml = `<div style="text-align:center;margin-bottom:1.5rem;"><h1 style="font-size:1.55rem;color:#7B1113;margin-bottom:0.3rem;">॥ ${document.title} ॥</h1></div>`;
+            let contentHtml = "";
+            if (target.classList.contains('chapter-container')) {
+                contentHtml = docTitleHtml + target.outerHTML;
+            } else {
+                const parentChapter = target.closest('.chapter-container');
+                const chTitleNode = parentChapter ? parentChapter.querySelector('.chapter-heading') : null;
+                const chapterHeaderHtml = chTitleNode ? `<h2 class="chapter-heading" style="text-align:center;font-size:1.35rem;margin-bottom:1.2rem;color:#7B1113;border-bottom:2px solid #7B1113;padding-bottom:0.4rem;">${chTitleNode.textContent.trim()}</h2>` : '';
+                contentHtml = docTitleHtml + chapterHeaderHtml + target.outerHTML;
+            }
+            printSectionCache.set(targetId, contentHtml);
+            return contentHtml;
+        }
+
+        function printActiveChapter() {
+            closePrintModal();
+            let target = null;
+            if (currentActiveChapterId) {
+                target = document.getElementById(currentActiveChapterId);
+            }
+            if (!target && currentActiveSectionId) {
+                const sec = document.getElementById(currentActiveSectionId);
+                target = sec ? sec.closest('.chapter-container') : null;
+            }
+            if (!target) {
+                target = document.querySelector('.chapter-container');
+            }
+            if (!target) return;
+            const printableHtml = getSectionPrintableHtml(target);
+            const title = currentActiveChapterTitle || document.title;
+            printHtmlContent(title, printableHtml);
+        }
+
+        function printSelectedTarget() {
+            const select = document.getElementById('section-select-dropdown');
+            if (!select || !select.value) return;
+            const target = document.getElementById(select.value);
+            if (!target) return;
+            closePrintModal();
+            const printableHtml = getSectionPrintableHtml(target);
+            const title = (select.options[select.selectedIndex]?.text) || document.title;
+            printHtmlContent(title, printableHtml);
+        }
+
+        function printEntireDocument() {
+            closePrintModal();
+            setTimeout(function() {
+                window.print();
+            }, 50);
+        }
+
+        function populateSectionDropdown() {
+            const select = document.getElementById('section-select-dropdown');
+            if (!select) return;
+            select.innerHTML = '';
+
+            const chGroup = document.createElement('optgroup');
+            chGroup.label = "Chapters / Sections (Complete)";
+
+            const anuvakaGroup = document.createElement('optgroup');
+            anuvakaGroup.label = "Individual Anuvakas";
+
+            document.querySelectorAll('.chapter-container').forEach(ch => {
+                const chHeading = ch.querySelector('.chapter-heading');
+                const chTitle = chHeading ? chHeading.textContent.trim() : ch.id;
+                const count = ch.querySelectorAll('.anuvaka-block').length;
+
+                const chOpt = document.createElement('option');
+                chOpt.value = ch.id;
+                chOpt.textContent = `${chTitle} (${count} anuvakas)`;
+                chGroup.appendChild(chOpt);
+
+                ch.querySelectorAll('.anuvaka-block').forEach(sec => {
+                    const numEl = sec.querySelector('.anuvaka-num');
+                    const secTitle = numEl ? numEl.textContent.trim() : sec.id;
+                    const secOpt = document.createElement('option');
+                    secOpt.value = sec.id;
+                    secOpt.textContent = `${chTitle} - ${secTitle}`;
+                    anuvakaGroup.appendChild(secOpt);
+                });
+            });
+
+            select.appendChild(chGroup);
+            select.appendChild(anuvakaGroup);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            populateSectionDropdown();
+
+            const firstCh = document.querySelector('.chapter-container');
+            if (firstCh) {
+                currentActiveChapterId = firstCh.id;
+                const chHeading = firstCh.querySelector('.chapter-heading');
+                currentActiveChapterTitle = chHeading ? chHeading.textContent.trim() : firstCh.id;
+                currentActiveChapterCount = firstCh.querySelectorAll('.anuvaka-block').length;
+            }
+
+            // IntersectionObserver for tracking active Anuvaka during scroll
+            const anuvakaObserver = new IntersectionObserver((entries) => {
+                let bestEntry = null;
+                let minDistance = Infinity;
+
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const dist = Math.abs(entry.boundingClientRect.top - 85);
+                        if (dist < minDistance) {
+                            minDistance = dist;
+                            bestEntry = entry;
+                        }
+                    }
+                });
+
+                if (bestEntry) {
+                    highlightAnuvakaInToc(bestEntry.target.id);
+                    currentActiveSectionId = bestEntry.target.id;
+                    const numNode = bestEntry.target.querySelector('.anuvaka-num');
+                    if (numNode) {
+                        currentActiveSectionTitle = numNode.textContent.trim();
+                    }
+                    const parentCh = bestEntry.target.closest('.chapter-container');
+                    if (parentCh) {
+                        currentActiveChapterId = parentCh.id;
+                        const chHeading = parentCh.querySelector('.chapter-heading');
+                        currentActiveChapterTitle = chHeading ? chHeading.textContent.trim() : parentCh.id;
+                        currentActiveChapterCount = parentCh.querySelectorAll('.anuvaka-block').length;
+                    }
+                }
+            }, { rootMargin: '-75px 0px -75% 0px', threshold: 0 });
+
+            document.querySelectorAll('.anuvaka-block').forEach(el => anuvakaObserver.observe(el));
+
+            // Direct click on Suchi item immediately highlights without waiting
+            document.querySelectorAll('.toc-sub-list a').forEach(link => {
+                link.addEventListener('click', function() {
+                    const href = this.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        const secId = href.slice(1);
+                        highlightAnuvakaInToc(secId);
+                        currentActiveSectionId = secId;
+                        const target = document.getElementById(secId);
+                        const numNode = target ? target.querySelector('.anuvaka-num') : null;
+                        if (numNode) {
+                            currentActiveSectionTitle = numNode.textContent.trim();
+                        }
+                        const parentCh = target ? target.closest('.chapter-container') : null;
+                        if (parentCh) {
+                            currentActiveChapterId = parentCh.id;
+                            const chHeading = parentCh.querySelector('.chapter-heading');
+                            currentActiveChapterTitle = chHeading ? chHeading.textContent.trim() : parentCh.id;
+                            currentActiveChapterCount = parentCh.querySelectorAll('.anuvaka-block').length;
+                        }
+                    }
+                });
+            });
+
+            const sidebar = document.querySelector('.toc-sidebar');
+            if (sidebar) {
+                let tocTimeout;
+                sidebar.addEventListener('wheel', () => {
+                    isUserInteractingWithToc = true;
+                    clearTimeout(tocTimeout);
+                    tocTimeout = setTimeout(() => { isUserInteractingWithToc = false; }, 1500);
+                }, { passive: true });
+            }
+
+            // Restore saved states
             const collapsed = localStorage.getItem('sidebar-collapsed') === 'true';
             if (collapsed) {
                 document.querySelector('.layout').classList.add('sidebar-collapsed');
@@ -3122,7 +3789,66 @@
             if (savedFont !== null) {
                 setFont(parseInt(savedFont, 10) || 0);
             }
-        })();
+            const savedSize = localStorage.getItem('reader-font-size');
+            if (savedSize !== null) {
+                currentSize = parseFloat(savedSize) || defaultSize;
+                applyFontSize();
+            } else {
+                updateFontSizeDisplay();
+            }
+        });
+
+        window.addEventListener('scroll', function() {
+            const btn = document.getElementById('back-to-top');
+            if (btn) {
+                if (window.scrollY > 350) btn.classList.add('visible');
+                else btn.classList.remove('visible');
+            }
+        });
     </script>
+    <button id="back-to-top" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Go to top of page">▲</button>
+
+    <!-- Print Options Modal -->
+    <div id="print-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closePrintModal();">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>🖨️ Print / Save PDF</h3>
+                <button class="close-modal-btn" onclick="closePrintModal()" title="Close">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 1rem; color: #555; font-size: 0.92rem; line-height: 1.5;">
+                    Large documents take time to paginate. Choose your print scope below:
+                </p>
+                <div class="print-options">
+                    <button class="btn-print-opt primary" onclick="printActiveChapter()">
+                        <span class="btn-opt-icon">⚡</span>
+                        <div class="btn-opt-text">
+                            <strong>Print Current Section/Chapter</strong>
+                            <span id="current-section-print-name">Print active Section/Chapter</span>
+                        </div>
+                    </button>
+
+                    <div style="background: #FFFDF9; border: 1.5px solid var(--border-color); border-radius: 8px; padding: 0.75rem 1rem; box-sizing: border-box; width: 100%;">
+                        <label style="font-weight: 600; font-size: 0.92rem; color: var(--dark-brown); display: block; margin-bottom: 0.35rem;">
+                            Select Specific Section / Chapter:
+                        </label>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; width: 100%; box-sizing: border-box;">
+                            <select id="section-select-dropdown" style="flex: 1; min-width: 0; padding: 0.45rem; border: 1px solid #CCC; border-radius: 6px; font-family: inherit; font-size: 0.9rem; box-sizing: border-box;">
+                            </select>
+                            <button type="button" class="btn-ctrl" style="background: var(--saffron); color: white; border: none; padding: 0.45rem 0.85rem; cursor: pointer; white-space: nowrap; flex-shrink: 0;" onclick="printSelectedTarget()">Print</button>
+                        </div>
+                    </div>
+
+                    <button class="btn-print-opt" onclick="printEntireDocument()">
+                        <span class="btn-opt-icon">📖</span>
+                        <div class="btn-opt-text">
+                            <strong>Print Entire Document</strong>
+                            <span>All chapters and sections (full text)</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
