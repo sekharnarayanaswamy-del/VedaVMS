@@ -53,7 +53,7 @@ CHECK_WORKERS = 6
 
 # key -> (live page, human label used in log output, tab display title)
 LANGUAGES = [
-    ("sanskrit",   "docs_sanskrit.html",   "Sanskrit",            "संस्कृत Sanskrit"),
+    ("sanskrit",   "docs_sanskrit.html",   "Sanskrit",            "संस्कृतम् Sanskrit"),
     ("tamil",      "docs_tamil.html",      "Tamil",               "தமிழ் Tamil"),
     ("malayalam",  "docs_malayalam.html",  "Malayalam",           "മലയാളം Malayalam"),
     ("kannada",    "docs_kannada.html",    "Kannada",             "ಕನ್ನಡ Kannada"),

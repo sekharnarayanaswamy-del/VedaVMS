@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - VedaVMS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Tiro+Devanagari+Sanskrit&display=swap"
+        rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
             --saffron: #E65100;
             --maroon: #800000;
@@ -16,16 +24,57 @@
             --white: #FFFFFF;
             --light-orange: #FFF3E0;
         }
-        body { font-family: 'Noto Sans', sans-serif; color: var(--dark-brown); background: var(--cream); line-height: 1.7; }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            color: var(--dark-brown);
+            background: var(--cream);
+            line-height: 1.7;
+        }
+
         .header {
             background: linear-gradient(135deg, #153E75 0%, #1D5296 50%, #2563A8 100%);
-            color: white; padding: 1.25rem 0; text-align: center;
+            color: white;
+            padding: 1.25rem 0;
+            text-align: center;
             border-bottom: 2px solid var(--gold);
         }
-        .logo { font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 2.2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.25); }
-        .om-symbol { font-size: 1.8rem; color: #FFD54F; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-        .blessing { font-size: 0.82rem; color: #F0F7FF; opacity: 0.95; font-style: italic; margin-top: 0.35rem; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-        .nav { background: var(--white); box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+
+        .logo {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+        }
+
+        .om-symbol {
+            font-size: 1.8rem;
+            color: #FFD54F;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .blessing {
+            font-size: 0.82rem;
+            color: #F0F7FF;
+            opacity: 0.95;
+            font-style: italic;
+            margin-top: 0.35rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav {
+            background: var(--white);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
         .nav-mobile-bar {
             display: none;
             justify-content: space-between;
@@ -33,6 +82,7 @@
             padding: 0.65rem 1rem;
             background: var(--white);
         }
+
         .nav-mobile-brand {
             font-family: 'Tiro Devanagari Sanskrit', serif;
             font-size: 1.35rem;
@@ -43,10 +93,12 @@
             align-items: center;
             gap: 0.4rem;
         }
+
         .nav-mobile-brand .om-symbol {
             color: var(--saffron);
             font-size: 1.25rem;
         }
+
         .nav-toggle {
             display: none;
             flex-direction: column;
@@ -59,6 +111,7 @@
             padding: 0;
             z-index: 1001;
         }
+
         .hamburger-bar {
             display: block;
             width: 100%;
@@ -68,55 +121,235 @@
             transition: all 0.3s ease-in-out;
             transform-origin: center;
         }
+
         .nav-toggle.open .hamburger-bar:nth-child(1) {
             transform: translateY(9.5px) rotate(45deg);
         }
+
         .nav-toggle.open .hamburger-bar:nth-child(2) {
             opacity: 0;
             transform: scaleX(0);
         }
+
         .nav-toggle.open .hamburger-bar:nth-child(3) {
             transform: translateY(-9.5px) rotate(-45deg);
         }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; flex-wrap: wrap; }
-        .nav a { color: var(--dark-brown); text-decoration: none; padding: 0.85rem 1.25rem; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; border-bottom: 3px solid transparent; transition: all 0.3s; }
-        .nav a:hover, .nav a.active { color: var(--saffron); border-bottom-color: var(--saffron); background: var(--light-orange); }
-        .nav .donate-btn { background: transparent; color: var(--saffron) !important; border: 1.5px solid var(--saffron); border-radius: 4px; margin: 0.35rem 0.5rem; padding: 0.45rem 0.9rem; } .nav .donate-btn:hover, .nav .donate-btn.active { background: var(--saffron); color: white !important; border: 1.5px solid var(--saffron); }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: var(--dark-brown);
+            text-decoration: none;
+            padding: 0.85rem 1.25rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: var(--saffron);
+            border-bottom-color: var(--saffron);
+            background: var(--light-orange);
+        }
+
+        .nav .donate-btn {
+            background: transparent;
+            color: var(--saffron) !important;
+            border: 1.5px solid var(--saffron);
+            border-radius: 4px;
+            margin: 0.35rem 0.5rem;
+            padding: 0.45rem 0.9rem;
+        }
+
+        .nav .donate-btn:hover,
+        .nav .donate-btn.active {
+            background: var(--saffron);
+            color: white !important;
+            border: 1.5px solid var(--saffron);
+        }
+
         /* Muted Ticker Tape */
-        .ticker-wrap { width: 100%; overflow: hidden; background: #FFFDF9; border-bottom: 1px solid rgba(218, 165, 32, 0.22); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03); padding: 0.35rem 0; user-select: none; position: relative; z-index: 99; }
-        .ticker-content { display: flex; width: max-content; }
-        .ticker-track { display: flex; align-items: center; white-space: nowrap; flex-shrink: 0; animation: tickerRoll 35s linear infinite; }
-        .ticker-wrap:hover .ticker-track { animation-play-state: paused; }
-        .ticker-item { display: inline-flex; align-items: center; font-size: 0.88rem; font-weight: 500; color: #5D4037; padding: 0 1.2rem; letter-spacing: 0.01em; }
-        .ticker-link { color: #B23600; text-decoration: none; font-weight: 600; transition: color 0.15s; }
-        .ticker-link:hover { color: #E65100; text-decoration: underline; }
-        .ticker-sep { color: #BDAEA4; font-size: 0.75rem; opacity: 0.7; }
-        @keyframes tickerRoll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-        @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: #FFFDF9;
+            border-bottom: 1px solid rgba(218, 165, 32, 0.22);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+            padding: 0.35rem 0;
+            user-select: none;
+            position: relative;
+            z-index: 99;
+        }
+
+        .ticker-content {
+            display: flex;
+            width: max-content;
+        }
+
+        .ticker-track {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            flex-shrink: 0;
+            animation: tickerRoll 35s linear infinite;
+        }
+
+        .ticker-wrap:hover .ticker-track {
+            animation-play-state: paused;
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: #5D4037;
+            padding: 0 1.2rem;
+            letter-spacing: 0.01em;
+        }
+
+        .ticker-link {
+            color: #B23600;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.15s;
+        }
+
+        .ticker-link:hover {
+            color: #E65100;
+            text-decoration: underline;
+        }
+
+        .ticker-sep {
+            color: #BDAEA4;
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        @keyframes tickerRoll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .ticker-track {
+                animation: none;
+            }
+        }
+
         .page-header {
             background: linear-gradient(135deg, #8E3B18 0%, #A84D24 45%, #BD6336 100%);
-            color: white; padding: 2rem 1rem; text-align: center;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.15);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15);
         }
+
         .page-header h1 {
-            font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 2rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
         }
-        .main-content { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
-        .section { background: white; border-radius: 8px; padding: 1.5rem 2rem; margin-bottom: 1.5rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-        .section h2 { color: var(--maroon); font-size: 1.3rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--light-orange); }
-        .section p { margin-bottom: 1rem; }
-        .section ul, .section ol { margin-left: 1.5rem; margin-bottom: 1rem; }
-        .section li { margin-bottom: 0.5rem; }
-        .highlight-box { background: var(--light-orange); border-left: 4px solid var(--saffron); padding: 1rem 1.25rem; margin: 1rem 0; border-radius: 0 6px 6px 0; }
-        .contact-box { background: var(--maroon); color: white; padding: 1.5rem; border-radius: 8px; text-align: center; margin-top: 2rem; }
-        .contact-box a { color: var(--gold); }
-        .footer { background: var(--dark-brown); color: white; padding: 1.5rem 1rem; text-align: center; margin-top: 2rem; }
-        .footer a { color: white; margin: 0 1rem; text-decoration: none; opacity: 0.8; }
-        .footer a:hover { opacity: 1; }
+
+        .main-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .section h2 {
+            color: var(--maroon);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-orange);
+        }
+
+        .section p {
+            margin-bottom: 1rem;
+        }
+
+        .section ul,
+        .section ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background: var(--light-orange);
+            border-left: 4px solid var(--saffron);
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .contact-box {
+            background: var(--maroon);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .contact-box a {
+            color: var(--gold);
+        }
+
+        .footer {
+            background: var(--dark-brown);
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        .footer a:hover {
+            opacity: 1;
+        }
+
         @media (max-width: 768px) {
-            .nav-mobile-bar { display: flex; }
-            .nav-toggle { display: flex; }
+            .nav-mobile-bar {
+                display: flex;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
             .nav-container {
                 display: none;
                 flex-direction: column;
@@ -126,19 +359,23 @@
                 border-bottom: 2px solid var(--saffron);
                 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             }
+
             .nav-container.active {
                 display: flex;
                 animation: navSlideDown 0.25s ease-out;
             }
+
             .nav a {
                 padding: 0.85rem 1.25rem;
                 font-size: 0.9rem;
                 border-bottom: 1px solid #f2ece4;
                 text-align: left;
             }
+
             .nav a.active {
                 border-left: 4px solid var(--saffron);
             }
+
             .nav .donate-btn {
                 margin: 0.75rem 1.25rem 1rem;
                 text-align: center;
@@ -147,13 +384,22 @@
                 border: 1.5px solid var(--saffron);
                 padding: 0.6rem 1rem;
             }
+
             @keyframes navSlideDown {
-                from { opacity: 0; transform: translateY(-8px); }
-                to { opacity: 1; transform: translateY(0); }
+                from {
+                    opacity: 0;
+                    transform: translateY(-8px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
         }
     </style>
 </head>
+
 <body>
     <header class="header">
         <a href="index.html" class="logo"><span class="om-symbol">ॐ</span><span>VedaVMS</span></a>
@@ -163,7 +409,8 @@
     <nav class="nav">
         <div class="nav-mobile-bar">
             <a href="index.html" class="nav-mobile-brand"><span class="om-symbol">ॐ</span><span>VedaVMS</span></a>
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" type="button">
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false"
+                type="button">
                 <span class="hamburger-bar"></span>
                 <span class="hamburger-bar"></span>
                 <span class="hamburger-bar"></span>
@@ -184,55 +431,67 @@
     <div class="ticker-wrap" role="region" aria-label="Announcements">
         <div class="ticker-content">
             <div class="ticker-track">
-                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-item">New look VedaVMS</span>
                 <span class="ticker-sep">•</span>
-                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our
+                        new HTML viewer →</a></span>
                 <span class="ticker-sep">✦</span>
-                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-item">New look VedaVMS</span>
                 <span class="ticker-sep">•</span>
-                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our
+                        new HTML viewer →</a></span>
                 <span class="ticker-sep">✦</span>
-                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-item">New look VedaVMS</span>
                 <span class="ticker-sep">•</span>
-                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our
+                        new HTML viewer →</a></span>
                 <span class="ticker-sep">✦</span>
-                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-item">New look VedaVMS</span>
                 <span class="ticker-sep">•</span>
-                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our
+                        new HTML viewer →</a></span>
                 <span class="ticker-sep">✦</span>
-                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-item">New look VedaVMS</span>
                 <span class="ticker-sep">•</span>
-                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our
+                        new HTML viewer →</a></span>
                 <span class="ticker-sep">✦</span>
-                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-item">New look VedaVMS</span>
                 <span class="ticker-sep">•</span>
-                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our
+                        new HTML viewer →</a></span>
                 <span class="ticker-sep">✦</span>
             </div>
             <div class="ticker-track" aria-hidden="true">
-                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-item">New look VedaVMS</span>
                 <span class="ticker-sep">•</span>
-                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our
+                        new HTML viewer →</a></span>
                 <span class="ticker-sep">✦</span>
-                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-item">New look VedaVMS</span>
                 <span class="ticker-sep">•</span>
-                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our
+                        new HTML viewer →</a></span>
                 <span class="ticker-sep">✦</span>
-                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-item">New look VedaVMS</span>
                 <span class="ticker-sep">•</span>
-                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our
+                        new HTML viewer →</a></span>
                 <span class="ticker-sep">✦</span>
-                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-item">New look VedaVMS</span>
                 <span class="ticker-sep">•</span>
-                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our
+                        new HTML viewer →</a></span>
                 <span class="ticker-sep">✦</span>
-                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-item">New look VedaVMS</span>
                 <span class="ticker-sep">•</span>
-                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our
+                        new HTML viewer →</a></span>
                 <span class="ticker-sep">✦</span>
-                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-item">New look VedaVMS</span>
                 <span class="ticker-sep">•</span>
-                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our
+                        new HTML viewer →</a></span>
                 <span class="ticker-sep">✦</span>
             </div>
         </div>
@@ -245,57 +504,85 @@
     <main class="main-content">
         <div class="section">
             <h2>1.1 Introduction</h2>
-            <p>We are a group of working professionals who are collaborating to prepare/compile Veda Books on specific subjects/areas and also provide articles and discussion papers of interest to Veda Students. We are geographically distributed across many locations.</p>
-            <p>We would like to help Veda Students with materials and articles that would assist their learning. There are many basics that we have learned long after we started learning Veda. We had always wished <em>"oh I should have known this before"!!</em></p>
+            <p>We are a group of working professionals who are collaborating to prepare/compile Veda Books on specific
+                subjects/areas and also provide articles and discussion papers of interest to Veda Students. We are
+                geographically distributed across many locations.</p>
+            <p>We would like to help Veda Students with materials and articles that would assist their learning. There
+                are many basics that we have learned long after we started learning Veda. We had always wished <em>"oh I
+                    should have known this before"!!</em></p>
             <div class="highlight-box">
-                The Members of this Veda VMS Group as a policy have decided against use of any individual names of its members in any documents. Sharing of individual e-mail ids or phone numbers shall be only made on a need basis.
+                The Members of this Veda VMS Group as a policy have decided against use of any individual names of its
+                members in any documents. Sharing of individual e-mail ids or phone numbers shall be only made on a need
+                basis.
             </div>
         </div>
 
         <div class="section">
             <h2>1.2 Purpose</h2>
-            <p>The amount of material that is available over the internet and the efforts that are being put in by various people/organizations are amazing. The amount of material available in Sanskrit is great. We started with a specific subject of recital of Shanti Japam and there are no specific books which are available to chant the same in that specific order.</p>
-            <p>There was also a need for compiling books in Tamil and Malayalam Languages. Standard books on Vedas are not reader-friendly sometimes in terms of font, splitting of words, page-break for a mantra etc. Printed books have errors that are not corrected through a formalised correction mechanism.</p>
+            <p>The amount of material that is available over the internet and the efforts that are being put in by
+                various people/organizations are amazing. The amount of material available in Sanskrit is great. We
+                started with a specific subject of recital of Shanti Japam and there are no specific books which are
+                available to chant the same in that specific order.</p>
+            <p>There was also a need for compiling books in Tamil and Malayalam Languages. Standard books on Vedas are
+                not reader-friendly sometimes in terms of font, splitting of words, page-break for a mantra etc. Printed
+                books have errors that are not corrected through a formalised correction mechanism.</p>
             <p><strong>We decided that:</strong></p>
             <ol>
                 <li>We shall compile books from reliable sources in Sanskrit, Tamil and Malayalam.</li>
                 <li>Reader friendliness should be provided high priority.</li>
                 <li>Our books shall be popular version of books for learning and reference to students.</li>
-                <li>There should be a formal method of incorporating corrections. Keep updating our versions of the compiled books and articles/discussion papers.</li>
+                <li>There should be a formal method of incorporating corrections. Keep updating our versions of the
+                    compiled books and articles/discussion papers.</li>
                 <li>There are Paata bhedham (differences) which we must recognise.</li>
-                <li>We should not have a mind-set that what our Guru teaches is the only school of Veda and that is the only right way. Respect all Gurus and their Schools but stick to one main source for compilation.</li>
-                <li>We should explain the basics of Veda, Veda Recital rules and related topics so that there is intelligence in the learning and there is no rote learning.</li>
+                <li>We should not have a mind-set that what our Guru teaches is the only school of Veda and that is the
+                    only right way. Respect all Gurus and their Schools but stick to one main source for compilation.
+                </li>
+                <li>We should explain the basics of Veda, Veda Recital rules and related topics so that there is
+                    intelligence in the learning and there is no rote learning.</li>
             </ol>
             <div class="highlight-box">
-                <strong>Important:</strong> Our books are not meant for Self learning. Please always refer to your Veda Guru or seniors as to how to pronounce and deliver the various mantras.
+                <strong>Important:</strong> Our books are not meant for Self learning. Please always refer to your Veda
+                Guru or seniors as to how to pronounce and deliver the various mantras.
             </div>
         </div>
 
         <div class="section">
             <h2>1.3 Our Approach</h2>
             <ol>
-                <li>We shall take one subject/book at a time and complete the same before moving to another subject.</li>
-                <li>Books shall be proof read in all languages atleast twice after the book is completed through two different persons.</li>
+                <li>We shall take one subject/book at a time and complete the same before moving to another subject.
+                </li>
+                <li>Books shall be proof read in all languages atleast twice after the book is completed through two
+                    different persons.</li>
                 <li>We are not committed to any timelines regarding compilation of our future work.</li>
-                <li>We shall have feedback mechanism to receive corrections and incorporate the same after necessary verification. The list of errors observed in earlier versions shall be communicated so that the students remain updated.</li>
-                <li>There is no bar for any student or well wisher to sharing our work with anyone else or providing link from any other site.</li>
-                <li>The materials compiled and published should not be commercially used either directly or indirectly by anyone.</li>
+                <li>We shall have feedback mechanism to receive corrections and incorporate the same after necessary
+                    verification. The list of errors observed in earlier versions shall be communicated so that the
+                    students remain updated.</li>
+                <li>There is no bar for any student or well wisher to sharing our work with anyone else or providing
+                    link from any other site.</li>
+                <li>The materials compiled and published should not be commercially used either directly or indirectly
+                    by anyone.</li>
             </ol>
         </div>
 
         <div class="section">
             <h2>1.4 Our Acknowledgements</h2>
-            <p>We would like to thank all well wishers and readers who have sent in words of encouragement to us. Our thanks to some Vadhyaars (Priests), Gurus, Senior Veda learners for continuous guidance and support.</p>
-            <p>Our special thanks to the sponsors of the site <a href="https://www.vedavms.in" target="_blank" style="color: var(--saffron);">www.vedavms.in</a> and its Administrator.</p>
+            <p>We would like to thank all well wishers and readers who have sent in words of encouragement to us. Our
+                thanks to some Vadhyaars (Priests), Gurus, Senior Veda learners for continuous guidance and support.</p>
+            <p>Our special thanks to the sponsors of the site <a href="https://www.vedavms.in" target="_blank"
+                    style="color: var(--saffron);">www.vedavms.in</a> and its Administrator.</p>
         </div>
 
         <div class="section">
             <h2>1.5 Interactions</h2>
             <ol>
-                <li>We request you to contact us through the e-mail id: <a href="mailto:vedavms@gmail.com" style="color: var(--saffron);">vedavms@gmail.com</a></li>
-                <li>You can share your feedback, ask for reference, clarifications and report errors through the above e-mail id.</li>
-                <li>We shall create a circle in Google to share information about releases, activities and status that you may require.</li>
-                <li>Please bear with us if there are delays in responding to your requests. There are times when our members are hard pressed for time due to their professional work and commitments.</li>
+                <li>We request you to contact us through the e-mail id: <a href="mailto:vedavms@gmail.com"
+                        style="color: var(--saffron);">vedavms@gmail.com</a></li>
+                <li>You can share your feedback, ask for reference, clarifications and report errors through the above
+                    e-mail id.</li>
+                <li>We shall create a circle in Google to share information about releases, activities and status that
+                    you may require.</li>
+                <li>Please bear with us if there are delays in responding to your requests. There are times when our
+                    members are hard pressed for time due to their professional work and commitments.</li>
             </ol>
         </div>
 
@@ -354,4 +641,5 @@
         });
     </script>
 </body>
+
 </html>
