@@ -26,6 +26,11 @@ except ImportError:
 DOCX_NS = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
 
 
+def esc(text: str) -> str:
+    """Escape text for HTML attribute values."""
+    return text.replace('&', '&amp;').replace('"', '&quot;').replace('<', '&lt;').replace('>', '&gt;')
+
+
 def extract_docx_paragraphs(docx_path: str | Path) -> list[str]:
     """Extract raw paragraphs from a Word (.docx) document."""
     if not os.path.exists(docx_path):
@@ -62,6 +67,8 @@ def parse_chapters_and_sections(raw_paras: list[str], chapter_regex: str) -> lis
                 'num': ch_num,
                 'title_raw': ch_raw_title,
                 'title_deva': f"{ch_num}. {ch_deva}",
+                'title_display_deva': f"{ch_num}. {ch_deva}",
+                'title_display_raw': f"{ch_num}. {ch_raw_title}",
                 'sections': []
             }
             chapters.append(current_chapter)
@@ -80,9 +87,11 @@ def parse_chapters_and_sections(raw_paras: list[str], chapter_regex: str) -> lis
             sec_deva = baraha_to_devanagari(sec_name) if sec_name else ''
             current_section = {
                 'num': sec_num,
+                'title_raw': sec_name,
                 'title_deva': sec_deva,
                 'ta_code': '',
-                'content': []
+                'content_deva': [],
+                'content_raw': []
             }
             current_chapter['sections'].append(current_section)
             continue
@@ -90,9 +99,11 @@ def parse_chapters_and_sections(raw_paras: list[str], chapter_regex: str) -> lis
             sec_num = tb_m.group(1)
             current_section = {
                 'num': sec_num,
+                'title_raw': '',
                 'title_deva': '',
                 'ta_code': sec_num,
-                'content': []
+                'content_deva': [],
+                'content_raw': []
             }
             current_chapter['sections'].append(current_section)
             continue
@@ -103,20 +114,22 @@ def parse_chapters_and_sections(raw_paras: list[str], chapter_regex: str) -> lis
             continue
 
         if current_section is not None:
-            deva_p = baraha_to_devanagari(p)
-            current_section['content'].append(deva_p)
+            current_section['content_raw'].append(p)
+            current_section['content_deva'].append(baraha_to_devanagari(p))
         elif current_chapter is not None:
-            deva_p = baraha_to_devanagari(p)
             if not current_chapter['sections']:
                 current_section = {
                     'num': f"{current_chapter['num']}.1",
+                    'title_raw': '',
                     'title_deva': 'प्रारम्भः',
                     'ta_code': '',
-                    'content': [deva_p]
+                    'content_raw': [p],
+                    'content_deva': [baraha_to_devanagari(p)]
                 }
                 current_chapter['sections'].append(current_section)
             else:
-                current_chapter['sections'][-1]['content'].append(deva_p)
+                current_chapter['sections'][-1]['content_raw'].append(p)
+                current_chapter['sections'][-1]['content_deva'].append(baraha_to_devanagari(p))
 
     return chapters
 
@@ -273,19 +286,57 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         .toc-chapter {{
-            margin-bottom: 1.15rem;
+            margin-bottom: 0.5rem;
+        }}
+
+        .toc-ch-header {{
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            padding: 0.3rem 0.4rem;
+            border-radius: 4px;
+            transition: background 0.15s;
+        }}
+
+        .toc-ch-header:hover {{
+            background: var(--accent-bg);
         }}
 
         .toc-ch-title {{
             font-weight: 700;
             color: var(--dark-brown);
             font-size: 1rem;
-            margin-bottom: 0.4rem;
+            flex: 1;
+        }}
+
+        .toc-ch-title a {{
+            color: var(--maroon);
+            text-decoration: none;
+        }}
+
+        .toc-ch-toggle {{
+            font-size: 0.7rem;
+            color: #888;
+            transition: transform 0.2s;
+        }}
+
+        .toc-chapter.collapsed .toc-ch-toggle {{
+            transform: rotate(-90deg);
         }}
 
         .toc-sub-list {{
             list-style: none;
             padding-left: 0.85rem;
+            overflow: hidden;
+            max-height: 2000px;
+            transition: max-height 0.3s ease;
+        }}
+
+        .toc-chapter.collapsed .toc-sub-list {{
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
         }}
 
         .toc-sub-list li {{
@@ -306,6 +357,41 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             background: var(--accent-bg);
             color: var(--saffron);
             font-weight: 600;
+        }}
+
+        /* Collapsible sidebar styles */
+        .layout.sidebar-collapsed {{
+            grid-template-columns: 0 1fr;
+            gap: 0;
+        }}
+
+        .layout.sidebar-collapsed .toc-sidebar {{
+            width: 0;
+            min-width: 0;
+            padding: 0;
+            overflow: hidden;
+            border: none;
+            opacity: 0;
+            pointer-events: none;
+        }}
+
+        .toggle-sidebar-btn {{
+            background: rgba(255,255,255,0.18);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.35);
+            border-radius: 6px;
+            padding: 0.4rem 0.85rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            font-family: sans-serif;
+            white-space: nowrap;
+        }}
+
+        .toggle-sidebar-btn:hover {{
+            background: rgba(255,255,255,0.32);
+            transform: translateY(-1px);
         }}
 
         .main-content {{
@@ -430,6 +516,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 <span>VedaVMS</span>
             </a>
             <div class="controls">
+                <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Toggle Contents Panel" id="sidebar-toggle-btn">☰ सूची</button>
                 <a href="{back_link}" class="btn-ctrl">{back_label}</a>
                 <button class="btn-ctrl" id="font-toggle-btn" onclick="toggleFont()" title="Toggle Sanskrit Font">Font: Noto Serif</button>
                 <button class="btn-ctrl" onclick="adjustFont(1)" title="Increase Font Size">A+</button>
@@ -448,8 +535,11 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
     for ch in chapters:
         ch_id = f"chapter-{ch['num']}"
-        html_parts.append(f'''                <li class="toc-chapter">
-                    <div class="toc-ch-title"><a href="#{ch_id}" style="color:var(--maroon); text-decoration:none;">{ch['title_deva']}</a></div>
+        html_parts.append(f'''                <li class="toc-chapter" id="toc-{ch_id}">
+                    <div class="toc-ch-header" onclick="toggleTocChapter('toc-{ch_id}')">
+                        <div class="toc-ch-title"><a href="#{ch_id}">{ch['title_deva']}</a></div>
+                        <span class="toc-ch-toggle">▼</span>
+                    </div>
                     <ul class="toc-sub-list">
 ''')
         for sec in ch["sections"]:
@@ -478,17 +568,17 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 ''')
         for sec in ch["sections"]:
             sec_id = f"sec-{sec['num'].replace('.', '-')}"
-            title_disp = f"{sec['num']} {sec['title_deva']}".strip()
+            title_disp_deva = f"{sec['num']} {sec['title_deva']}".strip()
             code_span = f'<span class="anuvaka-code">{sec["ta_code"]}</span>' if sec["ta_code"] else ''
             html_parts.append(f'''                <div class="anuvaka-block" id="{sec_id}">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">{title_disp}</span>
+                        <span class="anuvaka-num">{title_disp_deva}</span>
                         {code_span}
                     </div>
                     <div class="verse-text">
 ''')
-            for line in sec["content"]:
-                html_parts.append(f'                        <p class="verse-p">{line}</p>\n')
+            for deva_line in sec["content_deva"]:
+                html_parts.append(f'                        <p class="verse-p">{deva_line}</p>\n')
             html_parts.append('''                    </div>
                 </div>
 ''')
@@ -507,13 +597,59 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
         const fontList = {fonts_js};
         let currentFontIndex = 0;
-        function toggleFont() {{
-            currentFontIndex = (currentFontIndex + 1) % fontList.length;
+        function setFont(idx) {{
+            currentFontIndex = ((idx % fontList.length) + fontList.length) % fontList.length;
             const chosen = fontList[currentFontIndex];
             document.documentElement.style.setProperty('--verse-font', chosen.font);
             document.documentElement.style.setProperty('--verse-weight', chosen.weight);
-            document.getElementById('font-toggle-btn').innerText = 'Font: ' + chosen.label;
+            const btn = document.getElementById('font-toggle-btn');
+            if (btn) btn.innerText = 'Font: ' + chosen.label;
+            localStorage.setItem('reader-font-idx', currentFontIndex);
         }}
+        function toggleFont() {{
+            setFont(currentFontIndex + 1);
+        }}
+
+        function toggleTocChapter(id) {{
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.toggle('collapsed');
+            const collapsed = el.classList.contains('collapsed');
+            const state = JSON.parse(localStorage.getItem('toc-chapters') || '{{}}');
+            state[id] = collapsed;
+            localStorage.setItem('toc-chapters', JSON.stringify(state));
+        }}
+
+        function toggleSidebar() {{
+            const layout = document.querySelector('.layout');
+            const btn = document.getElementById('sidebar-toggle-btn');
+            layout.classList.toggle('sidebar-collapsed');
+            const collapsed = layout.classList.contains('sidebar-collapsed');
+            localStorage.setItem('sidebar-collapsed', collapsed);
+            btn.textContent = collapsed ? '☰' : '☰ सूची';
+        }}
+
+        (function() {{
+            localStorage.removeItem('view-mode');
+
+            const collapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+            if (collapsed) {{
+                document.querySelector('.layout').classList.add('sidebar-collapsed');
+                const btn = document.getElementById('sidebar-toggle-btn');
+                if (btn) btn.textContent = '☰';
+            }}
+            const tocState = JSON.parse(localStorage.getItem('toc-chapters') || '{{}}');
+            for (const [id, isCollapsed] of Object.entries(tocState)) {{
+                if (isCollapsed) {{
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('collapsed');
+                }}
+            }}
+            const savedFont = localStorage.getItem('reader-font-idx');
+            if (savedFont !== null) {{
+                setFont(parseInt(savedFont, 10) || 0);
+            }}
+        }})();
     </script>
 </body>
 </html>

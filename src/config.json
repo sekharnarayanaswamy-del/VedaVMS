@@ -4,7 +4,7 @@
       "title": "तैत्तिरीयोपनिषत्, अरुणप्रश्नम्, तृणाचिकेतम्",
       "subtitle": "कृष्ण यजुर्वेदीय तैत्तिरीय आरण्यकम् (वेदमन्त्राः सस्वराः)",
       "input_docx": "tu_baraha.docx",
-      "output_html": "taittiriya_upanishad_sanskrit.html",
+      "output_html": "build/taittiriya_upanishad_sanskrit.html",
       "back_link": "documents.html",
       "back_label": "← Documents Index",
       "chapter_regex": "^([1-6])(?!\\.)\\s*(.*(?:vall[iI]|nArAyaN|aruNa|triNAcikE).*)$"
