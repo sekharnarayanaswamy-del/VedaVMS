@@ -167,6 +167,39 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        @font-face {{
+            font-family: 'Adishila San';
+            src: local('Adishila San'), url('fonts/AdishilaSan.ttf') format('truetype');
+            font-weight: 400 500;
+            font-style: normal;
+            font-display: swap;
+            size-adjust: 125%;
+        }}
+        @font-face {{
+            font-family: 'Adishila San';
+            src: local('Adishila San Bold'), local('AdishilaSan-Bold'), url('fonts/AdishilaSanBoldB.ttf') format('truetype');
+            font-weight: 600 700;
+            font-style: normal;
+            font-display: swap;
+            size-adjust: 125%;
+        }}
+        @font-face {{
+            font-family: 'Adishila San';
+            src: local('Adishila San Italic'), local('AdishilaSan-Italic'), url('fonts/AdishilaSanItalic.ttf') format('truetype');
+            font-weight: 400 500;
+            font-style: italic;
+            font-display: swap;
+            size-adjust: 125%;
+        }}
+        @font-face {{
+            font-family: 'Adishila San';
+            src: local('Adishila San Bold Italic'), local('AdishilaSan-BoldItalic'), url('fonts/AdishilaSanBoldItalic.ttf') format('truetype');
+            font-weight: 600 700;
+            font-style: italic;
+            font-display: swap;
+            size-adjust: 125%;
+        }}
+
         :root {{
             --saffron: #D84315;
             --maroon: #7B1113;

@@ -17,6 +17,11 @@
       "weight": "500"
     },
     {
+      "label": "Adishila San",
+      "font": "'Adishila San', 'Noto Serif Devanagari', serif",
+      "weight": "500"
+    },
+    {
       "label": "Tiro Sanskrit",
       "font": "'Tiro Devanagari Sanskrit', 'Noto Serif Devanagari', serif",
       "weight": "400"
