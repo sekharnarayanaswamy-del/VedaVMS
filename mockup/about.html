@@ -82,6 +82,17 @@
         .nav a { color: var(--dark-brown); text-decoration: none; padding: 0.85rem 1.25rem; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; border-bottom: 3px solid transparent; transition: all 0.3s; }
         .nav a:hover, .nav a.active { color: var(--saffron); border-bottom-color: var(--saffron); background: var(--light-orange); }
         .nav .donate-btn { background: transparent; color: var(--saffron) !important; border: 1.5px solid var(--saffron); border-radius: 4px; margin: 0.35rem 0.5rem; padding: 0.45rem 0.9rem; } .nav .donate-btn:hover, .nav .donate-btn.active { background: var(--saffron); color: white !important; border: 1.5px solid var(--saffron); }
+        /* Muted Ticker Tape */
+        .ticker-wrap { width: 100%; overflow: hidden; background: #FFFDF9; border-bottom: 1px solid rgba(218, 165, 32, 0.22); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03); padding: 0.35rem 0; user-select: none; position: relative; z-index: 99; }
+        .ticker-content { display: flex; width: max-content; }
+        .ticker-track { display: flex; align-items: center; white-space: nowrap; flex-shrink: 0; animation: tickerRoll 35s linear infinite; }
+        .ticker-wrap:hover .ticker-track { animation-play-state: paused; }
+        .ticker-item { display: inline-flex; align-items: center; font-size: 0.88rem; font-weight: 500; color: #5D4037; padding: 0 1.2rem; letter-spacing: 0.01em; }
+        .ticker-link { color: #B23600; text-decoration: none; font-weight: 600; transition: color 0.15s; }
+        .ticker-link:hover { color: #E65100; text-decoration: underline; }
+        .ticker-sep { color: #BDAEA4; font-size: 0.75rem; opacity: 0.7; }
+        @keyframes tickerRoll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
         .page-header {
             background: linear-gradient(135deg, #8E3B18 0%, #A84D24 45%, #BD6336 100%);
             color: white; padding: 2rem 1rem; text-align: center;
@@ -168,6 +179,64 @@
             <a href="donations.html" class="donate-btn">Donate</a>
         </div>
     </nav>
+
+    <!-- Muted Ticker Tape -->
+    <div class="ticker-wrap" role="region" aria-label="Announcements">
+        <div class="ticker-content">
+            <div class="ticker-track">
+                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-sep">•</span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-sep">✦</span>
+                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-sep">•</span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-sep">✦</span>
+                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-sep">•</span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-sep">✦</span>
+                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-sep">•</span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-sep">✦</span>
+                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-sep">•</span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-sep">✦</span>
+                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-sep">•</span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-sep">✦</span>
+            </div>
+            <div class="ticker-track" aria-hidden="true">
+                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-sep">•</span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-sep">✦</span>
+                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-sep">•</span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-sep">✦</span>
+                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-sep">•</span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-sep">✦</span>
+                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-sep">•</span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-sep">✦</span>
+                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-sep">•</span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-sep">✦</span>
+                <span class="ticker-item">New look Veda VMS</span>
+                <span class="ticker-sep">•</span>
+                <span class="ticker-item"><a href="taittiriya_upanishad_sanskrit.html" class="ticker-link">Try out our new HTML viewer →</a></span>
+                <span class="ticker-sep">✦</span>
+            </div>
+        </div>
+    </div>
 
     <section class="page-header">
         <h1>About VedaVMS</h1>
