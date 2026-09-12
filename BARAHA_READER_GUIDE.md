@@ -117,11 +117,14 @@ python src/build_reader.py --book taittiriya_brahmanam
 ## 🎨 Interactive Reader Features
 
 The generated HTML reader provides:
-* **Sticky Navigation Header**: Branding, back navigation to the main documents catalog, font switcher, font resizing controls (`A+` / `A-`), and 1-click print.
-* **Sidebar Table of Contents (TOC)**: Hierarchical Chapter and Anuvaka navigation jumping directly to specific verses.
-* **Dynamic Font Switcher**: Toggles between curated Vedic fonts loaded from Google Fonts:
+* **Responsive Navigation Header**: Streamlined controls across desktop and mobile devices. On mobile screens (≤ 850px), the header cleanly groups branding and essential navigation (`☰ सूची` and `← Home`) into a top bar with dedicated font switcher and zoom controls (`A-`, `100%`, `A+`, `🖨️ Print`, `▲ Top`) centered below to prevent horizontal overflow.
+* **Sidebar Table of Contents (सूची / TOC)**: 
+  * **Desktop**: Hierarchical Chapter and Anuvaka navigation panel alongside the text, collapsible via `☰ सूची`.
+  * **Mobile**: Off-canvas slide-out drawer with a darkened backdrop and quick-close button (`✕`). Tapping any chapter or anuvaka link jumps directly to the target verse and automatically closes the drawer.
+* **Dynamic Font Switcher**: Toggles between curated Vedic fonts loaded from Google Fonts and local packages:
   * *Noto Serif Devanagari* (Default)
   * *Tiro Devanagari Sanskrit*
   * *Noto Sans Devanagari*
-* **Mobile-Responsive Grid**: Collapses sidebar into a streamlined single-column layout on smaller screens.
+  * *Adishila San* (Local true-type Vedic font)
+* **Mobile-Responsive Layout**: Prevents squishing and layout breaking on small screens; verses render in full-width typography.
 * **Print Stylesheet**: Hides navigation headers and controls when printing or saving as PDF (`Ctrl+P` / `Cmd+P`).
