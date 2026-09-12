@@ -218,6 +218,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         html {{
             scroll-behavior: smooth;
             scroll-padding-top: 5rem;
+            overflow-x: clip;
         }}
 
         .chapter-container, .anuvaka-block, [id] {{
@@ -836,6 +837,24 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             }}
         }}
 
+        @media (max-height: 520px) and (orientation: landscape) {{
+            .header {{
+                padding: 0.3rem 0.6rem;
+            }}
+            .header-content {{
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 0.4rem;
+            }}
+            .header-main-bar {{
+                width: auto;
+            }}
+            .controls {{
+                width: auto;
+            }}
+        }}
+
         @media (max-width: 420px) {{
             .header {{
                 padding: 0.4rem 0.45rem;
@@ -1190,24 +1209,55 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         function closeMobileToc() {{
             document.body.classList.remove('mobile-toc-active');
             const btn = document.getElementById('sidebar-toggle-btn');
-            if (btn && window.innerWidth <= 850) {{
-                btn.textContent = '☰ सूची';
+            if (btn) {{
+                if (window.innerWidth <= 850) {{
+                    btn.textContent = '☰ सूची';
+                }} else {{
+                    const collapsed = document.querySelector('.layout')?.classList.contains('sidebar-collapsed');
+                    btn.textContent = collapsed ? '☰' : '☰ सूची';
+                }}
             }}
         }}
 
         function toggleSidebar() {{
+            const btn = document.getElementById('sidebar-toggle-btn');
             if (window.innerWidth <= 850) {{
                 document.body.classList.toggle('mobile-toc-active');
                 const isOpen = document.body.classList.contains('mobile-toc-active');
-                const btn = document.getElementById('sidebar-toggle-btn');
                 if (btn) btn.textContent = isOpen ? '✕ सूची' : '☰ सूची';
             }} else {{
                 const layout = document.querySelector('.layout');
-                const btn = document.getElementById('sidebar-toggle-btn');
+                if (!layout) return;
                 layout.classList.toggle('sidebar-collapsed');
                 const collapsed = layout.classList.contains('sidebar-collapsed');
                 localStorage.setItem('sidebar-collapsed', collapsed);
                 if (btn) btn.textContent = collapsed ? '☰' : '☰ सूची';
+            }}
+        }}
+
+        function handleLayoutChange() {{
+            const isMobile = window.innerWidth <= 850;
+            const btn = document.getElementById('sidebar-toggle-btn');
+            const layout = document.querySelector('.layout');
+
+            if (isMobile) {{
+                if (layout) {{
+                    layout.classList.remove('sidebar-collapsed');
+                }}
+                const isOpen = document.body.classList.contains('mobile-toc-active');
+                if (btn) {{
+                    btn.textContent = isOpen ? '✕ सूची' : '☰ सूची';
+                }}
+            }} else {{
+                document.body.classList.remove('mobile-toc-active');
+                const collapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+                if (layout) {{
+                    if (collapsed) layout.classList.add('sidebar-collapsed');
+                    else layout.classList.remove('sidebar-collapsed');
+                }}
+                if (btn) {{
+                    btn.textContent = collapsed ? '☰' : '☰ सूची';
+                }}
             }}
         }}
 
@@ -1586,12 +1636,28 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 }}
             }});
 
-            // Reset mobile Suchi drawer on desktop resize
-            window.addEventListener('resize', function() {{
-                if (window.innerWidth > 850) {{
-                    closeMobileToc();
-                }}
+            // Trap window resize
+            window.addEventListener('resize', handleLayoutChange);
+
+            // Trap mobile device orientation change (both legacy and modern APIs)
+            window.addEventListener('orientationchange', function() {{
+                setTimeout(handleLayoutChange, 100);
+                setTimeout(handleLayoutChange, 300);
             }});
+
+            if (window.screen && window.screen.orientation) {{
+                window.screen.orientation.addEventListener('change', function() {{
+                    setTimeout(handleLayoutChange, 100);
+                    setTimeout(handleLayoutChange, 300);
+                }});
+            }}
+
+            const mqlPortrait = window.matchMedia('(orientation: portrait)');
+            if (mqlPortrait.addEventListener) {{
+                mqlPortrait.addEventListener('change', handleLayoutChange);
+            }} else if (mqlPortrait.addListener) {{
+                mqlPortrait.addListener(handleLayoutChange);
+            }}
 
             const sidebar = document.querySelector('.toc-sidebar');
             if (sidebar) {{
@@ -1603,15 +1669,8 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 }}, {{ passive: true }});
             }}
 
-            // Restore saved states (desktop only for collapsed layout)
-            if (window.innerWidth > 850) {{
-                const collapsed = localStorage.getItem('sidebar-collapsed') === 'true';
-                if (collapsed) {{
-                    document.querySelector('.layout').classList.add('sidebar-collapsed');
-                    const btn = document.getElementById('sidebar-toggle-btn');
-                    if (btn) btn.textContent = '☰';
-                }}
-            }}
+            // Synchronize initial layout state based on screen orientation and width
+            handleLayoutChange();
             const tocState = JSON.parse(localStorage.getItem('toc-chapters') || '{{}}');
             for (const [id, isCollapsed] of Object.entries(tocState)) {{
                 if (isCollapsed) {{
