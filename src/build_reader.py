@@ -211,7 +211,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             --border-color: #EADDC9;
             --accent-bg: #FFF3E0;
             --font-size: {default_font_size}rem;
-            --verse-font: 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
+            --verse-font: 'Noto Serif Devanagari', 'Adishila San', 'Tiro Devanagari Sanskrit', serif;
             --verse-weight: 500;
         }}
 
