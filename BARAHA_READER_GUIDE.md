@@ -12,7 +12,8 @@ The generator lives in the [`src/`](file:///c:/Users/sekha/OneDrive/Documents/Gi
 src/
 ├── __init__.py          # Package exports
 ├── transliterate.py     # Standalone Baraha -> Devanagari Unicode transliteration engine
-├── build_reader.py      # DOCX OpenXML parser, section extractor & HTML generator
+├── baraha_reader.py     # DOCX to structured JSON AST extractor & parser
+├── build_reader.py      # DOCX / AST section extractor & interactive HTML reader generator
 └── config.json          # Multi-book definitions, regex rules, and font options
 ```
 
@@ -128,3 +129,23 @@ The generated HTML reader provides:
   * *Adishila San* (Local true-type Vedic font)
 * **Mobile-Responsive Layout**: Prevents squishing and layout breaking on small screens; verses render in full-width typography.
 * **Print Stylesheet**: Hides navigation headers and controls when printing or saving as PDF (`Ctrl+P` / `Cmd+P`).
+
+---
+
+## 📋 Refactoring Roadmap & To-Do Items: Intermediate JSON AST
+
+To decouple binary DOCX extraction from HTML/PDF rendering across VedaVMS, the project supports generating an intermediate JSON AST:
+
+### Status
+- [x] **`src/baraha_reader.py` added**: Standalone DOCX $\rightarrow$ JSON AST parser moved from the JSV research branch to VedaVMS.
+- [x] Tested with `tu_baraha.docx` $\rightarrow$ `tu_baraha.json` (6 sections, complete Devanagari verse hierarchy).
+
+### To-Do
+1. **Optionally Decouple `build_reader.py`**:
+   - Add a `--from-json` CLI flag to `build_reader.py` (e.g. `python src/build_reader.py --from-json tu_baraha.json`).
+   - Allow `build_reader.py` to consume the pre-generated JSON AST directly instead of parsing raw OpenXML `.docx` on every run.
+2. **Schema Standardization for VedaVMS Books**:
+   - Verify that all books in `config.json` (Taittiriya Upanishad, Taittiriya Brahmana, Aranyakam, etc.) produce consistent JSON schemas with `meta`, `supersections`, `sections`, and `subsections`.
+3. **Multi-Format Downstream Target Support**:
+   - Use the JSON AST as the single source of truth for generating future targets (e.g., XeLaTeX/PDF booklets, EPUB, or search indexes) without re-parsing DOCX files.
+
