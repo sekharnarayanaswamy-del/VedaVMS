@@ -458,8 +458,6 @@
             padding: 1.35rem 1.6rem;
             margin-bottom: 2rem;
             box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-            content-visibility: auto;
-            contain-intrinsic-size: auto 220px;
         }
 
         .anuvaka-header {
@@ -958,7 +956,7 @@
                         <span class="toc-ch-toggle">▼</span>
                     </div>
                     <ul class="toc-sub-list">
-                        <li><a href="#sec-2-1">2.1 प्रारम्भः</a></li>
+                        <li><a href="#sec-2-0">2.0 प्रारम्भः</a></li>
                         <li><a href="#sec-2-1">2.1 उपनिषत्सार सङ्ग्रहः</a></li>
                         <li><a href="#sec-2-2">2.2 पञ्चकोश-विवरणं</a></li>
                         <li><a href="#sec-2-3">2.3 अभयप्रतिष्ठा</a></li>
@@ -971,7 +969,7 @@
                         <span class="toc-ch-toggle">▼</span>
                     </div>
                     <ul class="toc-sub-list">
-                        <li><a href="#sec-3-1">3.1 प्रारम्भः</a></li>
+                        <li><a href="#sec-3-0">3.0 प्रारम्भः</a></li>
                         <li><a href="#sec-3-1">3.1 ब्रह्मजिज्ञ्आसा</a></li>
                         <li><a href="#sec-3-2">3.2 पञ्चकोशान्तः स्थित-ब्रह्मनिरूपणम्</a></li>
                         <li><a href="#sec-3-3">3.3 अन्नब्रह्मोपासनम्</a></li>
@@ -984,7 +982,7 @@
                         <span class="toc-ch-toggle">▼</span>
                     </div>
                     <ul class="toc-sub-list">
-                        <li><a href="#sec-4-1">4.1 प्रारम्भः</a></li>
+                        <li><a href="#sec-4-0">4.0 प्रारम्भः</a></li>
                         <li><a href="#sec-4-1">4.1 अम्भस्यपारे</a></li>
                         <li><a href="#sec-4-2">4.2 गायत्री मन्त्राः</a></li>
                         <li><a href="#sec-4-3">4.3 दूर्वा सूक्तं</a></li>
@@ -1048,7 +1046,7 @@
                         <span class="toc-ch-toggle">▼</span>
                     </div>
                     <ul class="toc-sub-list">
-                        <li><a href="#sec-5-1">5.1 प्रारम्भः</a></li>
+                        <li><a href="#sec-5-0">5.0 प्रारम्भः</a></li>
                         <li><a href="#sec-1-1-1">1.1.1 अनुवाकं-1</a></li>
                         <li><a href="#sec-1-1-2">1.1.2 अनुवाकं-2</a></li>
                         <li><a href="#sec-1-1-3">1.1.3 अनुवाकं-3</a></li>
@@ -1309,9 +1307,9 @@
             </section>
             <section class="chapter-container" id="chapter-2">
                 <h2 class="chapter-heading">2. ब्रह्मानन्द वल्ली</h2>
-                <div class="anuvaka-block" id="sec-2-1">
+                <div class="anuvaka-block" id="sec-2-0">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">2.1 प्रारम्भः</span>
+                        <span class="anuvaka-num">2.0 प्रारम्भः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1431,9 +1429,9 @@
             </section>
             <section class="chapter-container" id="chapter-3">
                 <h2 class="chapter-heading">3. भृगु वल्ली</h2>
-                <div class="anuvaka-block" id="sec-3-1">
+                <div class="anuvaka-block" id="sec-3-0">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">3.1 प्रारम्भः</span>
+                        <span class="anuvaka-num">3.0 प्रारम्भः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1559,9 +1557,9 @@
             </section>
             <section class="chapter-container" id="chapter-4">
                 <h2 class="chapter-heading">4. महा नारायणोपनिषत्</h2>
-                <div class="anuvaka-block" id="sec-4-1">
+                <div class="anuvaka-block" id="sec-4-0">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">4.1 प्रारम्भः</span>
+                        <span class="anuvaka-num">4.0 प्रारम्भः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -2534,9 +2532,9 @@
             </section>
             <section class="chapter-container" id="chapter-5">
                 <h2 class="chapter-heading">5. अरुणप्रश्नः-तैत्तिरीयारण्यकं</h2>
-                <div class="anuvaka-block" id="sec-5-1">
+                <div class="anuvaka-block" id="sec-5-0">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">5.1 प्रारम्भः</span>
+                        <span class="anuvaka-num">5.0 प्रारम्भः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -4062,9 +4060,9 @@
 
             document.querySelectorAll('.anuvaka-block').forEach(el => anuvakaObserver.observe(el));
 
-            // Direct click on Suchi item immediately highlights without waiting
+            // Direct click on Suchi item immediately highlights and smoothly scrolls to target
             document.querySelectorAll('.toc-sub-list a, .toc-ch-title a').forEach(link => {
-                link.addEventListener('click', function() {
+                link.addEventListener('click', function(e) {
                     if (window.innerWidth <= 850) {
                         closeMobileToc();
                     }
@@ -4074,16 +4072,23 @@
                         highlightAnuvakaInToc(secId);
                         currentActiveSectionId = secId;
                         const target = document.getElementById(secId);
-                        const numNode = target ? target.querySelector('.anuvaka-num') : null;
-                        if (numNode) {
-                            currentActiveSectionTitle = numNode.textContent.trim();
-                        }
-                        const parentCh = target ? target.closest('.chapter-container') : null;
-                        if (parentCh) {
-                            currentActiveChapterId = parentCh.id;
-                            const chHeading = parentCh.querySelector('.chapter-heading');
-                            currentActiveChapterTitle = chHeading ? chHeading.textContent.trim() : parentCh.id;
-                            currentActiveChapterCount = parentCh.querySelectorAll('.anuvaka-block').length;
+                        if (target) {
+                            e.preventDefault();
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            if (history.pushState) {
+                                history.pushState(null, '', href);
+                            }
+                            const numNode = target.querySelector('.anuvaka-num');
+                            if (numNode) {
+                                currentActiveSectionTitle = numNode.textContent.trim();
+                            }
+                            const parentCh = target.closest('.chapter-container');
+                            if (parentCh) {
+                                currentActiveChapterId = parentCh.id;
+                                const chHeading = parentCh.querySelector('.chapter-heading');
+                                currentActiveChapterTitle = chHeading ? chHeading.textContent.trim() : parentCh.id;
+                                currentActiveChapterCount = parentCh.querySelectorAll('.anuvaka-block').length;
+                            }
                         }
                     }
                 });

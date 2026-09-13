@@ -132,7 +132,7 @@ def parse_chapters_and_sections(raw_paras: list[str], chapter_regex: str) -> lis
         elif current_chapter is not None:
             if not current_chapter['sections']:
                 current_section = {
-                    'num': f"{current_chapter['num']}.1",
+                    'num': f"{current_chapter['num']}.0",
                     'title_raw': '',
                     'title_deva': 'प्रारम्भः',
                     'ta_code': '',
@@ -617,8 +617,6 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             padding: 1.35rem 1.6rem;
             margin-bottom: 2rem;
             box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-            content-visibility: auto;
-            contain-intrinsic-size: auto 220px;
         }}
 
         .anuvaka-header {{
@@ -1602,9 +1600,9 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
             document.querySelectorAll('.anuvaka-block').forEach(el => anuvakaObserver.observe(el));
 
-            // Direct click on Suchi item immediately highlights without waiting
+            // Direct click on Suchi item immediately highlights and smoothly scrolls to target
             document.querySelectorAll('.toc-sub-list a, .toc-ch-title a').forEach(link => {{
-                link.addEventListener('click', function() {{
+                link.addEventListener('click', function(e) {{
                     if (window.innerWidth <= 850) {{
                         closeMobileToc();
                     }}
@@ -1614,16 +1612,23 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                         highlightAnuvakaInToc(secId);
                         currentActiveSectionId = secId;
                         const target = document.getElementById(secId);
-                        const numNode = target ? target.querySelector('.anuvaka-num') : null;
-                        if (numNode) {{
-                            currentActiveSectionTitle = numNode.textContent.trim();
-                        }}
-                        const parentCh = target ? target.closest('.chapter-container') : null;
-                        if (parentCh) {{
-                            currentActiveChapterId = parentCh.id;
-                            const chHeading = parentCh.querySelector('.chapter-heading');
-                            currentActiveChapterTitle = chHeading ? chHeading.textContent.trim() : parentCh.id;
-                            currentActiveChapterCount = parentCh.querySelectorAll('.anuvaka-block').length;
+                        if (target) {{
+                            e.preventDefault();
+                            target.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+                            if (history.pushState) {{
+                                history.pushState(null, '', href);
+                            }}
+                            const numNode = target.querySelector('.anuvaka-num');
+                            if (numNode) {{
+                                currentActiveSectionTitle = numNode.textContent.trim();
+                            }}
+                            const parentCh = target.closest('.chapter-container');
+                            if (parentCh) {{
+                                currentActiveChapterId = parentCh.id;
+                                const chHeading = parentCh.querySelector('.chapter-heading');
+                                currentActiveChapterTitle = chHeading ? chHeading.textContent.trim() : parentCh.id;
+                                currentActiveChapterCount = parentCh.querySelectorAll('.anuvaka-block').length;
+                            }}
                         }}
                     }}
                 }});

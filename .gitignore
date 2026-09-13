@@ -43,4 +43,6 @@ backup_production_vedavms_in/
 backup_production_vedavms_in.zip
 backups/
 *.zip
-
+# Office temporary files
+~$*
+*.mht
