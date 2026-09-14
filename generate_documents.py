@@ -206,6 +206,7 @@ class Doc:
     version: str = ""
     date: str = ""
     corrections: str = ""
+    corrections_date: str = ""
     ref_url: str = ""
     notes: str = ""
 
@@ -469,10 +470,14 @@ def parse_page(page_html: str, lang_label: str) -> list[Section]:
             if is_correction and corr_target is not None:
                 if not corr_target.corrections:
                     corr_target.corrections = url
-                    if not corr_target.date:
-                        dm = DATE_RE.search(lbl_clean)
-                        if dm:
-                            corr_target.date = f"{MONTHS[dm.group(1).lower()]} {int(dm.group(2))}, {dm.group(3)}"
+                    dm = DATE_RE.search(lbl_clean)
+                    if dm:
+                        corr_date = f"{MONTHS[dm.group(1).lower()]} {int(dm.group(2))}, {dm.group(3)}"
+                        corr_target.corrections_date = corr_date
+                        if not corr_target.date:
+                            corr_target.date = corr_date
+                    elif corr_target.date:
+                        corr_target.corrections_date = corr_target.date
                     continue
                 if corr_target.corrections.lower() == url.lower():
                     continue
@@ -488,11 +493,18 @@ def parse_page(page_html: str, lang_label: str) -> list[Section]:
                         dm = DATE_RE.search(label)
                         if dm:
                             pending.date = f"{MONTHS[dm.group(1).lower()]} {int(dm.group(2))}, {dm.group(3)}"
+                            if pending.corrections and not pending.corrections_date:
+                                pending.corrections_date = pending.date
                     if not pending.version and v:
                         pending.version = v
                 continue
 
             pending = add(url, label, target)
+
+        if pending is not None and pending.corrections and not pending.corrections_date:
+            pending.corrections_date = pending.date
+        elif target.docs and target.docs[-1].corrections and not target.docs[-1].corrections_date:
+            target.docs[-1].corrections_date = target.docs[-1].date
 
     rows = list(ROW_RE.finditer(page_html))
     covered = [(m.start(), m.end()) for m in rows]
@@ -1491,13 +1503,16 @@ LANG_ICONS = {
 
 
 def get_recent_updates_grouped(lang_sections: dict[str, list[Section]], max_days: int = 90) -> list[dict]:
-    """Group active document updates by Month -> Language collection."""
+    """Group active document updates by Month -> Language collection.
+    
+    Tracks both full document updates and correction updates.
+    """
     now = datetime.datetime.now()
     cutoff = now - datetime.timedelta(days=max_days)
 
     lang_map = {key: tab for key, _page, _label, tab in LANGUAGES}
     by_month: dict[tuple[str, str], dict[str, list[dict]]] = defaultdict(lambda: defaultdict(list))
-    seen: set[tuple[str, str]] = set()
+    seen_in_month: set[tuple[str, str, str]] = set()
 
     for lang_key, sections in lang_sections.items():
         tab_title = lang_map.get(lang_key, lang_key)
@@ -1506,33 +1521,89 @@ def get_recent_updates_grouped(lang_sections: dict[str, list[Section]], max_days
             for sub in sec.subsections:
                 all_sec_docs.extend(sub.docs)
             for doc in all_sec_docs:
-                if not doc.url or doc.url == "#":
-                    continue
-                dt = parse_doc_date(doc.date)
-                if not dt:
-                    continue
-                if not (cutoff <= dt <= now + datetime.timedelta(days=2)):
-                    continue
-                key = (doc.title, doc.url)
-                if key in seen:
-                    continue
-                seen.add(key)
+                doc_dt = parse_doc_date(doc.date) if (doc.url and doc.url != "#") else None
+                corr_date_str = doc.corrections_date or doc.date
+                corr_dt = parse_doc_date(corr_date_str) if doc.corrections else None
 
-                month_key = dt.strftime("%B %Y")
-                sort_key = dt.strftime("%Y-%m")
-                is_new = (now - dt).days <= 30 and dt <= now + datetime.timedelta(days=2)
+                doc_in_window = bool(doc_dt and cutoff <= doc_dt <= now + datetime.timedelta(days=2))
+                corr_in_window = bool(corr_dt and cutoff <= corr_dt <= now + datetime.timedelta(days=2))
 
-                by_month[(sort_key, month_key)][lang_key].append({
-                    "dt": dt,
-                    "date_str": doc.date,
-                    "title": doc.title,
-                    "section": sec.title,
-                    "version": doc.version,
-                    "url": doc.url,
-                    "is_new": is_new,
-                    "lang_key": lang_key,
-                    "lang_title": tab_title,
-                })
+                if not doc_in_window and not corr_in_window:
+                    continue
+
+                # Case 1: Both updated in the same month
+                if doc_in_window and corr_in_window and doc_dt.strftime("%Y-%m") == corr_dt.strftime("%Y-%m"):
+                    dt = doc_dt
+                    month_key = dt.strftime("%B %Y")
+                    sort_key = dt.strftime("%Y-%m")
+                    m_key = (sort_key, month_key)
+                    dedup = (month_key, doc.title, lang_key)
+                    if dedup not in seen_in_month:
+                        seen_in_month.add(dedup)
+                        is_new = (now - dt).days <= 30 and dt <= now + datetime.timedelta(days=2)
+                        by_month[m_key][lang_key].append({
+                            "dt": dt,
+                            "date_str": doc.date,
+                            "title": doc.title,
+                            "section": sec.title,
+                            "version": doc.version,
+                            "url": doc.url,
+                            "corrections": doc.corrections,
+                            "show_doc": True,
+                            "show_corr": True,
+                            "is_new": is_new,
+                            "lang_key": lang_key,
+                            "lang_title": tab_title,
+                        })
+                else:
+                    # Case 2: Full document updated in its month
+                    if doc_in_window:
+                        dt = doc_dt
+                        month_key = dt.strftime("%B %Y")
+                        sort_key = dt.strftime("%Y-%m")
+                        m_key = (sort_key, month_key)
+                        dedup = (month_key, doc.title + "_doc", lang_key)
+                        if dedup not in seen_in_month:
+                            seen_in_month.add(dedup)
+                            is_new = (now - dt).days <= 30 and dt <= now + datetime.timedelta(days=2)
+                            by_month[m_key][lang_key].append({
+                                "dt": dt,
+                                "date_str": doc.date,
+                                "title": doc.title,
+                                "section": sec.title,
+                                "version": doc.version,
+                                "url": doc.url,
+                                "corrections": "",
+                                "show_doc": True,
+                                "show_corr": False,
+                                "is_new": is_new,
+                                "lang_key": lang_key,
+                                "lang_title": tab_title,
+                            })
+                    # Case 3: Correction updated in its month
+                    if corr_in_window:
+                        dt = corr_dt
+                        month_key = dt.strftime("%B %Y")
+                        sort_key = dt.strftime("%Y-%m")
+                        m_key = (sort_key, month_key)
+                        dedup = (month_key, doc.title + "_corr", lang_key)
+                        if dedup not in seen_in_month:
+                            seen_in_month.add(dedup)
+                            is_new = (now - dt).days <= 30 and dt <= now + datetime.timedelta(days=2)
+                            by_month[m_key][lang_key].append({
+                                "dt": dt,
+                                "date_str": corr_date_str,
+                                "title": doc.title,
+                                "section": sec.title,
+                                "version": doc.version,
+                                "url": doc.url,
+                                "corrections": doc.corrections,
+                                "show_doc": False,
+                                "show_corr": True,
+                                "is_new": is_new,
+                                "lang_key": lang_key,
+                                "lang_title": tab_title,
+                            })
 
     # Fallback if no updates exist in window
     if not by_month:
@@ -1550,9 +1621,9 @@ def get_recent_updates_grouped(lang_sections: dict[str, list[Section]], max_days
                     if not dt:
                         continue
                     key = (doc.title, doc.url)
-                    if key in seen:
+                    if key in seen_in_month:
                         continue
-                    seen.add(key)
+                    seen_in_month.add(key)
                     all_candidates.append({
                         "dt": dt,
                         "date_str": doc.date,
@@ -1560,6 +1631,9 @@ def get_recent_updates_grouped(lang_sections: dict[str, list[Section]], max_days
                         "section": sec.title,
                         "version": doc.version,
                         "url": doc.url,
+                        "corrections": doc.corrections,
+                        "show_doc": True,
+                        "show_corr": bool(doc.corrections),
                         "is_new": False,
                         "lang_key": lang_key,
                         "lang_title": tab_title,
@@ -1625,11 +1699,30 @@ def render_recent_updates_html(months_data: list[dict]) -> str:
                     meta_spans.append(f'<span class="version-badge">{html.escape(u["version"])}</span>')
                 if u.get("is_new"):
                     meta_spans.append('<span class="new-badge">NEW</span>')
+                if not u.get("show_doc") and u.get("show_corr"):
+                    meta_spans.append('<span class="version-badge" style="background:#2E7D32;">Correction</span>')
                 if u.get("date_str"):
                     meta_spans.append(f'<span>{html.escape(u["date_str"])}</span>')
                 if u.get("section"):
                     meta_spans.append(f'<span>{html.escape(u["section"])}</span>')
                 meta_html = f'<div class="doc-meta">{"".join(meta_spans)}</div>' if meta_spans else ""
+
+                actions = []
+                if u.get("show_doc") and u.get("url"):
+                    actions.append(
+                        f'<a href="{html.escape(u["url"])}" target="_blank" rel="noopener" class="dl-btn primary">\U0001F4C4 Download</a>'
+                    )
+                if u.get("show_corr") and u.get("corrections"):
+                    corr_cls = "secondary corrections-btn" if u.get("show_doc") else "primary corrections-btn"
+                    actions.append(
+                        f'<a href="{html.escape(u["corrections"])}" target="_blank" rel="noopener" class="dl-btn {corr_cls}">📝 Corrections</a>'
+                    )
+                if not u.get("show_doc") and u.get("url"):
+                    actions.append(
+                        f'<a href="{html.escape(u["url"])}" target="_blank" rel="noopener" class="dl-btn secondary">\U0001F4C4 Full Doc</a>'
+                    )
+
+                actions_html = "\n".join(f'                                            {a}' for a in actions)
 
                 card_html = (
                     f'                                    <div class="doc-card">\n'
@@ -1638,7 +1731,7 @@ def render_recent_updates_html(months_data: list[dict]) -> str:
                     f'                                            {meta_html}\n'
                     f'                                        </div>\n'
                     f'                                        <div class="doc-actions">\n'
-                    f'                                            <a href="{html.escape(u["url"])}" target="_blank" rel="noopener" class="dl-btn primary">\U0001F4C4 Download</a>\n'
+                    f"{actions_html}\n"
                     f'                                        </div>\n'
                     f'                                    </div>'
                 )

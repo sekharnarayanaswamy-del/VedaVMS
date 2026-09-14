@@ -149,3 +149,6 @@ To decouple binary DOCX extraction from HTML/PDF rendering across VedaVMS, the p
 3. **Multi-Format Downstream Target Support**:
    - Use the JSON AST as the single source of truth for generating future targets (e.g., XeLaTeX/PDF booklets, EPUB, or search indexes) without re-parsing DOCX files.
 
+### Questions to VedaVMS team
+1. We should have a session to demo their work on Github including working with Baraha tools, etc. as well as how the backup/archival process is working for the pdf files.    
+

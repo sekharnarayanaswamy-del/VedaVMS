@@ -3,11 +3,47 @@
     "taittiriya_upanishad": {
       "title": "तैत्तिरीयोपनिषत्, अरुणप्रश्नम्, तृणाचिकेतम्",
       "subtitle": "कृष्ण यजुर्वेदीय तैत्तिरीय आरण्यकम् (वेदमन्त्राः सस्वराः)",
-      "input_docx": "tu_baraha.docx",
+      "input_docx": "data/baraha/tu_baraha.docx",
       "output_html": "build/taittiriya_upanishad_sanskrit.html",
       "back_link": "index.html",
       "back_label": "← Home",
       "chapter_regex": "^([1-6])(?!\\.)\\s*(.*(?:vall[iI]|nArAyaN|aruNa|triNAcikE).*)$"
+    },
+    "udaka_shanti": {
+      "title": "Udaka Shanti",
+      "title_sanskrit": "उदकशान्तिः",
+      "input_docx": "data/baraha/udaka_shanti_baraha.docx",
+      "output_html": "build/udaka_shanti_sanskrit.html",
+      "back_link": "index.html",
+      "back_label": "← Home",
+      "chapter_regex": "^(1)\\s+(udaka\\s*SAnti.*)$"
+    },
+    "shanti_japam": {
+      "title": "Shanti Japam",
+      "title_sanskrit": "शान्ति जपम्",
+      "input_docx": "data/baraha/shanti_japam_baraha.docx",
+      "output_html": "build/shanti_japam_sanskrit.html",
+      "back_link": "index.html",
+      "back_label": "← Home",
+      "chapter_regex": "^([1-4]?\\d)(?!\\.\\d)\\.?\\s*([a-zA-Z].*)$"
+    },
+    "shiva_stuti": {
+      "title": "Shiva Stuti",
+      "title_sanskrit": "शिव स्तुतिः",
+      "input_docx": "data/baraha/siva_stuti_baraha.docx",
+      "output_html": "build/siva_stuti_sanskrit.html",
+      "back_link": "index.html",
+      "back_label": "← Home",
+      "chapter_regex": "^([1-2]?\\d)(?!\\.\\d)\\.?\\s*([a-zA-Z].*)$"
+    },
+    "udaka_shanti_anushangam": {
+      "title": "Udaka Shanti Anushangam",
+      "title_sanskrit": "उदक शान्ति अनुषंगम",
+      "input_docx": "data/baraha/udaka_shanti_asct_baraha.docx",
+      "output_html": "build/udaka_shanti_anushangam_sanskrit.html",
+      "back_link": "index.html",
+      "back_label": "← Home",
+      "chapter_regex": "^(1)\\s+(udaka\\s*SAnti.*)$"
     }
   },
   "fonts": [

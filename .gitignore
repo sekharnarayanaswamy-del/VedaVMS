@@ -46,3 +46,11 @@ backups/
 # Office temporary files
 ~$*
 *.mht
+
+# Binary documents (PDF and DOCX)
+data/pdf/
+*.pdf
+!MAINTAINER_COOKBOOK.pdf
+data/baraha/
+*.docx
+

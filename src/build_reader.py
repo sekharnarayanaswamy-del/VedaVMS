@@ -42,7 +42,7 @@ def extract_docx_paragraphs(docx_path: str | Path) -> list[str]:
     """Extract raw paragraphs from a Word (.docx) document."""
     docx_path = Path(docx_path)
     if not docx_path.exists():
-        for cand in [Path(__file__).parent.parent / docx_path, Path("vedavms_html") / docx_path, Path(__file__).parent / docx_path, Path(__file__).parent.parent / "vedavms_html" / docx_path]:
+        for cand in [Path("data/baraha") / docx_path, Path(__file__).parent.parent / "data/baraha" / docx_path, Path(__file__).parent.parent / docx_path, Path("vedavms_html") / docx_path, Path(__file__).parent / docx_path, Path(__file__).parent.parent / "vedavms_html" / docx_path]:
             if cand.exists():
                 docx_path = cand
                 break
@@ -55,44 +55,77 @@ def extract_docx_paragraphs(docx_path: str | Path) -> list[str]:
     root = ET.fromstring(doc_xml)
     paras = []
     for p in root.findall('.//w:p', DOCX_NS):
-        text = ''.join([node.text for node in p.findall('.//w:t', DOCX_NS) if node.text]).strip()
+        parts = []
+        for node in p.iter():
+            tag = node.tag.split('}')[-1] if '}' in node.tag else node.tag
+            if tag == 't' and node.text:
+                parts.append(node.text)
+            elif tag == 'tab':
+                parts.append('\t')
+        text = ''.join(parts).strip()
         if text:
             paras.append(text)
 
     return paras
 
 
-def parse_chapters_and_sections(raw_paras: list[str], chapter_regex: str) -> list[dict]:
+def parse_chapters_and_sections(raw_paras: list[str], chapter_regex: str | None = None) -> list[dict]:
     """Parse raw paragraphs into structured chapters and anuvaka sections."""
-    ch_pattern = re.compile(chapter_regex, re.I)
+    ch_pattern = re.compile(chapter_regex, re.I) if chapter_regex and chapter_regex.strip() else None
 
     chapters = []
     current_chapter = None
     current_section = None
 
     for p in raw_paras:
-        ch_m = ch_pattern.match(p)
-        if ch_m:
+        ch_m = ch_pattern.match(p) if ch_pattern else None
+        if ch_m and not re.search(r'[q#$|]', p):
             ch_num = int(ch_m.group(1))
-            ch_raw_title = ch_m.group(2).strip()
-            ch_deva = baraha_to_devanagari(ch_raw_title)
-            current_chapter = {
-                'num': ch_num,
-                'title_raw': ch_raw_title,
-                'title_deva': f"{ch_num}. {ch_deva}",
-                'title_display_deva': f"{ch_num}. {ch_deva}",
-                'title_display_raw': f"{ch_num}. {ch_raw_title}",
-                'sections': []
-            }
-            chapters.append(current_chapter)
-            current_section = None
-            continue
+            ch_raw_title = ch_m.group(2).strip() if ch_m.lastindex >= 2 and ch_m.group(2) else ''
+            
+            # Guard against non-forward chapter numbers, verse enumerations, and cross-references
+            excluded_starts = (
+                'nakShatraM', 'OM', 'Oum', 'CatraM', 'vAdyaM', 'gItaM', 'aSvaM', 'rathaM',
+                'paurNamAsi', 'amAvAsi', 'candramA', 'ahO', 'uShA', 'nakShatraH',
+                'sUryaH', 'aditiH', 'viShNuH', 'agniH', 'anumatI', 'havyavAhaH'
+            )
+            is_valid_new_chapter = True
+            if current_chapter is not None and ch_num <= current_chapter['num']:
+                is_valid_new_chapter = False
+            elif any(ch_raw_title.startswith(x) for x in excluded_starts) or 'item No.' in ch_raw_title:
+                is_valid_new_chapter = False
 
-        if current_chapter is None:
-            continue
+            if is_valid_new_chapter:
+                ch_deva = baraha_to_devanagari(ch_raw_title) if ch_raw_title else ''
+                current_chapter = {
+                    'num': ch_num,
+                    'title_raw': ch_raw_title,
+                    'title_deva': f"{ch_num}. {ch_deva}" if ch_deva else f"{ch_num}.",
+                    'title_display_deva': f"{ch_num}. {ch_deva}" if ch_deva else f"{ch_num}.",
+                    'title_display_raw': f"{ch_num}. {ch_raw_title}" if ch_raw_title else f"{ch_num}.",
+                    'sections': []
+                }
+                chapters.append(current_chapter)
+                current_section = None
+                continue
 
         sec_m = re.match(r'^(\d+\.\d+(?:\.\d+)?)\s*(.*)', p)
         tb_m = re.match(r'^(T\.B\.\d+\.\d+\.\d+\.\d+)', p)
+
+        if current_chapter is None:
+            # If no chapter matched yet or chapter_regex is blank, auto-initialize Chapter 1 at the first section
+            if sec_m or tb_m or p.startswith('T.A.'):
+                current_chapter = {
+                    'num': 1,
+                    'title_raw': 'Text',
+                    'title_deva': '1. ग्रन्थः',
+                    'title_display_deva': '1. ग्रन्थः',
+                    'title_display_raw': '1. Text',
+                    'sections': []
+                }
+                chapters.append(current_chapter)
+            else:
+                continue
 
         if sec_m:
             sec_num = sec_m.group(1)
@@ -131,13 +164,16 @@ def parse_chapters_and_sections(raw_paras: list[str], chapter_regex: str) -> lis
             current_section['content_deva'].append(baraha_to_devanagari(p))
         elif current_chapter is not None:
             if not current_chapter['sections']:
+                ch_title = current_chapter.get('title_raw', '')
+                ch_deva = baraha_to_devanagari(ch_title) if ch_title else ''
                 current_section = {
-                    'num': f"{current_chapter['num']}.0",
-                    'title_raw': '',
-                    'title_deva': 'प्रारम्भः',
+                    'num': str(current_chapter['num']),
+                    'title_raw': ch_title,
+                    'title_deva': ch_deva,
                     'ta_code': '',
                     'content_raw': [p],
-                    'content_deva': [baraha_to_devanagari(p)]
+                    'content_deva': [baraha_to_devanagari(p)],
+                    'is_intro': True
                 }
                 current_chapter['sections'].append(current_section)
             else:
@@ -493,6 +529,31 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             padding-left: 0.6rem;
             border-radius: 0 4px 4px 0;
             box-shadow: 0 1px 3px rgba(216, 67, 21, 0.12);
+        }}
+
+        /* Active Chapter header in TOC */
+        .toc-chapter.active-chapter > .toc-ch-header {{
+            background: rgba(216, 67, 21, 0.08);
+            border-radius: 6px;
+            border-left: 3.5px solid var(--saffron);
+            padding-left: 0.5rem;
+        }}
+
+        .toc-chapter.active-chapter > .toc-ch-header .toc-ch-title a {{
+            color: var(--saffron);
+            font-weight: 700;
+        }}
+
+        /* Standalone chapter active link */
+        .toc-chapter.toc-single.active-chapter > .toc-ch-header {{
+            background: #FFE8D1 !important;
+            border-left: 3.5px solid var(--saffron) !important;
+            box-shadow: 0 1px 3px rgba(216, 67, 21, 0.12);
+        }}
+
+        .toc-chapter.toc-single.active-chapter .toc-ch-title a {{
+            color: #B23600 !important;
+            font-weight: 700 !important;
         }}
 
         /* Collapsible sidebar styles */
@@ -1094,18 +1155,31 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
     for ch in chapters:
         ch_id = f"chapter-{ch['num']}"
-        html_parts.append(f'''                <li class="toc-chapter" id="toc-{ch_id}">
+        sub_sections = [
+            s for s in ch["sections"]
+            if not (s.get('is_intro') or (s['num'] == str(ch['num']) and (not s.get('title_raw') or s.get('title_raw') == ch.get('title_raw'))))
+        ]
+        has_subsections = len(sub_sections) > 0
+        if has_subsections:
+            html_parts.append(f'''                <li class="toc-chapter" id="toc-{ch_id}">
                     <div class="toc-ch-header" onclick="toggleTocChapter('toc-{ch_id}')">
                         <div class="toc-ch-title"><a href="#{ch_id}">{ch['title_deva']}</a></div>
                         <span class="toc-ch-toggle">▼</span>
                     </div>
                     <ul class="toc-sub-list">
 ''')
-        for sec in ch["sections"]:
-            sec_id = f"sec-{sec['num'].replace('.', '-')}"
-            title_disp = f"{sec['num']} {sec['title_deva']}".strip()
-            html_parts.append(f'                        <li><a href="#{sec_id}">{title_disp}</a></li>\n')
-        html_parts.append('''                    </ul>
+            for sec in sub_sections:
+                sec_id = f"sec-{sec['num'].replace('.', '-')}"
+                title_disp = f"{sec['num']} {sec['title_deva']}".strip()
+                html_parts.append(f'                        <li><a href="#{sec_id}">{title_disp}</a></li>\n')
+            html_parts.append('''                    </ul>
+                </li>
+''')
+        else:
+            html_parts.append(f'''                <li class="toc-chapter toc-single" id="toc-{ch_id}">
+                    <div class="toc-ch-header">
+                        <div class="toc-ch-title"><a href="#{ch_id}">{ch['title_deva']}</a></div>
+                    </div>
                 </li>
 ''')
 
@@ -1127,13 +1201,25 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 ''')
         for sec in ch["sections"]:
             sec_id = f"sec-{sec['num'].replace('.', '-')}"
-            title_disp_deva = f"{sec['num']} {sec['title_deva']}".strip()
             code_span = f'<span class="anuvaka-code">{sec["ta_code"]}</span>' if sec["ta_code"] else ''
-            html_parts.append(f'''                <div class="anuvaka-block" id="{sec_id}">
-                    <div class="anuvaka-header">
+            is_intro = sec.get('is_intro', False) or (sec['num'] == str(ch['num']) and (not sec.get('title_raw') or sec.get('title_raw') == ch.get('title_raw')))
+
+            if is_intro:
+                if code_span:
+                    header_html = f'''                    <div class="anuvaka-header">
+                        {code_span}
+                    </div>'''
+                else:
+                    header_html = ''
+            else:
+                title_disp_deva = f"{sec['num']} {sec['title_deva']}".strip()
+                header_html = f'''                    <div class="anuvaka-header">
                         <span class="anuvaka-num">{title_disp_deva}</span>
                         {code_span}
-                    </div>
+                    </div>'''
+
+            html_parts.append(f'''                <div class="anuvaka-block" id="{sec_id}">
+{header_html}
                     <div class="verse-text">
 ''')
             for deva_line in sec["content_deva"]:
@@ -1273,10 +1359,10 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
         function scrollSidebarToTarget(targetLink) {{
             const sidebar = document.querySelector('.toc-sidebar');
-            if (!sidebar || isUserInteractingWithToc) return;
+            if (!sidebar || isUserInteractingWithToc || !targetLink) return;
             const linkRect = targetLink.getBoundingClientRect();
             const sideRect = sidebar.getBoundingClientRect();
-            const margin = Math.min(70, sideRect.height * 0.2);
+            const margin = Math.min(60, sideRect.height * 0.15);
             if (linkRect.top < sideRect.top + margin || linkRect.bottom > sideRect.bottom - margin) {{
                 const currentScroll = sidebar.scrollTop;
                 const offset = (linkRect.top - sideRect.top) - (sideRect.height / 2) + (linkRect.height / 2);
@@ -1287,28 +1373,78 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             }}
         }}
 
-        function highlightAnuvakaInToc(anuvakaId) {{
-            if (!anuvakaId || anuvakaId === activeAnuvakaId) return;
-            activeAnuvakaId = anuvakaId;
+        let activeContextId = null;
 
-            const targetLink = document.querySelector(`.toc-sub-list a[href="#${{anuvakaId}}"]`);
-            if (!targetLink) return;
+        function updateActiveContext(activeEl) {{
+            if (!activeEl) return;
 
-            document.querySelectorAll('.toc-sub-list a.active').forEach(el => el.classList.remove('active'));
-            targetLink.classList.add('active');
+            let chapterEl = activeEl.classList.contains('chapter-container') 
+                ? activeEl 
+                : activeEl.closest('.chapter-container');
+            let sectionEl = activeEl.classList.contains('anuvaka-block') 
+                ? activeEl 
+                : activeEl.querySelector('.anuvaka-block');
 
-            let wasCollapsed = false;
-            const parentCh = targetLink.closest('.toc-chapter');
-            if (parentCh && parentCh.classList.contains('collapsed')) {{
-                parentCh.classList.remove('collapsed');
-                wasCollapsed = true;
+            if (!chapterEl && sectionEl) {{
+                chapterEl = sectionEl.closest('.chapter-container');
+            }}
+            if (!chapterEl) return;
+
+            const chId = chapterEl.id;
+            const contextKey = activeEl.id;
+            if (contextKey === activeContextId) return;
+            activeContextId = contextKey;
+
+            const tocChItem = document.getElementById('toc-' + chId);
+
+            // 1. Update Chapter Active State in TOC
+            document.querySelectorAll('.toc-chapter.active-chapter').forEach(el => {{
+                if (el !== tocChItem) el.classList.remove('active-chapter');
+            }});
+            document.querySelectorAll('.toc-ch-title a.active').forEach(el => el.classList.remove('active'));
+
+            if (tocChItem) {{
+                tocChItem.classList.add('active-chapter');
+
+                // If standalone chapter (toc-single), highlight its link directly
+                if (tocChItem.classList.contains('toc-single')) {{
+                    const singleLink = tocChItem.querySelector('.toc-ch-title a');
+                    if (singleLink) singleLink.classList.add('active');
+                    document.querySelectorAll('.toc-sub-list a.active').forEach(el => el.classList.remove('active'));
+                    scrollSidebarToTarget(singleLink || tocChItem);
+                }} else {{
+                    // Multi-section chapter: expand if collapsed
+                    if (tocChItem.classList.contains('collapsed')) {{
+                        tocChItem.classList.remove('collapsed');
+                    }}
+                }}
             }}
 
-            if (wasCollapsed) {{
-                setTimeout(() => scrollSidebarToTarget(targetLink), 150);
-            }} else {{
-                scrollSidebarToTarget(targetLink);
+            // 2. Update Section / Subchapter Active State in TOC
+            if (sectionEl) {{
+                const secId = sectionEl.id;
+                const targetSubLink = document.querySelector(`.toc-sub-list a[href="#${{secId}}"]`);
+
+                document.querySelectorAll('.toc-sub-list a.active').forEach(el => {{
+                    if (el !== targetSubLink) el.classList.remove('active');
+                }});
+
+                if (targetSubLink) {{
+                    targetSubLink.classList.add('active');
+                    scrollSidebarToTarget(targetSubLink);
+                }} else if (tocChItem && !tocChItem.classList.contains('toc-single')) {{
+                    const chLink = tocChItem.querySelector('.toc-ch-title a');
+                    scrollSidebarToTarget(chLink || tocChItem);
+                }}
+            }} else if (tocChItem) {{
+                const chLink = tocChItem.querySelector('.toc-ch-title a');
+                scrollSidebarToTarget(chLink || tocChItem);
             }}
+        }}
+
+        function highlightAnuvakaInToc(targetId) {{
+            const el = document.getElementById(targetId);
+            if (el) updateActiveContext(el);
         }}
 
         function openPrintModal() {{
@@ -1543,7 +1679,8 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
                 ch.querySelectorAll('.anuvaka-block').forEach(sec => {{
                     const numEl = sec.querySelector('.anuvaka-num');
-                    const secTitle = numEl ? numEl.textContent.trim() : sec.id;
+                    const codeEl = sec.querySelector('.anuvaka-code');
+                    const secTitle = numEl ? numEl.textContent.trim() : (codeEl ? codeEl.textContent.trim() : 'प्रारम्भः (Intro)');
                     const secOpt = document.createElement('option');
                     secOpt.value = sec.id;
                     secOpt.textContent = `${{chTitle}} - ${{secTitle}}`;
@@ -1566,8 +1703,8 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 currentActiveChapterCount = firstCh.querySelectorAll('.anuvaka-block').length;
             }}
 
-            // IntersectionObserver for tracking active Anuvaka during scroll
-            const anuvakaObserver = new IntersectionObserver((entries) => {{
+            // IntersectionObserver for tracking active Chapter and Anuvaka during scroll
+            const navObserver = new IntersectionObserver((entries) => {{
                 let bestEntry = null;
                 let minDistance = Infinity;
 
@@ -1582,13 +1719,23 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 }});
 
                 if (bestEntry) {{
-                    highlightAnuvakaInToc(bestEntry.target.id);
-                    currentActiveSectionId = bestEntry.target.id;
-                    const numNode = bestEntry.target.querySelector('.anuvaka-num');
-                    if (numNode) {{
-                        currentActiveSectionTitle = numNode.textContent.trim();
+                    updateActiveContext(bestEntry.target);
+                    const secNode = bestEntry.target.classList.contains('anuvaka-block') 
+                        ? bestEntry.target 
+                        : bestEntry.target.querySelector('.anuvaka-block');
+                    if (secNode) {{
+                        currentActiveSectionId = secNode.id;
+                        const numNode = secNode.querySelector('.anuvaka-num');
+                        const codeNode = secNode.querySelector('.anuvaka-code');
+                        if (numNode) {{
+                            currentActiveSectionTitle = numNode.textContent.trim();
+                        }} else if (codeNode) {{
+                            currentActiveSectionTitle = codeNode.textContent.trim();
+                        }} else {{
+                            currentActiveSectionTitle = currentActiveChapterTitle || "";
+                        }}
                     }}
-                    const parentCh = bestEntry.target.closest('.chapter-container');
+                    const parentCh = bestEntry.target.closest('.chapter-container') || (bestEntry.target.classList.contains('chapter-container') ? bestEntry.target : null);
                     if (parentCh) {{
                         currentActiveChapterId = parentCh.id;
                         const chHeading = parentCh.querySelector('.chapter-heading');
@@ -1596,9 +1743,9 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                         currentActiveChapterCount = parentCh.querySelectorAll('.anuvaka-block').length;
                     }}
                 }}
-            }}, {{ rootMargin: '-75px 0px -75% 0px', threshold: 0 }});
+            }}, {{ rootMargin: '-75px 0px -70% 0px', threshold: 0 }});
 
-            document.querySelectorAll('.anuvaka-block').forEach(el => anuvakaObserver.observe(el));
+            document.querySelectorAll('.chapter-container, .anuvaka-block').forEach(el => navObserver.observe(el));
 
             // Direct click on Suchi item immediately highlights and smoothly scrolls to target
             document.querySelectorAll('.toc-sub-list a, .toc-ch-title a').forEach(link => {{
@@ -1608,21 +1755,31 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                     }}
                     const href = this.getAttribute('href');
                     if (href && href.startsWith('#')) {{
-                        const secId = href.slice(1);
-                        highlightAnuvakaInToc(secId);
-                        currentActiveSectionId = secId;
-                        const target = document.getElementById(secId);
+                        const targetId = href.slice(1);
+                        const target = document.getElementById(targetId);
                         if (target) {{
                             e.preventDefault();
                             target.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
                             if (history.pushState) {{
                                 history.pushState(null, '', href);
                             }}
-                            const numNode = target.querySelector('.anuvaka-num');
-                            if (numNode) {{
-                                currentActiveSectionTitle = numNode.textContent.trim();
+                            updateActiveContext(target);
+                            const secNode = target.classList.contains('anuvaka-block') 
+                                ? target 
+                                : target.querySelector('.anuvaka-block');
+                            if (secNode) {{
+                                currentActiveSectionId = secNode.id;
+                                const numNode = secNode.querySelector('.anuvaka-num');
+                                const codeNode = secNode.querySelector('.anuvaka-code');
+                                if (numNode) {{
+                                    currentActiveSectionTitle = numNode.textContent.trim();
+                                }} else if (codeNode) {{
+                                    currentActiveSectionTitle = codeNode.textContent.trim();
+                                }} else {{
+                                    currentActiveSectionTitle = currentActiveChapterTitle || "";
+                                }}
                             }}
-                            const parentCh = target.closest('.chapter-container');
+                            const parentCh = target.closest('.chapter-container') || (target.classList.contains('chapter-container') ? target : null);
                             if (parentCh) {{
                                 currentActiveChapterId = parentCh.id;
                                 const chHeading = parentCh.querySelector('.chapter-heading');
@@ -1806,7 +1963,7 @@ def build_book(book_id: str, config: dict, input_override: str = None, output_ov
     book_meta = books[book_id]
     input_file = input_override or book_meta.get("input_docx")
     output_file = output_override or book_meta.get("output_html")
-    chapter_regex = book_meta.get("chapter_regex", r"^([1-6])(?!\.)\s*(.*)$")
+    chapter_regex = book_meta.get("chapter_regex") or ""
     fonts = config.get("fonts", [])
     default_size = config.get("default_font_size_rem", 1.35)
 

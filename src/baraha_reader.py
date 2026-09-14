@@ -182,7 +182,14 @@ def extract_docx_paragraphs(docx_path: str | Path) -> list[str]:
     root = ET.fromstring(doc_xml)
     paras = []
     for p in root.findall('.//w:p', DOCX_NS):
-        text = ''.join([n.text for n in p.findall('.//w:t', DOCX_NS) if n.text]).strip()
+        parts = []
+        for node in p.iter():
+            tag = node.tag.split('}')[-1] if '}' in node.tag else node.tag
+            if tag == 't' and node.text:
+                parts.append(node.text)
+            elif tag == 'tab':
+                parts.append('\t')
+        text = ''.join(parts).strip()
         if text:
             paras.append(text)
 
@@ -204,18 +211,14 @@ def parse_baraha_docx_to_ast(
     """
     raw_paras = extract_docx_paragraphs(docx_path)
     
-    # Default chapter regex covers standard Upanishad / Aranyakam / Brahmana numbering
-    ch_pattern = re.compile(
-        chapter_regex or r'^([1-6])(?!\.)\s*(.*(?:vall[iI]|nArAyaN|aruNa|triNAcikE|kANDa|ashtaka|adhyAya|prapathaka).*)$',
-        re.I
-    )
+    ch_pattern = re.compile(chapter_regex, re.I) if chapter_regex and chapter_regex.strip() else None
 
     chapters = []
     current_chapter = None
     current_section = None
 
     for p in raw_paras:
-        ch_m = ch_pattern.match(p)
+        ch_m = ch_pattern.match(p) if ch_pattern else None
         if ch_m:
             ch_num = int(ch_m.group(1))
             ch_raw_title = ch_m.group(2).strip()
@@ -230,11 +233,20 @@ def parse_baraha_docx_to_ast(
             current_section = None
             continue
 
-        if current_chapter is None:
-            continue
-
         sec_m = re.match(r'^(\d+\.\d+(?:\.\d+)?)\s*(.*)', p)
         tb_m = re.match(r'^(T\.B\.\d+\.\d+\.\d+\.\d+)', p)
+
+        if current_chapter is None:
+            if sec_m or tb_m or p.startswith('T.A.'):
+                current_chapter = {
+                    'num': 1,
+                    'title_raw': 'Text',
+                    'title_deva': '1. ग्रन्थः',
+                    'sections': []
+                }
+                chapters.append(current_chapter)
+            else:
+                continue
 
         if sec_m:
             sec_num = sec_m.group(1)
