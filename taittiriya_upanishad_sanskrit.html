@@ -2,7 +2,7 @@
 <html lang="sa">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>तैत्तिरीयोपनिषत्, अरुणप्रश्नम्, तृणाचिकेतम् - Sanskrit Vedic Text</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,7 +59,9 @@
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 5rem;
-            overflow-x: clip;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
         }
 
         .chapter-container, .anuvaka-block, [id] {
@@ -81,6 +83,11 @@
             font-size: var(--font-size);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
         }
 
         .header {
@@ -198,8 +205,10 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.55);
             backdrop-filter: blur(2px);
             z-index: 2400;
@@ -334,6 +343,31 @@
             padding-left: 0.6rem;
             border-radius: 0 4px 4px 0;
             box-shadow: 0 1px 3px rgba(216, 67, 21, 0.12);
+        }
+
+        /* Active Chapter header in TOC */
+        .toc-chapter.active-chapter > .toc-ch-header {
+            background: rgba(216, 67, 21, 0.08);
+            border-radius: 6px;
+            border-left: 3.5px solid var(--saffron);
+            padding-left: 0.5rem;
+        }
+
+        .toc-chapter.active-chapter > .toc-ch-header .toc-ch-title a {
+            color: var(--saffron);
+            font-weight: 700;
+        }
+
+        /* Standalone chapter active link */
+        .toc-chapter.toc-single.active-chapter > .toc-ch-header {
+            background: #FFE8D1 !important;
+            border-left: 3.5px solid var(--saffron) !important;
+            box-shadow: 0 1px 3px rgba(216, 67, 21, 0.12);
+        }
+
+        .toc-chapter.toc-single.active-chapter .toc-ch-title a {
+            color: #B23600 !important;
+            font-weight: 700 !important;
         }
 
         /* Collapsible sidebar styles */
@@ -504,7 +538,7 @@
             margin-bottom: 0;
         }
 
-        @media (max-width: 850px) {
+        @media (max-width: 960px), (max-height: 550px) and (orientation: landscape) {
             .header {
                 padding: 0.45rem 0.6rem;
             }
@@ -637,6 +671,8 @@
             .main-title h1 {
                 font-size: 1.45rem;
                 line-height: 1.35;
+                word-break: break-word;
+                overflow-wrap: break-word;
             }
 
             .main-title .sub-heading {
@@ -652,6 +688,8 @@
                 padding: 0.7rem 0.95rem;
                 border-radius: 6px;
                 margin-bottom: 1.25rem;
+                word-break: break-word;
+                overflow-wrap: break-word;
             }
 
             .anuvaka-block {
@@ -676,21 +714,39 @@
             }
         }
 
-        @media (max-height: 520px) and (orientation: landscape) {
+        @media (max-height: 550px) and (orientation: landscape) {
             .header {
-                padding: 0.3rem 0.6rem;
+                padding: 0.25rem 0.55rem;
             }
             .header-content {
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                gap: 0.4rem;
+                gap: 0.3rem;
+                flex-wrap: wrap;
             }
             .header-main-bar {
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
                 width: auto;
             }
+            .logo {
+                font-size: 1.15rem;
+            }
             .controls {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
                 width: auto;
+                flex-wrap: wrap;
+            }
+            .btn-ctrl, .toggle-sidebar-btn {
+                padding: 0.25rem 0.45rem;
+                font-size: 0.78rem;
+            }
+            #font-toggle-btn {
+                max-width: 110px;
             }
         }
 
@@ -718,8 +774,10 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.45);
             backdrop-filter: blur(2px);
             z-index: 2000;
@@ -956,7 +1014,6 @@
                         <span class="toc-ch-toggle">▼</span>
                     </div>
                     <ul class="toc-sub-list">
-                        <li><a href="#sec-2-0">2.0 प्रारम्भः</a></li>
                         <li><a href="#sec-2-1">2.1 उपनिषत्सार सङ्ग्रहः</a></li>
                         <li><a href="#sec-2-2">2.2 पञ्चकोश-विवरणं</a></li>
                         <li><a href="#sec-2-3">2.3 अभयप्रतिष्ठा</a></li>
@@ -969,7 +1026,6 @@
                         <span class="toc-ch-toggle">▼</span>
                     </div>
                     <ul class="toc-sub-list">
-                        <li><a href="#sec-3-0">3.0 प्रारम्भः</a></li>
                         <li><a href="#sec-3-1">3.1 ब्रह्मजिज्ञ्आसा</a></li>
                         <li><a href="#sec-3-2">3.2 पञ्चकोशान्तः स्थित-ब्रह्मनिरूपणम्</a></li>
                         <li><a href="#sec-3-3">3.3 अन्नब्रह्मोपासनम्</a></li>
@@ -982,7 +1038,6 @@
                         <span class="toc-ch-toggle">▼</span>
                     </div>
                     <ul class="toc-sub-list">
-                        <li><a href="#sec-4-0">4.0 प्रारम्भः</a></li>
                         <li><a href="#sec-4-1">4.1 अम्भस्यपारे</a></li>
                         <li><a href="#sec-4-2">4.2 गायत्री मन्त्राः</a></li>
                         <li><a href="#sec-4-3">4.3 दूर्वा सूक्तं</a></li>
@@ -1046,7 +1101,6 @@
                         <span class="toc-ch-toggle">▼</span>
                     </div>
                     <ul class="toc-sub-list">
-                        <li><a href="#sec-5-0">5.0 प्रारम्भः</a></li>
                         <li><a href="#sec-1-1-1">1.1.1 अनुवाकं-1</a></li>
                         <li><a href="#sec-1-1-2">1.1.2 अनुवाकं-2</a></li>
                         <li><a href="#sec-1-1-3">1.1.3 अनुवाकं-3</a></li>
@@ -1307,11 +1361,8 @@
             </section>
             <section class="chapter-container" id="chapter-2">
                 <h2 class="chapter-heading">2. ब्रह्मानन्द वल्ली</h2>
-                <div class="anuvaka-block" id="sec-2-0">
-                    <div class="anuvaka-header">
-                        <span class="anuvaka-num">2.0 प्रारम्भः</span>
-                        
-                    </div>
+                <div class="anuvaka-block" id="sec-2">
+
                     <div class="verse-text">
                         <p class="verse-p">स॒ह ना॑ ववतु । स॒ह नौ॑ भुनक्तु ।</p>
                         <p class="verse-p">स॒ह वी॒र्यं॑ करवावहै ।</p>
@@ -1412,7 +1463,7 @@
                         <p class="verse-p">उ॒भे ह्ये॑वैष॒ एते आत्मा॑नᳺ स्पृ॒णुते ।</p>
                         <p class="verse-p">य ए॒वं ँवेद॑ ॥ इत्यु॑प॒निष॑त् ॥ 9.1</p>
                         <p class="verse-p">स॒ह ना॑ ववतु । स॒ह नौ॑ भुनक्तु । स॒ह वी॒र्यं॑ करवावहै । ते॒ज॒स्विना॒ वधी॑तमस्तु॒ मा वि॑द्विषा॒वहै᳚ । ओं शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥</p>
-                        <p class="verse-p">Special Korvai</p>
+                        <p class="verse-p">श्पेचिअल् खोर्वै</p>
                         <p class="verse-p">(ब्र॒ह्म॒विदिदमयमिदमेक॑विꣳशतिः ।</p>
                         <p class="verse-p">अन्ना॒ दन्न॑रस॒मयात् प्राणो॒ व्यानोऽपान आका॑शः॒ पृथिवी पुच्छ॒ꣳ॒ षड्विꣳ॑शतिः ।</p>
                         <p class="verse-p">प्रा॒णम् प्रा॑ण॒मयान् म॑नो॒ यजु॒र्.॒ ऋख् सामादे॒शोऽथर्वाङ्गिरसः पुच्छ॒म् द्वाविꣳ॑शतिः ।</p>
@@ -1429,11 +1480,8 @@
             </section>
             <section class="chapter-container" id="chapter-3">
                 <h2 class="chapter-heading">3. भृगु वल्ली</h2>
-                <div class="anuvaka-block" id="sec-3-0">
-                    <div class="anuvaka-header">
-                        <span class="anuvaka-num">3.0 प्रारम्भः</span>
-                        
-                    </div>
+                <div class="anuvaka-block" id="sec-3">
+
                     <div class="verse-text">
                         <p class="verse-p">स॒ह ना॑ ववतु । स॒ह नौ॑ भुनक्तु । स॒ह वी॒र्यं॑ करवावहै । ते॒ज॒स्विना॒ वधी॑तमस्तु॒ मा वि॑द्विषा॒वहै᳚ ॥</p>
                         <p class="verse-p">ओं शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥</p>
@@ -1557,11 +1605,8 @@
             </section>
             <section class="chapter-container" id="chapter-4">
                 <h2 class="chapter-heading">4. महा नारायणोपनिषत्</h2>
-                <div class="anuvaka-block" id="sec-4-0">
-                    <div class="anuvaka-header">
-                        <span class="anuvaka-num">4.0 प्रारम्भः</span>
-                        
-                    </div>
+                <div class="anuvaka-block" id="sec-4">
+
                     <div class="verse-text">
                         <p class="verse-p">स॒ह ना॑ ववतु । स॒ह नौ॑ भुनक्तु । स॒ह वी॒र्यं॑ करवावहै । ते॒ज॒स्विना॒ वधी॑तमस्तु॒ मा वि॑द्विषा॒वहै᳚ ॥ ओं शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥</p>
                     </div>
@@ -1588,7 +1633,7 @@
                         <p class="verse-p">नैन॑-मू॒द्‌र्ध्वं न ति॒र्यं च॒ न मद्ध्ये॒ परि॑जग्रभत् । न तस्ये॑शे॒ कश्च॒न तस्य॑ नाम म॒हद्यशः॑ ॥ 1.10</p>
                         <p class="verse-p">न स॒दृंशे॑ तिष्ठति॒ रूप॑मस्य॒ न चक्षु॑षा पश्यति॒ कश्च॒नैनं᳚ ।</p>
                         <p class="verse-p">हृ॒दा म॑नी॒षा मन॑सा॒ऽभि क्लृ॑प्तो॒ य ए॑नं ँवि॒दु-रमृ॑ता॒स्ते भ॑वन्ति ॥ 1.11</p>
-                        <p class="verse-p">एक्ष्पन्सिओन् ओf अ॒द्भ्यः संभू॑तः (आप्पेअरिन्ग् इन् T.A.3.13.1)</p>
+                        <p class="verse-p">Expansion of अ॒द्भ्यः संभू॑तः (Appearing in T.A.3.13.1)</p>
                         <p class="verse-p">अ॒द्भ्यः संभू॑तः पृथि॒व्यै रसा᳚च्च । वि॒श्वक॑र्मणः॒ सम॑वर्त्त॒ताधि॑ ।</p>
                         <p class="verse-p">तस्य॒ त्वष्टा॑ वि॒दध॑द्रू॒पमे॑ति ॥ तत्पुरु॑षस्य॒ विश्व॒माजा॑न॒मग्रे᳚ ॥ 1</p>
                         <p class="verse-p">वेदा॒हमे॒तं पुरु॑षं म॒हान्तं᳚ । आ॒दि॒त्य व॑र्णं॒ तम॑सः॒ पर॑स्तात् ।</p>
@@ -1601,8 +1646,8 @@
                         <p class="verse-p">यस्त्वै॒वं ब्रा᳚ह्म॒णो वि॒द्यात् । तस्य॑ दे॒वा अस॒न्. वशे᳚ ॥ 5</p>
                         <p class="verse-p">ह्रीश्च॑ते ल॒क्ष्मीश्च॒ पत्न्यौ᳚ । अ॒हो॒रा॒त्रे पा॒र्श्वे । नक्ष॑त्राणि रू॒पं ।</p>
                         <p class="verse-p">अ॒श्विनौ॒ व्यात्तं᳚ । इ॒ष्टं म॑निषाण । अ॒मुं म॑निषाण । सर्वं॑ मनिषाण ॥ 6</p>
-                        <p class="verse-p">Rएf: टा 3.13.1 तो टा 3.13.2</p>
-                        <p class="verse-p">एक्ष्पन्सिओन् ओf हिरण्यगर्भः इत्यष्टौ</p>
+                        <p class="verse-p">Ref: TA 3.13.1 to TA 3.13.2</p>
+                        <p class="verse-p">Expansion of हिरण्यगर्भः इत्यष्टौ</p>
                         <p class="verse-p">हि॒र॒ण्य॒ग॒र्भः सम॑वर्त्त॒ताग्रे॑ भू॒तस्य॑ जा॒तः पति॒रेक॑ आसीत् । स दा॑धार पृथि॒वीं द्यामु॒तेमां कस्मै॑ दे॒वाय॑ ह॒विषा॑ विधेम ॥ 1</p>
                         <p class="verse-p">यः प्रा॑ण॒तो नि॑मिष॒तो म॑हि॒त्वैक॒ इद्राजा॒ जग॑तो ब॒भूव॑ । य ईशे॑ अ॒स्य द्वि॒पद॒-श्चतु॑ष्प॒दः कस्मै॑ दे॒वाय॑ ह॒विषा॑ विधेम ॥ 2</p>
                         <p class="verse-p">य आ᳚त्म॒दा ब॑ल॒दा यस्य॒ विश्व॑ उपा॒स॑ते प्र॒शिषं॒ ँयस्य॑ दे॒वाः । यस्य॑ छा॒यामृतं॒ ँयस्य॑ मृ॒त्युः कस्मै॑ दे॒वाय॑ ह॒विषा॑ विधेम ॥ 3</p>
@@ -1611,7 +1656,7 @@
                         <p class="verse-p">येन॒ द्यौरु॒ग्रा पृ॑थि॒वी च॑ दृ॒ढे येन॒ सुव॑स् स्तभि॒तं ँयेन॒ नाकः॑ । यो अ॒न्तरि॑क्षे॒ रज॑सो वि॒मानः॒ कस्मै॑ दे॒वाय॑ ह॒विषा॑ विधेम ॥ 6</p>
                         <p class="verse-p">आपो॑ ह॒ यन्म॑ह॒ती विश्व॒माय॒न्-दक्ष॒न्दधा॑ना ज॒नय॑न्ती-र॒ग्निं । ततो॑ दे॒वाना॒-न्निर॑वर्त्त॒ता-सु॒रेकः॒ कस्मै॑ दे॒वाय॑ ह॒विषा॑ विधेम ॥ 7</p>
                         <p class="verse-p">यश्चि॒दापो॑ महि॒ना प॒र्यप॑श्य॒द्-द्क्ष॒न्दधा॑ना ज॒नय॑न्ती-र॒ग्निं । यो दे॒वेष्वधि॑ दे॒व येक॒ आसी॒त् कस्मै॑ दे॒वाय॑ ह॒विषा॑ विधेम ॥ 8</p>
-                        <p class="verse-p">Rएf - T.S.4.1.8.3 तो 4.1.8.6</p>
+                        <p class="verse-p">Ref - T.S.4.1.8.3 to 4.1.8.6</p>
                         <p class="verse-p">अ॒द्भ्यः संभू॑तो हिरण्यग॒र्भ इत्य॒ष्टौ ॥</p>
                         <p class="verse-p">ए॒ष हि दे॒वः प्र॒दिशोऽनु॒ सर्वाः॒ पूर्वो॑ हि जा॒तः स उ॒ गर्भे॑ अ॒न्तः । स वि॒जाय॑मानः सजनि॒ष्यमा॑णः प्र॒त्यङ्-मुखा᳚ स्तिष्ठति वि॒श्वतो॑मुखः ॥ 1.12</p>
                         <p class="verse-p">वि॒श्वत॑श्च-क्षुरु॒त वि॒श्वतो॑ मुखो वि॒श्वतो॑ हस्त उ॒त वि॒श्वत॑स्पात् ।</p>
@@ -1744,7 +1789,7 @@
                         <p class="verse-p">सू॒र्या॒च॒न्द्र॒मसौ॑ धा॒ता य॑था पू॒र्व म॑कल्पयत् ।</p>
                         <p class="verse-p">दिव॑ञ्च पृथि॒वीं चा॒न्तरि॑क्ष॒ मथो॒ सुवः॑ ॥ 1.65</p>
                         <p class="verse-p">यत् पृ॑थि॒व्याꣳ रज॑स्स्व॒ मान्तरि॑क्षे वि॒रोद॑सी ।</p>
-                        <p class="verse-p">इ॒माᳺ स्तदा॒पो व॑रुणः पु॒नात्व॑घमर्.ष॒णः ॥ 1.66अ</p>
+                        <p class="verse-p">इ॒माᳺ स्तदा॒पो व॑रुणः पु॒नात्व॑घमर्.ष॒णः ॥ 1.66a</p>
                         <p class="verse-p">पु॒नन्तु॒ वस॑वः पु॒नातु॒ वरु॑णः पु॒नात्व॑घमर्.ष॒णः ।</p>
                         <p class="verse-p">ए॒ष भू॒तस्य॑ म॒द्ध्ये भुव॑नस्य गो॒प्ता ॥ 1.66ब्</p>
                         <p class="verse-p">ए॒ष पु॒ण्यकृ॑तां ँलो॒का॒ने॒ष मृ॒त्योर्. हि॑र॒ण्मयं᳚ । द्यावा॑पृथि॒व्योर्. हि॑र॒ण्मय॒ꣳ॒ सᳺश्रि॑त॒ꣳ॒ सुवः॑ ।</p>
@@ -1757,10 +1802,10 @@
                         <p class="verse-p">वृषा॑ प॒वित्रे॒ अधि॒सानो॒ अव्ये॑ बृ॒हथ् सोमो॑</p>
                         <p class="verse-p">वावृधे सुवा॒न इन्दुः॑ ॥ 1.70</p>
                         <p class="verse-p">(पुर॑स्ता॒द् - यशो॒ - गुहा॑सु॒ - मम॑ - चक्रतु॒ण्डाय॑ धीमहि - तीक्षद॒ᳺ॒ष्ठ्राय॑ धीमहि॒ - परि॑ - प्र॒तिष्ठि॑तं - देभुर् - यच्छतु - दधातना॒- द्भ्यो᳚ - ऽर्ण॒वः - सुवो॒ - राजैकं॑ च) (A1)</p>
-                        <p class="verse-p">Special Korvai</p>
+                        <p class="verse-p">श्पेचिअल् खोर्वै</p>
                         <p class="verse-p">रु॒द्रो॒ रु॒द्रश्च॒ दन्ति॒श्च॒ न॒न्दिः॒ ष॒ण्मु॒ख॒ ए॒व च॑ । ग॒रु॒डो॒ ब्र॒ह्म॒ वि॒ष्णु॒श्च॒ ना॒र॒सि॒ꣳ॒ह॒स्त॒थै॒व च॑ ।</p>
                         <p class="verse-p">आ॒दि॒त्यो॒ऽग्नि॒श्च॒ दु॒र्गि॒श्च॒ क्र॒मे॒ण॒ द्वाद॒शाम्भ॑सि ।</p>
-                        <p class="verse-p">Special Korvai</p>
+                        <p class="verse-p">श्पेचिअल् खोर्वै</p>
                         <p class="verse-p">म॒ म॒ व॒ च॒ म॒ सु॒ वे॒ ना॒ व॒ भा॒ वै॒ का॒त्या॒य॒नाय॑ ।</p>
                     </div>
                 </div>
@@ -1855,7 +1900,7 @@
                         <p class="verse-p">अतः॑ समु॒द्रा गि॒रय॑श्च॒ सर्वे॒ऽस्माथ् स्यन्द॑न्ते॒ सिन्ध॑वः॒ सर्व॑रूपाः । अत॑श्च॒ विश्वा॒ ओष॑धयो॒ रसा᳚च्च॒ येनै॑ष भू॒त-स्ति॑ष्ठत्यन्तरा॒त्मा ॥ 12.3</p>
                         <p class="verse-p">ब्र॒ह्मा दे॒वानां᳚ पद॒वीः क॑वी॒ना-मृषि॒र्-विप्रा॑णां महि॒षो मृ॒गाणां᳚ ।</p>
                         <p class="verse-p">श्ये॒नो गृध्रा॑णा॒ᳺ॒ स्वधि॑ति॒र्-वना॑ना॒ꣳ॒ सोमः॑ प॒वित्र॒ मत्ये॑ति॒ रेभन्न्॑ ॥ 12.4</p>
-                        <p class="verse-p">अ॒जा मेकां॒ ँलोहि॑त-शुक्ल-कृ॒ष्णां ब॒ह्वीं प्र॒जां ज॒नय॑न्ती॒ꣳ॒ सरू॑पां । अ॒जो ह्येको॑ जु॒षमा॑णोऽनु॒शेते॒ जहा᳚त्येनां भु॒क्त-भो॑गा॒मजो᳚ऽन्यः ॥ 12.5</p>
+                        <p class="verse-p">अ॒जा मेकां॒ ँलोहि॑ta-Sउक्ल-कृ॒ष्णां ब॒ह्वीं प्र॒जां ज॒नय॑न्ती॒ꣳ॒ सरू॑पां । अ॒जो ह्येको॑ जु॒षमा॑णोऽनु॒शेते॒ जहा᳚त्येनां भु॒क्त-भो॑गा॒मजो᳚ऽन्यः ॥ 12.5</p>
                         <p class="verse-p">ह॒ꣳ॒सः शु॑चि॒षद् वसु॑-रन्तरिक्ष॒-सद्धोता॑ वेदि॒ष-दति॑थिर्-दुरोण॒सत् । नृ॒षद्व॑र॒-सदृ॑त॒-सद् व्यो॑म॒-सद॒ब्जा गो॒जा ऋ॑त॒जा</p>
                         <p class="verse-p">अ॑द्रि॒जा ऋ॒तं बृ॒हत् ॥ 12.6</p>
                         <p class="verse-p">घृ॒तं मि॑मिक्षिरे घृ॒तम॑स्य॒ योनि॑र्-घृ॒ते श्रि॒तो घृ॒तमु॑वस्य॒ धाम॑ । अ॒नु॒ष्व॒धमाव॑ह मा॒दय॑स्व॒ स्वाहा॑ कृतं ँवृषभ वक्षि</p>
@@ -2024,7 +2069,7 @@
                         <span class="anuvaka-code">T.A.6.27.1</span>
                     </div>
                     <div class="verse-text">
-                        <p class="verse-p">(ठिस् एक्ष्पन्सिओन् इस् अप्पेअरिन्ग् इन् T.S.1.2.14.1 fओर्</p>
+                        <p class="verse-p">(This Expansion is appearing in T.S.1.2.14.1 for</p>
                         <p class="verse-p">कृ॒णु॒ष्व पाज॒ इति॒ पञ्च॑ )</p>
                         <p class="verse-p">कृ॒णु॒ष्व पाजः॒ प्रसि॑ति॒न्न पृ॒थ्वीं ँया॒हि राजे॒ वा॑मवा॒ꣳ॒ इभे॑न । तृ॒ष्वीमनु॒ प्रसि॑तिं द्रूणा॒नोऽस्ता॑ऽसि॒ विद्ध्य॑ र॒क्ष स॒स्तपि॑ष्ठैः ॥ 27.1</p>
                         <p class="verse-p">तव॑ भ्र॒मास॑ आशु॒या प॑त॒न्त्यनु॑ स्पृश धृष॒ता शोशु॑चानः । तपूᳺ॑ष्यग्ने जु॒ह्वा॑ पत॒गांन स॑न्दितो॒ विसृ॑ज॒ विष्व॑ गु॒ल्काः ॥ 27.2</p>
@@ -2460,7 +2505,7 @@
                         <p class="verse-p">प्र॒जन॒ इति॒ भूयाꣳ॑॑स॒-स्तस्मा॒द् भूयि॑ष्ठाः॒ प्रजा॑यन्ते॒ तस्मा॒द् भूयि॑ष्ठाः प्र॒जन॑ने रमन्ते॒, (78.7)</p>
                         <p class="verse-p">ऽग्नय॒ इत्या॑ह॒ तस्मा॑-द॒ग्नय॒ आधा॑तव्या अग्निहो॒त्र-मित्या॑ह॒ तस्मा॑-दग्निहो॒त्रे र॑मन्ते, (78.8)</p>
                         <p class="verse-p">य॒ज्ञ्अ इति॑ य॒ज्ञ्ओ हि दे॒वा स्तस्मा᳚द् य॒ज्ञ्ए र॑मन्ते, (78.9)</p>
-                        <p class="verse-p">मान॒स-मिति॑ वि॒द्वाꣳस॒-स्तस्मा᳚द् वि॒द्वाꣳस॑ ए॒व मा॑न॒से र॑मन्ते,(78.10)</p>
+                        <p class="verse-p">मान॒स-मिति॑ वि॒द्वाꣳस॒-स्तस्मा᳚द् वि॒द्वाꣳस॑ ए॒व मा॑न॒से र॑मन्ते,	(78.10)</p>
                         <p class="verse-p">न्या॒स इति॑ ब्र॒ह्मा ब्र॒ह्मा हि परः॒ परो॑ हि ब्र॒ह्मा तानि॒ वा ए॒तान्यव॑राणि॒</p>
                         <p class="verse-p">पराꣳ॑सि न्या॒स ए॒वात्य॑रेचय॒द् य ए॒वं ँवेदे᳚त्युप॒निषत् ॥ (78.11)</p>
                     </div>
@@ -2532,11 +2577,8 @@
             </section>
             <section class="chapter-container" id="chapter-5">
                 <h2 class="chapter-heading">5. अरुणप्रश्नः-तैत्तिरीयारण्यकं</h2>
-                <div class="anuvaka-block" id="sec-5-0">
-                    <div class="anuvaka-header">
-                        <span class="anuvaka-num">5.0 प्रारम्भः</span>
-                        
-                    </div>
+                <div class="anuvaka-block" id="sec-5">
+
                     <div class="verse-text">
                         <p class="verse-p">भ॒द्रं कर्णे॑भिः शृणु॒याम॑ देवाः । भ॒द्रं प॑श्येमा॒क्षभि॒र् यज॑त्राः ।</p>
                         <p class="verse-p">स्थि॒रैरङ्गै᳚स्तुष्टु॒वाꣳ स॑स्त॒नूभिः॑ । व्यशे॑म दे॒वहि॑तं॒ ँयदायुः॑ ॥</p>
@@ -2875,7 +2917,7 @@
                         <p class="verse-p">एतद्वो मिथुनं मा नो मिथु॑नꣳ री॒ढ्वं ॥ 67 (12)</p>
                         <p class="verse-p">(प्रा॒णैरा॒पूर्य॑ति॒-मोथ्सृ॑पत॒-चोथ्स॑र्पति च॒ - मोथ्सृ॑प॒ द्वे च॑) (A14)</p>
                         <p class="verse-p">श्री छाया-सुवर्चलाम्बा समेत श्री सुर्यनारायण स्वामिने नमः । ओउम् नमो नारायणाय ॥ 14 ॥</p>
-                        <p class="verse-p">Special Korvai</p>
+                        <p class="verse-p">श्पेचिअल् खोर्वै</p>
                         <p class="verse-p">(योसौ॒ षोड॑शा॒मूनि॒ द्वाद॑शा॒यं चतु॑र्दश)</p>
                         <p class="verse-p">(उ॒देत्य॑स्त॒मेत्या॒पूर्य॑त्यप॒क्षीय॑त्य॒मूनि॒ नक्ष॑त्राणी॒ मे मासा॑ इ॒म ऋ॒तवो॒ऽयꣳ स॑म् ँवथ्स॒र इ॒दमह॑रि॒यꣳ रात्रि॒र्दश॑)</p>
                     </div>
@@ -2967,7 +3009,7 @@
                         <p class="verse-p">दिशो वो मिथुनं मा नो मिथु॑नꣳ री॒ढ्वं ॥ 72 (11)</p>
                         <p class="verse-p">(स्व॑रेक॑म् च) (A18)</p>
                         <p class="verse-p">श्री छाया-सुवर्चलाम्बा समेत श्री सुर्यनारायण स्वामिने नमः । ओउम् नमो नारायणाय ॥ 18 ॥</p>
-                        <p class="verse-p">Special Korvai</p>
+                        <p class="verse-p">श्पेचिअल् खोर्वै</p>
                         <p class="verse-p">(एतद् रश्मय आपो रूपाणि दिशः पञ्च॑)</p>
                     </div>
                 </div>
@@ -3063,7 +3105,7 @@
                         <p class="verse-p">मि॒थु॒न॒वान् भ॑वति ( ) । य ए॒वं ँवेद॑ ॥ 89 (11)</p>
                         <p class="verse-p">(वेद॑ - भव - त्या॒यत॑नं - भवति॒ - वेद॒ - वेद॑ - तिष्ठति - गुल्फद॒घ्नं - चा॑तुर्मा॒स्ये - ष्व॒मुमा॑दि॒त्यं प्र॒त्यक्षे॑ण॒ कम॒ग्निं चि॑नुत - उपानुवा॒क्य॑मा॒शुम॒ग्निं चि॑न्वा॒नो - मि॑थू॒या मि॑थुन॒वान् भ॑व॒त्येकं॑ च) (A22)</p>
                         <p class="verse-p">श्री छाया-सुवर्चलाम्बा समेत श्री सुर्यनारायण स्वामिने नमः । ओउम् नमो नारायणाय ॥ 22 ॥</p>
-                        <p class="verse-p">Special Korvai</p>
+                        <p class="verse-p">श्पेचिअल् खोर्वै</p>
                         <p class="verse-p">(पुष्प॑म॒ग्निर्वा॒युर॒सौ वै तप॑ञ्च॒न्द्रमा॒ नक्ष॑त्राणि प॒र्जन्यः॑ सम् ँवथ्स॒रो यो᳚ऽफ्सु नाव॑मे॒तद्ध॑ स्म॒ वै स॑त्रि॒यꣳ स॑म् ँवथ्स॒रꣳ सा॑वि॒त्रम॒मुं ना॑चिके॒तं प्रा॒णाᳺश्चा॑तुर्.होत्रि॒यं ब्रह्म॑ वैश्वसृ॒जꣳ</p>
                         <p class="verse-p">शरी॑रमुपानुवा॒क्य॑मा॒शुमि॒मान् ँलो॒कानि॒ममा॑रुणकेतुकं॒ ँय ए॒वासौ)</p>
                     </div>
@@ -3424,7 +3466,7 @@
                     </div>
                     <div class="verse-text">
                         <p class="verse-p">अप॑ पुन र्मृ॒त्युं ज॑यति । योऽ᳚ग्निं ना॑चिके॒तं चि॑नु॒ते ॥ य उ॑ चैन-मे॒वं ँवेद॑ ॥ प्र॒जाप॑ति॒ र्वै प्र॒जाका॑म॒-स्तपो॑-ऽतप्यत ।</p>
-                        <p class="verse-p">स हिर॑ण्य॒-मुदा᳚स्यत् । त-द॒ग्नौ प्रास्य॑त् । त-द॑स्मै॒ नाच्छ॑दयत् । तद् द्वि॒तीयं॒ प्रास्य॑त् । त-द॑स्मै॒ नै वाच्छ॑दयत् । तत् तृ॒तीयं॒ प्रास्य॑त् । 47 (10)</p>
+                        <p class="verse-p">स हिर॑ण्य॒-मुदा᳚स्यत् । ta-dअ॒ग्नौ प्रास्य॑त् । ta-dअ॑स्मै॒ नाच्छ॑दयत् । तद् द्वि॒तीयं॒ प्रास्य॑त् । ta-dअ॑स्मै॒ नै वाच्छ॑दयत् । तत् तृ॒तीयं॒ प्रास्य॑त् । 47 (10)</p>
                     </div>
                 </div>
                 <div class="anuvaka-block" id="sec-T-B-3-11-8-7">
@@ -3433,8 +3475,8 @@
                         <span class="anuvaka-code">T.B.3.11.8.7</span>
                     </div>
                     <div class="verse-text">
-                        <p class="verse-p">त-द॑स्मै॒ नै वाच्छ॑दयत् । त-दा॒त्म-न्ने॒व हृ॑द॒य्ये᳚ऽग्नौ वै᳚श्वान॒रे प्रास्य॑त् ।</p>
-                        <p class="verse-p">त-द॑स्मा अच्छदयत् । तस्मा॒द्धिर॑ण्यं॒ कनि॑ष्ठं॒ धना॑नां । भु॒ञ्जत् प्रि॒यत॑मं । हृ॒द॒य॒जꣳ हि । स वै तमे॒व नावि॑न्दत् । यस्मै॒ तां दक्षि॑णा॒-मने᳚ष्यत् । ताᳺ स्वायै॒व हस्ता॑य॒ दक्षि॑णायानयत् ।</p>
+                        <p class="verse-p">ta-dअ॑स्मै॒ नै वाच्छ॑दयत् । ta-dआ॒त्म-न्ने॒व हृ॑द॒य्ये᳚ऽग्नौ वै᳚श्वान॒रे प्रास्य॑त् ।</p>
+                        <p class="verse-p">ta-dअ॑स्मा अच्छदयत् । तस्मा॒द्धिर॑ण्यं॒ कनि॑ष्ठं॒ धना॑नां । भु॒ञ्जत् प्रि॒यत॑मं । हृ॒द॒य॒जꣳ हि । स वै तमे॒व नावि॑न्दत् । यस्मै॒ तां दक्षि॑णा॒-मने᳚ष्यत् । ताᳺ स्वायै॒व हस्ता॑य॒ दक्षि॑णायानयत् ।</p>
                         <p class="verse-p">तां प्रत्य॑गृह्णात् । 48 (10)</p>
                     </div>
                 </div>
@@ -3544,7 +3586,7 @@
                         <p class="verse-p">त्वम॑ग्ने रु॒द्र इति॑ शतरु॒द्रीय॑स्य रू॒पं ।</p>
                         <p class="verse-p">अग्ना॑-विष्णू॒ इति॑ वसो॒द्‌र्धारा॑याः । अन्न॑पत॒ इत्य॑न्न हो॒मः । स॒प्त ते॑ अग्ने स॒मिधः॑ स॒प्त जि॒ह्वा इति॑ विश्व॒प्रीः ( ) ॥ 58 (10)</p>
                         <p class="verse-p">[समृ॑द्ध॒ - ऋद्धि॑कामः - प॒रस्ता᳚च् - चिक्ये - पु॒त्रो॑ - ऽगच्छ - दि॒च्छे - ज्जु॑हुयाद् - विश्व॒प्रिः ( ) ] (A9)</p>
-                        <p class="verse-p">Special Korvai</p>
+                        <p class="verse-p">श्पेचिअल् खोर्वै</p>
                         <p class="verse-p">(पुरर्.ष॑यो वा॒युर् गो॑ब॒लः स॒हस्रं॑ प्र॒जाप॑ति स्त्रि॒वृदिन्द्रो॒ ऽसावा॑दि॒त्यः स यदी॒च्छेत् )</p>
                     </div>
                 </div>
@@ -3664,11 +3706,15 @@
             localStorage.setItem('toc-chapters', JSON.stringify(state));
         }
 
+        function isMobileView() {
+            return window.innerWidth <= 960 || (window.innerHeight <= 550 && window.matchMedia('(orientation: landscape)').matches);
+        }
+
         function closeMobileToc() {
             document.body.classList.remove('mobile-toc-active');
             const btn = document.getElementById('sidebar-toggle-btn');
             if (btn) {
-                if (window.innerWidth <= 850) {
+                if (isMobileView()) {
                     btn.textContent = '☰ सूची';
                 } else {
                     const collapsed = document.querySelector('.layout')?.classList.contains('sidebar-collapsed');
@@ -3679,7 +3725,7 @@
 
         function toggleSidebar() {
             const btn = document.getElementById('sidebar-toggle-btn');
-            if (window.innerWidth <= 850) {
+            if (isMobileView()) {
                 document.body.classList.toggle('mobile-toc-active');
                 const isOpen = document.body.classList.contains('mobile-toc-active');
                 if (btn) btn.textContent = isOpen ? '✕ सूची' : '☰ सूची';
@@ -3694,7 +3740,7 @@
         }
 
         function handleLayoutChange() {
-            const isMobile = window.innerWidth <= 850;
+            const isMobile = isMobileView();
             const btn = document.getElementById('sidebar-toggle-btn');
             const layout = document.querySelector('.layout');
 
@@ -3733,10 +3779,10 @@
 
         function scrollSidebarToTarget(targetLink) {
             const sidebar = document.querySelector('.toc-sidebar');
-            if (!sidebar || isUserInteractingWithToc) return;
+            if (!sidebar || isUserInteractingWithToc || !targetLink) return;
             const linkRect = targetLink.getBoundingClientRect();
             const sideRect = sidebar.getBoundingClientRect();
-            const margin = Math.min(70, sideRect.height * 0.2);
+            const margin = Math.min(60, sideRect.height * 0.15);
             if (linkRect.top < sideRect.top + margin || linkRect.bottom > sideRect.bottom - margin) {
                 const currentScroll = sidebar.scrollTop;
                 const offset = (linkRect.top - sideRect.top) - (sideRect.height / 2) + (linkRect.height / 2);
@@ -3747,28 +3793,78 @@
             }
         }
 
-        function highlightAnuvakaInToc(anuvakaId) {
-            if (!anuvakaId || anuvakaId === activeAnuvakaId) return;
-            activeAnuvakaId = anuvakaId;
+        let activeContextId = null;
 
-            const targetLink = document.querySelector(`.toc-sub-list a[href="#${anuvakaId}"]`);
-            if (!targetLink) return;
+        function updateActiveContext(activeEl) {
+            if (!activeEl) return;
 
-            document.querySelectorAll('.toc-sub-list a.active').forEach(el => el.classList.remove('active'));
-            targetLink.classList.add('active');
+            let chapterEl = activeEl.classList.contains('chapter-container') 
+                ? activeEl 
+                : activeEl.closest('.chapter-container');
+            let sectionEl = activeEl.classList.contains('anuvaka-block') 
+                ? activeEl 
+                : activeEl.querySelector('.anuvaka-block');
 
-            let wasCollapsed = false;
-            const parentCh = targetLink.closest('.toc-chapter');
-            if (parentCh && parentCh.classList.contains('collapsed')) {
-                parentCh.classList.remove('collapsed');
-                wasCollapsed = true;
+            if (!chapterEl && sectionEl) {
+                chapterEl = sectionEl.closest('.chapter-container');
+            }
+            if (!chapterEl) return;
+
+            const chId = chapterEl.id;
+            const contextKey = activeEl.id;
+            if (contextKey === activeContextId) return;
+            activeContextId = contextKey;
+
+            const tocChItem = document.getElementById('toc-' + chId);
+
+            // 1. Update Chapter Active State in TOC
+            document.querySelectorAll('.toc-chapter.active-chapter').forEach(el => {
+                if (el !== tocChItem) el.classList.remove('active-chapter');
+            });
+            document.querySelectorAll('.toc-ch-title a.active').forEach(el => el.classList.remove('active'));
+
+            if (tocChItem) {
+                tocChItem.classList.add('active-chapter');
+
+                // If standalone chapter (toc-single), highlight its link directly
+                if (tocChItem.classList.contains('toc-single')) {
+                    const singleLink = tocChItem.querySelector('.toc-ch-title a');
+                    if (singleLink) singleLink.classList.add('active');
+                    document.querySelectorAll('.toc-sub-list a.active').forEach(el => el.classList.remove('active'));
+                    scrollSidebarToTarget(singleLink || tocChItem);
+                } else {
+                    // Multi-section chapter: expand if collapsed
+                    if (tocChItem.classList.contains('collapsed')) {
+                        tocChItem.classList.remove('collapsed');
+                    }
+                }
             }
 
-            if (wasCollapsed) {
-                setTimeout(() => scrollSidebarToTarget(targetLink), 150);
-            } else {
-                scrollSidebarToTarget(targetLink);
+            // 2. Update Section / Subchapter Active State in TOC
+            if (sectionEl) {
+                const secId = sectionEl.id;
+                const targetSubLink = document.querySelector(`.toc-sub-list a[href="#${secId}"]`);
+
+                document.querySelectorAll('.toc-sub-list a.active').forEach(el => {
+                    if (el !== targetSubLink) el.classList.remove('active');
+                });
+
+                if (targetSubLink) {
+                    targetSubLink.classList.add('active');
+                    scrollSidebarToTarget(targetSubLink);
+                } else if (tocChItem && !tocChItem.classList.contains('toc-single')) {
+                    const chLink = tocChItem.querySelector('.toc-ch-title a');
+                    scrollSidebarToTarget(chLink || tocChItem);
+                }
+            } else if (tocChItem) {
+                const chLink = tocChItem.querySelector('.toc-ch-title a');
+                scrollSidebarToTarget(chLink || tocChItem);
             }
+        }
+
+        function highlightAnuvakaInToc(targetId) {
+            const el = document.getElementById(targetId);
+            if (el) updateActiveContext(el);
         }
 
         function openPrintModal() {
@@ -4003,7 +4099,8 @@
 
                 ch.querySelectorAll('.anuvaka-block').forEach(sec => {
                     const numEl = sec.querySelector('.anuvaka-num');
-                    const secTitle = numEl ? numEl.textContent.trim() : sec.id;
+                    const codeEl = sec.querySelector('.anuvaka-code');
+                    const secTitle = numEl ? numEl.textContent.trim() : (codeEl ? codeEl.textContent.trim() : 'प्रारम्भः (Intro)');
                     const secOpt = document.createElement('option');
                     secOpt.value = sec.id;
                     secOpt.textContent = `${chTitle} - ${secTitle}`;
@@ -4026,8 +4123,8 @@
                 currentActiveChapterCount = firstCh.querySelectorAll('.anuvaka-block').length;
             }
 
-            // IntersectionObserver for tracking active Anuvaka during scroll
-            const anuvakaObserver = new IntersectionObserver((entries) => {
+            // IntersectionObserver for tracking active Chapter and Anuvaka during scroll
+            const navObserver = new IntersectionObserver((entries) => {
                 let bestEntry = null;
                 let minDistance = Infinity;
 
@@ -4042,13 +4139,23 @@
                 });
 
                 if (bestEntry) {
-                    highlightAnuvakaInToc(bestEntry.target.id);
-                    currentActiveSectionId = bestEntry.target.id;
-                    const numNode = bestEntry.target.querySelector('.anuvaka-num');
-                    if (numNode) {
-                        currentActiveSectionTitle = numNode.textContent.trim();
+                    updateActiveContext(bestEntry.target);
+                    const secNode = bestEntry.target.classList.contains('anuvaka-block') 
+                        ? bestEntry.target 
+                        : bestEntry.target.querySelector('.anuvaka-block');
+                    if (secNode) {
+                        currentActiveSectionId = secNode.id;
+                        const numNode = secNode.querySelector('.anuvaka-num');
+                        const codeNode = secNode.querySelector('.anuvaka-code');
+                        if (numNode) {
+                            currentActiveSectionTitle = numNode.textContent.trim();
+                        } else if (codeNode) {
+                            currentActiveSectionTitle = codeNode.textContent.trim();
+                        } else {
+                            currentActiveSectionTitle = currentActiveChapterTitle || "";
+                        }
                     }
-                    const parentCh = bestEntry.target.closest('.chapter-container');
+                    const parentCh = bestEntry.target.closest('.chapter-container') || (bestEntry.target.classList.contains('chapter-container') ? bestEntry.target : null);
                     if (parentCh) {
                         currentActiveChapterId = parentCh.id;
                         const chHeading = parentCh.querySelector('.chapter-heading');
@@ -4056,33 +4163,43 @@
                         currentActiveChapterCount = parentCh.querySelectorAll('.anuvaka-block').length;
                     }
                 }
-            }, { rootMargin: '-75px 0px -75% 0px', threshold: 0 });
+            }, { rootMargin: '-75px 0px -70% 0px', threshold: 0 });
 
-            document.querySelectorAll('.anuvaka-block').forEach(el => anuvakaObserver.observe(el));
+            document.querySelectorAll('.chapter-container, .anuvaka-block').forEach(el => navObserver.observe(el));
 
             // Direct click on Suchi item immediately highlights and smoothly scrolls to target
             document.querySelectorAll('.toc-sub-list a, .toc-ch-title a').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    if (window.innerWidth <= 850) {
+                    if (isMobileView()) {
                         closeMobileToc();
                     }
                     const href = this.getAttribute('href');
                     if (href && href.startsWith('#')) {
-                        const secId = href.slice(1);
-                        highlightAnuvakaInToc(secId);
-                        currentActiveSectionId = secId;
-                        const target = document.getElementById(secId);
+                        const targetId = href.slice(1);
+                        const target = document.getElementById(targetId);
                         if (target) {
                             e.preventDefault();
                             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                             if (history.pushState) {
                                 history.pushState(null, '', href);
                             }
-                            const numNode = target.querySelector('.anuvaka-num');
-                            if (numNode) {
-                                currentActiveSectionTitle = numNode.textContent.trim();
+                            updateActiveContext(target);
+                            const secNode = target.classList.contains('anuvaka-block') 
+                                ? target 
+                                : target.querySelector('.anuvaka-block');
+                            if (secNode) {
+                                currentActiveSectionId = secNode.id;
+                                const numNode = secNode.querySelector('.anuvaka-num');
+                                const codeNode = secNode.querySelector('.anuvaka-code');
+                                if (numNode) {
+                                    currentActiveSectionTitle = numNode.textContent.trim();
+                                } else if (codeNode) {
+                                    currentActiveSectionTitle = codeNode.textContent.trim();
+                                } else {
+                                    currentActiveSectionTitle = currentActiveChapterTitle || "";
+                                }
                             }
-                            const parentCh = target.closest('.chapter-container');
+                            const parentCh = target.closest('.chapter-container') || (target.classList.contains('chapter-container') ? target : null);
                             if (parentCh) {
                                 currentActiveChapterId = parentCh.id;
                                 const chHeading = parentCh.querySelector('.chapter-heading');
@@ -4101,27 +4218,38 @@
                 }
             });
 
+            function onOrientationOrResize() {
+                handleLayoutChange();
+                // Ensure viewport zoom and scaling reset cleanly on mobile orientation switch
+                const viewportMeta = document.querySelector('meta[name="viewport"]');
+                if (viewportMeta) {
+                    viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, viewport-fit=cover');
+                }
+            }
+
             // Trap window resize
-            window.addEventListener('resize', handleLayoutChange);
+            window.addEventListener('resize', onOrientationOrResize);
 
             // Trap mobile device orientation change (both legacy and modern APIs)
             window.addEventListener('orientationchange', function() {
-                setTimeout(handleLayoutChange, 100);
-                setTimeout(handleLayoutChange, 300);
+                setTimeout(onOrientationOrResize, 50);
+                setTimeout(onOrientationOrResize, 150);
+                setTimeout(onOrientationOrResize, 350);
             });
 
             if (window.screen && window.screen.orientation) {
                 window.screen.orientation.addEventListener('change', function() {
-                    setTimeout(handleLayoutChange, 100);
-                    setTimeout(handleLayoutChange, 300);
+                    setTimeout(onOrientationOrResize, 50);
+                    setTimeout(onOrientationOrResize, 150);
+                    setTimeout(onOrientationOrResize, 350);
                 });
             }
 
             const mqlPortrait = window.matchMedia('(orientation: portrait)');
             if (mqlPortrait.addEventListener) {
-                mqlPortrait.addEventListener('change', handleLayoutChange);
+                mqlPortrait.addEventListener('change', onOrientationOrResize);
             } else if (mqlPortrait.addListener) {
-                mqlPortrait.addListener(handleLayoutChange);
+                mqlPortrait.addListener(onOrientationOrResize);
             }
 
             const sidebar = document.querySelector('.toc-sidebar');

@@ -13,6 +13,7 @@ The diagram below illustrates the relationship between the different roles, tool
 ```mermaid
 flowchart TD
     subgraph Users["👥 Roles & Actors"]
+
         M["Content Maintainer<br/>(Edits Sheets, Uploads PDFs)"]
         A["Technical Admin / Dev<br/>(Git, Laptop CLI, Rollbacks)"]
         V["Public Visitors / Students"]
@@ -120,6 +121,7 @@ flowchart TD
    - **Version**: Edition number (e.g. `V1.0`, `V2.1`).
    - **Date**: Release / upload date (e.g. `Sep 2026`).
    - **Corrections_URL**: (Optional) Link to errata / corrections PDF. (Dedicated button displayed on Sanskrit, Tamil, and Malayalam tabs).
+   - **Corrections_Date**: (Optional) Date when corrections/errata were uploaded (e.g. `Sep 2026`). Allows tracking errata updates independently from initial document release dates.
    - **Status**: Set to `Active` (or `Hidden` to temporarily unpublish without deleting).
    - **Notes**: (Optional) Internal notes for your team.
 
@@ -149,7 +151,7 @@ python generate_documents.py --offline --export-csv data/vedavms_documents.csv -
 - Find the document row.
 - Update the **PDF_URL** with the new file URL.
 - Update the **Version** (e.g. change `V1.0` to `V1.1`) and **Date**.
-- If a corrections PDF was added or removed, update the **Corrections_URL**.
+- If a corrections PDF was added or removed, update the **Corrections_URL** and **Corrections_Date**.
 
 ### Removing / Archiving a Document
 - Instead of deleting the row, you can simply change **Status** from `Active` to `Hidden`.
@@ -161,7 +163,11 @@ python generate_documents.py --offline --export-csv data/vedavms_documents.csv -
 - **Example**: When `1) Shanti Japam` is set to `Hidden`, the next active book (`2) TaittirIyopanishat`) automatically displays as `1)`, its sub-book `2A) Surya namaskara` automatically becomes `1A)`, and `3) Udaka Shanti` becomes `2)`. If `Shanti Japam` is later unhidden, the numbering automatically shifts back.
 
 ### 🕒 Recent Updates & Static Site Generation Constraint
-- **Rolling 90-Day Window**: The "Recent Updates" feed on the Home page automatically aggregates all active documents whose release/modification date falls within the last 90 days (`[today - 90 days, today]`).
+- **Rolling 90-Day Window**: The "Recent Updates" feed on the Home page automatically aggregates all active documents whose release date (`Date`) or errata update date (`Corrections_Date`) falls within the last 90 days (`[today - 90 days, today]`).
+- **Independent Tracking of Errata**:
+  - If a document's initial `Date` is within 90 days, it appears with a `[PDF]` link badge.
+  - If `Corrections_URL` has a separate `Corrections_Date` within 90 days, it appears with a `[Corrections]` link badge.
+  - If both occur in the same month, they combine seamlessly under a single entry with both badges.
 - **Build-Time Computation**: Because VedaVMS is a static HTML website (fast, secure, zero server overhead), this 90-day filter is evaluated at **build / deployment time** (when `generate_documents.py` executes during a deployment).
 - **Passage of Time**: As calendar time progresses, older documents age out and newer ones roll forward whenever a deployment is triggered (via Google Sheet one-click publish, GitHub Actions, or git push).
 
@@ -291,22 +297,31 @@ git push origin main
 
 ## ⚙️ The GitHub Actions Build & Deploy Pipeline (Deep Dive)
 
-The entire build and deployment process is automated by the workflow defined in [`.github/workflows/deploy_staging.yml`](.github/workflows/deploy_staging.yml).
+The automated build and deployment process is powered by two dedicated GitHub Actions workflows:
+1. **Staging Workflow** ([`.github/workflows/deploy_staging.yml`](.github/workflows/deploy_staging.yml)): Deploys updates to the testing/preview site at `https://new.vedavms.in` (`/new.vedavms.in/`).
+2. **Production Workflow** ([`.github/workflows/deploy_production.yml`](.github/workflows/deploy_production.yml)): Promotes approved updates to the public live website at `https://vedavms.in` (`/httpdocs/`) with explicit safety confirmation.
 
 ### Focused Pipeline Flow Diagram
 
 ```mermaid
 flowchart TD
     subgraph TriggerSource["1. Trigger Sources"]
-        T1["Google Sheets Menu<br/>(workflow_dispatch API)"]
-        T2["Git Push to main<br/>(Code commit)"]
-        T3["GitHub Web UI<br/>('Run workflow' button)"]
+        direction TB
+        subgraph StagingTriggers["Staging Triggers (deploy_staging.yml)"]
+            T_GS1["Google Sheets: '1. Publish to Staging'<br/>(repository_dispatch)"]
+            T_GIT["Git Push to 'main'<br/>(Automated staging deploy)"]
+            T_UI1["GitHub Actions Web UI<br/>(Manual 'Run workflow')"]
+        end
+        subgraph ProdTriggers["Production Triggers (deploy_production.yml)"]
+            T_GS2["Google Sheets: '2. Push to Production'<br/>(Confirmed repository_dispatch)"]
+            T_UI2["GitHub Actions Web UI<br/>(Requires 'DEPLOY' confirmation)"]
+        end
     end
 
     subgraph GitHubRunner["2. Ephemeral Compute (GitHub Azure Cloud)"]
-        VM["Provision Fresh VM<br/>(Ubuntu / 2-core / 7GB RAM)"]
+        VM["Provision Fresh Ubuntu VM<br/>(2-core CPU / 7GB RAM / Ephemeral)"]
         CHECKOUT["actions/checkout@v4<br/>(Clones VedaVMS repo)"]
-        PYSETUP["actions/setup-python@v5<br/>(Configures Python 3.11)"]
+        PYSETUP["actions/setup-python@v5<br/>(Python 3.11 runtime)"]
         
         subgraph BuildStep["Generate Website (generate_documents.py)"]
             FETCH["Download Live CSV<br/>(Google Sheets export URL)"]
@@ -314,23 +329,39 @@ flowchart TD
             RENUMBER["Dynamic Numbering<br/>(Recompute 1, 1A, 2...)"]
             RENDER["Template Injection<br/>(Generate build/*.html)"]
         end
-        
-        ARTIFACT["actions/upload-artifact@v4<br/>(Archives build/ for 7 days)"]
+
+        subgraph ArtifactStep["Build Artifact Archival"]
+            ART_STG["Staging Artifact<br/>(vedavms-staging-build / 7 days)"]
+            ART_PRD["Production Artifact<br/>(vedavms-production-build / 14 days)"]
+        end
+
         PREP["Sanitize FTP Host<br/>(Clean server name & DNS check)"]
-        DEPLOY["FTP-Deploy-Action@v4.3.5<br/>(Uploads via FTPS Port 21)"]
+        DEPLOY["FTP-Deploy-Action@v4.3.5<br/>(Encrypted FTPS Port 21)"]
         DESTROY["Destroy Virtual Machine<br/>(Zero lingering data/secrets)"]
     end
 
-    subgraph StagingServer["3. Staging Web Server (103.69.196.157)"]
-        IIS["Windows IIS Server"]
-        WEBROOT["/new.vedavms.in/<br/>(Live Staging Site)"]
+    subgraph WebServer["3. Web Server (103.69.196.157 - Windows IIS)"]
+        direction TB
+        STG_DIR["Staging Web Root<br/>/new.vedavms.in/<br/>(Preview & Quality Check)"]
+        PRD_DIR["Production Web Root<br/>/httpdocs/<br/>(Live Public Site: vedavms.in)"]
     end
 
-    T1 --> VM
-    T2 --> VM
-    T3 --> VM
-    VM --> CHECKOUT --> PYSETUP --> FETCH --> FILTER --> RENUMBER --> RENDER --> ARTIFACT --> PREP --> DEPLOY
-    DEPLOY -->|"Uploads HTML"| IIS --> WEBROOT
+    %% Trigger connections
+    T_GS1 --> VM
+    T_GIT --> VM
+    T_UI1 --> VM
+    T_GS2 --> VM
+    T_UI2 --> VM
+
+    %% Build pipeline flow
+    VM --> CHECKOUT --> PYSETUP --> FETCH --> FILTER --> RENUMBER --> RENDER
+    RENDER --> ART_STG
+    RENDER --> ART_PRD
+    RENDER --> PREP --> DEPLOY
+
+    %% Deployment targets
+    DEPLOY -->|"deploy_staging.yml"| STG_DIR
+    DEPLOY -->|"deploy_production.yml"| PRD_DIR
     DEPLOY --> DESTROY
 ```
 
@@ -343,7 +374,7 @@ flowchart TD
 | **Hardware Specs** | **2-core CPU, 7 GB RAM, 14 GB SSD** | Fast SSD storage and multi-threaded Python execution. |
 | **Network Speed** | High-bandwidth datacenter pipe | Downloads sheets and uploads files via FTPS in seconds. |
 | **Cost** | **100% Free** | GitHub provides unlimited runner minutes for public repositories. |
-| **Execution Time** | **~35 to 45 seconds** | From button click in Google Sheets to live on staging. |
+| **Execution Time** | **~35 to 55 seconds** | Staging (~35–45s) or Production (~45–55s) from trigger to live update. |
 | **Lifecycle** | **Ephemeral (Single-Use)** | The virtual machine is created on-demand and wiped immediately after the build completes. No secrets, credentials, or data persist on the runner. |
 
 ---
@@ -587,3 +618,15 @@ python generate_documents.py --source-csv "https://docs.google.com/spreadsheets/
 python generate_documents.py --source-csv data/vedavms_documents.csv
 ```
 
+<style>
+/* High-contrast inline code badges for Markdown PDF */
+:not(pre):not(.hljs) > code {
+  color: #7B1113 !important;             /* Crisp deep maroon */
+  background-color: #FFF3E6 !important;   /* Warm light cream pill */
+  padding: 1px 5px !important;
+  border-radius: 4px !important;
+  border: 1px solid #EADDC9 !important;
+  font-family: Consolas, Monaco, monospace !important;
+  font-size: 0.9em !important;
+}
+</style>

@@ -197,7 +197,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 <html lang="sa">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{title} - Sanskrit Vedic Text</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -254,7 +254,9 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         html {{
             scroll-behavior: smooth;
             scroll-padding-top: 5rem;
-            overflow-x: clip;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
         }}
 
         .chapter-container, .anuvaka-block, [id] {{
@@ -276,6 +278,11 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-size: var(--font-size);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
         }}
 
         .header {{
@@ -393,8 +400,10 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.55);
             backdrop-filter: blur(2px);
             z-index: 2400;
@@ -724,7 +733,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             margin-bottom: 0;
         }}
 
-        @media (max-width: 850px) {{
+        @media (max-width: 960px), (max-height: 550px) and (orientation: landscape) {{
             .header {{
                 padding: 0.45rem 0.6rem;
             }}
@@ -857,6 +866,8 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             .main-title h1 {{
                 font-size: 1.45rem;
                 line-height: 1.35;
+                word-break: break-word;
+                overflow-wrap: break-word;
             }}
 
             .main-title .sub-heading {{
@@ -872,6 +883,8 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 padding: 0.7rem 0.95rem;
                 border-radius: 6px;
                 margin-bottom: 1.25rem;
+                word-break: break-word;
+                overflow-wrap: break-word;
             }}
 
             .anuvaka-block {{
@@ -896,21 +909,39 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             }}
         }}
 
-        @media (max-height: 520px) and (orientation: landscape) {{
+        @media (max-height: 550px) and (orientation: landscape) {{
             .header {{
-                padding: 0.3rem 0.6rem;
+                padding: 0.25rem 0.55rem;
             }}
             .header-content {{
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                gap: 0.4rem;
+                gap: 0.3rem;
+                flex-wrap: wrap;
             }}
             .header-main-bar {{
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
                 width: auto;
             }}
+            .logo {{
+                font-size: 1.15rem;
+            }}
             .controls {{
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
                 width: auto;
+                flex-wrap: wrap;
+            }}
+            .btn-ctrl, .toggle-sidebar-btn {{
+                padding: 0.25rem 0.45rem;
+                font-size: 0.78rem;
+            }}
+            #font-toggle-btn {{
+                max-width: 110px;
             }}
         }}
 
@@ -938,8 +969,10 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.45);
             backdrop-filter: blur(2px);
             z-index: 2000;
@@ -1290,11 +1323,15 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             localStorage.setItem('toc-chapters', JSON.stringify(state));
         }}
 
+        function isMobileView() {{
+            return window.innerWidth <= 960 || (window.innerHeight <= 550 && window.matchMedia('(orientation: landscape)').matches);
+        }}
+
         function closeMobileToc() {{
             document.body.classList.remove('mobile-toc-active');
             const btn = document.getElementById('sidebar-toggle-btn');
             if (btn) {{
-                if (window.innerWidth <= 850) {{
+                if (isMobileView()) {{
                     btn.textContent = '☰ सूची';
                 }} else {{
                     const collapsed = document.querySelector('.layout')?.classList.contains('sidebar-collapsed');
@@ -1305,7 +1342,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
         function toggleSidebar() {{
             const btn = document.getElementById('sidebar-toggle-btn');
-            if (window.innerWidth <= 850) {{
+            if (isMobileView()) {{
                 document.body.classList.toggle('mobile-toc-active');
                 const isOpen = document.body.classList.contains('mobile-toc-active');
                 if (btn) btn.textContent = isOpen ? '✕ सूची' : '☰ सूची';
@@ -1320,7 +1357,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         function handleLayoutChange() {{
-            const isMobile = window.innerWidth <= 850;
+            const isMobile = isMobileView();
             const btn = document.getElementById('sidebar-toggle-btn');
             const layout = document.querySelector('.layout');
 
@@ -1750,7 +1787,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             // Direct click on Suchi item immediately highlights and smoothly scrolls to target
             document.querySelectorAll('.toc-sub-list a, .toc-ch-title a').forEach(link => {{
                 link.addEventListener('click', function(e) {{
-                    if (window.innerWidth <= 850) {{
+                    if (isMobileView()) {{
                         closeMobileToc();
                     }}
                     const href = this.getAttribute('href');
@@ -1798,27 +1835,38 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 }}
             }});
 
+            function onOrientationOrResize() {{
+                handleLayoutChange();
+                // Ensure viewport zoom and scaling reset cleanly on mobile orientation switch
+                const viewportMeta = document.querySelector('meta[name="viewport"]');
+                if (viewportMeta) {{
+                    viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, viewport-fit=cover');
+                }}
+            }}
+
             // Trap window resize
-            window.addEventListener('resize', handleLayoutChange);
+            window.addEventListener('resize', onOrientationOrResize);
 
             // Trap mobile device orientation change (both legacy and modern APIs)
             window.addEventListener('orientationchange', function() {{
-                setTimeout(handleLayoutChange, 100);
-                setTimeout(handleLayoutChange, 300);
+                setTimeout(onOrientationOrResize, 50);
+                setTimeout(onOrientationOrResize, 150);
+                setTimeout(onOrientationOrResize, 350);
             }});
 
             if (window.screen && window.screen.orientation) {{
                 window.screen.orientation.addEventListener('change', function() {{
-                    setTimeout(handleLayoutChange, 100);
-                    setTimeout(handleLayoutChange, 300);
+                    setTimeout(onOrientationOrResize, 50);
+                    setTimeout(onOrientationOrResize, 150);
+                    setTimeout(onOrientationOrResize, 350);
                 }});
             }}
 
             const mqlPortrait = window.matchMedia('(orientation: portrait)');
             if (mqlPortrait.addEventListener) {{
-                mqlPortrait.addEventListener('change', handleLayoutChange);
+                mqlPortrait.addEventListener('change', onOrientationOrResize);
             }} else if (mqlPortrait.addListener) {{
-                mqlPortrait.addListener(handleLayoutChange);
+                mqlPortrait.addListener(onOrientationOrResize);
             }}
 
             const sidebar = document.querySelector('.toc-sidebar');

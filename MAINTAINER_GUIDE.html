@@ -375,8 +375,9 @@ code {
 <p>The diagram below illustrates the relationship between the different roles, tools, and systems involved in maintaining and publishing VedaVMS:</p>
 <pre><code class="language-mermaid"><div class="mermaid">flowchart TD
     subgraph Users["👥 Roles & Actors"]
+
         M["Content Maintainer<br/>(Edits Sheets, Uploads PDFs)"]
-        A["Technical Admin / Dev<br/>(Git, Secrets, Local Sync)"]
+        A["Technical Admin / Dev<br/>(Git, Laptop CLI, Rollbacks)"]
         V["Public Visitors / Students"]
     end
 
@@ -388,7 +389,8 @@ code {
 
     subgraph GitHubLayer["⚙️ GitHub CI/CD Automation"]
         PAT["Personal Access Token (PAT)<br/>(Actions: Read & Write)"]
-        GHA["GitHub Actions Runner<br/>(deploy_staging.yml)"]
+        GHA_STG["GitHub Actions Runner<br/>(deploy_staging.yml)"]
+        GHA_PRD["GitHub Actions Runner<br/>(deploy_production.yml)"]
         SECRETS["GitHub Secrets<br/>(STAGING_FTP_PASSWORD, etc.)"]
         GEN["Static Generator<br/>(generate_documents.py)"]
     end
@@ -397,26 +399,42 @@ code {
         IIS["Windows IIS / Plesk Hosting"]
         STAGING["Staging Site Directory<br/>(/new.vedavms.in/)"]
         PROD["Production Directory<br/>(/httpdocs/)"]
+        BK["Automatic Backup Snapshots<br/>(backups/backup_production_*)"]
     end
 
     %% Maintainer workflow
     M -->|"1. Uploads PDF"| PDF
     PDF -->|"Stores files in"| PROD
     M -->|"2. Enters link & metadata"| GS
-    M -->|"3. Clicks 'Publish to Staging'"| GAS
+    M -->|"3a. Clicks 'Publish to Staging'"| GAS
+    M -->|"3b. Clicks 'Push to Production'"| GAS
 
     %% Deployment trigger & CI/CD flow
-    GAS -->|"POST workflow_dispatch (Auth via PAT)"| PAT
-    PAT -->|"Triggers workflow"| GHA
-    SECRETS -.->|"Injected securely into"| GHA
-    GHA -->|"Fetches live CSV"| GS
-    GHA -->|"Builds site"| GEN
-    GEN -->|"Produces HTML (build/)"| GHA
-    GHA -->|"Uploads via FTPS (Port 21)"| STAGING
+    GAS -->|"POST workflow_dispatch (Staging)"| PAT
+    GAS -->|"POST workflow_dispatch (Production)"| PAT
+    PAT -->|"Triggers Staging"| GHA_STG
+    PAT -->|"Triggers Production"| GHA_PRD
+    SECRETS -.->|"Injected securely into"| GHA_STG
+    SECRETS -.->|"Injected securely into"| GHA_PRD
+    GHA_STG -->|"Fetches live CSV"| GS
+    GHA_PRD -->|"Fetches live CSV"| GS
+    GHA_STG -->|"Builds site"| GEN
+    GHA_PRD -->|"Builds site"| GEN
+    GEN -->|"Produces HTML (build/)"| GHA_STG
+    GEN -->|"Produces HTML (build/)"| GHA_PRD
+    GHA_STG -->|"Uploads via FTPS"| STAGING
+    GHA_PRD -->|"1. Archives existing live site"| BK
+    GHA_PRD -->|"2. Uploads via FTPS"| PROD
 
-    %% Admin & Local paths
-    A -->|"Code push (main branch)"| GHA
-    A -->|"Direct sync (scripts/sync_staging.py)"| STAGING
+    %% Live status & timestamps
+    GHA_STG -.->|"Logs Staging timestamp (J2)"| GS
+    GHA_PRD -.->|"Logs Production timestamp (J3)"| GS
+
+    %% Admin & Local Laptop paths
+    A -->|"Code push (main branch)"| GHA_STG
+    A -->|"scripts/deploy_site.py --staging"| STAGING
+    A -->|"scripts/deploy_site.py --production"| PROD
+    A -->|"scripts/deploy_site.py --rollback"| PROD
 
     %% Visitors
     V -->|"Views redesigned staging site"| STAGING
@@ -426,9 +444,17 @@ code {
 <ol>
 <li><strong>PDF Upload</strong>: Maintainer uploads the PDF document using Plesk File Manager into the <code>/httpdocs/docs/</code> directory.</li>
 <li><strong>Sheet Update</strong>: Maintainer enters the document title, version, category, and PDF link into the Google Sheet.</li>
-<li><strong>One-Click Trigger</strong>: Maintainer clicks <strong><code>🚀 VedaVMS</code> ➔ <code>Publish to Staging</code></strong> inside Google Sheets.</li>
-<li><strong>Automated Pipeline</strong>: Google Apps Script calls GitHub using a <strong>Personal Access Token (PAT)</strong>. GitHub Actions pulls secrets (<strong>STAGING_FTP_PASSWORD</strong>), fetches the latest Google Sheet data, runs <code>generate_documents.py</code> to regenerate all HTML pages, and uploads the files to <code>/new.vedavms.in/</code>.</li>
-<li><strong>Live Verification</strong>: Google Sheets monitors the build to completion, confirms success with a popup, and logs a live timestamp into cell <code>J2</code>.</li>
+<li><strong>One-Click Staging Trigger</strong>: Maintainer clicks <strong><code>🚀 VedaVMS</code> ➔ <code>1. 🚀 Publish to Staging (new.vedavms.in)</code></strong> in Google Sheets.
+<ul>
+<li>Google Apps Script calls GitHub Actions (<code>deploy_staging.yml</code>), builds the site from live CSV, uploads to <code>/new.vedavms.in/</code>, and logs the timestamp in cell <strong><code>J2</code></strong>.</li>
+</ul>
+</li>
+<li><strong>One-Click Production Promotion</strong>: After reviewing staging, maintainer clicks <strong><code>🚀 VedaVMS</code> ➔ <code>2. 🌐 Push Staging to Production (vedavms.in)</code></strong>.
+<ul>
+<li>Google Apps Script requests explicit confirmation, triggers <code>deploy_production.yml</code>, automatically captures a pre-deploy backup snapshot, updates <code>/httpdocs/</code>, and logs the timestamp in cell <strong><code>J3</code></strong>.</li>
+</ul>
+</li>
+<li><strong>Laptop Developer / Admin Tools</strong>: Technical maintainers can run <code>python scripts/deploy_site.py --staging</code>, <code>python scripts/deploy_site.py --production</code>, or instant rollback via <code>python scripts/deploy_site.py --rollback --production</code>.</li>
 </ol>
 <hr>
 <h2 id="%F0%9F%9A%80-step-1-initial-setup-one-time">🚀 Step 1: Initial Setup (One-Time)</h2>
@@ -461,24 +487,45 @@ code {
 <li>Scroll to the relevant section (or add a row where you want it to appear).</li>
 <li>Fill in the columns:
 <ul>
-<li><strong>Language</strong>: Choose the language tab (e.g. <code>Sanskrit</code>, <code>Tamil</code>, <code>Telugu</code>, <code>Kannada</code>, <code>Malayalam</code>, <code>English</code>, <code>TS Jatai</code>, <code>TS Ghanam</code>, <code>SikShA &amp; Lessons</code>, <code>Kanva Samhita</code>, <code>Pilot &amp; In-Progress</code>, <code>Latin (IAST)</code>).</li>
-<li><strong>Section</strong>: The accordion heading (e.g. <code>Vedic Books by Subject</code>, <code>Taittiriya Samhita — Kandam 1</code>, <code>Pada Patam</code>, etc.).</li>
+<li><strong>Language / Supersection</strong>: Choose the language tab (e.g. <code>Sanskrit</code>, <code>Tamil</code>, <code>Malayalam</code>, <code>Kannada</code>, <code>Telugu</code>, <code>Latin (IAST)</code>, <code>Baraha Source</code>, <code>English</code>, <code>TS Jatai</code>, <code>TS Ghanam</code>, <code>Kanva Samhita</code>, <code>Parayanam &amp; References</code>, <code>Ghana Sandhi</code>, <code>Ghana Maala Pilot</code>).</li>
+<li><strong>Section</strong>: The accordion heading (e.g. <code>Vedic Books by Subject</code>, <code>Taittiriya Samhita — Kandam 1</code>, <code>Pada Patam</code>, <code>Classical Texts &amp; References</code>, etc.).</li>
 <li><strong>Title</strong>: The display name of the document.</li>
-<li><strong>PDF_URL</strong>: The web link to the PDF file (e.g., <code>https://vedavms.in/docs/...</code> or Google Drive shared link).</li>
-<li><strong>Version</strong>: (Optional) e.g., <code>V1.0</code>, <code>V2.1</code>.</li>
-<li><strong>Date</strong>: (Optional) e.g., <code>Oct 31, 2026</code>.</li>
-<li><strong>Corrections_URL</strong>: (Optional) Link to errata or corrections PDF.</li>
-<li><strong>Status</strong>: Set to <code>Active</code>.</li>
+<li><strong>PDF_URL</strong>: The web link to the PDF file (e.g., <code>https://vedavms.in/docs/...</code>), Word doc (<code>.docx</code>), spreadsheet (<code>.xlsx</code>), or external link.</li>
+<li><strong>Version</strong>: Edition number (e.g. <code>V1.0</code>, <code>V2.1</code>).</li>
+<li><strong>Date</strong>: Release / upload date (e.g. <code>Sep 2026</code>).</li>
+<li><strong>Corrections_URL</strong>: (Optional) Link to errata / corrections PDF. (Dedicated button displayed on Sanskrit, Tamil, and Malayalam tabs).</li>
+<li><strong>Corrections_Date</strong>: (Optional) Date when corrections/errata were uploaded (e.g. <code>Sep 2026</code>). Allows tracking errata updates independently from initial document release dates.</li>
+<li><strong>Status</strong>: Set to <code>Active</code> (or <code>Hidden</code> to temporarily unpublish without deleting).</li>
 <li><strong>Notes</strong>: (Optional) Internal notes for your team.</li>
 </ul>
 </li>
+</ol>
+<hr>
+<h2 id="%F0%9F%94%84-step-3-google-sheets--csv-synchronization">🔄 Step 3: Google Sheets &amp; CSV Synchronization</h2>
+<h3 id="when-to-use-google-sheets-vs-csv-export">When to use Google Sheets vs. CSV Export</h3>
+<ul>
+<li><strong>Day-to-day updates</strong>: <strong>Edit Google Sheets directly.</strong> When you click <strong><code>🚀 VedaVMS</code> ➔ <code>Publish to Staging</code></strong>, GitHub Actions pulls rows straight from the Google Sheet and deploys in ~1–2 minutes.</li>
+<li><strong>Bulk code migrations / new scrapers</strong>: Run the Python export command to generate a fresh CSV of all 986 records and import it into Google Sheets once.</li>
+</ul>
+<h3 id="exporting-document-catalog-to-csv">Exporting Document Catalog to CSV</h3>
+<p>To generate a clean UTF-8 with BOM CSV (which preserves Sanskrit &amp; Indic unicode in Excel and Google Sheets):</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Export all 986 documents from current scrapers / cache:</span>
+python generate_documents.py --offline --<span class="hljs-built_in">export</span>-csv data/vedavms_documents.csv --<span class="hljs-built_in">export</span>-json data/vedavms_documents.json
+</div></code></pre>
+<h3 id="importing-csv-into-google-sheets">Importing CSV into Google Sheets</h3>
+<ol>
+<li>Open the <a href="https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/edit?gid=548744990#gid=548744990">VedaVMS Google Sheet</a>.</li>
+<li>Click <strong>File ➔ Import ➔ Upload</strong>.</li>
+<li>Select <code>data/vedavms_documents.csv</code>.</li>
+<li>Choose <strong>&quot;Replace current sheet&quot;</strong> (or <em>Insert new sheet</em> to review first).</li>
+<li>Set separator to <strong>&quot;Detect automatically&quot;</strong> and click <strong>Import data</strong>.</li>
 </ol>
 <h3 id="updating-an-existing-document-new-version--errata">Updating an Existing Document (New Version / Errata)</h3>
 <ul>
 <li>Find the document row.</li>
 <li>Update the <strong>PDF_URL</strong> with the new file URL.</li>
 <li>Update the <strong>Version</strong> (e.g. change <code>V1.0</code> to <code>V1.1</code>) and <strong>Date</strong>.</li>
-<li>If a corrections PDF was added or removed, update the <strong>Corrections_URL</strong>.</li>
+<li>If a corrections PDF was added or removed, update the <strong>Corrections_URL</strong> and <strong>Corrections_Date</strong>.</li>
 </ul>
 <h3 id="removing--archiving-a-document">Removing / Archiving a Document</h3>
 <ul>
@@ -491,54 +538,237 @@ code {
 <li>In numbered sections like <em>Vedic Books by Subject</em>, the build system dynamically assigns contiguous numbers (<code>1)</code>, <code>2)</code>, <code>3)</code>...) and preserves sub-document hierarchy (<code>1A)</code>, <code>2A)</code>, <code>2B)</code>...).</li>
 <li><strong>Example</strong>: When <code>1) Shanti Japam</code> is set to <code>Hidden</code>, the next active book (<code>2) TaittirIyopanishat</code>) automatically displays as <code>1)</code>, its sub-book <code>2A) Surya namaskara</code> automatically becomes <code>1A)</code>, and <code>3) Udaka Shanti</code> becomes <code>2)</code>. If <code>Shanti Japam</code> is later unhidden, the numbering automatically shifts back.</li>
 </ul>
+<h3 id="%F0%9F%95%92-recent-updates--static-site-generation-constraint">🕒 Recent Updates &amp; Static Site Generation Constraint</h3>
+<ul>
+<li><strong>Rolling 90-Day Window</strong>: The &quot;Recent Updates&quot; feed on the Home page automatically aggregates all active documents whose release date (<code>Date</code>) or errata update date (<code>Corrections_Date</code>) falls within the last 90 days (<code>[today - 90 days, today]</code>).</li>
+<li><strong>Independent Tracking of Errata</strong>:
+<ul>
+<li>If a document's initial <code>Date</code> is within 90 days, it appears with a <code>[PDF]</code> link badge.</li>
+<li>If <code>Corrections_URL</code> has a separate <code>Corrections_Date</code> within 90 days, it appears with a <code>[Corrections]</code> link badge.</li>
+<li>If both occur in the same month, they combine seamlessly under a single entry with both badges.</li>
+</ul>
+</li>
+<li><strong>Build-Time Computation</strong>: Because VedaVMS is a static HTML website (fast, secure, zero server overhead), this 90-day filter is evaluated at <strong>build / deployment time</strong> (when <code>generate_documents.py</code> executes during a deployment).</li>
+<li><strong>Passage of Time</strong>: As calendar time progresses, older documents age out and newer ones roll forward whenever a deployment is triggered (via Google Sheet one-click publish, GitHub Actions, or git push).</li>
+</ul>
 <hr>
-<h2 id="%E2%9A%A1-step-3-publishing-changes-to-the-staging-site-newvedavmsin">⚡ Step 3: Publishing Changes to the Staging Site (<code>new.vedavms.in</code>)</h2>
-<p>There are four ways changes get published to staging:</p>
+<h2 id="%E2%9A%A1-step-3-publishing-changes-staging--production">⚡ Step 3: Publishing Changes (Staging &amp; Production)</h2>
+<p>There are three convenient methods to publish changes:</p>
 <h3 id="method-a-one-click-trigger-from-google-sheets-recommended-for-maintainers">Method A: One-Click Trigger from Google Sheets (Recommended for Maintainers)</h3>
-<p>Maintainers can publish changes directly from the Google Sheet without touching code or GitHub:</p>
+<p>Maintainers can publish changes directly from the Google Sheet without touching code or command lines:</p>
 <ol>
 <li>Open the <a href="https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/">VedaVMS Google Sheet</a>.</li>
-<li>In the top menu, click <strong><code>🚀 VedaVMS</code></strong> ➔ <strong><code>Publish to Staging (new.vedavms.in)</code></strong>.</li>
+<li>In the top menu, click <strong><code>🚀 VedaVMS</code></strong>:
+<ul>
+<li><strong><code>1. 🚀 Publish to Staging (new.vedavms.in)</code></strong>:
+<ul>
+<li>Deploys the latest sheet updates to the staging preview area (<code>/new.vedavms.in/</code>).</li>
+<li>Shows live build progress in the spreadsheet.</li>
+<li>Logs the completion timestamp in cell <strong><code>J2</code></strong> (IST).</li>
+</ul>
+</li>
+<li><strong><code>2. 🌐 Push Staging to Production (vedavms.in)</code></strong>:
+<ul>
+<li>Requests explicit confirmation before modifying the live site.</li>
+<li>Promotes the build to the live production server (<code>/httpdocs/</code>).</li>
+<li>Automatically creates a timestamped pre-deploy backup snapshot in <code>backups/</code>.</li>
+<li>Logs the live production deployment timestamp in cell <strong><code>J3</code></strong> (IST).</li>
+</ul>
+</li>
+<li><strong><code>3. 🔄 Check Last Run Status</code></strong>:
+<ul>
+<li>Checks whether the most recent GitHub Actions deployment succeeded or encountered an error.</li>
+</ul>
+</li>
+<li><strong><code>4. ⚙️ Setup GitHub Token</code></strong>:
+<ul>
+<li>Configures or updates your Personal Access Token (PAT) securely inside Google Apps Script properties.</li>
+</ul>
+</li>
+</ul>
+</li>
 <li>Confirm the prompt by clicking <strong>Yes</strong>.</li>
-<li>A popup will confirm that GitHub Actions has started rebuilding the site, and updates will be live in 1–2 minutes.</li>
+<li>A popup confirms when the build completes successfully.</li>
 </ol>
-<h3 id="method-b-instant-trigger-via-github-actions-web-ui">Method B: Instant Trigger via GitHub Actions (Web UI)</h3>
+<h3 id="method-b-trigger-via-github-actions-web-ui">Method B: Trigger via GitHub Actions (Web UI)</h3>
 <ol>
-<li>Go to the GitHub repository in your browser.</li>
+<li>Go to the GitHub repository in your browser: <code>sekharnarayanaswamy-del/VedaVMS</code>.</li>
 <li>Click the <strong>Actions</strong> tab at the top.</li>
-<li>In the left sidebar, click <strong>Deploy to Staging (new.vedavms.in)</strong>.</li>
-<li>Click <strong>Run workflow</strong> &gt; <strong>Run workflow</strong>.</li>
-<li>Within ~1 minute, the build runs and publishes to staging.</li>
+<li>Select either:
+<ul>
+<li><strong>Deploy to Staging (new.vedavms.in)</strong></li>
+<li><strong>Deploy to Production (vedavms.in)</strong></li>
+</ul>
+</li>
+<li>Click <strong>Run workflow</strong> ➔ <strong>Run workflow</strong>.</li>
 </ol>
-<h3 id="method-c-one-command-sync-from-laptop-developer--admin">Method C: One-Command Sync from Laptop (Developer / Admin)</h3>
-<p>If you want to immediately update the staging site directly from your computer without waiting for GitHub Actions:</p>
-<pre class="hljs"><code><div><span class="hljs-comment"># Full fetch, regeneration, and upload:</span>
-python scripts/sync_staging.py
+<h3 id="method-c-deploy--rollback-cli-from-laptop-developer--admin">Method C: Deploy &amp; Rollback CLI from Laptop (Developer / Admin)</h3>
+<p>Run <code>scripts/deploy_site.py</code> for direct deployment, dry-runs, and instant rollbacks:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 1. Deploy to Staging (new.vedavms.in):</span>
+python scripts/deploy_site.py -<span class="hljs-literal">-staging</span>
 
-<span class="hljs-comment"># Skip Google Sheets fetch and upload existing build/ folder immediately:</span>
-python scripts/sync_staging.py -<span class="hljs-literal">-skip</span><span class="hljs-literal">-build</span>
+<span class="hljs-comment"># 2. Promote to Live Production (vedavms.in) with automatic pre-deploy backup snapshot:</span>
+python scripts/deploy_site.py -<span class="hljs-literal">-production</span>
+
+<span class="hljs-comment"># 3. Dry-run preview (see files without modifying server):</span>
+python scripts/deploy_site.py -<span class="hljs-literal">-production</span> -<span class="hljs-literal">-dry</span><span class="hljs-literal">-run</span>
+
+<span class="hljs-comment"># 4. List available backup snapshots:</span>
+python scripts/deploy_site.py -<span class="hljs-literal">-list</span><span class="hljs-literal">-backups</span>
+
+<span class="hljs-comment"># 5. Interactive rollback to any snapshot:</span>
+python scripts/deploy_site.py -<span class="hljs-literal">-rollback</span> -<span class="hljs-literal">-production</span>
+
+<span class="hljs-comment"># 6. Instant rollback to original pre-redesign baseline:</span>
+python scripts/deploy_site.py -<span class="hljs-literal">-rollback</span> -<span class="hljs-literal">-production</span> -<span class="hljs-literal">-snapshot</span> backup_production_vedavms_in
 </div></code></pre>
-<p>This command will:</p>
+<hr>
+<h2 id="%F0%9F%8E%A8-step-4-ui-styling--design-fine-tuning-templates-colors--controls">🎨 Step 4: UI Styling &amp; Design Fine-Tuning (Templates, Colors &amp; Controls)</h2>
+<p>If you need to fine-tune the look and feel, color schemes, banners, or accordion controls on the website, follow this guide.</p>
+<h3 id="%E2%9A%A0%EF%B8%8F-the-golden-rule-edit-mockup-never-build">⚠️ The Golden Rule: Edit <code>mockup/</code>, Never <code>build/</code></h3>
+<ul>
+<li>The files inside <strong><code>build/</code></strong> (<code>build/index.html</code>, <code>build/documents.html</code>) are <strong>generated output artifacts</strong>.</li>
+<li>Any direct edits made to files in <code>build/</code> will be <strong>permanently overwritten</strong> whenever <code>generate_documents.py</code> runs or when a build triggers on GitHub Actions.</li>
+<li><strong>Always make UI and design edits in the template files inside <code>mockup/</code></strong>:
+<ul>
+<li>Home page template: <a href="mockup/index.html"><code>mockup/index.html</code></a></li>
+<li>Documents page template: <a href="mockup/documents.html"><code>mockup/documents.html</code></a></li>
+<li>Other companion pages: <a href="mockup/about.html"><code>mockup/about.html</code></a>, <a href="mockup/articles.html"><code>mockup/articles.html</code></a>, <a href="mockup/convention.html"><code>mockup/convention.html</code></a>, <a href="mockup/donations.html"><code>mockup/donations.html</code></a>, <a href="mockup/videos.html"><code>mockup/videos.html</code></a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="%F0%9F%8E%A8-where-to-fine-tune-specific-ui-elements">🎨 Where to Fine-Tune Specific UI Elements</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">UI Component</th>
+<th style="text-align:left">File to Edit</th>
+<th style="text-align:left">CSS Selector</th>
+<th style="text-align:left">Current Specification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Top Header (Logo &amp; Quote)</strong></td>
+<td style="text-align:left"><code>mockup/index.html</code> (and companion pages)</td>
+<td style="text-align:left"><code>.header</code></td>
+<td style="text-align:left"><code>background: linear-gradient(135deg, #153E75 0%, #1D5296 50%, #2563A8 100%);</code> (Royal Blue, touch lighter) + <code>border-bottom: 2px solid var(--gold);</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Main Hero Banner</strong></td>
+<td style="text-align:left"><code>mockup/index.html</code></td>
+<td style="text-align:left"><code>.hero</code></td>
+<td style="text-align:left"><code>background: linear-gradient(135deg, #6B1724 0%, #831D2C 50%, #992334 100%);</code> (Shade of Maroon)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Hero &quot;Browse Documents&quot; Button</strong></td>
+<td style="text-align:left"><code>mockup/index.html</code></td>
+<td style="text-align:left"><code>.cta-btn</code></td>
+<td style="text-align:left"><code>background: var(--gold); color: #3A0C12;</code> (Hover: <code>#E5B232</code>)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Recent Updates Accordion (Home)</strong></td>
+<td style="text-align:left"><code>mockup/index.html</code></td>
+<td style="text-align:left"><code>.category-header</code></td>
+<td style="text-align:left"><code>background: linear-gradient(135deg, #6B1724 0%, #831D2C 50%, #992334 100%);</code> (Shade of Maroon)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Recent Updates Sub-Language (Home)</strong></td>
+<td style="text-align:left"><code>mockup/index.html</code></td>
+<td style="text-align:left"><code>.sub-category-header</code></td>
+<td style="text-align:left"><code>background: #FDF2F4; color: #6B1724;</code> (Rosy-cream)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Category Accordion (Documents)</strong></td>
+<td style="text-align:left"><code>mockup/documents.html</code></td>
+<td style="text-align:left"><code>.category-header</code></td>
+<td style="text-align:left"><code>background: linear-gradient(135deg, #6B1724 0%, #831D2C 50%, #992334 100%);</code> (Shade of Maroon)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Sub-Kandam Accordion (Documents)</strong></td>
+<td style="text-align:left"><code>mockup/documents.html</code></td>
+<td style="text-align:left"><code>.sub-category-header</code></td>
+<td style="text-align:left"><code>background: #FDF2F4; color: #6B1724;</code> (Rosy-cream)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Page Header (Companion Pages)</strong></td>
+<td style="text-align:left"><code>mockup/*.html</code></td>
+<td style="text-align:left"><code>.page-header</code></td>
+<td style="text-align:left"><code>background: linear-gradient(135deg, #6B1724 0%, #831D2C 50%, #992334 100%);</code> (Shade of Maroon)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Brand Color Variables</strong></td>
+<td style="text-align:left"><code>&lt;style&gt;</code> in templates</td>
+<td style="text-align:left"><code>:root</code></td>
+<td style="text-align:left"><code>--saffron: #E65100; --maroon: #800000; --gold: #DAA520; --cream: #FFF8F0;</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="%E2%9A%99%EF%B8%8F-fine-tuning-business-logic--hierarchy-rules">⚙️ Fine-Tuning Business Logic &amp; Hierarchy Rules</h3>
+<p>If you need to change <strong>how data is grouped, filtered, or displayed</strong>, fine-tuning is done in <a href="generate_documents.py"><code>generate_documents.py</code></a>:</p>
 <ol>
-<li>Automatically fetch the latest data from the live Google Sheet.</li>
-<li>Regenerate all files in <code>build/</code> (filtering out hidden items, applying dynamic hierarchical numbering, and formatting 760+ documents).</li>
-<li>Upload all updated pages to <code>new.vedavms.in</code> (<code>/new.vedavms.in/</code>) using native Windows transfer tools (<code>curl.exe</code>).</li>
+<li>
+<p><strong>Recent Updates Time Window (e.g. 3 months / 90 days)</strong>:</p>
+<ul>
+<li>File: <a href="generate_documents.py"><code>generate_documents.py</code></a> (inside <code>generate_index_html</code>)</li>
+<li>Calls <code>get_recent_updates_grouped(lang_sections, max_days=90)</code>.</li>
+<li>Change <code>max_days=90</code> (e.g., <code>max_days=60</code> for 2 months, or <code>max_days=180</code> for 6 months) to adjust how far back recent updates look.</li>
+</ul>
+</li>
+<li>
+<p><strong>Pada &amp; Krama Patam Hierarchical Nesting</strong>:</p>
+<ul>
+<li>File: <a href="generate_documents.py"><code>generate_documents.py</code></a> (inside <code>nest_hierarchical_sections</code>)</li>
+<li>Automatically groups <code>TaittirIya SamhitA pada pAtam</code> and <code>TaittirIya SamhitA krama pAtam</code> into Kandams 1 through 7, nesting sub-kandams and prasnas.</li>
+</ul>
+</li>
+<li>
+<p><strong>Dynamic Hierarchical Numbering (1, 1A, 2...)</strong>:</p>
+<ul>
+<li>File: <a href="generate_documents.py"><code>generate_documents.py</code></a> (inside <code>apply_dynamic_numbering</code>)</li>
+<li>Numbers top-level books contiguously and prefixes sub-books with parent numbers.</li>
+</ul>
+</li>
 </ol>
 <hr>
+<h3 id="%F0%9F%A7%AA-how-to-rebuild-and-test-locally">🧪 How to Rebuild and Test Locally</h3>
+<p>After making changes in <code>mockup/</code> or <code>generate_documents.py</code>, run:</p>
+<pre class="hljs"><code><div>python generate_documents.py -<span class="hljs-literal">-source</span><span class="hljs-literal">-csv</span> <span class="hljs-string">"https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/export?format=csv&amp;gid=548744990"</span>
+</div></code></pre>
+<p>Open <code>build/index.html</code> or <code>build/documents.html</code> in your browser to inspect the visual changes.</p>
+<p>Once satisfied, commit and push to <code>main</code> — GitHub Actions will automatically deploy the changes to staging (<code>https://new.vedavms.in</code>):</p>
+<pre class="hljs"><code><div>git add mockup/ generate_documents.py build/
+git commit <span class="hljs-literal">-m</span> <span class="hljs-string">"style: update homepage and document styling"</span>
+git push origin main
+</div></code></pre>
+<hr>
 <h2 id="%E2%9A%99%EF%B8%8F-the-github-actions-build--deploy-pipeline-deep-dive">⚙️ The GitHub Actions Build &amp; Deploy Pipeline (Deep Dive)</h2>
-<p>The entire build and deployment process is automated by the workflow defined in <a href=".github/workflows/deploy_staging.yml"><code>.github/workflows/deploy_staging.yml</code></a>.</p>
+<p>The automated build and deployment process is powered by two dedicated GitHub Actions workflows:</p>
+<ol>
+<li><strong>Staging Workflow</strong> (<a href=".github/workflows/deploy_staging.yml"><code>.github/workflows/deploy_staging.yml</code></a>): Deploys updates to the testing/preview site at <code>https://new.vedavms.in</code> (<code>/new.vedavms.in/</code>).</li>
+<li><strong>Production Workflow</strong> (<a href=".github/workflows/deploy_production.yml"><code>.github/workflows/deploy_production.yml</code></a>): Promotes approved updates to the public live website at <code>https://vedavms.in</code> (<code>/httpdocs/</code>) with explicit safety confirmation.</li>
+</ol>
 <h3 id="focused-pipeline-flow-diagram">Focused Pipeline Flow Diagram</h3>
 <pre><code class="language-mermaid"><div class="mermaid">flowchart TD
     subgraph TriggerSource["1. Trigger Sources"]
-        T1["Google Sheets Menu<br/>(workflow_dispatch API)"]
-        T2["Git Push to main<br/>(Code commit)"]
-        T3["GitHub Web UI<br/>('Run workflow' button)"]
+        direction TB
+        subgraph StagingTriggers["Staging Triggers (deploy_staging.yml)"]
+            T_GS1["Google Sheets: '1. Publish to Staging'<br/>(repository_dispatch)"]
+            T_GIT["Git Push to 'main'<br/>(Automated staging deploy)"]
+            T_UI1["GitHub Actions Web UI<br/>(Manual 'Run workflow')"]
+        end
+        subgraph ProdTriggers["Production Triggers (deploy_production.yml)"]
+            T_GS2["Google Sheets: '2. Push to Production'<br/>(Confirmed repository_dispatch)"]
+            T_UI2["GitHub Actions Web UI<br/>(Requires 'DEPLOY' confirmation)"]
+        end
     end
 
     subgraph GitHubRunner["2. Ephemeral Compute (GitHub Azure Cloud)"]
-        VM["Provision Fresh VM<br/>(Ubuntu / 2-core / 7GB RAM)"]
+        VM["Provision Fresh Ubuntu VM<br/>(2-core CPU / 7GB RAM / Ephemeral)"]
         CHECKOUT["actions/checkout@v4<br/>(Clones VedaVMS repo)"]
-        PYSETUP["actions/setup-python@v5<br/>(Configures Python 3.11)"]
+        PYSETUP["actions/setup-python@v5<br/>(Python 3.11 runtime)"]
         
         subgraph BuildStep["Generate Website (generate_documents.py)"]
             FETCH["Download Live CSV<br/>(Google Sheets export URL)"]
@@ -546,23 +776,39 @@ python scripts/sync_staging.py -<span class="hljs-literal">-skip</span><span cla
             RENUMBER["Dynamic Numbering<br/>(Recompute 1, 1A, 2...)"]
             RENDER["Template Injection<br/>(Generate build/*.html)"]
         end
-        
-        ARTIFACT["actions/upload-artifact@v4<br/>(Archives build/ for 7 days)"]
+
+        subgraph ArtifactStep["Build Artifact Archival"]
+            ART_STG["Staging Artifact<br/>(vedavms-staging-build / 7 days)"]
+            ART_PRD["Production Artifact<br/>(vedavms-production-build / 14 days)"]
+        end
+
         PREP["Sanitize FTP Host<br/>(Clean server name & DNS check)"]
-        DEPLOY["FTP-Deploy-Action@v4.3.5<br/>(Uploads via FTPS Port 21)"]
+        DEPLOY["FTP-Deploy-Action@v4.3.5<br/>(Encrypted FTPS Port 21)"]
         DESTROY["Destroy Virtual Machine<br/>(Zero lingering data/secrets)"]
     end
 
-    subgraph StagingServer["3. Staging Web Server (103.69.196.157)"]
-        IIS["Windows IIS Server"]
-        WEBROOT["/new.vedavms.in/<br/>(Live Staging Site)"]
+    subgraph WebServer["3. Web Server (103.69.196.157 - Windows IIS)"]
+        direction TB
+        STG_DIR["Staging Web Root<br/>/new.vedavms.in/<br/>(Preview & Quality Check)"]
+        PRD_DIR["Production Web Root<br/>/httpdocs/<br/>(Live Public Site: vedavms.in)"]
     end
 
-    T1 --> VM
-    T2 --> VM
-    T3 --> VM
-    VM --> CHECKOUT --> PYSETUP --> FETCH --> FILTER --> RENUMBER --> RENDER --> ARTIFACT --> PREP --> DEPLOY
-    DEPLOY -->|"Uploads HTML"| IIS --> WEBROOT
+    %% Trigger connections
+    T_GS1 --> VM
+    T_GIT --> VM
+    T_UI1 --> VM
+    T_GS2 --> VM
+    T_UI2 --> VM
+
+    %% Build pipeline flow
+    VM --> CHECKOUT --> PYSETUP --> FETCH --> FILTER --> RENUMBER --> RENDER
+    RENDER --> ART_STG
+    RENDER --> ART_PRD
+    RENDER --> PREP --> DEPLOY
+
+    %% Deployment targets
+    DEPLOY -->|"deploy_staging.yml"| STG_DIR
+    DEPLOY -->|"deploy_production.yml"| PRD_DIR
     DEPLOY --> DESTROY
 </div></code></pre>
 <h3 id="cloud-compute--infrastructure-details">Cloud Compute &amp; Infrastructure Details</h3>
@@ -697,12 +943,43 @@ python scripts/sync_staging.py -<span class="hljs-literal">-skip</span><span cla
 </ul>
 </li>
 </ul>
+<h4 id="how-to-generate-a-fine-grained-pat-step-by-step">How to Generate a Fine-Grained PAT (Step-by-Step)</h4>
+<p>A Personal Access Token is generated from your <strong>Personal GitHub Account Settings</strong> (not repository settings):</p>
+<ol>
+<li><strong>Direct URL</strong>: Go directly to <a href="https://github.com/settings/tokens?type=beta">github.com/settings/tokens?type=beta</a><br>
+<em>(Or click your <strong>Profile Picture (top-right)</strong> ➔ <strong>Settings</strong> ➔ scroll down the left sidebar to <strong>Developer settings</strong> ➔ <strong>Personal access tokens</strong> ➔ <strong>Fine-grained tokens</strong>).</em></li>
+<li>Click the <strong>Generate new token</strong> button.</li>
+<li>Configure the token:
+<ul>
+<li><strong>Token name</strong>: <code>VedaVMS-Google-Sheet-Trigger</code></li>
+<li><strong>Expiration</strong>: Choose <code>90 days</code>, <code>1 year</code>, or custom.</li>
+<li><strong>Repository access</strong>: Select <strong>&quot;Only select repositories&quot;</strong> ➔ choose <strong><code>sekharnarayanaswamy-del/VedaVMS</code></strong>.</li>
+<li><strong>Permissions</strong>:
+<ul>
+<li>Expand <strong>Repository permissions</strong>.</li>
+<li>Find <strong>Actions</strong>: change from <em>No access</em> to <strong><code>Read and write</code></strong> <em>(allows triggering <code>workflow_dispatch</code> and monitoring build status)</em>.</li>
+<li><em>(GitHub will automatically set <code>Metadata</code> to <code>Read-only</code>, which is normal and required).</em></li>
+<li>Leave all other permissions as <em>No access</em>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Scroll to the bottom and click <strong>Generate token</strong>.</li>
+<li><strong>Copy the token immediately</strong> (it begins with <code>github_pat_...</code>). GitHub will only show it once.</li>
+</ol>
 <h4 id="securing-the-token-in-google-sheets">Securing the Token in Google Sheets</h4>
 <p>To prevent other Google Sheet editors from viewing the token text in the Apps Script editor:</p>
 <ul>
-<li>Open Apps Script ➔ <strong>Project Settings (gear icon)</strong> ➔ <strong>Script Properties</strong>.</li>
-<li>Store the token as property <code>GITHUB_TOKEN</code>.</li>
-<li>In the script, it is loaded dynamically via <code>PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN')</code>.</li>
+<li>Open Apps Script (from Google Sheets: <strong>Extensions</strong> ➔ <strong>Apps Script</strong>).</li>
+<li>In the left sidebar, click <strong>Project Settings</strong> (the gear icon ⚙️).</li>
+<li>Scroll to <strong>Script Properties</strong> and click <strong>Edit script properties</strong> ➔ <strong>Add script property</strong>:
+<ul>
+<li><strong>Property</strong>: <code>GITHUB_TOKEN</code></li>
+<li><strong>Value</strong>: <code>github_pat_...</code> (paste your copied token)</li>
+</ul>
+</li>
+<li>Click <strong>Save script properties</strong>.</li>
+<li>In the script code, it is loaded dynamically via <code>PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN')</code>.</li>
 </ul>
 <hr>
 <h3 id="3-repository--google-sheet-permissions-summary">3. Repository &amp; Google Sheet Permissions Summary</h3>
@@ -721,92 +998,222 @@ python scripts/sync_staging.py -<span class="hljs-literal">-skip</span><span cla
 </li>
 </ol>
 <hr>
-<h2 id="%F0%9F%93%8B-administrator-%22to-do%22-checklist">📋 Administrator &quot;To-Do&quot; Checklist</h2>
-<p>Use this checklist to complete the autonomous setup:</p>
-<ul>
-<li>
-<p><input type="checkbox" id="checkbox0"><label for="checkbox0"></label><strong>1. Disable &quot;Required Reviewers&quot; for Staging</strong>:</p>
-<ul>
-<li>Go to <strong>GitHub Repo ➔ Settings ➔ Environments ➔ <code>staging</code></strong>.</li>
-<li>Under <em>Deployment protection rules</em>, uncheck or delete <strong>Required reviewers</strong>.</li>
-<li>Click <strong>Save protection rules</strong>.</li>
-<li><em>(Outcome: Maintainers can trigger deploys from Google Sheets without waiting for your manual approval each time).</em></li>
-</ul>
-</li>
-<li>
-<p><input type="checkbox" id="checkbox1"><label for="checkbox1"></label><strong>2. Verify Google Sheet Sharing Settings</strong>:</p>
-<ul>
-<li>Open the <a href="https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/">Google Sheet</a>.</li>
-<li>Click <strong>Share</strong> (top right).</li>
-<li>Verify <em>General access</em> is <strong>&quot;Anyone with the link&quot; ➔ Role: Viewer</strong>.</li>
-<li>Under <em>People with access</em>, add your content maintainers' Gmail addresses as <strong>Editor</strong>.</li>
-</ul>
-</li>
-<li>
-<p><input type="checkbox" id="checkbox2"><label for="checkbox2"></label><strong>3. Install Apps Script in Google Sheet</strong>:</p>
-<ul>
-<li>In the sheet, go to <strong>Extensions ➔ Apps Script</strong>.</li>
-<li>Paste the enhanced <code>triggerDeploy</code> script (which monitors progress, displays a live completion popup, and writes <code>✅ Live: [Timestamp]</code> into cell <code>J2</code>).</li>
-<li>Insert your generated GitHub token (<code>GITHUB_TOKEN = 'ghp_...'</code>).</li>
-<li>Save (<code>Ctrl + S</code>) and reload the sheet to verify the <strong><code>🚀 VedaVMS</code></strong> menu appears.</li>
-</ul>
-</li>
-<li>
-<p><input type="checkbox" id="checkbox3"><label for="checkbox3"></label><strong>4. (Optional Future Hardening) Migrate Token to Script Properties</strong>:</p>
-<ul>
-<li>Once working smoothly, switch to a GitHub <strong>Fine-grained Personal Access Token</strong> scoped strictly to <code>VedaVMS</code> (<code>Actions: Read and write</code>).</li>
-<li>In Apps Script, open <strong>Project Settings (gear icon) ➔ Script Properties</strong>.</li>
-<li>Add property <code>GITHUB_TOKEN</code> with the token value.</li>
-<li>The script will automatically pick it up from Script Properties if <code>GITHUB_TOKEN</code> in the code is set to <code>'PASTE_YOUR_GITHUB_TOKEN_HERE'</code>.</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="%F0%9F%94%92-staging-server-configuration--credentials">🔒 Staging Server Configuration &amp; Credentials</h2>
-<p>The staging site resides on the same Windows IIS / Plesk server as production, but in its own dedicated document root folder:</p>
+<h2 id="%F0%9F%8E%A8-ui-color-palette--visual-fine-tuning-guide">🎨 UI Color Palette &amp; Visual Fine-Tuning Guide</h2>
+<p>This section documents the visual styling standards across the VedaVMS website and exactly where to adjust colors, gradients, and typography.</p>
+<h3 id="1-active-color-palette">1. Active Color Palette</h3>
 <table>
 <thead>
 <tr>
-<th style="text-align:left">Parameter</th>
-<th style="text-align:left">Setting</th>
-<th style="text-align:left">Description</th>
+<th style="text-align:left">Component</th>
+<th style="text-align:left">Visual Element</th>
+<th style="text-align:left">Color Token / Value</th>
+<th style="text-align:left">Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left"><strong>Server Host</strong></td>
-<td style="text-align:left"><code>103.69.196.157</code></td>
-<td style="text-align:left">Plesk hosting server</td>
+<td style="text-align:left"><strong>Top Global Header</strong></td>
+<td style="text-align:left">Site title band (<code>header</code>)</td>
+<td style="text-align:left"><code>linear-gradient(135deg, #153E75 0%, #1D5296 50%, #2563A8 100%)</code></td>
+<td style="text-align:left">Royal blue (a touch lighter), bottom border: <code>2px solid var(--gold)</code></td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>Protocol</strong></td>
-<td style="text-align:left">FTPS (FTP over TLS)</td>
-<td style="text-align:left">Port 21 with TLS Session Resumption</td>
+<td style="text-align:left"><strong>Main Banner (All Pages)</strong></td>
+<td style="text-align:left">Homepage Hero (<code>.hero</code>) &amp; Companion headers (<code>.page-header</code>)</td>
+<td style="text-align:left"><code>linear-gradient(135deg, #8E3B18 0%, #A84D24 45%, #BD6336 100%)</code></td>
+<td style="text-align:left"><strong>Muted Saffron</strong> — warm, earthy, traditional kesari with subtle inset shadow</td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>Username</strong></td>
-<td style="text-align:left"><code>vedavmsi</code></td>
-<td style="text-align:left">System FTP account</td>
+<td style="text-align:left"><strong>Banner CTA Button</strong></td>
+<td style="text-align:left">&quot;Browse Documents&quot; button (<code>.cta-btn</code>)</td>
+<td style="text-align:left">Background: <code>#FFFFFF</code>, Text: <code>#8E3B18</code> (hover: <code>#FFF8F0</code>, <code>#6E2A0E</code>)</td>
+<td style="text-align:left">High-contrast white card button standing out against muted saffron</td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>Production Directory</strong></td>
-<td style="text-align:left"><code>/httpdocs/</code></td>
-<td style="text-align:left">Serves the main live site (<code>vedavms.in</code>)</td>
+<td style="text-align:left"><strong>Navigation Bar</strong></td>
+<td style="text-align:left">Links &amp; Hover (<code>.nav a</code>, <code>.nav .donate-btn</code>)</td>
+<td style="text-align:left">Nav text: <code>var(--dark-brown)</code> (<code>#2C1810</code>), Hover/Active: <code>var(--saffron)</code> (<code>#C45A1A</code>)</td>
+<td style="text-align:left">Clean ivory bar with saffron hover highlights</td>
 </tr>
 <tr>
-<td style="text-align:left"><strong>Staging Directory</strong></td>
-<td style="text-align:left"><code>/new.vedavms.in/</code></td>
-<td style="text-align:left">Serves the redesigned staging site (<code>new.vedavms.in</code>)</td>
+<td style="text-align:left"><strong>Accordion Headers (Level 1)</strong></td>
+<td style="text-align:left">Month / Main category bar (<code>.category-header</code>)</td>
+<td style="text-align:left"><code>linear-gradient(135deg, #6B1724 0%, #831D2C 50%, #992334 100%)</code></td>
+<td style="text-align:left">Deep maroon bar with white title and gold pill count</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Accordion Headers (Level 2)</strong></td>
+<td style="text-align:left">Sub-category / Language bar (<code>.sub-category-header</code>)</td>
+<td style="text-align:left">Background: <code>#FDF2F4</code>, Text: <code>#6B1724</code>, Border: <code>rgba(107, 23, 36, 0.12)</code></td>
+<td style="text-align:left">Subtle rosy-cream tint providing clean visual hierarchy</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Primary Accents</strong></td>
+<td style="text-align:left">Accent gold</td>
+<td style="text-align:left"><code>var(--gold)</code> (<code>#C49A45</code>)</td>
+<td style="text-align:left">Used for trims, borders, and badge counts</td>
 </tr>
 </tbody>
 </table>
-<h3 id="github-secrets-for-staging-pipeline">GitHub Secrets for Staging Pipeline:</h3>
+<h3 id="2-file-location-mapping-where-to-fine-tune-styles">2. File Location Mapping: Where to Fine-Tune Styles</h3>
+<p>All source HTML templates live under the <code>mockup/</code> folder. When <code>generate_documents.py</code> runs, it reads these templates and compiles them into <code>build/</code>.</p>
+<blockquote>
+<p>[!IMPORTANT]
+<strong>Always edit templates in <code>mockup/</code></strong>; never directly edit files in <code>build/</code>, as <code>build/</code> is automatically overwritten during code pushes and Google Sheet syncs.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Visual Section</th>
+<th style="text-align:left">Source File(s) to Edit</th>
+<th style="text-align:left">Relevant CSS Selectors</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Top Global Header</strong></td>
+<td style="text-align:left">All files in <code>mockup/*.html</code></td>
+<td style="text-align:left"><code>header { background: ...; }</code>, <code>header h1</code>, <code>header .subtitle</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Homepage Hero Banner</strong></td>
+<td style="text-align:left"><code>mockup/index.html</code></td>
+<td style="text-align:left"><code>.hero { background: ...; }</code>, <code>.hero h1</code>, <code>.hero p</code>, <code>.cta-btn</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>All Other Page Banners</strong></td>
+<td style="text-align:left"><code>mockup/documents.html</code>, <code>mockup/about.html</code>, <code>mockup/articles.html</code>, <code>mockup/convention.html</code>, <code>mockup/donations.html</code>, <code>mockup/videos.html</code></td>
+<td style="text-align:left"><code>.page-header { background: ...; }</code>, <code>.page-header h1</code>, <code>.page-header p</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Recent Updates Accordions (Home)</strong></td>
+<td style="text-align:left"><code>mockup/index.html</code></td>
+<td style="text-align:left"><code>.category-header</code>, <code>.category-count</code>, <code>.sub-category-header</code>, <code>.sub-category-count</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Document Browser Accordions</strong></td>
+<td style="text-align:left"><code>mockup/documents.html</code></td>
+<td style="text-align:left"><code>.category-header</code>, <code>.category-count</code>, <code>.sub-category-header</code>, <code>.sub-category-count</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Navigation &amp; Links</strong></td>
+<td style="text-align:left">All files in <code>mockup/*.html</code></td>
+<td style="text-align:left"><code>.nav</code>, <code>.nav a</code>, <code>.nav a:hover</code>, <code>.nav .donate-btn</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-applying-and-verifying-changes">3. Applying and Verifying Changes</h3>
+<p>After modifying any template in <code>mockup/</code>, regenerate the <code>build/</code> folder and test locally:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Regenerate build/ with live data from Google Sheets:</span>
+python generate_documents.py --<span class="hljs-built_in">source</span>-csv <span class="hljs-string">"https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/export?format=csv&amp;gid=548744990"</span>
+
+<span class="hljs-comment"># Commit and push to main (triggers automatic staging deployment to new.vedavms.in):</span>
+git add mockup/ MAINTAINER_GUIDE.md
+git commit -m <span class="hljs-string">"style: fine-tune banner and palette styles"</span>
+git push origin main
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%93%8B-administrator-%22to-do%22-checklist">📋 Administrator &quot;To-Do&quot; Checklist</h2>
+<p>Use this checklist to complete the autonomous setup:</p>
+<ul>
+<li>
+<p><input type="checkbox" id="checkbox0"><label for="checkbox0"></label><strong>1. Add Pre-Deploy Safeguards &amp; Live Rollback Snapshot</strong>:</p>
+<ul>
+<li><strong>Minimum Document Threshold Gate</strong>: Update <code>generate_documents.py</code> to enforce a minimum document count check (e.g. abort with an error if total records &lt; 500), preventing accidental deletions in the Google Sheet from wiping out the live website.</li>
+<li><strong>Pre-Deploy Live Site Snapshot</strong>: Update <code>.github/workflows/deploy_staging.yml</code> to automatically download and archive the current live <code>documents.html</code> from <code>https://new.vedavms.in</code> before uploading new files, providing a 1-click fallback snapshot.</li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" id="checkbox1"><label for="checkbox1"></label><strong>2. Future topics</strong>:</p>
+<ul>
+<li><strong>WordPress</strong>: For now, we can skip this. Later on, we can consider the following options:
+<ol>
+<li><strong>Hybrid WP-Generated site</strong>:  Our &quot;pdf-Catalog site&quot; as part of WP site</li>
+<li><strong>WP as an authoring tool</strong>: WP articles can then be served via the python web generator + Google sheet</li>
+<li><strong>Headless WordPress</strong>: Set up WordPress as a headless CMS with an API and use a framework like React or Vue.js to display the content. This provides the most flexibility but is also the most complex option.</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" id="checkbox2"><label for="checkbox2"></label><strong>3. Questions to VedaVMS team</strong>:</p>
+<ol>
+<li>Is there a daily backup for Vedavms site?</li>
+<li>Now we push the updates to Staging area  <code>new.vedavms.in</code>. Once we are done with testing we push the updates to the live site <code>vedavms.in</code>.  We will include a workflow where &quot;explicit push to live site&quot; is required after staging review. Then the previous baseline version is automatically archived and can be restored.  Is this OK?</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="%F0%9F%94%92-server-configuration--directory-paths">🔒 Server Configuration &amp; Directory Paths</h2>
+<p>The website files reside on the Windows IIS / Plesk hosting server at <code>103.69.196.157</code>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Environment</th>
+<th style="text-align:left">Web Root Folder</th>
+<th style="text-align:left">URL</th>
+<th style="text-align:left">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Live Production</strong></td>
+<td style="text-align:left"><code>/httpdocs/</code></td>
+<td style="text-align:left"><code>https://vedavms.in</code></td>
+<td style="text-align:left">Main live website</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Staging Preview</strong></td>
+<td style="text-align:left"><code>/new.vedavms.in/</code></td>
+<td style="text-align:left"><code>https://new.vedavms.in</code></td>
+<td style="text-align:left">Redesign testing &amp; review area</td>
+</tr>
+</tbody>
+</table>
+<h3 id="github-secrets-for-pipeline">GitHub Secrets for Pipeline:</h3>
 <p>Configure these in GitHub under <strong>Settings &gt; Secrets and variables &gt; Actions</strong>:</p>
 <ul>
 <li><code>STAGING_FTP_SERVER</code>: <code>103.69.196.157</code></li>
 <li><code>STAGING_FTP_USERNAME</code>: <code>vedavmsi</code></li>
 <li><code>STAGING_FTP_PASSWORD</code>: <code>(your FTP password)</code></li>
 <li><code>STAGING_REMOTE_DIR</code>: <code>/new.vedavms.in/</code></li>
+</ul>
+<hr>
+<h2 id="%F0%9F%9A%80-deploying-to-staging-or-production">🚀 Deploying to Staging or Production</h2>
+<p>We provide a parameterized deployment script <code>scripts/deploy_site.py</code> that takes the target directory as a parameter, creates an automatic backup snapshot of existing remote files before overwriting, uploads <code>build/</code> files, and provides 1-click rollbacks:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 1. Deploy to Staging (new.vedavms.in at /new.vedavms.in)</span>
+python scripts/deploy_site.py --staging
+<span class="hljs-comment"># or explicitly:</span>
+python scripts/deploy_site.py --dir /new.vedavms.in
+
+<span class="hljs-comment"># 2. Promote to Live Production (vedavms.in at /httpdocs)</span>
+<span class="hljs-comment"># Automatically creates a pre-deploy backup snapshot in backups/ before deploying!</span>
+python scripts/deploy_site.py --production
+<span class="hljs-comment"># or explicitly:</span>
+python scripts/deploy_site.py --dir /httpdocs
+
+<span class="hljs-comment"># 3. Dry-run mode (preview which files would be deployed without modifying server)</span>
+python scripts/deploy_site.py --production --dry-run
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%94%84-instant-rollback-to-archived-snapshots">🔄 Instant Rollback to Archived Snapshots</h2>
+<p>You can restore any previous version or the original baseline website in one command:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 1. List all available archived snapshots:</span>
+python scripts/deploy_site.py --list-backups
+
+<span class="hljs-comment"># 2. Interactive Rollback to Production (vedavms.in):</span>
+python scripts/deploy_site.py --rollback --production
+
+<span class="hljs-comment"># 3. Rollback to original pre-redesign baseline (or specific snapshot):</span>
+python scripts/deploy_site.py --rollback --production --snapshot backup_production_vedavms_in
+
+<span class="hljs-comment"># 4. Preview rollback without making changes:</span>
+python scripts/deploy_site.py --rollback --production --dry-run
+</div></code></pre>
+<h3 id="github-actions-deployment">GitHub Actions Deployment:</h3>
+<ul>
+<li><strong>Automatic Staging Rollout</strong>: Pushes to <code>main</code> automatically deploy to <code>/new.vedavms.in/</code>.</li>
+<li><strong>Manual Production Promotion</strong>: Under GitHub <strong>Actions ➔ Deploy to Production (vedavms.in)</strong>, click <strong>Run workflow</strong> to promote the current build to <code>/httpdocs/</code> with explicit confirmation.</li>
 </ul>
 <hr>
 <h2 id="%F0%9F%A7%AA-testing--regeneration-locally">🧪 Testing &amp; Regeneration Locally</h2>
@@ -819,6 +1226,18 @@ python generate_documents.py --<span class="hljs-built_in">source</span>-csv <sp
 <span class="hljs-comment"># Rebuild using local fallback CSV</span>
 python generate_documents.py --<span class="hljs-built_in">source</span>-csv data/vedavms_documents.csv
 </div></code></pre>
+<style>
+/* High-contrast inline code badges for Markdown PDF */
+:not(pre):not(.hljs) > code {
+  color: #7B1113 !important;             /* Crisp deep maroon */
+  background-color: #FFF3E6 !important;   /* Warm light cream pill */
+  padding: 1px 5px !important;
+  border-radius: 4px !important;
+  border: 1px solid #EADDC9 !important;
+  font-family: Consolas, Monaco, monospace !important;
+  font-size: 0.9em !important;
+}
+</style>
 
 </body>
 </html>
