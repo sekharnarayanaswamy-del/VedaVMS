@@ -186,23 +186,20 @@ def parse_chapters_and_sections(raw_paras: list[str], chapter_regex: str | None 
 def format_vedic_html(text: str) -> str:
     """Format Vedic Sanskrit text for HTML rendering.
     
-    Mimics the optimal rendering in Jaimineeya Samavedam:
     - Wraps combining accent marks in zero-width positioned spans with elevated clearance
-    - Ensures Visarga (ः) and Anusvara (ं) remain contiguous with the base syllable so
-      no dotted circle (◌ः) is ever rendered by OpenType shapers (like Tiro Sanskrit)
+    - When encountering visarga (ः), ensures accent marks sit above/below the previous syllable
+      (i.e. before the visarga, rather than drifting away past the visarga)
     - Applies independent accent font-size, font-weight, and elevation across all fonts
     """
     if not text:
         return text
 
-    # 1. Normalize ordering of accents and visarga/colon:
-    # Placing visarga after an accent or </span> boundary causes the OpenType text shaper
-    # to treat visarga as an orphaned mark without a base syllable, rendering U+25CC (◌ः).
-    # Moving visarga before the accent ensures it attaches directly to the base syllable.
-    text = re.sub(r'([\u0951\u0952\u1CDA]+)\s*([ः:])', r'ः\1', text)
-    text = re.sub(r'(\([1-4]\))\s*([ः:])', r'ः\1', text)
+    # When encountering visarga (ः) or colon, ensure accent marks sit on the previous syllable
+    # (i.e. before the visarga, so they do not drift away beyond the visarga):
+    text = re.sub(r'([ः:])\s*([\u0951\u0952\u1CDA]+)', r'\2\1', text)
+    text = re.sub(r'([ः:])\s*(\([1-4]\))', r'\2\1', text)
 
-    # 2. Wrap accents into zero-width styled spans
+    # Wrap accents into zero-width styled spans
     # Svarita (U+0951)
     text = text.replace('\u0951', '<span class="accent-swarita">&#x0951;</span>')
     # Deergha Svarita (U+1CDA)
@@ -216,9 +213,6 @@ def format_vedic_html(text: str) -> str:
     text = text.replace('(2)', '<span class="accent-anudatta">&#x0952;</span>')
     text = text.replace('(3)', '<span class="accent-deergha">&#x1CDA;</span>')
     text = text.replace('(4)', '<span class="accent-deergha">&#x1CDA;</span>')
-
-    # 3. Final safety: ensure no visarga or colon was pushed after a closing span
-    text = re.sub(r'(<span class="accent-[^"]+">[^<]+</span>)\s*([ः:])', r'ः\1', text)
 
     return text
 
