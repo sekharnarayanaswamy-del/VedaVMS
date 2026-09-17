@@ -3,7 +3,7 @@
     "taittiriya_upanishad": {
       "title": "तैत्तिरीयोपनिषत्, अरुणप्रश्नम्, तृणाचिकेतम्",
       "subtitle": "कृष्ण यजुर्वेदीय तैत्तिरीय आरण्यकम् (वेदमन्त्राः सस्वराः)",
-      "input_docx": "data/baraha/tu_baraha.docx",
+      "input_docx": "data/baraha/Taittiriya Upanishad Baraha.docx",
       "output_html": "build/taittiriya_upanishad_sanskrit.html",
       "back_link": "index.html",
       "back_label": "← Home",
@@ -12,7 +12,7 @@
     "udaka_shanti": {
       "title": "Udaka Shanti",
       "title_sanskrit": "उदकशान्तिः",
-      "input_docx": "data/baraha/udaka_shanti_baraha.docx",
+      "input_docx": "data/baraha/Udaka Shanti Baraha.docx",
       "output_html": "build/udaka_shanti_sanskrit.html",
       "back_link": "index.html",
       "back_label": "← Home",
@@ -21,7 +21,7 @@
     "shanti_japam": {
       "title": "Shanti Japam",
       "title_sanskrit": "शान्ति जपम्",
-      "input_docx": "data/baraha/shanti_japam_baraha.docx",
+      "input_docx": "data/baraha/Shanti Japam Baraha.docx",
       "output_html": "build/shanti_japam_sanskrit.html",
       "back_link": "index.html",
       "back_label": "← Home",
@@ -39,7 +39,7 @@
     "udaka_shanti_anushangam": {
       "title": "Udaka Shanti Anushangam",
       "title_sanskrit": "उदक शान्ति अनुषंगम",
-      "input_docx": "data/baraha/udaka_shanti_asct_baraha.docx",
+      "input_docx": "data/baraha/Udaka Shanti ASCT Baraha.docx",
       "output_html": "build/udaka_shanti_anushangam_sanskrit.html",
       "back_link": "index.html",
       "back_label": "← Home",
