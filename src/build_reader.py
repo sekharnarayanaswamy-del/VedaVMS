@@ -254,7 +254,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         html {{
             scroll-behavior: smooth;
             scroll-padding-top: 5rem;
-            overflow-x: hidden;
+            overflow-x: clip;
             width: 100%;
             max-width: 100%;
         }}
@@ -278,7 +278,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-size: var(--font-size);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
+            overflow-x: clip;
             width: 100%;
             max-width: 100%;
             margin: 0;
@@ -1397,6 +1397,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         function scrollSidebarToTarget(targetLink) {{
             const sidebar = document.querySelector('.toc-sidebar');
             if (!sidebar || isUserInteractingWithToc || !targetLink) return;
+            if (isMobileView() && !document.body.classList.contains('mobile-toc-active')) return;
             const linkRect = targetLink.getBoundingClientRect();
             const sideRect = sidebar.getBoundingClientRect();
             const margin = Math.min(60, sideRect.height * 0.15);
