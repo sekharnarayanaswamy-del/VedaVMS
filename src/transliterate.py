@@ -407,8 +407,8 @@ def baraha_to_devanagari(text: str) -> str:
     text = text.replace('~j', 'ञ्')
     text = text.replace('~J', 'ञ्')
 
-    # 3. Ensure accents stay on the previous syllable before Visarga (H)
-    text = re.sub(r'H([q#$]+)', r'\1H', text)
+    # 3. Ensure Visarga (H) is contiguous with the syllable, followed by accent marker
+    text = re.sub(r'([q#$]+)H', r'H\1', text)
     text = re.sub(r'([q#$]+)M', r'M\1', text)
 
     out = []

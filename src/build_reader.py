@@ -186,20 +186,34 @@ def parse_chapters_and_sections(raw_paras: list[str], chapter_regex: str | None 
 def format_vedic_html(text: str) -> str:
     """Format Vedic Sanskrit text for HTML rendering.
     
+    - Keeps Visarga (ः) contiguous with base syllable to eliminate dotted circles (◌ः) across all fonts (Tiro Sanskrit, Noto, etc.)
+    - For syllables ending in Visarga, applies .accent-visarga with negative offset so the accent mark
+      sits directly above/below the previous syllable without drifting past the visarga
     - Wraps combining accent marks in zero-width positioned spans with elevated clearance
-    - When encountering visarga (ः), ensures accent marks sit above/below the previous syllable
-      (i.e. before the visarga, rather than drifting away past the visarga)
     - Applies independent accent font-size, font-weight, and elevation across all fonts
     """
     if not text:
         return text
 
-    # When encountering visarga (ः) or colon, ensure accent marks sit on the previous syllable
-    # (i.e. before the visarga, so they do not drift away beyond the visarga):
-    text = re.sub(r'([ः:])\s*([\u0951\u0952\u1CDA]+)', r'\2\1', text)
-    text = re.sub(r'([ः:])\s*(\([1-4]\))', r'\2\1', text)
+    # 1. Normalize ASCII colons to Visarga
+    text = text.replace(':', 'ः')
 
-    # Wrap accents into zero-width styled spans
+    # 2. Reorder accents that landed before Visarga so syllable + ः remain contiguous
+    text = re.sub(r'([\u0951\u0952\u1CDA]+)\s*ः', r'ः\1', text)
+    text = re.sub(r'(\([1-4]\))\s*ः', r'ः\1', text)
+
+    # 3. Accents following Visarga receive .accent-visarga to shift backwards over the syllable
+    text = text.replace('ः\u0951', 'ः<span class="accent-swarita accent-visarga">&#x0951;</span>')
+    text = text.replace('ः\u1CDA', 'ः<span class="accent-deergha accent-visarga">&#x1CDA;</span>')
+    text = text.replace('ः\u0952\u0952', 'ः<span class="accent-anudatta accent-visarga">&#x0952;&#x0952;</span>')
+    text = text.replace('ः\u0952', 'ः<span class="accent-anudatta accent-visarga">&#x0952;</span>')
+
+    text = text.replace('ः(1)', 'ः<span class="accent-swarita accent-visarga">&#x0951;</span>')
+    text = text.replace('ः(2)', 'ः<span class="accent-anudatta accent-visarga">&#x0952;</span>')
+    text = text.replace('ः(3)', 'ः<span class="accent-deergha accent-visarga">&#x1CDA;</span>')
+    text = text.replace('ः(4)', 'ः<span class="accent-deergha accent-visarga">&#x1CDA;</span>')
+
+    # 4. Standard accents (on syllables without Visarga)
     # Svarita (U+0951)
     text = text.replace('\u0951', '<span class="accent-swarita">&#x0951;</span>')
     # Deergha Svarita (U+1CDA)
@@ -243,7 +257,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-weight: 400 500;
             font-style: normal;
             font-display: swap;
-            size-adjust: 135%;
+            size-adjust: 110%;
         }}
         @font-face {{
             font-family: 'AdishilaVedic';
@@ -251,7 +265,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-weight: 600 700;
             font-style: normal;
             font-display: swap;
-            size-adjust: 135%;
+            size-adjust: 110%;
         }}
         @font-face {{
             font-family: 'Adishila San';
@@ -259,7 +273,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-weight: 400 500;
             font-style: normal;
             font-display: swap;
-            size-adjust: 125%;
+            size-adjust: 115%;
         }}
         @font-face {{
             font-family: 'Adishila San';
@@ -267,7 +281,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-weight: 600 700;
             font-style: normal;
             font-display: swap;
-            size-adjust: 125%;
+            size-adjust: 115%;
         }}
         @font-face {{
             font-family: 'Adishila San';
@@ -275,7 +289,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-weight: 400 500;
             font-style: italic;
             font-display: swap;
-            size-adjust: 125%;
+            size-adjust: 115%;
         }}
         @font-face {{
             font-family: 'Adishila San';
@@ -283,7 +297,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-weight: 600 700;
             font-style: italic;
             font-display: swap;
-            size-adjust: 125%;
+            size-adjust: 115%;
         }}
 
         :root {{
@@ -297,9 +311,10 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             --border-color: #EADDC9;
             --accent-bg: #FFF3E0;
             --font-size: {default_font_size}rem;
-            --mantra-size: calc(var(--font-size) * 1.25);
+            --mantra-size: calc(var(--font-size) * 1.18);
             --swarita-bottom: 0.2em;
             --anudatta-bottom: -0.25em;
+            --visarga-offset: -0.42em;
             --accent-font: 'AdishilaVedic', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
             --verse-font: 'Noto Serif Devanagari', 'Adishila San', 'Tiro Devanagari Sanskrit', serif;
             --verse-weight: 500;
@@ -308,7 +323,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         html {{
             scroll-behavior: smooth;
             scroll-padding-top: 5rem;
-            overflow-x: clip;
+            overflow-x: auto;
             width: 100%;
             max-width: 100%;
         }}
@@ -332,7 +347,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-size: var(--font-size);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            overflow-x: clip;
+            overflow-x: auto;
             width: 100%;
             max-width: 100%;
             margin: 0;
@@ -428,12 +443,14 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
         .layout {{
             max-width: 1240px;
+            width: 100%;
             margin: 1.75rem auto;
             padding: 0 1rem;
             display: grid;
-            grid-template-columns: 290px 1fr;
-            gap: 2rem;
+            grid-template-columns: 290px minmax(0, 1fr);
+            gap: 1.5rem;
             align-items: flex-start;
+            box-sizing: border-box;
         }}
 
         .toc-sidebar {{
@@ -661,10 +678,15 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             background: var(--white);
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            padding: 2.25rem 2.75rem;
+            padding: 1.75rem 2rem;
             box-shadow: 0 4px 16px rgba(0,0,0,0.06);
             --font-size: {default_font_size}rem;
             font-size: var(--font-size);
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-wrap: break-word;
+            word-break: normal;
         }}
 
         .back-to-top {{
@@ -720,6 +742,9 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
         .chapter-container {{
             margin-bottom: 3.5rem;
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
         }}
 
         .chapter-heading {{
@@ -738,9 +763,13 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             border: 1px solid #F0E6D8;
             border-left: 5px solid var(--saffron);
             border-radius: 8px;
-            padding: 1.35rem 1.6rem;
+            padding: 1.25rem 1.4rem;
             margin-bottom: 2rem;
             box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-wrap: break-word;
         }}
 
         .anuvaka-header {{
@@ -771,16 +800,21 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         .verse-text {{
             font-family: var(--verse-font);
             font-weight: var(--verse-weight);
-            font-size: var(--mantra-size, calc(var(--font-size) * 1.25));
+            font-size: var(--mantra-size, calc(var(--font-size) * 1.18));
             line-height: 2.2;
-            letter-spacing: 0.015em;
+            letter-spacing: 0.012em;
             color: #111111;
-            text-align: justify;
+            text-align: left;
+            overflow-wrap: break-word;
+            word-break: normal;
+            min-width: 0;
         }}
 
         .verse-p {{
             margin-bottom: 1.15rem;
             text-indent: 0;
+            overflow-wrap: break-word;
+            word-break: normal;
         }}
 
         .verse-p:last-child {{
@@ -828,6 +862,33 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             left: 0;
             bottom: var(--swarita-bottom);
             isolation: isolate;
+        }}
+
+        /* When accent follows Visarga (ः), shift backwards over the syllable to eliminate dotted circles & prevent drift */
+        .accent-visarga {{
+            left: var(--visarga-offset, -0.42em) !important;
+        }}
+
+        @media (max-width: 1100px) {{
+            .layout {{
+                grid-template-columns: 250px minmax(0, 1fr);
+                gap: 1.15rem;
+                padding: 0 0.75rem;
+            }}
+            .main-content {{
+                padding: 1.35rem 1.6rem;
+            }}
+        }}
+
+        @media (max-width: 850px) and (pointer: fine) {{
+            .layout {{
+                grid-template-columns: 220px minmax(0, 1fr);
+                gap: 0.85rem;
+                padding: 0 0.5rem;
+            }}
+            .main-content {{
+                padding: 1.15rem 1.35rem;
+            }}
         }}
 
         @media (max-width: 600px), (max-width: 850px) and (pointer: coarse), (max-height: 550px) and (orientation: landscape) and (pointer: coarse) {{
@@ -1735,6 +1796,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                     .accent-swarita {{ bottom: var(--swarita-bottom, 0.2em) !important; }}
                     .accent-anudatta {{ bottom: var(--anudatta-bottom, -0.25em) !important; }}
                     .accent-deergha {{ bottom: var(--swarita-bottom, 0.2em) !important; }}
+                    .accent-visarga {{ left: var(--visarga-offset, -0.42em) !important; }}
                     @media print {{
                         body {{ margin: 0 !important; padding: 0 !important; }}
                     }}
