@@ -304,7 +304,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             --accent-bg: #FFF3E0;
             --font-size: {default_font_size}rem;
             --mantra-size: calc(var(--font-size) * 1.25);
-            --swarita-bottom: 0.42em;
+            --swarita-bottom: 0.2em;
             --anudatta-bottom: -0.25em;
             --accent-font: 'AdishilaVedic', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
             --verse-font: 'Noto Serif Devanagari', 'Adishila San', 'Tiro Devanagari Sanskrit', serif;
@@ -1738,9 +1738,9 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                         position: relative !important;
                         isolation: isolate !important;
                     }}
-                    .accent-swarita {{ bottom: var(--swarita-bottom, 0.42em) !important; }}
+                    .accent-swarita {{ bottom: var(--swarita-bottom, 0.2em) !important; }}
                     .accent-anudatta {{ bottom: var(--anudatta-bottom, -0.25em) !important; }}
-                    .accent-deergha {{ bottom: var(--swarita-bottom, 0.42em) !important; }}
+                    .accent-deergha {{ bottom: var(--swarita-bottom, 0.2em) !important; }}
                     @media print {{
                         body {{ margin: 0 !important; padding: 0 !important; }}
                     }}
