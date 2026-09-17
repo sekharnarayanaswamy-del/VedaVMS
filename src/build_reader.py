@@ -733,7 +733,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             margin-bottom: 0;
         }}
 
-        @media (max-width: 960px), (max-height: 550px) and (orientation: landscape) {{
+        @media (max-width: 600px), (max-width: 850px) and (pointer: coarse), (max-height: 550px) and (orientation: landscape) and (pointer: coarse) {{
             .header {{
                 padding: 0.45rem 0.6rem;
             }}
@@ -1324,7 +1324,11 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         function isMobileView() {{
-            return window.innerWidth <= 960 || (window.innerHeight <= 550 && window.matchMedia('(orientation: landscape)').matches);
+            const isTouch = window.matchMedia('(pointer: coarse)').matches;
+            const isNarrow = window.innerWidth <= 600;
+            const isTouchTablet = isTouch && window.innerWidth <= 850;
+            const isTouchLandscape = isTouch && window.innerHeight <= 550 && window.matchMedia('(orientation: landscape)').matches;
+            return isNarrow || isTouchTablet || isTouchLandscape;
         }}
 
         function closeMobileToc() {{
@@ -1351,7 +1355,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 if (!layout) return;
                 layout.classList.toggle('sidebar-collapsed');
                 const collapsed = layout.classList.contains('sidebar-collapsed');
-                localStorage.setItem('sidebar-collapsed', collapsed);
+                sessionStorage.setItem('sidebar-collapsed', collapsed);
                 if (btn) btn.textContent = collapsed ? '☰' : '☰ सूची';
             }}
         }}
@@ -1371,7 +1375,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 }}
             }} else {{
                 document.body.classList.remove('mobile-toc-active');
-                const collapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+                const collapsed = sessionStorage.getItem('sidebar-collapsed') === 'true';
                 if (layout) {{
                     if (collapsed) layout.classList.add('sidebar-collapsed');
                     else layout.classList.remove('sidebar-collapsed');
