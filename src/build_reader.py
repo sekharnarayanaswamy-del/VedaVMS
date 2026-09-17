@@ -323,7 +323,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         html {{
             scroll-behavior: smooth;
             scroll-padding-top: 5rem;
-            overflow-x: auto;
+            overflow-x: clip;
             width: 100%;
             max-width: 100%;
         }}
@@ -347,7 +347,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-size: var(--font-size);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            overflow-x: auto;
+            overflow-x: clip;
             width: 100%;
             max-width: 100%;
             margin: 0;
