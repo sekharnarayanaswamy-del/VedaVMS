@@ -48,6 +48,11 @@
   },
   "fonts": [
     {
+      "label": "Adishila Vedic",
+      "font": "'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif",
+      "weight": "500"
+    },
+    {
       "label": "Noto Serif",
       "font": "'Noto Serif Devanagari', 'Adishila San', 'Tiro Devanagari Sanskrit', serif",
       "weight": "500"

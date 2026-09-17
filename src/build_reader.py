@@ -183,6 +183,46 @@ def parse_chapters_and_sections(raw_paras: list[str], chapter_regex: str | None 
     return chapters
 
 
+def format_vedic_html(text: str) -> str:
+    """Format Vedic Sanskrit text for HTML rendering.
+    
+    Mimics the optimal rendering in Jaimineeya Samavedam:
+    - Wraps combining accent marks in zero-width positioned spans with elevated clearance
+    - Ensures Visarga (ः) and Anusvara (ं) remain contiguous with the base syllable so
+      no dotted circle (◌ः) is ever rendered by OpenType shapers (like Tiro Sanskrit)
+    - Applies independent accent font-size, font-weight, and elevation across all fonts
+    """
+    if not text:
+        return text
+
+    # 1. Normalize ordering of accents and visarga/colon:
+    # Placing visarga after an accent or </span> boundary causes the OpenType text shaper
+    # to treat visarga as an orphaned mark without a base syllable, rendering U+25CC (◌ः).
+    # Moving visarga before the accent ensures it attaches directly to the base syllable.
+    text = re.sub(r'([\u0951\u0952\u1CDA]+)\s*([ः:])', r'ः\1', text)
+    text = re.sub(r'(\([1-4]\))\s*([ः:])', r'ः\1', text)
+
+    # 2. Wrap accents into zero-width styled spans
+    # Svarita (U+0951)
+    text = text.replace('\u0951', '<span class="accent-swarita">&#x0951;</span>')
+    # Deergha Svarita (U+1CDA)
+    text = text.replace('\u1CDA', '<span class="accent-deergha">&#x1CDA;</span>')
+    # Anudatta (U+0952): handle double anudatta then single anudatta
+    text = text.replace('\u0952\u0952', '<span class="accent-anudatta">&#x0952;&#x0952;</span>')
+    text = text.replace('\u0952', '<span class="accent-anudatta">&#x0952;</span>')
+
+    # Also handle ASCII / Baraha accent markers if any remain
+    text = text.replace('(1)', '<span class="accent-swarita">&#x0951;</span>')
+    text = text.replace('(2)', '<span class="accent-anudatta">&#x0952;</span>')
+    text = text.replace('(3)', '<span class="accent-deergha">&#x1CDA;</span>')
+    text = text.replace('(4)', '<span class="accent-deergha">&#x1CDA;</span>')
+
+    # 3. Final safety: ensure no visarga or colon was pushed after a closing span
+    text = re.sub(r'(<span class="accent-[^"]+">[^<]+</span>)\s*([ः:])', r'ः\1', text)
+
+    return text
+
+
 def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict], default_font_size: float = 1.35) -> str:
     """Generate standalone responsive HTML reader with TOC navigation and typography controls."""
     title = book_meta.get("title", "Vedic Sanskrit Reader")
@@ -203,6 +243,22 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        @font-face {{
+            font-family: 'AdishilaVedic';
+            src: local('AdishilaVedic'), url('fonts/AdishilaVedic.ttf') format('truetype');
+            font-weight: 400 500;
+            font-style: normal;
+            font-display: swap;
+            size-adjust: 135%;
+        }}
+        @font-face {{
+            font-family: 'AdishilaVedic';
+            src: local('AdishilaVedicBold'), local('AdishilaVedic-Bold'), url('fonts/AdishilaVedicBold.ttf') format('truetype');
+            font-weight: 600 700;
+            font-style: normal;
+            font-display: swap;
+            size-adjust: 135%;
+        }}
         @font-face {{
             font-family: 'Adishila San';
             src: local('Adishila San'), url('fonts/AdishilaSan.ttf') format('truetype');
@@ -247,6 +303,10 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             --border-color: #EADDC9;
             --accent-bg: #FFF3E0;
             --font-size: {default_font_size}rem;
+            --mantra-size: calc(var(--font-size) * 1.25);
+            --swarita-bottom: 0.42em;
+            --anudatta-bottom: 0.40em;
+            --accent-font: 'AdishilaVedic', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
             --verse-font: 'Noto Serif Devanagari', 'Adishila San', 'Tiro Devanagari Sanskrit', serif;
             --verse-weight: 500;
         }}
@@ -717,20 +777,63 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         .verse-text {{
             font-family: var(--verse-font);
             font-weight: var(--verse-weight);
-            font-size: var(--font-size);
-            line-height: 2.1;
-            letter-spacing: 0.005em;
+            font-size: var(--mantra-size, calc(var(--font-size) * 1.25));
+            line-height: 2.2;
+            letter-spacing: 0.015em;
             color: #111111;
             text-align: justify;
         }}
 
         .verse-p {{
-            margin-bottom: 1rem;
+            margin-bottom: 1.15rem;
             text-indent: 0;
         }}
 
         .verse-p:last-child {{
             margin-bottom: 0;
+        }}
+
+        /* Vedic Accent Mark Styles - Zero-width elevated positioning (mimicking Jaimineeya Samavedam) */
+        .accent-swarita {{
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            font-family: var(--accent-font);
+            color: inherit;
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: 0;
+            bottom: var(--swarita-bottom);
+            isolation: isolate;
+        }}
+
+        .accent-anudatta {{
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            font-family: var(--accent-font);
+            color: inherit;
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: 0;
+            bottom: var(--anudatta-bottom);
+            isolation: isolate;
+        }}
+
+        .accent-deergha {{
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            font-family: var(--accent-font);
+            color: inherit;
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: 0;
+            bottom: var(--swarita-bottom);
+            isolation: isolate;
         }}
 
         @media (max-width: 600px), (max-width: 850px) and (pointer: coarse), (max-height: 550px) and (orientation: landscape) and (pointer: coarse) {{
@@ -1245,7 +1348,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 else:
                     header_html = ''
             else:
-                title_disp_deva = f"{sec['num']} {sec['title_deva']}".strip()
+                title_disp_deva = f"{sec['num']} {format_vedic_html(sec['title_deva'])}".strip()
                 header_html = f'''                    <div class="anuvaka-header">
                         <span class="anuvaka-num">{title_disp_deva}</span>
                         {code_span}
@@ -1256,7 +1359,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                     <div class="verse-text">
 ''')
             for deva_line in sec["content_deva"]:
-                html_parts.append(f'                        <p class="verse-p">{deva_line}</p>\n')
+                html_parts.append(f'                        <p class="verse-p">{format_vedic_html(deva_line)}</p>\n')
             html_parts.append('''                    </div>
                 </div>
 ''')
@@ -1619,9 +1722,25 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                         print-color-adjust: exact !important;
                     }}
                     .verse-text, .verse-p {{
+                        font-size: 1.35rem !important;
+                        line-height: 2.1 !important;
                         word-break: break-word !important;
                         overflow-wrap: break-word !important;
                     }}
+                    .accent-swarita, .accent-anudatta, .accent-deergha {{
+                        display: inline-block !important;
+                        width: 0 !important;
+                        overflow: visible !important;
+                        font-family: var(--accent-font) !important;
+                        color: inherit !important;
+                        font-weight: bold !important;
+                        font-size: 1.2em !important;
+                        position: relative !important;
+                        isolation: isolate !important;
+                    }}
+                    .accent-swarita {{ bottom: var(--swarita-bottom, 0.42em) !important; }}
+                    .accent-anudatta {{ bottom: var(--anudatta-bottom, 0.40em) !important; }}
+                    .accent-deergha {{ bottom: var(--swarita-bottom, 0.42em) !important; }}
                     @media print {{
                         body {{ margin: 0 !important; padding: 0 !important; }}
                     }}
