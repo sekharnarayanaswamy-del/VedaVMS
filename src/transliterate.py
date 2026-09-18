@@ -28,7 +28,7 @@ CONSONANTS = {
     'T': 'ट्', 'Th': 'ठ्', 'TH': 'ठ्', 'D': 'ड्', 'Dh': 'ढ्', 'DH': 'ढ्', 'N': 'ण्',
     't': 'त्', 'th': 'थ्', 'd': 'द्', 'dh': 'ध्', 'n': 'न्',
     'p': 'प्', 'ph': 'फ्', 'P': 'फ्', 'Pr': 'प्र्', 'b': 'ब्', 'bh': 'भ्', 'B': 'भ्', 'm': 'म्',
-    'y': 'य्', 'r': 'र्', 'l': 'ल्', 'v': 'व्', 'V': 'व्', 'w': 'व्',
+    'y': 'य्', 'Y': 'य्', 'r': 'र्', 'l': 'ल्', 'v': 'व्', 'V': 'व्', 'w': 'व्', 'W': 'व्',
     'S': 'श्', 'sh': 'श्', 'Sh': 'ष्', 'shh': 'ष्', 's': 'स्', 'h': 'ह्', 'L': 'ळ्',
     'x': 'क्ष्', 'kSh': 'क्ष्', 'j~j': 'ज्ञ्', 'GY': 'ज्ञ्',
 }
@@ -140,7 +140,7 @@ def clean_baraha_english(text: str) -> str:
     text = normalize_glued_citation_tokens(text)
     def fix_word(m):
         w = m.group(0)
-        if w.isupper() and len(w) <= 4:
+        if w.isupper():
             return w
         # Keep acronyms or citations like 'TS', 'TB', 'TA' uppercase
         if w.lower() in {'ts', 'tb', 'ta', 'rv', 'sv', 'av', 'apmb', 'ms', 'ks', 'sb', 'vs', 'eak'}:
@@ -217,19 +217,65 @@ def is_english_text(text: str) -> bool:
     return False
 
 
+def normalize_parasavarna_sandhi(text: str) -> str:
+    """Normalize word-boundary phonetic parasavarna spellings to canonical printed Anusvara (M).
+
+    In spoken Vedic recitation and phonetic transcription, word-final anusvara before a stop consonant
+    is often realized as the class nasal (e.g. 'kaqvi~g ka#vIqnAM' for 'क॒विं क॑वी॒नाम्' or
+    'gaqNAnA$n tvA' for 'ग॒णानां᳚ त्वा'). In traditional printed texts, however, word-boundary anusvara
+    is standardly printed with the Anusvara dot (ं), and the chanter applies the sandhi orally.
+    """
+    # 1. Word-final ~g / ~G before velar (k, kh, g, gh)
+    def repl_velar(m):
+        base = m.group(1)
+        acc = m.group(2)
+        rest = m.group(3)
+        pure = re.sub(r'[q#$]', '', base).lower()
+        if pure in {'prA~g', 'viShva~g', 'pratya~g', 'anva~g', 'tirya~g', 'udya~g'}:
+            return m.group(0)
+        base_clean = base[:-2]
+        return f'{base_clean}M{acc}{rest}'
+
+    text = re.sub(r'(\b[a-zA-Z]+~[gG])([q#$]*)(\s+[kKgG])', repl_velar, text)
+
+    # 2. Word-final ~j / ~J before palatal (c, ch, j, jh)
+    def repl_palatal(m):
+        base = m.group(1)
+        acc = m.group(2)
+        rest = m.group(3)
+        base_clean = base[:-2]
+        return f'{base_clean}M{acc}{rest}'
+
+    text = re.sub(r'(\b[a-zA-Z]+~[jJ])([q#$]*)(\s+[cCjJ])', repl_palatal, text)
+
+    # 3. Known phonetic sandhi cases where anusvara was typed as 'n' before dental
+    text = re.sub(r'\b(gaqNAnA)(\$?|\#?|q?)n\s+(tvA)', r'\g<1>\g<2>M \g<3>', text)
+    text = re.sub(r'\b(madhu#matI)n\s+(dEqvEBya)', r'\g<1>M \g<2>', text)
+    text = re.sub(r'\b(vijya)qn\s+(dhanu)', r'\g<1>qM \g<2>', text)
+
+    return text
+
+
 def baraha_to_devanagari(text: str) -> str:
     """Convert Baraha ASCII transliteration text into Devanagari Unicode with Vedic svara notation."""
     if not text:
         return ""
 
-    # Strip any stray <lang=...> tags
-    text = re.sub(r'</?lang=[^>]+>', '', text)
+    text = normalize_parasavarna_sandhi(text)
+
+    # If line has an English prefix transitioning via <lang=def> to Sanskrit (e.g. Note... <lang=def> mantra)
+    if '<lang=def>' in text.lower() and '<lang=eng>' not in text.lower():
+        parts = re.split(r'<lang=def>', text, flags=re.I, maxsplit=1)
+        if is_english_text(parts[0]):
+            return (clean_baraha_english(parts[0]) + ' ' + baraha_to_devanagari(parts[1].strip())).strip()
 
     # Do not transliterate pure English text to Devanagari
     if is_english_text(text):
         return clean_baraha_english(text)
 
-    # 1. Pre-normalize Vedic nasal glyphs and symbols first so nested parens don't break
+    # 1. Pre-normalize Sacred OM, Vedic nasal glyphs and symbols first so nested parens don't break
+    text = re.sub(r'\b(Oum|OUM|OM|Oum_|OM_|oUM)\b', 'ॐ', text)
+    text = text.replace('ओउम्', 'ॐ')
     text = re.sub(r'\(gm~?\)', '\uA8F3', text, flags=re.I)
     text = re.sub(r'\(gg\)', '\u1CFA', text, flags=re.I)
     text = text.replace('~M', '\u00A0\u0901')
@@ -237,12 +283,6 @@ def baraha_to_devanagari(text: str) -> str:
     text = text.replace('||', '॥')
     text = text.replace('|', '।')
     text = re.sub(r'\^+', '\u200C', text)
-
-    # If line has an English prefix transitioning via <lang=def> to Sanskrit (e.g. Note... <lang=def> mantra)
-    if '<lang=def>' in text.lower() and '<lang=eng>' not in text.lower():
-        parts = re.split(r'<lang=def>', text, flags=re.I, maxsplit=1)
-        if is_english_text(parts[0]):
-            return (clean_baraha_english(parts[0]) + '\n' + baraha_to_devanagari(parts[1].strip())).strip()
 
     # Normalize glued tokens
     text = normalize_glued_citation_tokens(text)
@@ -258,6 +298,32 @@ def baraha_to_devanagari(text: str) -> str:
         placeholders.append(m.group(0))
         return f'\uE000{len(placeholders)-1}\uE001'
 
+    # Normalize Devanagari Roman numeral artifacts if present
+    dev_roman_replacements = [
+        ('3 इ)', '3 i)'), ('3 इ.', '3 i.'),
+        ('1 इ)', '1 i)'), ('2 इ)', '2 i)'), ('4 इ)', '4 i)'), ('5 इ)', '5 i)'),
+        ('इइइ)', 'iii)'), ('इइ)', 'ii)'), ('इ)', 'i)'),
+        ('इव्)', 'iv)'), ('व्)', 'v)'), ('वि)', 'vi)'),
+        ('विइ)', 'vii)'), ('विइइ)', 'viii)'), ('इक्ष्)', 'ix)'), ('क्ष्)', 'x)'),
+        ('इइइ.', 'iii.'), ('इइ.', 'ii.'), ('इ.', 'i.'),
+        ('इव्.', 'iv.'), ('व्.', 'v.'), ('वि.', 'vi.'),
+    ]
+    for k, v in dev_roman_replacements:
+        text = text.replace(k, v)
+
+    # Protect Roman numeral list item markers e.g. "i)", "ii)", "iii)", "iv)", "v)", "vi)", "3 i)", "3 ii)", "1 i."
+    def repl_roman_list(m):
+        prefix = m.group(1)
+        marker = m.group(2)
+        placeholders.append(marker)
+        return f'{prefix}\uE000{len(placeholders)-1}\uE001'
+
+    text = re.sub(
+        r'(?i)(^|[\s\(\[\|\॥\t])((\d+\s+)?(?:i{1,4}|iv|v|vi{1,3}|ix|x|xi{1,3}|xii)[\)\.])(?=\s|$)',
+        repl_roman_list,
+        text
+    )
+
     # Protect English prefix before mantra, e.g. "Expansion of ..."
     def repl_prefix_exp(m):
         placeholders.append(clean_baraha_english(m.group(1)) + ' ')
@@ -271,6 +337,7 @@ def baraha_to_devanagari(text: str) -> str:
         return f'\uE000{len(placeholders)-1}\uE001'
 
     text = re.sub(r'<lang=eng>(.*?)(?:<lang=def>|$)', repl_lang_eng, text, flags=re.I | re.S)
+    text = re.sub(r'</?lang=[^>]+>', '', text)
 
     # Check for suffix English note after danda: e.g. "... || (Additional chanting Ends)" or "... | This Expansion is appearing in TS 3.3.11.3"
     def repl_post_danda(m):
@@ -401,11 +468,7 @@ def baraha_to_devanagari(text: str) -> str:
     # 1. Clean whitespace before combining tokens in Baraha source
     text = re.sub(r'\s+([q#$HM]+)', r'\1', text)
 
-    # 2. Normalize compound symbols
-    text = text.replace('~g', 'ङ्')
-    text = text.replace('~G', 'ङ्')
-    text = text.replace('~j', 'ञ्')
-    text = text.replace('~J', 'ञ्')
+    # 2. Compound symbols (~g, ~j, j~j, GY, kSh) are natively handled by CONSONANTS dictionary
 
     # 3. Ensure Visarga (H) is contiguous with the syllable, followed by accent marker
     text = re.sub(r'([q#$]+)H', r'H\1', text)
@@ -447,7 +510,7 @@ def baraha_to_devanagari(text: str) -> str:
             out.append('\u200C')
             i += 1
             continue
-        elif text[i] in ' \t\n\r।,॥():-0123456789.[]{}~/\\+*\uA8F3\uA8F2\uA8F4\u1CFA\u00A0\u0901':
+        elif text[i] in ' \t\n\r।,॥():-0123456789.[]{}/\\+*\uA8F3\uA8F2\uA8F4\u1CFA\u00A0\u0901\u0950':
             out.append(text[i])
             i += 1
             continue

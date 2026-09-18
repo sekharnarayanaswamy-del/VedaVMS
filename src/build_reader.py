@@ -19,16 +19,16 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 try:
-    from .transliterate import baraha_to_devanagari
+    from .transliterate import baraha_to_devanagari, is_english_text
 except ImportError:
     try:
-        from transliterate import baraha_to_devanagari
+        from transliterate import baraha_to_devanagari, is_english_text
     except ImportError:
         _cur = Path(__file__).resolve().parent
         for _p in [_cur, _cur.parent / "src", _cur.parent / "vedavms_html"]:
             if str(_p) not in sys.path:
                 sys.path.insert(0, str(_p))
-        from transliterate import baraha_to_devanagari
+        from transliterate import baraha_to_devanagari, is_english_text
 
 DOCX_NS = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
 
@@ -193,6 +193,10 @@ def format_vedic_html(text: str) -> str:
     - Applies independent accent font-size, font-weight, and elevation across all fonts
     """
     if not text:
+        return text
+
+    # Pass through raw HTML (tables, custom blocks) or pure English text as-is
+    if text.startswith('<table') or text.startswith('<div') or text.startswith('<!--') or is_english_text(text):
         return text
 
     # 1. Normalize ASCII colons to Visarga
@@ -869,6 +873,165 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             left: var(--visarga-offset, -0.42em) !important;
         }}
 
+        /* Vedic & General Tables */
+        .table-responsive {{
+            width: 100%;
+            overflow-x: auto;
+            margin: 1.25rem 0;
+            -webkit-overflow-scrolling: touch;
+        }}
+        .vedic-table {{
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            background: #FFFDF9;
+            border: 1px solid #E0D0C0;
+            border-radius: 6px;
+            overflow: hidden;
+        }}
+        .vedic-table th {{
+            background: #8B2500;
+            color: white;
+            padding: 0.65rem 0.85rem;
+            font-weight: 600;
+            text-align: left;
+            border: 1px solid #7B1113;
+            font-family: system-ui, -apple-system, sans-serif;
+        }}
+        .vedic-table td {{
+            padding: 0.55rem 0.85rem;
+            border: 1px solid #EAE0D5;
+            color: #2D2D2D;
+            line-height: 1.5;
+        }}
+        .vedic-table tr:nth-child(even) td {{
+            background: #FDF9F3;
+        }}
+        .vedic-table tr:hover td {{
+            background: #FFF2E5;
+        }}
+
+        /* Kumbha Stapanam Diagram Styles */
+        .kumbha-diagram-container {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem 0;
+            padding: 1.2rem;
+            background: #FFFDF8;
+            border: 1px solid #E8DCC8;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(139, 37, 0, 0.06);
+        }}
+        .kumbha-image-wrap {{
+            flex: 1 1 360px;
+            max-width: 480px;
+            text-align: center;
+        }}
+        .kumbha-image {{
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #D6C4B0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }}
+        .kumbha-table-wrap {{
+            flex: 1 1 340px;
+            max-width: 460px;
+            text-align: center;
+        }}
+        .direction-label {{
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #8B2500;
+            padding: 0.4rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }}
+        .kumbha-table {{
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 6px;
+            margin: 0.5rem 0;
+        }}
+        .kumbha-cell {{
+            background: #FFF5EB;
+            border: 1.5px solid #D9A066;
+            border-radius: 8px;
+            padding: 0.75rem 0.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            line-height: 1.35;
+            color: #333;
+            transition: all 0.2s;
+            vertical-align: middle;
+        }}
+        .kumbha-cell strong {{
+            color: #8B2500;
+            font-size: 1.05rem;
+        }}
+        .kumbha-cell:hover {{
+            background: #FFE8D1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(216, 67, 21, 0.15);
+        }}
+        .kumbha-center {{
+            background: linear-gradient(135deg, #FFF0E0 0%, #FFE3C2 100%) !important;
+            border: 2px solid #C04000 !important;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(192, 64, 0, 0.18);
+        }}
+        .kumbha-center strong {{
+            font-size: 1.25rem !important;
+            color: #A00000 !important;
+        }}
+        .kumbha-center-badge {{
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: white;
+            background: #C04000;
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }}
+
+        /* Krama Patha 2-Column Grid Table (matching canonical printed text) */
+        .krama-table-container {{
+            width: 100%;
+            margin: 1.15rem 0 1.65rem 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }}
+        .krama-table {{
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #444444;
+            background: #FFFFFF;
+            table-layout: fixed;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }}
+        .krama-table td {{
+            width: 50%;
+            border: 1px solid #444444;
+            padding: 0.6rem 0.95rem;
+            vertical-align: middle;
+            font-family: var(--verse-font);
+            font-weight: var(--verse-weight);
+            font-size: var(--mantra-size, calc(var(--font-size) * 1.15));
+            line-height: 2.15;
+            color: #111111;
+            word-break: normal;
+            overflow-wrap: break-word;
+        }}
+        .krama-table tr:hover td {{
+            background: #FFFDF5;
+        }}
+
         @media (max-width: 1100px) {{
             .layout {{
                 grid-template-columns: 250px minmax(0, 1fr);
@@ -1393,7 +1556,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         for sec in ch["sections"]:
             sec_id = f"sec-{sec['num'].replace('.', '-')}"
             code_span = f'<span class="anuvaka-code">{sec["ta_code"]}</span>' if sec["ta_code"] else ''
-            is_intro = sec.get('is_intro', False) or (sec['num'] == str(ch['num']) and (not sec.get('title_raw') or sec.get('title_raw') == ch.get('title_raw')))
+            is_intro = sec.get('is_intro', False) or sec['num'] == str(ch['num']) or (not sec.get('title_raw') or sec.get('title_raw') == ch.get('title_raw'))
 
             if is_intro:
                 if code_span:
@@ -1403,7 +1566,11 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 else:
                     header_html = ''
             else:
-                title_disp_deva = f"{sec['num']} {format_vedic_html(sec['title_deva'])}".strip()
+                t_deva = sec['title_deva'].strip() if sec.get('title_deva') else ''
+                if t_deva.startswith(f"{sec['num']}.") or t_deva.startswith(f"{sec['num']} ") or t_deva == sec['num']:
+                    title_disp_deva = format_vedic_html(t_deva)
+                else:
+                    title_disp_deva = f"{sec['num']} {format_vedic_html(t_deva)}".strip()
                 header_html = f'''                    <div class="anuvaka-header">
                         <span class="anuvaka-num">{title_disp_deva}</span>
                         {code_span}
@@ -1414,7 +1581,10 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                     <div class="verse-text">
 ''')
             for deva_line in sec["content_deva"]:
-                html_parts.append(f'                        <p class="verse-p">{format_vedic_html(deva_line)}</p>\n')
+                if deva_line.startswith('<div') or deva_line.startswith('<table'):
+                    html_parts.append(f'                        {deva_line}\n')
+                else:
+                    html_parts.append(f'                        <p class="verse-p">{format_vedic_html(deva_line)}</p>\n')
             html_parts.append('''                    </div>
                 </div>
 ''')
@@ -2150,9 +2320,11 @@ def ast_to_chapters(ast_data: dict) -> list[dict]:
         for sec_key, sec_data in ss_data.get('sections', {}).items():
             if sec_key == 'count':
                 continue
-            sec_title = sec_data.get('section_title', '')
+            sec_title = sec_data.get('title') or sec_data.get('section_title', '')
             num_m = re.match(r'^(\d+)\.\s*(.*)', sec_title)
             ch_num = int(num_m.group(1)) if num_m else (len(chapters) + 1)
+            raw_title = sec_data.get('raw_title', '')
+            is_eng = sec_data.get('is_english', False)
 
             sections = []
             for sub_key, sub_data in sec_data.get('subsections', {}).items():
@@ -2164,19 +2336,23 @@ def ast_to_chapters(ast_data: dict) -> list[dict]:
                     sub_num = h_m.group(1)
                     sub_title = h_m.group(2).strip()
                 else:
-                    sub_num = f"{ch_num}.{len(sections)+1}"
-                    sub_title = header
+                    sub_num = sub_data.get('sub_section_id', f"{ch_num}.{len(sections)+1}")
+                    sub_title = sub_data.get('title', header)
                 ta_code = sub_data.get('ta_code', '')
                 content = sub_data.get('content_lines', [])
                 sections.append({
                     'num': sub_num,
                     'title_deva': sub_title,
+                    'title_raw': sub_title,
                     'ta_code': ta_code,
-                    'content_deva': content
+                    'content_deva': content,
+                    'content_raw': content
                 })
             chapters.append({
                 'num': ch_num,
                 'title_deva': sec_title,
+                'title_raw': raw_title,
+                'is_english': is_eng,
                 'sections': sections
             })
     return chapters
@@ -2197,10 +2373,14 @@ def build_book(book_id: str, config: dict, input_override: str = None, output_ov
 
     print(f"\n--- Building '{book_id}' ---")
     print(f"Loading DOCX: {input_file}")
-    raw_paras = extract_docx_paragraphs(input_file)
-    print(f"Loaded {len(raw_paras)} paragraphs.")
 
-    chapters = parse_chapters_and_sections(raw_paras, chapter_regex)
+    try:
+        from .baraha_reader import parse_baraha_docx_to_ast, ast_to_reader_chapters
+    except ImportError:
+        from baraha_reader import parse_baraha_docx_to_ast, ast_to_reader_chapters
+    ast_data, _ = parse_baraha_docx_to_ast(input_file, title=book_meta.get("title_sanskrit"))
+    chapters = ast_to_reader_chapters(ast_data)
+
     print(f"Extracted {len(chapters)} chapters:")
     for ch in chapters:
         print(f"  Chapter {ch['num']}: {ch['title_deva']} ({len(ch['sections'])} sections)")

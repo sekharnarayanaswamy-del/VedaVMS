@@ -30,11 +30,28 @@
     "shiva_stuti": {
       "title": "Shiva Stuti",
       "title_sanskrit": "शिव स्तुतिः",
-      "input_docx": "data/baraha/siva_stuti_baraha.docx",
+      "input_docx": "data/baraha/Siva Stuti Baraha.docx",
       "output_html": "build/siva_stuti_sanskrit.html",
       "back_link": "index.html",
       "back_label": "← Home",
-      "chapter_regex": "^([1-2]?\\d)(?!\\.\\d)\\.?\\s*([a-zA-Z].*)$"
+      "chapter_regex": "^([1-2]?\\d)(?!\\.\\d)\\.?\\s*([a-zA-Z].*)$",
+      "intro_start": "Introduction",
+      "intro_sections": {
+        "purpose": "1.1 Purpose",
+        "language and versions": "1.2 Language and Versions",
+        "method of compilation": "1.3 Method of compilation",
+        "acknowledgement": "1.4 Acknowledgement",
+        "important notes": "1.5 Important Notes",
+        "rudraikaadasini kumbha stapanam.": "1.6 RUDRAIKAADASINI KUMBHA STAPANAM.",
+        "some basics": "2.1 Some Basics",
+        "forms of rudra japam": "2.2 Forms of Rudra Japam",
+        "sadyo jaatham": "2.3 Sadyo Jaatham",
+        "star (nakshatra) and rasi table:": "2.4 Star (Nakshatra) and Rasi Table:",
+        "star (nakshatra) and rasi table": "2.4 Star (Nakshatra) and Rasi Table:",
+        "days of the week:": "2.4.1 Days of the Week:",
+        "days of the week": "2.4.1 Days of the Week:",
+        "masam, ruthu, ayanam": "2.4.2 Masam, Ruthu, Ayanam"
+      }
     },
     "udaka_shanti_anushangam": {
       "title": "Udaka Shanti Anushangam",
