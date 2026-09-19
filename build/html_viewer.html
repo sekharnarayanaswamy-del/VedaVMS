@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Vedic Readers &amp; Site Directory - VedaVMS</title>
+    <meta name="description" content="Explore interactive digital HTML Vedic texts with accurate swara accents, font switching, and complete Table of Contents on VedaVMS.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@500;600;700&family=Tiro+Devanagari+Sanskrit&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --saffron: #E65100;
+            --saffron-light: #FFF3E0;
+            --maroon: #800000;
+            --maroon-dark: #5c0000;
+            --cream: #FFFDF9;
+            --gold: #DAA520;
+            --gold-light: #FCF8E3;
+            --dark-brown: #3E2723;
+            --text-color: #2D2424;
+            --border-color: #E8DCCF;
+            --card-bg: #FFFFFF;
+            --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(128, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-color);
+            background: #FAF7F2;
+            line-height: 1.65;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Header */
+        .header {
+            background: linear-gradient(135deg, #153E75 0%, #1D5296 50%, #2563A8 100%);
+            color: white;
+            padding: 1.25rem 1rem;
+            text-align: center;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .logo {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2.1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+        }
+
+        .om-symbol {
+            font-size: 1.75rem;
+            color: #FFD54F;
+        }
+
+        .blessing {
+            font-size: 0.82rem;
+            color: #F0F7FF;
+            opacity: 0.95;
+            font-style: italic;
+            margin-top: 0.35rem;
+        }
+
+        /* Navigation */
+        .nav {
+            background: #FFFFFF;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-mobile-bar {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.65rem 1rem;
+            background: #FFFFFF;
+        }
+
+        .nav-mobile-brand {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark-brown);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-mobile-brand .om-symbol {
+            color: var(--saffron);
+            font-size: 1.2rem;
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 28px;
+            height: 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .hamburger-bar {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--dark-brown);
+            border-radius: 3px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .nav-toggle.open .hamburger-bar:nth-child(1) {
+            transform: translateY(8.5px) rotate(45deg);
+        }
+
+        .nav-toggle.open .hamburger-bar:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .nav-toggle.open .hamburger-bar:nth-child(3) {
+            transform: translateY(-8.5px) rotate(-45deg);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: var(--dark-brown);
+            text-decoration: none;
+            padding: 0.85rem 1.15rem;
+            font-weight: 600;
+            font-size: 0.84rem;
+            text-transform: uppercase;
+            border-bottom: 3px solid transparent;
+            transition: all 0.25s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: var(--saffron);
+            border-bottom-color: var(--saffron);
+            background: var(--saffron-light);
+        }
+
+        .nav .donate-btn {
+            background: transparent;
+            color: var(--saffron) !important;
+            border: 1.5px solid var(--saffron);
+            border-radius: 4px;
+            margin: 0.35rem 0.5rem;
+            padding: 0.45rem 0.9rem;
+        }
+
+        .nav .donate-btn:hover {
+            background: var(--saffron);
+            color: white !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #FFFDF9 0%, #FFF3E0 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 2.75rem 1.5rem 2.25rem;
+            text-align: center;
+        }
+
+        .hero-deva-title {
+            font-family: 'Noto Serif Devanagari', serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: var(--maroon);
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-title {
+            font-size: 1.45rem;
+            color: var(--dark-brown);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-desc {
+            max-width: 780px;
+            margin: 0 auto 1.25rem;
+            color: #5D4037;
+            font-size: 0.98rem;
+            line-height: 1.6;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .hero-badge {
+            background: #FFFFFF;
+            border: 1px solid #E0CEBE;
+            color: var(--dark-brown);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 2.25rem auto 3.5rem;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+
+        .section-header {
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.65rem;
+            border-bottom: 2px solid #EADDC9;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .section-heading {
+            font-size: 1.35rem;
+            color: var(--maroon);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-count {
+            font-size: 0.85rem;
+            color: #795548;
+            font-weight: 600;
+        }
+
+        /* Grid of HTML Readers */
+        .readers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .reader-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            border-top: 5px solid var(--maroon);
+            box-shadow: var(--shadow-sm);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+        }
+
+        .reader-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-top-color: var(--saffron);
+        }
+
+        .card-top {
+            margin-bottom: 1rem;
+        }
+
+        .card-category {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--saffron);
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .card-title-deva {
+            font-family: 'Noto Serif Devanagari', serif;
+            font-size: 1.32rem;
+            font-weight: 700;
+            color: var(--maroon);
+            margin-bottom: 0.35rem;
+            line-height: 1.35;
+        }
+
+        .card-title-eng {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark-brown);
+            margin-bottom: 0.65rem;
+        }
+
+        .card-desc {
+            font-size: 0.88rem;
+            color: #55443D;
+            line-height: 1.55;
+            margin-bottom: 1rem;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .tag {
+            background: #F5EFEB;
+            color: #6D4C41;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            border: 1px solid #E6D9D0;
+        }
+
+        .tag.accent {
+            background: var(--gold-light);
+            color: #825E00;
+            border-color: #F0E1A1;
+        }
+
+        .card-actions {
+            border-top: 1px dashed #E5D5C5;
+            padding-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .open-reader-btn {
+            background: linear-gradient(135deg, var(--maroon) 0%, #A52A2A 100%);
+            color: #FFFFFF !important;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.88rem;
+            padding: 0.55rem 1.15rem;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(128, 0, 0, 0.2);
+        }
+
+        .open-reader-btn:hover {
+            background: linear-gradient(135deg, var(--saffron) 0%, #E65100 100%);
+            box-shadow: 0 4px 10px rgba(230, 81, 0, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .reader-format-badge {
+            font-size: 0.76rem;
+            color: #795548;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2D1810;
+            color: #D7CCC8;
+            text-align: center;
+            padding: 2.25rem 1rem 2rem;
+            margin-top: auto;
+            border-top: 3px solid var(--gold);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: #FFCCBC;
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #FFFFFF;
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            font-size: 0.8rem;
+            color: #A1887F;
+        }
+
+        @media (max-width: 768px) {
+            .nav-mobile-bar {
+                display: flex;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            .nav-container {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: #FFFFFF;
+                border-top: 1px solid var(--border-color);
+            }
+
+            .nav-container.active {
+                display: flex;
+            }
+
+            .nav a {
+                padding: 0.85rem 1.25rem;
+                border-bottom: 1px solid #F5EFEB;
+            }
+
+            .hero {
+                padding: 2rem 1rem 1.75rem;
+            }
+
+            .hero-deva-title {
+                font-size: 1.65rem;
+            }
+
+            .hero-title {
+                font-size: 1.25rem;
+            }
+
+            .readers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Header -->
+    <header class="header">
+        <a href="index.html" class="logo">
+            <span class="om-symbol">ॐ</span> वेद VedaVMS वेद <span class="om-symbol">ॐ</span>
+        </a>
+        <div class="blessing">वेदनिधीनां विजयते | भद्रं कर्णेभिः शृणुयाम देवाः</div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="nav">
+        <div class="nav-mobile-bar">
+            <a href="index.html" class="nav-mobile-brand">
+                <span class="om-symbol">ॐ</span> VedaVMS
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+            </button>
+        </div>
+        <div class="nav-container" id="navContainer">
+            <a href="index.html">Home</a>
+            <a href="documents.html">Documents</a>
+            <a href="html_viewer.html" class="active">HTML Viewers</a>
+            <a href="videos.html">Videos</a>
+            <a href="articles.html">Articles</a>
+            <a href="convention.html">Conventions</a>
+            <a href="about.html">About</a>
+            <a href="donations.html" class="donate-btn">Donate</a>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+        <div class="hero-deva-title">वेदमन्त्राः (सस्वराः) - Digital Interactive Editions</div>
+        <h1 class="hero-title">Interactive HTML Vedic Readers &amp; Site Directory</h1>
+        <p class="hero-desc">
+            Experience authentic Vedic texts in an interactive, responsive web format. Each reader features precision swara accents (Udatta, Anudatta, Swarita, Deergha Swarita), anunasika sandhi rules, multi-script font switching, hierarchical chapter navigation, and clean print/PDF export.
+        </p>
+        <div class="hero-badges">
+            <span class="hero-badge">🕉️ 5 Interactive Books</span>
+            <span class="hero-badge">🔤 5 Vedic Fonts</span>
+            <span class="hero-badge">📋 Hierarchical Sūcī (Index)</span>
+            <span class="hero-badge">🖨️ Clean Print / PDF</span>
+            <span class="hero-badge">📱 Mobile &amp; Desktop Optimized</span>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        <!-- Section 1: Interactive HTML Readers -->
+        <section id="readersSection">
+            <div class="section-header">
+                <h2 class="section-heading">
+                    <span>📖</span> Interactive HTML Vedic Readers
+                </h2>
+                <span class="section-count">5 Books Available</span>
+            </div>
+
+            <div class="readers-grid" id="readersGrid">
+                <!-- Book 1: Taittiriya Upanishad -->
+                <article class="reader-card" data-category="reader" data-keywords="taittiriya upanishad aruna prashnam trinachiketam surya namaskaram krishna yajurveda aranyakam shiksha valli ananda valli bhrigu valli तैत्तिरीयोपनिषत् अरुणप्रश्नम् तृणाचिकेतम्">
+                    <div class="card-top">
+                        <div class="card-category">🕉️ Taittiriya Aranyakam • Prashnas 1, 7, 8, 9, 10</div>
+                        <h3 class="card-title-deva">तैत्तिरीयोपनिषत्, अरुणप्रश्नम्, तृणाचिकेतम्</h3>
+                        <div class="card-title-eng">Taittiriya Upanishad, Aruna Prashnam &amp; Trinachiketam</div>
+                        <p class="card-desc">
+                            Complete sacred text comprising Shiksha Valli, Ananda Valli, Bhrigu Valli, full Aruna Prashnam (Surya Namaskara mantras with 130+ Anuvakas), and Trinachiketam with Vedic swaras, anunasika sandhi, and full chapter index.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag accent">Upanishad</span>
+                            <span class="tag">Surya Namaskaram</span>
+                            <span class="tag">Aruna Prashnam</span>
+                            <span class="tag">Trinachiketam</span>
+                            <span class="tag">Svara Accents</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span class="reader-format-badge">⚡ Full Interactive Reader</span>
+                        <a href="taittiriya_upanishad_sanskrit.html" class="open-reader-btn">
+                            Open Reader <span>↗</span>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Book 2: Shiva Stuti -->
+                <article class="reader-card" data-category="reader" data-keywords="shiva stuti rudram chamakam rudra japam nyasam kramam dravya sampradayam rudraikaadasini sadyojatam shanti patham krishna yajurveda samhita शिव स्तुतिः रुद्र जपं चमकम्">
+                    <div class="card-top">
+                        <div class="card-category">🔱 Krishna Yajurveda Samhita • Kanda 4</div>
+                        <h3 class="card-title-deva">शिव स्तुतिः (रुद्र जपं, न्यासं, चमकम्)</h3>
+                        <div class="card-title-eng">Shiva Stuti, Sri Rudram, Chamakam &amp; Rudraikaadashini</div>
+                        <p class="card-desc">
+                            Comprehensive Rudra Parayanam compendium including Nyasam, Laghu Nyasam, Namakam, Chamakam, Kramam, Dravya Sampradayam, Shanti Patham, and associated suktas with accurate svara markings.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag accent">Sri Rudram</span>
+                            <span class="tag">Chamakam</span>
+                            <span class="tag">Rudraikaadashini</span>
+                            <span class="tag">Nyasam &amp; Kramam</span>
+                            <span class="tag">Svara Accents</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span class="reader-format-badge">⚡ Full Interactive Reader</span>
+                        <a href="siva_stuti_sanskrit.html" class="open-reader-btn">
+                            Open Reader <span>↗</span>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Book 3: Shanti Japam -->
+                <article class="reader-card" data-category="reader" data-keywords="shanti japam suktas pavamana durga purusha sri suktam bhagya ayushya vishnu udaka shanti krishna yajurveda शान्ति जपम् सूक्त">
+                    <div class="card-top">
+                        <div class="card-category">🕊️ Universal Vedic Suktas • Samhita &amp; Aranyaka</div>
+                        <h3 class="card-title-deva">शान्ति जपम् (सर्वशान्ति मन्त्राः सूक्तानि च)</h3>
+                        <div class="card-title-eng">Shanti Japam &amp; Universal Vedic Suktas</div>
+                        <p class="card-desc">
+                            Collection of potent Shanti mantras, Pavamana Suktam, Durga Suktam, Purusha Suktam, Sri Suktam, Bhagya Suktam, Ayushya Suktam, Vishnu Suktam, and Udaka Shanti selection for daily and ceremonial recitation.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag accent">Shanti Mantras</span>
+                            <span class="tag">Pavamana Suktam</span>
+                            <span class="tag">Durga Suktam</span>
+                            <span class="tag">Sri Suktam</span>
+                            <span class="tag">Purusha Suktam</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span class="reader-format-badge">⚡ Full Interactive Reader</span>
+                        <a href="shanti_japam_sanskrit.html" class="open-reader-btn">
+                            Open Reader <span>↗</span>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Book 4: Udaka Shanti -->
+                <article class="reader-card" data-category="reader" data-keywords="udaka shanti vidhanam bodhayana varuna sanctified water santi rites grihapravesham krishna yajurveda उदकशान्तिः">
+                    <div class="card-top">
+                        <div class="card-category">💧 Bodhayana Sutra • Purification Rites</div>
+                        <h3 class="card-title-deva">उदकशान्तिः (उदकशान्ति विधानम्)</h3>
+                        <div class="card-title-eng">Udaka Shanti Vidhanam &amp; Mantras</div>
+                        <p class="card-desc">
+                            Complete Udaka Shanti ceremonial rites for invoking Varuna and Vedic deities into consecrated waters. Chanted for peace, grihapravesham, and all auspicious Vedic rites with full sequence.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag accent">Udaka Shanti</span>
+                            <span class="tag">Bodhayana Vidhi</span>
+                            <span class="tag">Sanctified Water</span>
+                            <span class="tag">Santi Rituals</span>
+                            <span class="tag">Svara Accents</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span class="reader-format-badge">⚡ Full Interactive Reader</span>
+                        <a href="udaka_shanti_sanskrit.html" class="open-reader-btn">
+                            Open Reader <span>↗</span>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Book 5: Udaka Shanti Anushangam -->
+                <article class="reader-card" data-category="reader" data-keywords="udaka shanti anushangam continuous parayanam asct baraha mantras krishna yajurveda उदक शान्ति अनुषंगम">
+                    <div class="card-top">
+                        <div class="card-category">📜 Extended Chanting Sequence • Parayana Krama</div>
+                        <h3 class="card-title-deva">उदक शान्ति अनुषंगम</h3>
+                        <div class="card-title-eng">Udaka Shanti Anushangam (Extended Sequence)</div>
+                        <p class="card-desc">
+                            Supplementary Anushanga mantras complementing the Udaka Shanti recitation, formatted in traditional continuity with precision swara accents and verse structure.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag accent">Anushangam</span>
+                            <span class="tag">Continuous Parayanam</span>
+                            <span class="tag">Udaka Shanti</span>
+                            <span class="tag">Vedic Tradition</span>
+                            <span class="tag">Svara Accents</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span class="reader-format-badge">⚡ Full Interactive Reader</span>
+                        <a href="udaka_shanti_anushangam_sanskrit.html" class="open-reader-btn">
+                            Open Reader <span>↗</span>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="documents.html">Documents</a>
+            <a href="html_viewer.html">HTML Viewers</a>
+            <a href="videos.html">Videos</a>
+            <a href="articles.html">Articles</a>
+            <a href="convention.html">Conventions</a>
+            <a href="about.html">About Us</a>
+            <a href="donations.html">Donate</a>
+            <a href="mailto:vedavms@gmail.com">vedavms@gmail.com</a>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 VedaVMS. Designed with devotion for Veda students worldwide.
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile navigation toggle
+            var navToggle = document.getElementById('navToggle');
+            var navContainer = document.getElementById('navContainer');
+            if (navToggle && navContainer) {
+                navToggle.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var isOpen = navContainer.classList.toggle('active');
+                    navToggle.classList.toggle('open', isOpen);
+                    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+
+                navContainer.querySelectorAll('a').forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        navContainer.classList.remove('active');
+                        navToggle.classList.remove('open');
+                        navToggle.setAttribute('aria-expanded', 'false');
+                    });
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!navContainer.contains(e.target) && !navToggle.contains(e.target)) {
+                        navContainer.classList.remove('active');
+                        navToggle.classList.remove('open');
+                        navToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape' && navContainer.classList.contains('active')) {
+                        navContainer.classList.remove('active');
+                        navToggle.classList.remove('open');
+                        navToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
