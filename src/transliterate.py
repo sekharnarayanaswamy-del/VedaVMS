@@ -330,6 +330,12 @@ def baraha_to_devanagari(text: str) -> str:
         return f'\uE000{len(placeholders)-1}\uE001'
     text = re.sub(r'^(Expansion\s+of\s+)', repl_prefix_exp, text, flags=re.I)
 
+    # Protect item No cross references e.g. "item No. 11.6", "item No.12.10)", "(item No. 12.1)"
+    def repl_item_no(m):
+        placeholders.append(clean_baraha_english(m.group(0)))
+        return f'\uE000{len(placeholders)-1}\uE001'
+    text = re.sub(r'\(?item\s*No\.?\s*[\d\.]+(?:\s*to\s*[\d\.]+)?\)?', repl_item_no, text, flags=re.I)
+
     # <lang=eng> blocks
     def repl_lang_eng(m):
         content = clean_baraha_english(m.group(1))

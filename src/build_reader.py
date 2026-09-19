@@ -155,9 +155,9 @@ def parse_chapters_and_sections(raw_paras: list[str], chapter_regex: str | None 
             continue
 
         if p.startswith('T.A.'):
-            if current_section:
+            if current_section and not current_section.get('content_raw') and not current_section.get('ta_code'):
                 current_section['ta_code'] = p
-            continue
+                continue
 
         if current_section is not None:
             current_section['content_raw'].append(p)
@@ -551,9 +551,10 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
         .toc-ch-title {{
             font-weight: 700;
-            color: var(--dark-brown);
-            font-size: 1rem;
+            color: var(--maroon);
+            font-size: 1.06rem;
             flex: 1;
+            letter-spacing: 0.01em;
         }}
 
         .toc-ch-title a {{
@@ -573,20 +574,53 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
         .toc-sub-list {{
             list-style: none;
-            padding-left: 0.85rem;
+            padding-left: 0.75rem;
             overflow: hidden;
-            max-height: 2000px;
-            transition: max-height 0.3s ease;
+            max-height: 30000px;
+            transition: max-height 0.35s ease;
         }}
 
         .toc-chapter.collapsed .toc-sub-list {{
-            max-height: 0;
+            max-height: 0 !important;
             padding-top: 0;
             padding-bottom: 0;
         }}
 
         .toc-sub-list li {{
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.25rem;
+        }}
+
+        /* Level 2: Major section link (e.g. 3.1, 3.7, 11.2) */
+        .toc-sub-list li.toc-level-2 {{
+            margin-top: 0.45rem;
+            margin-bottom: 0.2rem;
+        }}
+
+        .toc-sub-list li.toc-level-2 a {{
+            color: #1F1F1F;
+            font-size: 0.93rem;
+            font-weight: 600;
+            padding: 0.22rem 0.4rem;
+        }}
+
+        /* Level 3: Subsection link (e.g. 3.1.1, 3.1.4, 3.7.1) */
+        .toc-sub-list li.toc-level-3 {{
+            margin-bottom: 0.15rem;
+            padding-left: 0.65rem;
+            border-left: 1.5px solid #F0E2D2;
+            margin-left: 0.4rem;
+        }}
+
+        .toc-sub-list li.toc-level-3 a {{
+            color: #555555;
+            font-size: 0.85rem;
+            font-weight: 400;
+            padding: 0.15rem 0.35rem;
+        }}
+
+        .toc-sub-list li.toc-level-3 a:hover {{
+            color: var(--saffron);
+            font-weight: 600;
         }}
 
         .toc-sub-list a {{
@@ -754,12 +788,14 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         .chapter-heading {{
             background: linear-gradient(90deg, #7B1113 0%, #A52A2A 100%);
             color: white;
-            padding: 0.9rem 1.6rem;
+            padding: 1.05rem 1.85rem;
             border-radius: 8px;
-            font-size: 1.5rem;
-            margin-bottom: 1.75rem;
+            font-size: calc(var(--font-size) * 1.34);
+            font-weight: 700;
+            margin-bottom: 2rem;
             font-family: 'Noto Serif Devanagari', serif;
-            box-shadow: 0 3px 8px rgba(123,17,19,0.25);
+            box-shadow: 0 4px 12px rgba(123,17,19,0.28);
+            letter-spacing: 0.015em;
         }}
 
         .anuvaka-block {{
@@ -774,6 +810,23 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             max-width: 100%;
             box-sizing: border-box;
             overflow-wrap: break-word;
+            transition: all 0.2s ease;
+        }}
+
+        /* Level 2: Major section card (e.g. 3.1, 3.7, 11.2) */
+        .anuvaka-block.level-2 {{
+            border-left: 6.5px solid var(--maroon);
+            background: #FFFDF9;
+            margin-bottom: 2.25rem;
+            border-top: 1px solid #EADDC9;
+        }}
+
+        /* Level 3: Subsection card (e.g. 3.1.1, 3.1.4, 3.7.1) */
+        .anuvaka-block.level-3 {{
+            border-left: 4.5px solid var(--saffron);
+            background: #FFFAF5;
+            margin-bottom: 1.75rem;
+            margin-left: 0.75rem;
         }}
 
         .anuvaka-header {{
@@ -781,15 +834,28 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px dashed #E0D0C0;
-            padding-bottom: 0.6rem;
+            padding-bottom: 0.65rem;
             margin-bottom: 1.15rem;
         }}
 
         .anuvaka-num {{
+            font-family: 'Noto Serif Devanagari', serif;
+            display: inline-block;
+        }}
+
+        /* Level 2: Major section heading */
+        .anuvaka-num.level-2 {{
+            font-size: calc(var(--font-size) * 1.08);
             font-weight: 700;
             color: var(--maroon);
-            font-size: 1.15rem;
-            font-family: 'Noto Serif Devanagari', serif;
+            letter-spacing: 0.01em;
+        }}
+
+        /* Level 3: Subsection heading */
+        .anuvaka-num.level-3 {{
+            font-size: calc(var(--font-size) * 0.90);
+            font-weight: 600;
+            color: #8B2500;
         }}
 
         .anuvaka-code {{
@@ -1200,8 +1266,8 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             }}
 
             .chapter-heading {{
-                font-size: 1.18rem;
-                padding: 0.7rem 0.95rem;
+                font-size: calc(var(--font-size) * 1.16);
+                padding: 0.75rem 1rem;
                 border-radius: 6px;
                 margin-bottom: 1.25rem;
                 word-break: break-word;
@@ -1211,7 +1277,10 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             .anuvaka-block {{
                 padding: 0.95rem 0.85rem;
                 margin-bottom: 1.25rem;
-                border-left-width: 4px;
+            }}
+
+            .anuvaka-block.level-3 {{
+                margin-left: 0.25rem;
             }}
 
             .anuvaka-header {{
@@ -1219,8 +1288,12 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 padding-bottom: 0.45rem;
             }}
 
-            .anuvaka-num {{
-                font-size: 1rem;
+            .anuvaka-num.level-2 {{
+                font-size: calc(var(--font-size) * 0.98);
+            }}
+
+            .anuvaka-num.level-3 {{
+                font-size: calc(var(--font-size) * 0.86);
             }}
 
             .verse-text {{
@@ -1511,7 +1584,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         ch_id = f"chapter-{ch['num']}"
         sub_sections = [
             s for s in ch["sections"]
-            if not (s.get('is_intro') or (s['num'] == str(ch['num']) and (not s.get('title_raw') or s.get('title_raw') == ch.get('title_raw'))))
+            if not (s.get('is_intro') or s['num'] == str(ch['num']) or '.' not in s['num'])
         ]
         has_subsections = len(sub_sections) > 0
         if has_subsections:
@@ -1524,8 +1597,14 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 ''')
             for sec in sub_sections:
                 sec_id = f"sec-{sec['num'].replace('.', '-')}"
-                title_disp = f"{sec['num']} {sec['title_deva']}".strip()
-                html_parts.append(f'                        <li><a href="#{sec_id}">{title_disp}</a></li>\n')
+                t_deva = sec['title_deva'].strip() if sec.get('title_deva') else ''
+                if t_deva.startswith(f"{sec['num']}.") or t_deva.startswith(f"{sec['num']} ") or t_deva == sec['num']:
+                    title_disp = t_deva
+                else:
+                    title_disp = f"{sec['num']} {t_deva}".strip()
+                sec_parts = [p for p in sec['num'].split('.') if p.strip().isdigit()]
+                lvl_class = "toc-level-3" if len(sec_parts) >= 3 else "toc-level-2"
+                html_parts.append(f'                        <li class="{lvl_class}"><a href="#{sec_id}">{title_disp}</a></li>\n')
             html_parts.append('''                    </ul>
                 </li>
 ''')
@@ -1556,7 +1635,9 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         for sec in ch["sections"]:
             sec_id = f"sec-{sec['num'].replace('.', '-')}"
             code_span = f'<span class="anuvaka-code">{sec["ta_code"]}</span>' if sec["ta_code"] else ''
-            is_intro = sec.get('is_intro', False) or sec['num'] == str(ch['num']) or (not sec.get('title_raw') or sec.get('title_raw') == ch.get('title_raw'))
+            is_intro = sec.get('is_intro', False) or sec['num'] == str(ch['num']) or '.' not in sec['num'] or (not sec.get('title_raw') or sec.get('title_raw') == ch.get('title_raw'))
+            sec_parts = [p for p in sec['num'].split('.') if p.strip().isdigit()]
+            lvl_class = "level-3" if len(sec_parts) >= 3 else "level-2"
 
             if is_intro:
                 if code_span:
@@ -1572,11 +1653,11 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 else:
                     title_disp_deva = f"{sec['num']} {format_vedic_html(t_deva)}".strip()
                 header_html = f'''                    <div class="anuvaka-header">
-                        <span class="anuvaka-num">{title_disp_deva}</span>
+                        <span class="anuvaka-num {lvl_class}">{title_disp_deva}</span>
                         {code_span}
                     </div>'''
 
-            html_parts.append(f'''                <div class="anuvaka-block" id="{sec_id}">
+            html_parts.append(f'''                <div class="anuvaka-block {lvl_class}" id="{sec_id}">
 {header_html}
                     <div class="verse-text">
 ''')

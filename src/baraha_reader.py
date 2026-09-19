@@ -446,14 +446,13 @@ def parse_baraha_elements(
         if (sm or tb_m) and current_ch:
             sec_num = sm.group(1) if sm else tb_m.group(1)
             sec_name = sm.group(2).strip() if sm else ''
-            if is_english_text(sec_name) or current_lang == 'eng':
-                sec_name = clean_baraha_english(sec_name)
-                sec_deva = sec_name
-            else:
-                sec_deva = baraha_to_devanagari(sec_name)
+            sec_deva, current_lang = process_baraha_line(sec_name, current_lang)
+            clean_sec_name = re.sub(r'</?lang=[^>]+>', '', sec_name, flags=re.I).strip()
+            if is_english_text(clean_sec_name):
+                clean_sec_name = clean_baraha_english(clean_sec_name)
             current_sec = {
                 'num': sec_num,
-                'title_raw': sec_name,
+                'title_raw': clean_sec_name,
                 'title_deva': sec_deva,
                 'ta_code': sec_num if tb_m else '',
                 'content': [],
@@ -463,18 +462,10 @@ def parse_baraha_elements(
             i += 1
             continue
 
-        # Standalone TA/TB scriptural codes (e.g. T.A.5.1.1, TB 2.9.8.7)
-        if re.match(r'^(?:T\.A\.|T\.B\.|TA|TB)\s*[\d\.]+$', p):
-            if current_sec is not None and not current_sec.get('ta_code'):
-                current_sec['ta_code'] = p
-            i += 1
-            continue
-
-        # Check for inline TA/TB scriptural codes
-        ta_match = re.search(r'\((?:TA|T\.A\.|TB|T\.B\.)\s*(\d+\.\d+\.\d+(?:\.\d+)?)\)', p)
-        if current_sec is not None and ta_match and not current_sec.get('ta_code'):
-            current_sec['ta_code'] = ta_match.group(1)
-            if re.match(r'^\((?:TA|T\.A\.|TB|T\.B\.)\s*[\d\.]+\)$', p):
+        # Standalone TA/TB scriptural codes immediately under section header before content (e.g. T.A.5.1.1, TB 2.9.8.7)
+        if re.match(r'^\(?(?:T\.A\.|T\.B\.|TA|TB)\s*[\d\.]+\)?$', p):
+            if current_sec is not None and not current_sec.get('content') and not current_sec.get('ta_code'):
+                current_sec['ta_code'] = p.strip('() ')
                 i += 1
                 continue
 
@@ -666,6 +657,7 @@ def parse_baraha_docx_to_ast(
                 'sub_section_id': sec['num'],
                 'header': {'header': full_sub_title},
                 'ta_code': sec.get('ta_code', ''),
+                'is_intro': sec.get('is_intro', False) or sec['num'] == str(ch['num']) or '.' not in sec['num'],
                 'content_lines': sec.get('content_deva', sec.get('content', [])),
             }
         sec_data['Count'] = str(sum(
@@ -732,6 +724,7 @@ def ast_to_reader_chapters(ast_data: dict) -> list[dict]:
                     'title_deva': sub_title,
                     'title_raw': sub_title,
                     'ta_code': ta_code,
+                    'is_intro': sub_data.get('is_intro', False) or sub_num == str(ch_num) or '.' not in sub_num,
                     'content_deva': content,
                     'content_raw': content
                 })

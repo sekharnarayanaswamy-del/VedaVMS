@@ -304,9 +304,10 @@
 
         .toc-ch-title {
             font-weight: 700;
-            color: var(--dark-brown);
-            font-size: 1rem;
+            color: var(--maroon);
+            font-size: 1.06rem;
             flex: 1;
+            letter-spacing: 0.01em;
         }
 
         .toc-ch-title a {
@@ -326,20 +327,53 @@
 
         .toc-sub-list {
             list-style: none;
-            padding-left: 0.85rem;
+            padding-left: 0.75rem;
             overflow: hidden;
-            max-height: 2000px;
-            transition: max-height 0.3s ease;
+            max-height: 30000px;
+            transition: max-height 0.35s ease;
         }
 
         .toc-chapter.collapsed .toc-sub-list {
-            max-height: 0;
+            max-height: 0 !important;
             padding-top: 0;
             padding-bottom: 0;
         }
 
         .toc-sub-list li {
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Level 2: Major section link (e.g. 3.1, 3.7, 11.2) */
+        .toc-sub-list li.toc-level-2 {
+            margin-top: 0.45rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .toc-sub-list li.toc-level-2 a {
+            color: #1F1F1F;
+            font-size: 0.93rem;
+            font-weight: 600;
+            padding: 0.22rem 0.4rem;
+        }
+
+        /* Level 3: Subsection link (e.g. 3.1.1, 3.1.4, 3.7.1) */
+        .toc-sub-list li.toc-level-3 {
+            margin-bottom: 0.15rem;
+            padding-left: 0.65rem;
+            border-left: 1.5px solid #F0E2D2;
+            margin-left: 0.4rem;
+        }
+
+        .toc-sub-list li.toc-level-3 a {
+            color: #555555;
+            font-size: 0.85rem;
+            font-weight: 400;
+            padding: 0.15rem 0.35rem;
+        }
+
+        .toc-sub-list li.toc-level-3 a:hover {
+            color: var(--saffron);
+            font-weight: 600;
         }
 
         .toc-sub-list a {
@@ -507,12 +541,14 @@
         .chapter-heading {
             background: linear-gradient(90deg, #7B1113 0%, #A52A2A 100%);
             color: white;
-            padding: 0.9rem 1.6rem;
+            padding: 1.05rem 1.85rem;
             border-radius: 8px;
-            font-size: 1.5rem;
-            margin-bottom: 1.75rem;
+            font-size: calc(var(--font-size) * 1.34);
+            font-weight: 700;
+            margin-bottom: 2rem;
             font-family: 'Noto Serif Devanagari', serif;
-            box-shadow: 0 3px 8px rgba(123,17,19,0.25);
+            box-shadow: 0 4px 12px rgba(123,17,19,0.28);
+            letter-spacing: 0.015em;
         }
 
         .anuvaka-block {
@@ -527,6 +563,23 @@
             max-width: 100%;
             box-sizing: border-box;
             overflow-wrap: break-word;
+            transition: all 0.2s ease;
+        }
+
+        /* Level 2: Major section card (e.g. 3.1, 3.7, 11.2) */
+        .anuvaka-block.level-2 {
+            border-left: 6.5px solid var(--maroon);
+            background: #FFFDF9;
+            margin-bottom: 2.25rem;
+            border-top: 1px solid #EADDC9;
+        }
+
+        /* Level 3: Subsection card (e.g. 3.1.1, 3.1.4, 3.7.1) */
+        .anuvaka-block.level-3 {
+            border-left: 4.5px solid var(--saffron);
+            background: #FFFAF5;
+            margin-bottom: 1.75rem;
+            margin-left: 0.75rem;
         }
 
         .anuvaka-header {
@@ -534,15 +587,28 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px dashed #E0D0C0;
-            padding-bottom: 0.6rem;
+            padding-bottom: 0.65rem;
             margin-bottom: 1.15rem;
         }
 
         .anuvaka-num {
+            font-family: 'Noto Serif Devanagari', serif;
+            display: inline-block;
+        }
+
+        /* Level 2: Major section heading */
+        .anuvaka-num.level-2 {
+            font-size: calc(var(--font-size) * 1.08);
             font-weight: 700;
             color: var(--maroon);
-            font-size: 1.15rem;
-            font-family: 'Noto Serif Devanagari', serif;
+            letter-spacing: 0.01em;
+        }
+
+        /* Level 3: Subsection heading */
+        .anuvaka-num.level-3 {
+            font-size: calc(var(--font-size) * 0.90);
+            font-weight: 600;
+            color: #8B2500;
         }
 
         .anuvaka-code {
@@ -953,8 +1019,8 @@
             }
 
             .chapter-heading {
-                font-size: 1.18rem;
-                padding: 0.7rem 0.95rem;
+                font-size: calc(var(--font-size) * 1.16);
+                padding: 0.75rem 1rem;
                 border-radius: 6px;
                 margin-bottom: 1.25rem;
                 word-break: break-word;
@@ -964,7 +1030,10 @@
             .anuvaka-block {
                 padding: 0.95rem 0.85rem;
                 margin-bottom: 1.25rem;
-                border-left-width: 4px;
+            }
+
+            .anuvaka-block.level-3 {
+                margin-left: 0.25rem;
             }
 
             .anuvaka-header {
@@ -972,8 +1041,12 @@
                 padding-bottom: 0.45rem;
             }
 
-            .anuvaka-num {
-                font-size: 1rem;
+            .anuvaka-num.level-2 {
+                font-size: calc(var(--font-size) * 0.98);
+            }
+
+            .anuvaka-num.level-3 {
+                font-size: calc(var(--font-size) * 0.86);
             }
 
             .verse-text {
@@ -1264,53 +1337,53 @@
                         <span class="toc-ch-toggle">▼</span>
                     </div>
                     <ul class="toc-sub-list">
-                        <li><a href="#sec-1-1">1.1 वेदारंभे सर्वसाधारण्येन जप्याः मन्त्राः</a></li>
-                        <li><a href="#sec-1-2">1.2 वेदाधया</a></li>
-                        <li><a href="#sec-1-3">1.3 रक्षोघ्नं</a></li>
-                        <li><a href="#sec-1-4">1.4 इन्द्र सूक्तं</a></li>
-                        <li><a href="#sec-1-5">1.5 ये देवा:</a></li>
-                        <li><a href="#sec-1-6">1.6 ये देवा: (अनुषङ्गं)</a></li>
-                        <li><a href="#sec-1-7">1.7 आयुष्कामेष्टि मन्त्रा:</a></li>
-                        <li><a href="#sec-1-8">1.8 आयुष्कामेष्टि मन्त्रा: (अनुषङ्गं)</a></li>
-                        <li><a href="#sec-1-9">1.9 अग्ंहोमुच मन्त्रा:</a></li>
-                        <li><a href="#sec-1-10">1.10 अग्ंहोमुच मन्त्रा: (अनुषङ्गं)</a></li>
-                        <li><a href="#sec-1-11">1.11 शास्तृ सूक्तं (आप्यं)</a></li>
-                        <li><a href="#sec-1-12">1.12 राष्ट्रभृतं</a></li>
-                        <li><a href="#sec-1-13">1.13 भ्	राष्ट्रभृतं (अनुषङ्गं) जयाति</a></li>
-                        <li><a href="#sec-1-14">1.14 सर्प सूक्तं</a></li>
-                        <li><a href="#sec-1-15">1.15 पञ्चचोडाः</a></li>
-                        <li><a href="#sec-1-16">1.16 पंचचोडाः (अनुषङ्गं)</a></li>
-                        <li><a href="#sec-1-17">1.17 अप्रतिरथ:</a></li>
-                        <li><a href="#sec-1-18">1.18 चमकं तृतीय अनुवाकः</a></li>
-                        <li><a href="#sec-1-19">1.19 विहव्यम्</a></li>
-                        <li><a href="#sec-1-20">1.20 मृगार:</a></li>
-                        <li><a href="#sec-1-21">1.21 सर्पाहुती मन्त्रा:</a></li>
-                        <li><a href="#sec-1-22">1.22 सर्पाहुती मन्त्रा: (अनुषङ्गं)</a></li>
-                        <li><a href="#sec-1-23">1.23 गन्धर्वाहुतीः</a></li>
-                        <li><a href="#sec-1-24">1.24 गन्धर्वाहुतीः (अनुषङ्गं)</a></li>
-                        <li><a href="#sec-1-25">1.25 अज्यानि मन्त्रा:</a></li>
-                        <li><a href="#sec-1-26">1.26 अथर्वशीर्षं</a></li>
-                        <li><a href="#sec-1-27">1.27 प्रत्यङ्गिरस:</a></li>
-                        <li><a href="#sec-T-B-2-4-2-1">T.B.2.4.2.1</a></li>
-                        <li><a href="#sec-T-B-2-5-1-1">T.B.2.5.1.1</a></li>
-                        <li><a href="#sec-T-B-2-7-7-1">T.B.2.7.7.1</a></li>
-                        <li><a href="#sec-1-28">1.28 अन्न सूक्तं</a></li>
-                        <li><a href="#sec-T-B-2-8-8-1">T.B.2.8.8.1</a></li>
-                        <li><a href="#sec-1-29">1.29 वाख् सूक्तं</a></li>
-                        <li><a href="#sec-T-B-2-8-8-4">T.B.2.8.8.4</a></li>
-                        <li><a href="#sec-1-30">1.30 श्रद्धा सूक्तं</a></li>
-                        <li><a href="#sec-1-31">1.31 ब्रह्म सूक्तं</a></li>
-                        <li><a href="#sec-1-32">1.32 गो सूक्तं</a></li>
-                        <li><a href="#sec-1-33">1.33 सूर्या चन्द्रमसा सूक्तं</a></li>
-                        <li><a href="#sec-1-34">1.34 नासदासीय सूक्तं</a></li>
-                        <li><a href="#sec-1-35">1.35 भाग्य सूक्तं</a></li>
-                        <li><a href="#sec-1-36">1.36 नक्षत्र सूक्तं(वाक्यं)</a></li>
-                        <li><a href="#sec-T-B-3-1-1-1">T.B.3.1.1.1</a></li>
-                        <li><a href="#sec-1-37">1.37 नक्षत्र उपहोम मन्त्रा:</a></li>
-                        <li><a href="#sec-T-B-3-1-4-1">T.B.3.1.4.1</a></li>
-                        <li><a href="#sec-1-38">1.38 वरुण सूक्तं</a></li>
-                        <li><a href="#sec-1-39">1.39 पवमान सूक्तं</a></li>
-                        <li><a href="#sec-1-40">1.40 नक्षत्र सूक्तं (नक्षत्र जप मन्त्राः)</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-1">1.1 वेदारंभे सर्वसाधारण्येन जप्याः मन्त्राः</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-2">1.2 वेदाधया</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-3">1.3 रक्षोघ्नं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-4">1.4 इन्द्र सूक्तं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-5">1.5 ये देवा:</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-6">1.6 ये देवा: (अनुषङ्गं)</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-7">1.7 आयुष्कामेष्टि मन्त्रा:</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-8">1.8 आयुष्कामेष्टि मन्त्रा: (अनुषङ्गं)</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-9">1.9 अग्ंहोमुच मन्त्रा:</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-10">1.10 अग्ंहोमुच मन्त्रा: (अनुषङ्गं)</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-11">1.11 शास्तृ सूक्तं (आप्यं)</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-12">1.12 राष्ट्रभृतं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-13">1.13 भ्	राष्ट्रभृतं (अनुषङ्गं) जयाति</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-14">1.14 सर्प सूक्तं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-15">1.15 पञ्चचोडाः</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-16">1.16 पंचचोडाः (अनुषङ्गं)</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-17">1.17 अप्रतिरथ:</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-18">1.18 चमकं तृतीय अनुवाकः</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-19">1.19 विहव्यम्</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-20">1.20 मृगार:</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-21">1.21 सर्पाहुती मन्त्रा:</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-22">1.22 सर्पाहुती मन्त्रा: (अनुषङ्गं)</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-23">1.23 गन्धर्वाहुतीः</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-24">1.24 गन्धर्वाहुतीः (अनुषङ्गं)</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-25">1.25 अज्यानि मन्त्रा:</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-26">1.26 अथर्वशीर्षं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-27">1.27 प्रत्यङ्गिरस:</a></li>
+                        <li class="toc-level-3"><a href="#sec-T-B-2-4-2-1">T.B.2.4.2.1</a></li>
+                        <li class="toc-level-3"><a href="#sec-T-B-2-5-1-1">T.B.2.5.1.1</a></li>
+                        <li class="toc-level-3"><a href="#sec-T-B-2-7-7-1">T.B.2.7.7.1</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-28">1.28 अन्न सूक्तं</a></li>
+                        <li class="toc-level-3"><a href="#sec-T-B-2-8-8-1">T.B.2.8.8.1</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-29">1.29 वाख् सूक्तं</a></li>
+                        <li class="toc-level-3"><a href="#sec-T-B-2-8-8-4">T.B.2.8.8.4</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-30">1.30 श्रद्धा सूक्तं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-31">1.31 ब्रह्म सूक्तं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-32">1.32 गो सूक्तं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-33">1.33 सूर्या चन्द्रमसा सूक्तं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-34">1.34 नासदासीय सूक्तं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-35">1.35 भाग्य सूक्तं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-36">1.36 नक्षत्र सूक्तं(वाक्यं)</a></li>
+                        <li class="toc-level-3"><a href="#sec-T-B-3-1-1-1">T.B.3.1.1.1</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-37">1.37 नक्षत्र उपहोम मन्त्रा:</a></li>
+                        <li class="toc-level-3"><a href="#sec-T-B-3-1-4-1">T.B.3.1.4.1</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-38">1.38 वरुण सूक्तं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-39">1.39 पवमान सूक्तं</a></li>
+                        <li class="toc-level-2"><a href="#sec-1-40">1.40 नक्षत्र सूक्तं (नक्षत्र जप मन्त्राः)</a></li>
                     </ul>
                 </li>
             </ul>
@@ -1324,22 +1397,22 @@
             </div>
             <section class="chapter-container" id="chapter-1">
                 <h2 class="chapter-heading">1. उदक शान्ति</h2>
-                <div class="anuvaka-block" id="sec-1-1">
+                <div class="anuvaka-block level-2" id="sec-1-1">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.1 वेदारंभे सर्वसाधारण्येन जप्याः मन्त्राः</span>
+                        <span class="anuvaka-num level-2">1.1 वेदारंभे सर्वसाधारण्येन जप्याः मन्त्राः</span>
                         
                     </div>
                     <div class="verse-text">
-                        <p class="verse-p">ओं भूः तथ्स<span class="accent-swarita">&#x0951;</span>वि<span class="accent-anudatta">&#x0952;&#x0952;</span>तुर्-वरे<span class="accent-deergha">&#x1CDA;</span>ण्यं । ओं भुवः<span class="accent-swarita accent-visarga">&#x0951;</span> भर्गो<span class="accent-swarita">&#x0951;</span> दे<span class="accent-anudatta">&#x0952;&#x0952;</span>वस्य<span class="accent-swarita">&#x0951;</span> धीमहि ।</p>
+                        <p class="verse-p">ॐ भूः तथ्स<span class="accent-swarita">&#x0951;</span>वि<span class="accent-anudatta">&#x0952;&#x0952;</span>तुर्-वरे<span class="accent-deergha">&#x1CDA;</span>ण्यं । ॐ भुवः<span class="accent-swarita accent-visarga">&#x0951;</span> भर्गो<span class="accent-swarita">&#x0951;</span> दे<span class="accent-anudatta">&#x0952;&#x0952;</span>वस्य<span class="accent-swarita">&#x0951;</span> धीमहि ।</p>
                         <p class="verse-p">ओꣳ सुवः<span class="accent-swarita accent-visarga">&#x0951;</span> धियो<span class="accent-anudatta">&#x0952;&#x0952;</span> योनः<span class="accent-swarita accent-visarga">&#x0951;</span> प्रचो<span class="accent-anudatta">&#x0952;</span>दया<span class="accent-deergha">&#x1CDA;</span>त् ।</p>
-                        <p class="verse-p">ओं भूः तथ्स<span class="accent-swarita">&#x0951;</span>वि<span class="accent-anudatta">&#x0952;</span>तुर्-वरे<span class="accent-deergha">&#x1CDA;</span>ण्यं । भर्गो<span class="accent-swarita">&#x0951;</span> दे<span class="accent-anudatta">&#x0952;</span>वस्य<span class="accent-swarita">&#x0951;</span> धीमहि । ओं भुवः धियो<span class="accent-anudatta">&#x0952;</span> योनः<span class="accent-swarita accent-visarga">&#x0951;</span> प्रचो<span class="accent-anudatta">&#x0952;</span>दया<span class="accent-deergha">&#x1CDA;</span>त् ।</p>
+                        <p class="verse-p">ॐ भूः तथ्स<span class="accent-swarita">&#x0951;</span>वि<span class="accent-anudatta">&#x0952;</span>तुर्-वरे<span class="accent-deergha">&#x1CDA;</span>ण्यं । भर्गो<span class="accent-swarita">&#x0951;</span> दे<span class="accent-anudatta">&#x0952;</span>वस्य<span class="accent-swarita">&#x0951;</span> धीमहि । ॐ भुवः धियो<span class="accent-anudatta">&#x0952;</span> योनः<span class="accent-swarita accent-visarga">&#x0951;</span> प्रचो<span class="accent-anudatta">&#x0952;</span>दया<span class="accent-deergha">&#x1CDA;</span>त् ।</p>
                         <p class="verse-p">ओꣳ सुवः<span class="accent-swarita accent-visarga">&#x0951;</span> तथ्स<span class="accent-swarita">&#x0951;</span>वि<span class="accent-anudatta">&#x0952;</span>तुर्-वरे<span class="accent-deergha">&#x1CDA;</span>ण्यं<span class="accent-anudatta">&#x0952;</span> भर्गो<span class="accent-swarita">&#x0951;</span> दे<span class="accent-anudatta">&#x0952;</span>वस्य<span class="accent-swarita">&#x0951;</span> धीमहि । धियो<span class="accent-anudatta">&#x0952;</span> योनः<span class="accent-swarita accent-visarga">&#x0951;</span> प्रचो<span class="accent-anudatta">&#x0952;</span>दया<span class="accent-deergha">&#x1CDA;</span>त् ।</p>
-                        <p class="verse-p">ओं शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-swarita accent-visarga">&#x0951;</span> ।</p>
+                        <p class="verse-p">ॐ शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-swarita accent-visarga">&#x0951;</span> ।</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-2">
+                <div class="anuvaka-block level-2" id="sec-1-2">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.2 वेदाधया</span>
+                        <span class="anuvaka-num level-2">1.2 वेदाधया</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1351,9 +1424,9 @@
                         <p class="verse-p">शन्नो<span class="accent-swarita">&#x0951;</span> दे<span class="accent-anudatta">&#x0952;</span>वीर<span class="accent-anudatta">&#x0952;</span>भिष्ट<span class="accent-swarita">&#x0951;</span>य<span class="accent-anudatta">&#x0952;</span> आपो<span class="accent-swarita">&#x0951;</span> भवन्तु पी<span class="accent-anudatta">&#x0952;</span>तये<span class="accent-deergha">&#x1CDA;</span> । शं ँयोर<span class="accent-anudatta">&#x0952;</span>भिस्र<span class="accent-swarita">&#x0951;</span>वन्तु नः ॥ 1 <span class="accent-swarita">&#x0951;</span></p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-3">
+                <div class="anuvaka-block level-2" id="sec-1-3">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.3 रक्षोघ्नं</span>
+                        <span class="anuvaka-num level-2">1.3 रक्षोघ्नं</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1379,9 +1452,9 @@
                         <p class="verse-p">उ<span class="accent-anudatta">&#x0952;</span>तस्वा<span class="accent-anudatta">&#x0952;</span>नासो<span class="accent-swarita">&#x0951;</span> दि<span class="accent-anudatta">&#x0952;</span>विष<span class="accent-swarita">&#x0951;</span>न्त्व<span class="accent-anudatta">&#x0952;</span>ग्ने स्ति<span class="accent-anudatta">&#x0952;</span>ग्मायु<span class="accent-swarita">&#x0951;</span>धा<span class="accent-anudatta">&#x0952;</span> रक्ष<span class="accent-swarita">&#x0951;</span>से<span class="accent-anudatta">&#x0952;</span> हन्त<span class="accent-anudatta">&#x0952;</span> वा उ<span class="accent-swarita">&#x0951;</span> ॥ 8 <span class="accent-anudatta">&#x0952;</span></p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-4">
+                <div class="anuvaka-block level-2" id="sec-1-4">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.4 इन्द्र सूक्तं</span>
+                        <span class="anuvaka-num level-2">1.4 इन्द्र सूक्तं</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1410,9 +1483,9 @@
                         <p class="verse-p">म<span class="accent-anudatta">&#x0952;</span>हाꣳ इन्द्रो<span class="accent-anudatta">&#x0952;</span> वज्र<span class="accent-swarita">&#x0951;</span> बाहु ष्षोड<span class="accent-anudatta">&#x0952;</span>शी शर्म<span class="accent-swarita">&#x0951;</span> यच्छतु । स्व<span class="accent-anudatta">&#x0952;</span>स्ति नो<span class="accent-swarita">&#x0951;</span> म<span class="accent-anudatta">&#x0952;</span>घवा<span class="accent-swarita">&#x0951;</span> करोतु<span class="accent-anudatta">&#x0952;</span> हन्तु<span class="accent-swarita">&#x0951;</span> पा<span class="accent-anudatta">&#x0952;</span>प्मानं<span class="accent-anudatta">&#x0952;</span> यो<span class="accent-deergha">&#x1CDA;</span>ऽस्मान् द्वेष्टि<span class="accent-swarita">&#x0951;</span> । स<span class="accent-anudatta">&#x0952;</span>जोषा<span class="accent-swarita">&#x0951;</span> इन्द्र<span class="accent-anudatta">&#x0952;</span> सग<span class="accent-swarita">&#x0951;</span>णो म<span class="accent-anudatta">&#x0952;</span>रुद्भि<span class="accent-anudatta">&#x0952;</span> स्सोमं<span class="accent-swarita">&#x0951;</span> पिब वृत्रहन् च्छूर वि<span class="accent-anudatta">&#x0952;</span>द्वान् । ज<span class="accent-anudatta">&#x0952;</span>हि शत्रू<span class="accent-anudatta">&#x0952;</span>ꣳ<span class="accent-anudatta">&#x0952;</span> रप<span class="accent-anudatta">&#x0952;</span>मृधो<span class="accent-swarita">&#x0951;</span>-नुद<span class="accent-anudatta">&#x0952;</span>स्वाथा भ<span class="accent-swarita">&#x0951;</span>यं कृणुहि वि<span class="accent-anudatta">&#x0952;</span>श्वतो<span class="accent-swarita">&#x0951;</span> नः ॥ 15ब् <span class="accent-deergha">&#x1CDA;</span></p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-5">
+                <div class="anuvaka-block level-2" id="sec-1-5">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.5 ये देवाः</span>
+                        <span class="anuvaka-num level-2">1.5 ये देवाः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1429,9 +1502,9 @@
                         <p class="verse-p">दुव<span class="accent-swarita">&#x0951;</span>स्वते रक्षो<span class="accent-anudatta">&#x0952;</span>घ्ने स्वाहा<span class="accent-deergha">&#x1CDA;</span> ॥ 16 (5)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-6">
+                <div class="anuvaka-block level-2" id="sec-1-6">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.6 ये देवाः (अनुषङ्गं)</span>
+                        <span class="anuvaka-num level-2">1.6 ये देवाः (अनुषङ्गं)</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1452,9 +1525,9 @@
                         <p class="verse-p">बृह॒स्पत॑ये॒ दुव॑स्वते रक्षो॒घ्ने स्वाहा᳚ ॥ 16A (5A)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-7">
+                <div class="anuvaka-block level-2" id="sec-1-7">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.7 आयुष्कामेष्टि मन्त्राः</span>
+                        <span class="anuvaka-num level-2">1.7 आयुष्कामेष्टि मन्त्राः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1467,9 +1540,9 @@
                         <p class="verse-p">ऽऽयु<span class="accent-anudatta">&#x0952;</span>षाऽऽयु<span class="accent-swarita">&#x0951;</span>ष्मन्तं करोमि ॥ 17 (6)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-8">
+                <div class="anuvaka-block level-2" id="sec-1-8">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.8 आयुष्कामेष्टि मन्त्राः (अनुषङ्गं)</span>
+                        <span class="anuvaka-num level-2">1.8 आयुष्कामेष्टि मन्त्राः (अनुषङ्गं)</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1484,9 +1557,9 @@
                         <p class="verse-p">ऽऽयु॒षाऽऽयु॑ष्मन्तं करोमि ॥ 17A(6A)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-9">
+                <div class="anuvaka-block level-2" id="sec-1-9">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.9 अग्ंहोमुच मन्त्राः</span>
+                        <span class="anuvaka-num level-2">1.9 अग्ंहोमुच मन्त्राः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1500,9 +1573,9 @@
                         <p class="verse-p">स्राम<span class="accent-anudatta">&#x0952;</span>स्तं ँवा<span class="accent-swarita">&#x0951;</span> मे<span class="accent-anudatta">&#x0952;</span>तेना व<span class="accent-swarita">&#x0951;</span>यजे ॥ 18 (7)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-10">
+                <div class="anuvaka-block level-2" id="sec-1-10">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.10 अग्ंहोमुच मन्त्राः (अनुषङ्गं)</span>
+                        <span class="anuvaka-num level-2">1.10 अग्ंहोमुच मन्त्राः (अनुषङ्गं)</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1520,9 +1593,9 @@
                         <p class="verse-p">यो वा॑मिन्द्रा वरुणा॒ वन॒स्पति॑षु॒ स्राम॒स्तं ँवा॑मे॒ तेना व॑यजे ॥ (18A) (7A)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-11">
+                <div class="anuvaka-block level-2" id="sec-1-11">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.11 शास्तृ सूक्तं (आप्यं)</span>
+                        <span class="anuvaka-num level-2">1.11 शास्तृ सूक्तं (आप्यं)</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1537,9 +1610,9 @@
                         <p class="verse-p">अ<span class="accent-anudatta">&#x0952;</span>स्य वि<span class="accent-anudatta">&#x0952;</span>ज्ञान<span class="accent-anudatta">&#x0952;</span>मनु<span class="accent-anudatta">&#x0952;</span>सꣳ-र<span class="accent-swarita">&#x0951;</span>भद्ध्वमि<span class="accent-anudatta">&#x0952;</span>मं प<span class="accent-anudatta">&#x0952;</span>श्चादनु<span class="accent-swarita">&#x0951;</span> जीवाथ<span class="accent-anudatta">&#x0952;</span> सर्वे<span class="accent-deergha">&#x1CDA;</span> ॥ 19 (8)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-12">
+                <div class="anuvaka-block level-2" id="sec-1-12">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.12 राष्ट्रभृतं</span>
+                        <span class="anuvaka-num level-2">1.12 राष्ट्रभृतं</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1566,9 +1639,9 @@
                         <p class="verse-p">उ<span class="accent-anudatta">&#x0952;</span>रु ब्रह्म<span class="accent-swarita">&#x0951;</span>णे<span class="accent-anudatta">&#x0952;</span>ऽस्मै क्ष<span class="accent-anudatta">&#x0952;</span>त्राय<span class="accent-anudatta">&#x0952;</span> महि<span class="accent-anudatta">&#x0952;</span> शर्म<span class="accent-swarita">&#x0951;</span> यच्छ ॥ 20 (9)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-13">
+                <div class="anuvaka-block level-2" id="sec-1-13">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.13 भ्	राष्ट्रभृतं (अनुषङ्गं) जयाति</span>
+                        <span class="anuvaka-num level-2">1.13 भ्	राष्ट्रभृतं (अनुषङ्गं) जयाति</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1595,9 +1668,9 @@
                         <p class="verse-p">उ<span class="accent-anudatta">&#x0952;</span>रु ब्रह्म<span class="accent-swarita">&#x0951;</span>णे<span class="accent-anudatta">&#x0952;</span>स्मै क्ष<span class="accent-anudatta">&#x0952;</span>त्राय<span class="accent-anudatta">&#x0952;</span> महि<span class="accent-anudatta">&#x0952;</span> शर्म<span class="accent-swarita">&#x0951;</span> यच्छ<span class="accent-anudatta">&#x0952;</span> स्वाहा<span class="accent-deergha">&#x1CDA;</span> । (20भ्) (9भ्)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-14">
+                <div class="anuvaka-block level-2" id="sec-1-14">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.14 सर्प सूक्तं</span>
+                        <span class="anuvaka-num level-2">1.14 सर्प सूक्तं</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1607,9 +1680,9 @@
                         <p class="verse-p">नमः<span class="accent-swarita accent-visarga">&#x0951;</span> । ये<span class="accent-swarita">&#x0951;</span>ऽदो रो<span class="accent-swarita">&#x0951;</span>च<span class="accent-anudatta">&#x0952;</span>ने दि<span class="accent-anudatta">&#x0952;</span>वो ये वा<span class="accent-anudatta">&#x0952;</span> सूर्य<span class="accent-swarita">&#x0951;</span>स्य र<span class="accent-anudatta">&#x0952;</span>श्मिषु<span class="accent-swarita">&#x0951;</span> । येषा<span class="accent-swarita">&#x0951;</span>म<span class="accent-anudatta">&#x0952;</span>फ्सु सदः<span class="accent-swarita accent-visarga">&#x0951;</span> कृ<span class="accent-anudatta">&#x0952;</span>तं तेभ्य<span class="accent-swarita">&#x0951;</span> स्स<span class="accent-anudatta">&#x0952;</span>र्पेभ्यो<span class="accent-anudatta">&#x0952;</span> नमः<span class="accent-swarita accent-visarga">&#x0951;</span> । या इष<span class="accent-swarita">&#x0951;</span>वो यातु<span class="accent-anudatta">&#x0952;</span> धाना<span class="accent-swarita">&#x0951;</span>नां<span class="accent-anudatta">&#x0952;</span> ँये वा<span class="accent-anudatta">&#x0952;</span> वन<span class="accent-anudatta">&#x0952;</span>स्पती<span class="accent-anudatta">&#x0952;</span>ꣳ<span class="accent-anudatta">&#x0952;</span> रनु<span class="accent-swarita">&#x0951;</span> । ये वा<span class="accent-swarita">&#x0951;</span>ऽव<span class="accent-anudatta">&#x0952;</span>टेषु<span class="accent-anudatta">&#x0952;</span> शेर<span class="accent-swarita">&#x0951;</span>ते<span class="accent-anudatta">&#x0952;</span> तेभ्य<span class="accent-swarita">&#x0951;</span> स्स<span class="accent-anudatta">&#x0952;</span>र्पेभ्यो<span class="accent-anudatta">&#x0952;</span> नमः<span class="accent-swarita accent-visarga">&#x0951;</span> ॥ 21 (10)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-15">
+                <div class="anuvaka-block level-2" id="sec-1-15">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.15 पञ्चचोडाः</span>
+                        <span class="anuvaka-num level-2">1.15 पञ्चचोडाः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1628,9 +1701,9 @@
                         <p class="verse-p">जंभे<span class="accent-swarita">&#x0951;</span> दधामि ॥ 22 (11)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-16">
+                <div class="anuvaka-block level-2" id="sec-1-16">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.16 पंचचोडाः (अनुषङ्गं)</span>
+                        <span class="anuvaka-num level-2">1.16 पंचचोडाः (अनुषङ्गं)</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1651,9 +1724,9 @@
                         <p class="verse-p">प्रहे॑ति॒स्तेभ्यो॒ नम॒स्ते नो॑ मृडयन्तु॒ ते यं द्वि॒ष्मो यश्च॑ नो॒ द्वेष्टि॒ तं ँवो॒ जंभे॑ दधामि ॥ 22A(11A)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-17">
+                <div class="anuvaka-block level-2" id="sec-1-17">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.17 अप्रतिरथः</span>
+                        <span class="anuvaka-num level-2">1.17 अप्रतिरथः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1684,9 +1757,9 @@
                         <p class="verse-p">यच्छतु ॥ 27 (12)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-18">
+                <div class="anuvaka-block level-2" id="sec-1-18">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.18 चमकं तृतीय अनुवाकः</span>
+                        <span class="anuvaka-num level-2">1.18 चमकं तृतीय अनुवाकः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1703,9 +1776,9 @@
                         <p class="verse-p">सु<span class="accent-anudatta">&#x0952;</span>गं च<span class="accent-swarita">&#x0951;</span> मे<span class="accent-anudatta">&#x0952;</span> शय<span class="accent-swarita">&#x0951;</span>नं च मे सू<span class="accent-anudatta">&#x0952;</span>षा च<span class="accent-swarita">&#x0951;</span> मे सु<span class="accent-anudatta">&#x0952;</span>दिनं<span class="accent-swarita">&#x0951;</span> च मे ॥ 29 (13)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-19">
+                <div class="anuvaka-block level-2" id="sec-1-19">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.19 विहव्यम्</span>
+                        <span class="anuvaka-num level-2">1.19 विहव्यम्</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1732,9 +1805,9 @@
                         <p class="verse-p">इ<span class="accent-anudatta">&#x0952;</span>मन्नो<span class="accent-swarita">&#x0951;</span> य<span class="accent-anudatta">&#x0952;</span>ज्ञं ँवि<span class="accent-swarita">&#x0951;</span>ह<span class="accent-anudatta">&#x0952;</span>वे जु<span class="accent-swarita">&#x0951;</span>षस्वा<span class="accent-anudatta">&#x0952;</span>स्य कु<span class="accent-swarita">&#x0951;</span>र्मो हरिवो मे<span class="accent-anudatta">&#x0952;</span>दिनं<span class="accent-swarita">&#x0951;</span> त्वा ॥ 33 (14)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-20">
+                <div class="anuvaka-block level-2" id="sec-1-20">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.20 मृगारः</span>
+                        <span class="anuvaka-num level-2">1.20 मृगारः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1781,9 +1854,9 @@
                         <p class="verse-p">ए<span class="accent-anudatta">&#x0952;</span>वा त्वम<span class="accent-anudatta">&#x0952;</span>स्मत् प्रमु<span class="accent-swarita">&#x0951;</span>ञ्चा<span class="accent-anudatta">&#x0952;</span> व्यꣳहः<span class="accent-anudatta accent-visarga">&#x0952;</span> प्राता<span class="accent-deergha">&#x1CDA;</span>र्यग्ने प्रत<span class="accent-anudatta">&#x0952;</span>रान्न<span class="accent-anudatta">&#x0952;</span> आयुः<span class="accent-swarita accent-visarga">&#x0951;</span> ॥ 40 (15)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-21">
+                <div class="anuvaka-block level-2" id="sec-1-21">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.21 सर्पाहुती मन्त्राः</span>
+                        <span class="anuvaka-num level-2">1.21 सर्पाहुती मन्त्राः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1798,9 +1871,9 @@
                         <p class="verse-p">ते यं द्वि<span class="accent-anudatta">&#x0952;</span>ष्मो यश्च<span class="accent-swarita">&#x0951;</span> नो<span class="accent-anudatta">&#x0952;</span> द्वेष्टि<span class="accent-anudatta">&#x0952;</span> तं ँवां<span class="accent-anudatta">&#x0952;</span> जंभे<span class="accent-swarita">&#x0951;</span> दधामि ॥ 41 (16)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-22">
+                <div class="anuvaka-block level-2" id="sec-1-22">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.22 सर्पाहुती मन्त्राः (अनुषङ्गं)</span>
+                        <span class="anuvaka-num level-2">1.22 सर्पाहुती मन्त्राः (अनुषङ्गं)</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1823,9 +1896,9 @@
                         <p class="verse-p">ते यं द्वि॒ष्मो यश्च॑ नो॒ द्वेष्टि॒ तं ँवां॒ जंभे॑ दधामि ॥ 41A (16A)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-23">
+                <div class="anuvaka-block level-2" id="sec-1-23">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.23 गन्धर्वाहुतीः</span>
+                        <span class="anuvaka-num level-2">1.23 गन्धर्वाहुतीः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1839,9 +1912,9 @@
                         <p class="verse-p">वा<span class="accent-swarita">&#x0951;</span>त ना<span class="accent-anudatta">&#x0952;</span>मं तेभ्यो<span class="accent-swarita">&#x0951;</span> वो<span class="accent-anudatta">&#x0952;</span> नम<span class="accent-anudatta">&#x0952;</span>स्ते नो<span class="accent-swarita">&#x0951;</span> मृडयत<span class="accent-anudatta">&#x0952;</span> ते यं द्वि<span class="accent-anudatta">&#x0952;</span>ष्मो यश्च<span class="accent-swarita">&#x0951;</span> नो<span class="accent-anudatta">&#x0952;</span> द्वेष्टि<span class="accent-anudatta">&#x0952;</span> तं ँवो<span class="accent-anudatta">&#x0952;</span> जंभे<span class="accent-swarita">&#x0951;</span> दधामि ॥ 42 (17)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-24">
+                <div class="anuvaka-block level-2" id="sec-1-24">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.24 गन्धर्वाहुतीः (अनुषङ्गं)</span>
+                        <span class="anuvaka-num level-2">1.24 गन्धर्वाहुतीः (अनुषङ्गं)</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1862,9 +1935,9 @@
                         <p class="verse-p">यं द्वि॒ष्मो यश्च॑ नो॒ द्वेष्टि॒ तं ँवो॒ जंभे॑ दधामि ॥ 42A (17A)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-25">
+                <div class="anuvaka-block level-2" id="sec-1-25">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.25 अज्यानि मन्त्राः</span>
+                        <span class="anuvaka-num level-2">1.25 अज्यानि मन्त्राः</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1886,9 +1959,9 @@
                         <p class="verse-p">नमो<span class="accent-anudatta">&#x0952;</span> भूर्भुव<span class="accent-anudatta">&#x0952;</span>स्सुव<span class="accent-anudatta">&#x0952;</span> र्वष<span class="accent-anudatta">&#x0952;</span>ट् थ्स्वाहा<span class="accent-anudatta">&#x0952;</span> नमः<span class="accent-swarita accent-visarga">&#x0951;</span> ॥ 44 (19)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-26">
+                <div class="anuvaka-block level-2" id="sec-1-26">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.26 अथर्वशीर्षं</span>
+                        <span class="anuvaka-num level-2">1.26 अथर्वशीर्षं</span>
                         
                     </div>
                     <div class="verse-text">
@@ -1904,17 +1977,16 @@
                         <p class="verse-p">व<span class="accent-anudatta">&#x0952;</span>व<span class="accent-anudatta">&#x0952;</span>क्षु रु<span class="accent-anudatta">&#x0952;</span>ग्रो अस्तृ<span class="accent-swarita">&#x0951;</span>तः ॥ 47 (20)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-27">
+                <div class="anuvaka-block level-2" id="sec-1-27">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.27 प्रत्यङ्गिरसः</span>
+                        <span class="anuvaka-num level-2">1.27 प्रत्यङ्गिरसः</span>
                         
                     </div>
                     <div class="verse-text">
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-T-B-2-4-2-1">
+                <div class="anuvaka-block level-3" id="sec-T-B-2-4-2-1">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">T.B.2.4.2.1</span>
                         <span class="anuvaka-code">T.B.2.4.2.1</span>
                     </div>
                     <div class="verse-text">
@@ -1932,9 +2004,8 @@
                         <p class="verse-p">भ्रातृ<span class="accent-swarita">&#x0951;</span>व्यं पादयामसि ॥ 50 (21)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-T-B-2-5-1-1">
+                <div class="anuvaka-block level-3" id="sec-T-B-2-5-1-1">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">T.B.2.5.1.1</span>
                         <span class="anuvaka-code">T.B.2.5.1.1</span>
                     </div>
                     <div class="verse-text">
@@ -1950,9 +2021,8 @@
                         <p class="verse-p">अ<span class="accent-anudatta">&#x0952;</span>रान्न ने<span class="accent-anudatta">&#x0952;</span>मिः परि<span class="accent-anudatta">&#x0952;</span>सर्वं<span class="accent-swarita">&#x0951;</span> बभूव ॥ 53 (22)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-T-B-2-7-7-1">
+                <div class="anuvaka-block level-3" id="sec-T-B-2-7-7-1">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">T.B.2.7.7.1</span>
                         <span class="anuvaka-code">T.B.2.7.7.1</span>
                     </div>
                     <div class="verse-text">
@@ -1979,17 +2049,16 @@
                         <p class="verse-p">पुष्ट्यै<span class="accent-deergha">&#x1CDA;</span> प्र<span class="accent-anudatta">&#x0952;</span>जन<span class="accent-swarita">&#x0951;</span>नाय गृह्णामि । अ<span class="accent-anudatta">&#x0952;</span>पां ँयो य<span class="accent-anudatta">&#x0952;</span>ज्ञियो<span class="accent-anudatta">&#x0952;</span> रसः<span class="accent-swarita accent-visarga">&#x0951;</span> । तम<span class="accent-anudatta">&#x0952;</span>हम<span class="accent-anudatta">&#x0952;</span>स्मा आ<span class="accent-swarita">&#x0951;</span>मुष्याय<span class="accent-anudatta">&#x0952;</span>णाय<span class="accent-swarita">&#x0951;</span> । आयु<span class="accent-swarita">&#x0951;</span>षे दीर्घायु<span class="accent-anudatta">&#x0952;</span>त्वाय<span class="accent-swarita">&#x0951;</span> गृह्णामि ॥ 60 (23)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-28">
+                <div class="anuvaka-block level-2" id="sec-1-28">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.28 अन्न सूक्तं</span>
+                        <span class="anuvaka-num level-2">1.28 अन्न सूक्तं</span>
                         
                     </div>
                     <div class="verse-text">
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-T-B-2-8-8-1">
+                <div class="anuvaka-block level-3" id="sec-T-B-2-8-8-1">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">T.B.2.8.8.1</span>
                         <span class="anuvaka-code">T.B.2.8.8.1</span>
                     </div>
                     <div class="verse-text">
@@ -2006,17 +2075,16 @@
                         <p class="verse-p">मदा<span class="accent-swarita">&#x0951;</span>दि<span class="accent-anudatta">&#x0952;</span>त्या अधि<span class="accent-anudatta">&#x0952;</span> सर्वे<span class="accent-swarita">&#x0951;</span> तपन्ति । 63</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-29">
+                <div class="anuvaka-block level-2" id="sec-1-29">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.29 वाख् सूक्तं</span>
+                        <span class="anuvaka-num level-2">1.29 वाख् सूक्तं</span>
                         
                     </div>
                     <div class="verse-text">
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-T-B-2-8-8-4">
+                <div class="anuvaka-block level-3" id="sec-T-B-2-8-8-4">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">T.B.2.8.8.4</span>
                         <span class="anuvaka-code">T.B.2.8.8.4</span>
                     </div>
                     <div class="verse-text">
@@ -2039,9 +2107,9 @@
                         <p class="verse-p">गुहा<span class="accent-anudatta">&#x0952;</span> त्रीणि<span class="accent-anudatta">&#x0952;</span> निहि<span class="accent-swarita">&#x0951;</span>ता<span class="accent-anudatta">&#x0952;</span> नेङ्ग<span class="accent-swarita">&#x0951;</span>यन्ति । तु<span class="accent-anudatta">&#x0952;</span>रीयं<span class="accent-swarita">&#x0951;</span> ँवा<span class="accent-anudatta">&#x0952;</span>चो म<span class="accent-swarita">&#x0951;</span>नु<span class="accent-anudatta">&#x0952;</span>ष्या<span class="accent-swarita">&#x0951;</span> वदन्ति ॥ 66</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-30">
+                <div class="anuvaka-block level-2" id="sec-1-30">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.30 श्रद्धा सूक्तं</span>
+                        <span class="anuvaka-num level-2">1.30 श्रद्धा सूक्तं</span>
                         
                     </div>
                     <div class="verse-text">
@@ -2054,9 +2122,9 @@
                         <p class="verse-p">श्र<span class="accent-anudatta">&#x0952;</span>द्धा दे<span class="accent-anudatta">&#x0952;</span>वान-धि<span class="accent-swarita">&#x0951;</span>वस्ते । श्र<span class="accent-anudatta">&#x0952;</span>द्धा विश्व<span class="accent-swarita">&#x0951;</span> मि<span class="accent-anudatta">&#x0952;</span>दं जग<span class="accent-swarita">&#x0951;</span>त् । श्र<span class="accent-anudatta">&#x0952;</span>द्धां काम<span class="accent-swarita">&#x0951;</span>स्य मा<span class="accent-anudatta">&#x0952;</span>तरं<span class="accent-deergha">&#x1CDA;</span> । ह<span class="accent-anudatta">&#x0952;</span>विषा<span class="accent-swarita">&#x0951;</span> वर्द्धयामसि । 69अ</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-31">
+                <div class="anuvaka-block level-2" id="sec-1-31">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.31 ब्रह्म सूक्तं</span>
+                        <span class="anuvaka-num level-2">1.31 ब्रह्म सूक्तं</span>
                         
                     </div>
                     <div class="verse-text">
@@ -2070,9 +2138,9 @@
                         <p class="verse-p">ब्रह्म<span class="accent-swarita">&#x0951;</span> स<span class="accent-anudatta">&#x0952;</span>मिद् भ<span class="accent-swarita">&#x0951;</span>व<span class="accent-anudatta">&#x0952;</span>त्याहु<span class="accent-swarita">&#x0951;</span>तीनां ॥ 71</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-32">
+                <div class="anuvaka-block level-2" id="sec-1-32">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.32 गो सूक्तं</span>
+                        <span class="anuvaka-num level-2">1.32 गो सूक्तं</span>
                         
                     </div>
                     <div class="verse-text">
@@ -2102,9 +2170,9 @@
                         <p class="verse-p">माव<span class="accent-swarita">&#x0951;</span> स्ते<span class="accent-anudatta">&#x0952;</span>न ई<span class="accent-swarita">&#x0951;</span>शत<span class="accent-anudatta">&#x0952;</span> माघशꣳ<span class="accent-swarita">&#x0951;</span>सः । परि<span class="accent-swarita">&#x0951;</span>वो हे<span class="accent-anudatta">&#x0952;</span>ती रु<span class="accent-anudatta">&#x0952;</span>द्रस्य<span class="accent-swarita">&#x0951;</span> वृंज्यात् । उपे<span class="accent-anudatta">&#x0952;</span>द-मु<span class="accent-swarita">&#x0951;</span>प<span class="accent-anudatta">&#x0952;</span>-पर्च<span class="accent-swarita">&#x0951;</span>नं । आ<span class="accent-anudatta">&#x0952;</span>सु गोषूप<span class="accent-swarita">&#x0951;</span> पृच्यतां । उप<span class="accent-swarita">&#x0951;</span>र्.ष<span class="accent-anudatta">&#x0952;</span>भस्य<span class="accent-anudatta">&#x0952;</span> रेत<span class="accent-swarita">&#x0951;</span>सि । उपे<span class="accent-deergha">&#x1CDA;</span>न्द्र<span class="accent-anudatta">&#x0952;</span> तव<span class="accent-swarita">&#x0951;</span> वी<span class="accent-anudatta">&#x0952;</span>र्ये<span class="accent-deergha">&#x1CDA;</span> ॥ 74 (24)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-33">
+                <div class="anuvaka-block level-2" id="sec-1-33">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.33 सूर्या चन्द्रमसा सूक्तं</span>
+                        <span class="anuvaka-num level-2">1.33 सूर्या चन्द्रमसा सूक्तं</span>
                         
                     </div>
                     <div class="verse-text">
@@ -2142,9 +2210,9 @@
                         <p class="verse-p">Expansion 77c  appearing in TS.5.6.1.4</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-34">
+                <div class="anuvaka-block level-2" id="sec-1-34">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.34 नासदासीय सूक्तं</span>
+                        <span class="anuvaka-num level-2">1.34 नासदासीय सूक्तं</span>
                         
                     </div>
                     <div class="verse-text">
@@ -2167,9 +2235,9 @@
                         <p class="verse-p">मनी<span class="accent-swarita">&#x0951;</span>षिणो<span class="accent-anudatta">&#x0952;</span> मन<span class="accent-swarita">&#x0951;</span>सा<span class="accent-anudatta">&#x0952;</span> विब्र<span class="accent-swarita">&#x0951;</span>वीमि वः । ब्रह्मा<span class="accent-anudatta">&#x0952;</span>द्ध्यति<span class="accent-swarita">&#x0951;</span>ष्ठ<span class="accent-anudatta">&#x0952;</span>द् भुव<span class="accent-swarita">&#x0951;</span>नानि धा<span class="accent-anudatta">&#x0952;</span>रयन्न्<span class="accent-swarita">&#x0951;</span> । 81</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-35">
+                <div class="anuvaka-block level-2" id="sec-1-35">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.35 भाग्य सूक्तं</span>
+                        <span class="anuvaka-num level-2">1.35 भाग्य सूक्तं</span>
                         
                     </div>
                     <div class="verse-text">
@@ -2200,17 +2268,16 @@
                         <p class="verse-p">यू<span class="accent-anudatta">&#x0952;</span>यं पा<span class="accent-swarita">&#x0951;</span>त स्व<span class="accent-anudatta">&#x0952;</span>स्तिभि<span class="accent-anudatta">&#x0952;</span>-स्सदा<span class="accent-swarita">&#x0951;</span>नः ॥ 84 (25)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-36">
+                <div class="anuvaka-block level-2" id="sec-1-36">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.36 नक्षत्र सूक्तं(वाक्यं)</span>
+                        <span class="anuvaka-num level-2">1.36 नक्षत्र सूक्तं(वाक्यं)</span>
                         
                     </div>
                     <div class="verse-text">
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-T-B-3-1-1-1">
+                <div class="anuvaka-block level-3" id="sec-T-B-3-1-1-1">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">T.B.3.1.1.1</span>
                         <span class="anuvaka-code">T.B.3.1.1.1</span>
                     </div>
                     <div class="verse-text">
@@ -2458,17 +2525,16 @@
                         <p class="verse-p">This Expansion is appearing in TB 2.4.1.4</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-37">
+                <div class="anuvaka-block level-2" id="sec-1-37">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.37 नक्षत्र उपहोम मन्त्राः</span>
+                        <span class="anuvaka-num level-2">1.37 नक्षत्र उपहोम मन्त्राः</span>
                         
                     </div>
                     <div class="verse-text">
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-T-B-3-1-4-1">
+                <div class="anuvaka-block level-3" id="sec-T-B-3-1-4-1">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">T.B.3.1.4.1</span>
                         <span class="anuvaka-code">T.B.3.1.4.1</span>
                     </div>
                     <div class="verse-text">
@@ -2597,9 +2663,9 @@
                         <p class="verse-p">आपो<span class="accent-anudatta">&#x0952;</span>हिष्ठा म<span class="accent-swarita">&#x0951;</span>यो<span class="accent-anudatta">&#x0952;</span>भुव<span class="accent-anudatta">&#x0952;</span>स्ता न<span class="accent-swarita">&#x0951;</span> ऊ<span class="accent-anudatta">&#x0952;</span>र्जे द<span class="accent-swarita">&#x0951;</span>धातन । म<span class="accent-anudatta">&#x0952;</span>हे रणा<span class="accent-swarita">&#x0951;</span>य<span class="accent-anudatta">&#x0952;</span> चक्ष<span class="accent-swarita">&#x0951;</span>से । यो व<span class="accent-swarita">&#x0951;</span>श्शि<span class="accent-anudatta">&#x0952;</span>वत<span class="accent-swarita">&#x0951;</span>मो<span class="accent-anudatta">&#x0952;</span> रस<span class="accent-anudatta">&#x0952;</span>स्तस्य<span class="accent-swarita">&#x0951;</span> भाजयते<span class="accent-anudatta">&#x0952;</span> ह नः<span class="accent-swarita accent-visarga">&#x0951;</span> । उ<span class="accent-anudatta">&#x0952;</span>श<span class="accent-anudatta">&#x0952;</span>तीरि<span class="accent-swarita">&#x0951;</span>व मा<span class="accent-anudatta">&#x0952;</span>तरः<span class="accent-swarita accent-visarga">&#x0951;</span> । तस्मा<span class="accent-anudatta">&#x0952;</span> अर<span class="accent-swarita">&#x0951;</span>ङ्गमाम वो<span class="accent-anudatta">&#x0952;</span> यस्य<span class="accent-anudatta">&#x0952;</span> क्षया<span class="accent-swarita">&#x0951;</span>य<span class="accent-anudatta">&#x0952;</span> जिन्व<span class="accent-swarita">&#x0951;</span>थ । आपो<span class="accent-swarita">&#x0951;</span> ज<span class="accent-anudatta">&#x0952;</span>नय<span class="accent-swarita">&#x0951;</span>था च नः ॥ 121 (32)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-38">
+                <div class="anuvaka-block level-2" id="sec-1-38">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.38 वरुण सूक्तं</span>
+                        <span class="anuvaka-num level-2">1.38 वरुण सूक्तं</span>
                         
                     </div>
                     <div class="verse-text">
@@ -2623,10 +2689,10 @@
                         <p class="verse-p">अहे<span class="accent-swarita">&#x0951;</span>डमानो वरुणे<span class="accent-anudatta">&#x0952;</span>ह बो<span class="accent-anudatta">&#x0952;</span>द्ध्युरु<span class="accent-swarita">&#x0951;</span>शꣳ स<span class="accent-anudatta">&#x0952;</span> मा न<span class="accent-anudatta">&#x0952;</span> आयुः<span class="accent-anudatta accent-visarga">&#x0952;</span> प्रमो<span class="accent-swarita">&#x0951;</span>षीः ॥ 122 (33)</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-39">
+                <div class="anuvaka-block level-2" id="sec-1-39">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.39 पवमान सूक्तं</span>
-                        <span class="anuvaka-code">TB 3.5.11.1</span>
+                        <span class="anuvaka-num level-2">1.39 पवमान सूक्तं</span>
+                        
                     </div>
                     <div class="verse-text">
                         <p class="verse-p">TS 5,6.1.1</p>
@@ -2658,18 +2724,19 @@
                         <p class="verse-p">तेन<span class="accent-swarita">&#x0951;</span> स<span class="accent-anudatta">&#x0952;</span>हस्र<span class="accent-swarita">&#x0951;</span> धारेण । पा<span class="accent-anudatta">&#x0952;</span>व<span class="accent-anudatta">&#x0952;</span>मा<span class="accent-anudatta">&#x0952;</span>न्यः</p>
                         <p class="verse-p">पु<span class="accent-swarita">&#x0951;</span>नन्तु मा । प्रा<span class="accent-anudatta">&#x0952;</span>जा<span class="accent-anudatta">&#x0952;</span>प<span class="accent-anudatta">&#x0952;</span>त्यं प<span class="accent-anudatta">&#x0952;</span>वित्रं<span class="accent-deergha">&#x1CDA;</span> ।</p>
                         <p class="verse-p">श<span class="accent-anudatta">&#x0952;</span>तोद्या<span class="accent-swarita">&#x0951;</span>मꣳ हिर<span class="accent-anudatta">&#x0952;</span>ण्मयं<span class="accent-deergha">&#x1CDA;</span> । तेन<span class="accent-swarita">&#x0951;</span> ब्रह्म<span class="accent-anudatta">&#x0952;</span> विदो<span class="accent-swarita">&#x0951;</span> व<span class="accent-anudatta">&#x0952;</span>यं । पू<span class="accent-anudatta">&#x0952;</span>तं ब्रह्म<span class="accent-swarita">&#x0951;</span> पुनीमहे । इन्द्र<span class="accent-swarita">&#x0951;</span>-स्सुनी<span class="accent-anudatta">&#x0952;</span>ती स<span class="accent-anudatta">&#x0952;</span>ह मा<span class="accent-swarita">&#x0951;</span> पुनातु । सोम<span class="accent-swarita">&#x0951;</span>-स्स्व<span class="accent-anudatta">&#x0952;</span>स्त्या वरु<span class="accent-swarita">&#x0951;</span>ण-स्स<span class="accent-anudatta">&#x0952;</span>मीच्या<span class="accent-deergha">&#x1CDA;</span> । य<span class="accent-anudatta">&#x0952;</span>मो राजा<span class="accent-deergha">&#x1CDA;</span> प्रमृ<span class="accent-anudatta">&#x0952;</span>णाभिः<span class="accent-swarita accent-visarga">&#x0951;</span> पुनातुमा ।</p>
-                        <p class="verse-p">जा<span class="accent-anudatta">&#x0952;</span>तवे<span class="accent-swarita">&#x0951;</span>दा मो<span class="accent-anudatta">&#x0952;</span>र्जय<span class="accent-swarita">&#x0951;</span>न्त्या पुनातु । ओं भूर्भुव<span class="accent-anudatta">&#x0952;</span>स्सुवः<span class="accent-swarita accent-visarga">&#x0951;</span> ॥ 129</p>
+                        <p class="verse-p">जा<span class="accent-anudatta">&#x0952;</span>तवे<span class="accent-swarita">&#x0951;</span>दा मो<span class="accent-anudatta">&#x0952;</span>र्जय<span class="accent-swarita">&#x0951;</span>न्त्या पुनातु । ॐ भूर्भुव<span class="accent-anudatta">&#x0952;</span>स्सुवः<span class="accent-swarita accent-visarga">&#x0951;</span> ॥ 129</p>
+                        <p class="verse-p">TB 3.5.11.1</p>
                         <p class="verse-p">तच्छं<span class="accent-anudatta">&#x0952;</span> ँयोरा वृ<span class="accent-swarita">&#x0951;</span>णीमहे । गा<span class="accent-anudatta">&#x0952;</span>तुं य~ं<span class="accent-anudatta">&#x0952;</span>ज्ञाय<span class="accent-swarita">&#x0951;</span> । गा<span class="accent-anudatta">&#x0952;</span>तुं ँय<span class="accent-anudatta">&#x0952;</span>ज्ञप<span class="accent-swarita">&#x0951;</span>तये ।</p>
                         <p class="verse-p">दैवी<span class="accent-deergha">&#x1CDA;</span>स्व<span class="accent-anudatta">&#x0952;</span>स्ति-र<span class="accent-swarita">&#x0951;</span>स्तुनः । स्व<span class="accent-anudatta">&#x0952;</span>स्तिर्-मानु<span class="accent-swarita">&#x0951;</span>षेभ्यः ।</p>
                         <p class="verse-p">ऊ<span class="accent-anudatta">&#x0952;</span>द्‌र्ध्वं जि<span class="accent-swarita">&#x0951;</span>गातु भेष<span class="accent-anudatta">&#x0952;</span>जं ।</p>
                         <p class="verse-p">शन्नो<span class="accent-swarita">&#x0951;</span> अस्तु द्वि<span class="accent-anudatta">&#x0952;</span>पदे<span class="accent-deergha">&#x1CDA;</span> । शंचतु<span class="accent-swarita">&#x0951;</span>ष्पदे ॥ 130 (36)</p>
-                        <p class="verse-p">ओं शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-swarita accent-visarga">&#x0951;</span> ॥</p>
+                        <p class="verse-p">ॐ शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-swarita accent-visarga">&#x0951;</span> ॥</p>
                         <p class="verse-p">( उदकशान्ति समाप्तं )</p>
                     </div>
                 </div>
-                <div class="anuvaka-block" id="sec-1-40">
+                <div class="anuvaka-block level-2" id="sec-1-40">
                     <div class="anuvaka-header">
-                        <span class="anuvaka-num">1.40 नक्षत्र सूक्तं (नक्षत्र जप मन्त्राः)</span>
+                        <span class="anuvaka-num level-2">1.40 नक्षत्र सूक्तं (नक्षत्र जप मन्त्राः)</span>
                         
                     </div>
                     <div class="verse-text">
@@ -2992,7 +3059,7 @@
                         <p class="verse-p">ज्योति<span class="accent-swarita">&#x0951;</span>ष्मद्धेह्य<span class="accent-anudatta">&#x0952;</span> जर<span class="accent-swarita">&#x0951;</span>न्न<span class="accent-anudatta">&#x0952;</span> आयुः<span class="accent-swarita accent-visarga">&#x0951;</span> ॥</p>
                         <p class="verse-p">(अग्नये नमः) 40</p>
                         <p class="verse-p">नक्षत्रदेवताभ्यो नमः</p>
-                        <p class="verse-p">ओं शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-swarita accent-visarga">&#x0951;</span></p>
+                        <p class="verse-p">ॐ शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-swarita accent-visarga">&#x0951;</span></p>
                         <p class="verse-p">------------------------------------------------------------------</p>
                     </div>
                 </div>
