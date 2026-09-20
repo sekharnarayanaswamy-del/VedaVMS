@@ -326,8 +326,8 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             --mantra-size: calc(var(--font-size) * 1.18);
             --swarita-bottom: 0.2em;
             --anudatta-bottom: -0.25em;
-            --accent-offset: -0.20em;
-            --visarga-offset: -0.55em;
+            --accent-offset: -0.10em;
+            --visarga-offset: -0.35em;
             --accent-font: 'AdishilaVedic', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
             --verse-font: 'Noto Serif Devanagari', 'Adishila San', 'Tiro Devanagari Sanskrit', serif;
             --verse-weight: 500;
