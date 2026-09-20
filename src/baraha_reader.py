@@ -263,10 +263,40 @@ def build_krama_table(rows: list[tuple[str, str]]) -> str:
     return '\n'.join(html_lines)
 
 
+def preprocess_inline_citations(text: str) -> str:
+    """Process </inline> and <inline> tags in Baraha lines, preserving citations as English text."""
+    if '</inline>' not in text.lower() and '<inline>' not in text.lower():
+        return text
+
+    # 1. Explicit <inline>...</inline>
+    def repl_explicit(m):
+        content = m.group(1).strip()
+        return f'<lang=eng><span class="inline-citation">{clean_baraha_english(content)}</span><lang=def>'
+    text = re.sub(r'<inline>(.*?)</inline>', repl_explicit, text, flags=re.I)
+
+    # 2. Parenthesized citation before </inline>, e.g. "tasya... || 3 (TA .6.12.3)</inline>"
+    def repl_paren(m):
+        prefix = m.group(1)
+        cit = m.group(2).strip()
+        return f'{prefix}<lang=eng><span class="inline-citation">{clean_baraha_english(cit)}</span><lang=def>'
+    text = re.sub(r'^(.*?)((?:\([^\)]+\)|\[[^\]]+\]))\s*</inline>', repl_paren, text, flags=re.I)
+
+    # 3. Standalone citation line with </inline>, e.g. "TB 3.10.5.1 for para 17 </inline>"
+    def repl_bare(m):
+        cit = m.group(1).strip()
+        return f'<lang=eng><span class="inline-citation">{clean_baraha_english(cit)}</span><lang=def>'
+    text = re.sub(r'^(.*?)\s*</inline>', repl_bare, text, flags=re.I)
+
+    # Clean any remaining inline tags
+    text = re.sub(r'</?inline>', '', text, flags=re.I)
+    return text
+
+
 def process_baraha_line(text: str, current_lang: str) -> tuple[str, str]:
     """Process text with <lang=eng> and <lang=def> tags according to current_lang state.
     Returns (rendered_text, new_current_lang).
     """
+    text = preprocess_inline_citations(text)
     parts = re.split(r'(<lang=(?:eng|def)>)', text, flags=re.I)
     out = []
     lang = current_lang
@@ -285,6 +315,32 @@ def process_baraha_line(text: str, current_lang: str) -> tuple[str, str]:
                 out.append(baraha_to_devanagari(p))
     res = ''.join(out).strip()
     return res, lang
+
+
+def normalize_citation(text: str) -> str:
+    """Strip outer parenthesis if present and trim whitespace."""
+    t = text.strip()
+    if t.startswith('(') and t.endswith(')'):
+        t = t[1:-1].strip()
+    return t
+
+
+def is_scriptural_citation(text: str) -> bool:
+    """Check if a line immediately after a heading is a scriptural citation or attribution note."""
+    if re.search(r'[#$|]', text) or re.search(r'</?inline>', text, re.I) or re.search(r'</?(?:i|em)\b', text, re.I):
+        return False
+    clean = text.strip('() \t*')
+    if not clean:
+        return False
+    if re.match(r'^(?:T\.?[ABS]\.?|R\.?V\.?|Rig\s*V[Ee]da|TS|TB|TA|RV|EAK)\b', clean, re.I):
+        return True
+    if re.match(r'^(?:Exact\s+source|Starting\s+frOm\s+TB|To\s+bE\s+chanted|Rig\s*Vedic\s+convention|Part\s+\d+\s*\(|OrdEr\s+of\s+chanting|No\s+Definite\s+Source)', clean, re.I):
+        return True
+    if re.match(r'^(?:REf:|No\s+Ref\b)', clean, re.I):
+        return True
+    if re.search(r'\b(?:T\.?[ABS]\.?|R\.?V\.?|TS|TB|TA|RV)\s*[\d\.]+', clean, re.I) and ('/' in clean or 'for' in clean.lower()):
+        return True
+    return False
 
 
 def parse_baraha_elements(
@@ -354,6 +410,18 @@ def parse_baraha_elements(
             continue
 
         p = val.strip()
+        if re.match(r'^[+\-*=_~#]{3,}$', p):
+            i += 1
+            continue
+
+        p = re.sub(r'^[+\-*=_~#]{2,}\s*', '', p).strip()
+        if not p:
+            i += 1
+            continue
+
+        # Check if line contains </inline> or <i> forcing it to remain as body text (not heading/badge)
+        is_forced_inline = bool(re.search(r'</?inline>', p, flags=re.I) or re.search(r'</?(?:i|em)\b', p, flags=re.I))
+
         low_p = p.lower()
 
         # Standalone language mode tags
@@ -373,6 +441,7 @@ def parse_baraha_elements(
                 'num': 2,
                 'title_raw': 'Pooja Preparations',
                 'title_deva': '2. Pooja Preparations',
+                'ta_code': '',
                 'is_english': True,
                 'sections': []
             }
@@ -399,20 +468,40 @@ def parse_baraha_elements(
             i += 1
             continue
 
+        # Nakshatra items inside Chapter 19 MUST be captured as subsections
+        if not is_forced_inline and current_ch and current_ch['num'] == 19:
+            nak_m = re.match(r'^(\d+)\.?\s*(nakShatra[MH]?|paurNamAsi|amAvAsi|candramA|ahO|uShA|sUrya[H]?|aditi[H]?|viShNu[H]?|agni[H]?|anumatI|havyavAha)(.*)', p, re.I)
+            if nak_m:
+                item_num = nak_m.group(1)
+                item_title = (nak_m.group(2) + nak_m.group(3)).strip()
+                sec_num = f"19.{item_num}"
+                sec_deva, current_lang = process_baraha_line(item_title, current_lang)
+                current_sec = {
+                    'num': sec_num,
+                    'title_raw': item_title,
+                    'title_deva': sec_deva,
+                    'ta_code': '',
+                    'content': [],
+                    'content_deva': []
+                }
+                current_ch['sections'].append(current_sec)
+                i += 1
+                continue
+
         # Chapter heading check
-        ch_m = ch_pattern.match(p) if ch_pattern else fallback_ch_regex.match(p)
+        ch_m = (ch_pattern.match(p) if ch_pattern else fallback_ch_regex.match(p)) if not is_forced_inline else None
         if ch_m and not re.search(r'[q#$|]', p) and len(p) < 90:
             ch_num = int(ch_m.group(1))
             ch_raw_title = ch_m.group(2).strip() if ch_m.lastindex >= 2 and ch_m.group(2) else ''
 
             excluded_starts = (
-                'nakShatraM', 'OM', 'Oum', 'CatraM', 'vAdyaM', 'gItaM', 'aSvaM', 'rathaM',
+                'nakShatraM', 'nakShatraH', 'OM', 'Oum', 'CatraM', 'vAdyaM', 'gItaM', 'aSvaM', 'rathaM',
                 'namaH', 'svAhA', 'item no', 'purusha sukhtam'
             )
             is_valid = True
             if current_ch is not None and ch_num != current_ch['num'] + 1:
                 is_valid = False
-            elif any(ch_raw_title.lower().startswith(x) for x in excluded_starts):
+            elif any(ch_raw_title.lower().startswith(x.lower()) for x in excluded_starts):
                 is_valid = False
             elif re.search(r'\b(namaH|svAhA|OM|Oum|CatraM|vAdyaM|gItaM|aSvaM|rathaM)\b', ch_raw_title, re.I):
                 is_valid = False
@@ -432,6 +521,7 @@ def parse_baraha_elements(
                     'num': ch_num,
                     'title_raw': ch_raw_title,
                     'title_deva': f"{ch_num}. {ch_deva}" if ch_deva else f"{ch_num}.",
+                    'ta_code': '',
                     'is_english': is_english_text(ch_raw_title),
                     'sections': []
                 }
@@ -441,8 +531,8 @@ def parse_baraha_elements(
                 continue
 
         # Numbered section check (e.g. 3.1, 16.1, 16.1.1 or T.B. 3.11.1.1)
-        sm = sec_regex.match(p)
-        tb_m = tb_regex.match(p)
+        sm = sec_regex.match(p) if not is_forced_inline else None
+        tb_m = tb_regex.match(p) if not is_forced_inline else None
         if (sm or tb_m) and current_ch:
             sec_num = sm.group(1) if sm else tb_m.group(1)
             sec_name = sm.group(2).strip() if sm else ''
@@ -462,10 +552,21 @@ def parse_baraha_elements(
             i += 1
             continue
 
-        # Standalone TA/TB scriptural codes immediately under section header before content (e.g. T.A.5.1.1, TB 2.9.8.7)
-        if re.match(r'^\(?(?:T\.A\.|T\.B\.|TA|TB)\s*[\d\.]+\)?$', p):
-            if current_sec is not None and not current_sec.get('content') and not current_sec.get('ta_code'):
-                current_sec['ta_code'] = p.strip('() ')
+        # Scriptural citation attribute immediately under section or chapter header before content
+        if not is_forced_inline and is_scriptural_citation(p):
+            cit = normalize_citation(p)
+            if current_sec is not None and not current_sec.get('content'):
+                if current_sec.get('ta_code'):
+                    current_sec['ta_code'] += ' / ' + cit
+                else:
+                    current_sec['ta_code'] = cit
+                i += 1
+                continue
+            elif current_ch is not None and not current_ch.get('sections'):
+                if current_ch.get('ta_code'):
+                    current_ch['ta_code'] += ' / ' + cit
+                else:
+                    current_ch['ta_code'] = cit
                 i += 1
                 continue
 
@@ -483,7 +584,7 @@ def parse_baraha_elements(
                 'num': str(current_ch['num']),
                 'title_raw': current_ch['title_raw'],
                 'title_deva': current_ch['title_deva'],
-                'ta_code': '',
+                'ta_code': current_ch.get('ta_code', ''),
                 'content': [p],
                 'content_deva': [line_deva],
                 'is_intro': True
@@ -641,6 +742,7 @@ def parse_baraha_docx_to_ast(
             'title': ch['title_deva'],
             'section_title': ch['title_deva'],
             'raw_title': ch['title_raw'],
+            'ta_code': ch.get('ta_code', ''),
             'is_english': ch.get('is_english', False),
             'Count': '0',
             'subsections': {}
@@ -732,6 +834,7 @@ def ast_to_reader_chapters(ast_data: dict) -> list[dict]:
                 'num': ch_num,
                 'title_deva': sec_title,
                 'title_raw': raw_title,
+                'ta_code': sec_data.get('ta_code', ''),
                 'is_english': is_eng,
                 'sections': sections
             })

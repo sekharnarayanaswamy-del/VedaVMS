@@ -290,6 +290,20 @@ def baraha_to_devanagari(text: str) -> str:
     # Protect English tokens, tags, parentheticals, and phrases
     placeholders = []
 
+    # 0. Protect and transliterate italic blocks: <i>...</i> or <em>...</em> (supports <i><text></i> notation)
+    def repl_italic(m):
+        tag = m.group(1).lower()
+        inner_content = m.group(2)
+        # Strip outer angle brackets if user typed <i><text></i> notation
+        m_inner = re.match(r'^\s*<([^>]+)>\s*$', inner_content)
+        if m_inner:
+            inner_content = m_inner.group(1)
+        inner_deva = baraha_to_devanagari(inner_content)
+        placeholders.append(f'<{tag} class="vedic-italic">{inner_deva}</{tag}>')
+        return f'\uE000{len(placeholders)-1}\uE001'
+
+    text = re.sub(r'<(i|em)\b[^>]*>(.*?)</\1>', repl_italic, text, flags=re.I | re.S)
+
     def repl_clean_eng(m):
         placeholders.append(clean_baraha_english(m.group(0)))
         return f'\uE000{len(placeholders)-1}\uE001'

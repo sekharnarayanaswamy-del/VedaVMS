@@ -1,0 +1,88 @@
+======================================================================
+  VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
+======================================================================
+  HTML Document    : build\taittiriya_upanishad_sanskrit.html
+  Generated At     : 20-09-2026 09:58:12
+  HTML File Size   : 1,122,247 bytes
+  Reference PDF    : data\pdf\Taittiriya Upanishad Sanskrit.pdf
+----------------------------------------------------------------------
+  PDF Chapters     : 6
+  HTML Chapters    : 6
+  PDF Subsections  : 106
+  HTML Subsections : 132
+----------------------------------------------------------------------
+  [HTML SUBSECTIONS]   : 26 additional granular subsections in HTML
+                         (T.B.3.11.10.1, T.B.3.11.10.2, T.B.3.11.10.3, T.B.3.11.10.4, T.B.3.11.7.1, ... +21 more)
+----------------------------------------------------------------------
+  ℹ NOTE: Taittiriya Upanishad Chapter 6 (Trinachiketam) includes 26 granular Taittiriya Brahmana mantras (T.B.3.11.x) directly indexed in the HTML reader.
+======================================================================
+
+======================================================================
+  VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
+======================================================================
+  HTML Document    : build\udaka_shanti_sanskrit.html
+  Generated At     : 20-09-2026 09:58:14
+  HTML File Size   : 799,187 bytes
+  Reference PDF    : data\pdf\Udaka Shanti Sanskrit.pdf
+----------------------------------------------------------------------
+  PDF Chapters     : 1
+  HTML Chapters    : 1
+  PDF Subsections  : 40
+  HTML Subsections : 47
+----------------------------------------------------------------------
+  [HTML SUBSECTIONS]   : 7 additional granular subsections in HTML
+                         (T.B.2.4.2.1, T.B.2.5.1.1, T.B.2.7.7.1, T.B.2.8.8.1, T.B.2.8.8.4, T.B.3.1.1.1, T.B.3.1.4.1)
+----------------------------------------------------------------------
+  ℹ NOTE: Udaka Shanti includes 7 granular Taittiriya Brahmana mantras directly indexed in the HTML reader.
+======================================================================
+
+======================================================================
+  VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
+======================================================================
+  HTML Document    : build\shanti_japam_sanskrit.html
+  Generated At     : 20-09-2026 09:58:14
+  HTML File Size   : 1,394,865 bytes
+  Reference PDF    : data\pdf\Shanti Japam Sanskrit.pdf
+----------------------------------------------------------------------
+  PDF Chapters     : 40
+  HTML Chapters    : 40
+  PDF Subsections  : 42
+  HTML Subsections : 82
+----------------------------------------------------------------------
+  [HTML SUBSECTIONS]   : 40 additional granular subsections in HTML
+                         (19.1, 19.10, 19.11, 19.12, 19.13, ... +35 more)
+----------------------------------------------------------------------
+  ℹ NOTE: Shanti Japam Nakshatra Suktam includes 40 granular nakshatras (19.1–19.40) directly indexed in the HTML reader.
+======================================================================
+
+======================================================================
+  VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
+======================================================================
+  HTML Document    : build\siva_stuti_sanskrit.html
+  Generated At     : 20-09-2026 09:58:16
+  HTML File Size   : 2,164,289 bytes
+  Reference PDF    : data\pdf\Siva Stuti Sanskrit.pdf
+----------------------------------------------------------------------
+  PDF Chapters     : 22
+  HTML Chapters    : 22
+  PDF Subsections  : 232
+  HTML Subsections : 232
+----------------------------------------------------------------------
+  ✓ All chapters and subsections match the reference PDF exactly.
+======================================================================
+
+======================================================================
+  VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
+======================================================================
+  HTML Document    : build\udaka_shanti_anushangam_sanskrit.html
+  Generated At     : 20-09-2026 09:58:17
+  HTML File Size   : 820,712 bytes
+  Reference PDF    : data\pdf\Udaka Shanti Sanskrit ASCT.pdf
+----------------------------------------------------------------------
+  PDF Chapters     : 1
+  HTML Chapters    : 1
+  PDF Subsections  : 41
+  HTML Subsections : 41
+----------------------------------------------------------------------
+  ✓ All chapters and subsections match the reference PDF exactly.
+======================================================================

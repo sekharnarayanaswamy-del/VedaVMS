@@ -5,6 +5,7 @@
       "subtitle": "कृष्ण यजुर्वेदीय तैत्तिरीय आरण्यकम् (वेदमन्त्राः सस्वराः)",
       "input_docx": "data/baraha/Taittiriya Upanishad Baraha.docx",
       "output_html": "build/taittiriya_upanishad_sanskrit.html",
+      "pdf_path": "data/pdf/Taittiriya Upanishad Sanskrit.pdf",
       "back_link": "index.html",
       "back_label": "← Home",
       "chapter_regex": "^([1-6])(?!\\.)\\s*(.*(?:vall[iI]|nArAyaN|aruNa|triNAcikE).*)$"
@@ -14,6 +15,7 @@
       "title_sanskrit": "उदकशान्तिः",
       "input_docx": "data/baraha/Udaka Shanti Baraha.docx",
       "output_html": "build/udaka_shanti_sanskrit.html",
+      "pdf_path": "data/pdf/Udaka Shanti Sanskrit.pdf",
       "back_link": "index.html",
       "back_label": "← Home",
       "chapter_regex": "^(1)\\s+(udaka\\s*SAnti.*)$"
@@ -23,6 +25,7 @@
       "title_sanskrit": "शान्ति जपम्",
       "input_docx": "data/baraha/Shanti Japam Baraha.docx",
       "output_html": "build/shanti_japam_sanskrit.html",
+      "pdf_path": "data/pdf/Shanti Japam Sanskrit.pdf",
       "back_link": "index.html",
       "back_label": "← Home",
       "chapter_regex": "^([1-4]?\\d)(?!\\.\\d)\\.?\\s*([a-zA-Z].*)$"
@@ -32,6 +35,7 @@
       "title_sanskrit": "शिव स्तुतिः",
       "input_docx": "data/baraha/Siva Stuti Baraha.docx",
       "output_html": "build/siva_stuti_sanskrit.html",
+      "pdf_path": "data/pdf/Siva Stuti Sanskrit.pdf",
       "back_link": "index.html",
       "back_label": "← Home",
       "chapter_regex": "^([1-2]?\\d)(?!\\.\\d)\\.?\\s*([a-zA-Z].*)$",
@@ -58,6 +62,7 @@
       "title_sanskrit": "उदक शान्ति अनुषंगम",
       "input_docx": "data/baraha/Udaka Shanti ASCT Baraha.docx",
       "output_html": "build/udaka_shanti_anushangam_sanskrit.html",
+      "pdf_path": "data/pdf/Udaka Shanti Sanskrit ASCT.pdf",
       "back_link": "index.html",
       "back_label": "← Home",
       "chapter_regex": "^(1)\\s+(udaka\\s*SAnti.*)$"

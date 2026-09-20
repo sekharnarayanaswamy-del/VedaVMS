@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="generator" content="VedaVMS Reader Generator">
+    <meta name="generated-at" content="20-09-2026 09:58:16">
     <title>Shiva Stuti - Sanskrit Vedic Text</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -519,16 +521,28 @@
 
         .main-title h1 {
             font-family: 'Noto Serif Devanagari', serif;
-            font-size: 2.25rem;
+            font-size: 2.6rem;
             color: var(--maroon);
             margin-bottom: 0.5rem;
             letter-spacing: 0.5px;
         }
 
-        .main-title .sub-heading {
-            font-size: 1.15rem;
+        .main-title .sub-heading,
+        .main-title .subheading {
+            font-family: 'Noto Serif Devanagari', 'Adishila San', 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2rem;
             color: var(--saffron);
             font-weight: 600;
+            line-height: 1.45;
+            margin-bottom: 0.6rem;
+        }
+
+        .main-title .generation-timestamp {
+            font-family: monospace, system-ui, -apple-system, sans-serif;
+            font-size: 0.84rem;
+            color: #8C7B70;
+            margin-top: 0.45rem;
+            letter-spacing: 0.03em;
         }
 
         .chapter-container {
@@ -549,6 +563,11 @@
             font-family: 'Noto Serif Devanagari', serif;
             box-shadow: 0 4px 12px rgba(123,17,19,0.28);
             letter-spacing: 0.015em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
         }
 
         .anuvaka-block {
@@ -589,6 +608,7 @@
             border-bottom: 1px dashed #E0D0C0;
             padding-bottom: 0.65rem;
             margin-bottom: 1.15rem;
+            gap: 0.75rem;
         }
 
         .anuvaka-num {
@@ -617,6 +637,45 @@
             background: #EFEFEF;
             padding: 0.2rem 0.55rem;
             border-radius: 4px;
+            font-family: monospace;
+            margin-left: auto;
+            text-align: right;
+            white-space: normal;
+        }
+
+        .chapter-heading .chapter-code {
+            font-size: 0.82rem;
+            font-weight: normal;
+            vertical-align: middle;
+            margin-left: auto;
+            display: inline-block;
+            color: #333;
+            background: #FFFDF9;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+        }
+
+        .inline-citation {
+            font-size: 0.86em;
+            color: #6B5B52;
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.045);
+            padding: 0.1em 0.38em;
+            border-radius: 3px;
+            vertical-align: baseline;
+            font-weight: normal;
+        }
+
+        .vedic-italic, i, em {
+            font-style: italic;
+        }
+
+        .reader-footer {
+            margin-top: 3.5rem;
+            padding: 1.5rem 0;
+            border-top: 1px dashed #D6C2A8;
+            text-align: center;
+            font-size: 0.82rem;
+            color: #8C7B70;
             font-family: monospace;
         }
 
@@ -1004,14 +1063,17 @@
             }
 
             .main-title h1 {
-                font-size: 1.45rem;
+                font-size: 1.65rem;
                 line-height: 1.35;
                 word-break: break-word;
                 overflow-wrap: break-word;
             }
 
-            .main-title .sub-heading {
-                font-size: 0.92rem;
+            .main-title .sub-heading,
+            .main-title .subheading {
+                font-size: 1.35rem;
+                line-height: 1.4;
+                margin-bottom: 0.45rem;
             }
 
             .chapter-container {
@@ -1728,7 +1790,8 @@
         <main class="main-content">
             <div class="main-title">
                 <h1>Shiva Stuti</h1>
-                <div class="sub-heading">कृष्ण यजुर्वेदीय आरण्यकम्</div>
+                <div class="sub-heading subheading">कृष्ण यजुर्वेदीय आरण्यकम्</div>
+                <div class="generation-timestamp">Generated: 20-09-2026 09:58:16</div>
             </div>
             <section class="chapter-container" id="chapter-1">
                 <h2 class="chapter-heading">1. Introduction</h2>
@@ -2721,7 +2784,6 @@
                         <p class="verse-p">ईशानः सर्व<span class="accent-swarita">&#x0951;</span>विद्या<span class="accent-anudatta">&#x0952;</span>ना<span class="accent-anudatta">&#x0952;</span>-मीश्वरसर्व<span class="accent-swarita">&#x0951;</span> भूता<span class="accent-anudatta">&#x0952;</span>नां<span class="accent-anudatta">&#x0952;</span> ब्रह्माधि<span class="accent-swarita">&#x0951;</span>पति<span class="accent-anudatta">&#x0952;</span> र्ब्रह्म<span class="accent-anudatta">&#x0952;</span>णो</p>
                         <p class="verse-p">ऽधि<span class="accent-swarita">&#x0951;</span>पति<span class="accent-anudatta">&#x0952;</span> र्ब्रह्मा<span class="accent-swarita">&#x0951;</span> शि<span class="accent-anudatta">&#x0952;</span>वो मे<span class="accent-swarita">&#x0951;</span> अस्तु सदाशि<span class="accent-anudatta">&#x0952;</span>वों ॥</p>
                         <p class="verse-p">(नमो हिरण्यबाहवे हिरण्यवर्णाय हिरण्यरूपाय हिरण्यपतये ऽबिंकापतय उमापतये पशुपतये<span class="accent-swarita">&#x0951;</span> नमो<span class="accent-anudatta">&#x0952;</span> नमः ॥ )</p>
-                        <p class="verse-p">========================================</p>
                     </div>
                 </div>
             </section>
@@ -2808,7 +2870,6 @@
                         <p class="verse-p">“विधिं व्याख्यास्यामः.</p>
                         <p class="verse-p">Here you, as the kartha, are not doing "vidhi" ("vidhi" meaning the trial method as how to conduct the pooja) or "pooja vyakyaanam" (pooja Explanation) but actually doing the pooja itself. Hence it would be more appropriate to say</p>
                         <p class="verse-p">“अथातः पञ्चांगरुद्राणां न्यासपूर्वकं जप-होमा-र्चनाभिषेकं करिष्यमाणः ” ।</p>
-                        <p class="verse-p">-----------------------------------------</p>
                     </div>
                 </div>
             </section>
@@ -2875,7 +2936,7 @@
                         <p class="verse-p">प्रमु<span class="accent-swarita">&#x0951;</span>ञ्च<span class="accent-anudatta">&#x0952;</span> धन्व<span class="accent-swarita">&#x0951;</span>न<span class="accent-anudatta">&#x0952;</span>स्त्व-मु<span class="accent-anudatta">&#x0952;</span>भयो<span class="accent-anudatta">&#x0952;</span>-रार्त्नि<span class="accent-swarita">&#x0951;</span>यो<span class="accent-anudatta">&#x0952;</span>र्ज्यां । याश्च<span class="accent-swarita">&#x0951;</span> ते<span class="accent-anudatta">&#x0952;</span> हस्त<span class="accent-anudatta">&#x0952;</span> इष<span class="accent-swarita">&#x0951;</span>वः<span class="accent-anudatta accent-visarga">&#x0952;</span> परा<span class="accent-anudatta">&#x0952;</span> ता भ<span class="accent-swarita">&#x0951;</span>गवो वप । (अस्त्राय फट्) 32</p>
                         <p class="verse-p">य ए<span class="accent-anudatta">&#x0952;</span>ताव<span class="accent-swarita">&#x0951;</span>न्तश्च<span class="accent-anudatta">&#x0952;</span> भूयाꣳ<span class="accent-swarita">&#x0951;</span>सश्च<span class="accent-anudatta">&#x0952;</span> दिशो<span class="accent-swarita">&#x0951;</span> रु<span class="accent-anudatta">&#x0952;</span>द्रा वि<span class="accent-swarita">&#x0951;</span>तस्थि<span class="accent-anudatta">&#x0952;</span>रे ।</p>
                         <p class="verse-p">तेषाꣳ<span class="accent-swarita">&#x0951;</span><span class="accent-swarita">&#x0951;</span> सहस्रयोज<span class="accent-anudatta">&#x0952;</span>ने ऽव<span class="accent-anudatta">&#x0952;</span>धन्वा<span class="accent-swarita">&#x0951;</span>नि तन्मसि । (इति दिग्बन्धः) 33</p>
-                        <p class="verse-p">-----------इति प्रथम न्यासः------------</p>
+                        <p class="verse-p">इति प्रथम न्यासः------------</p>
                         <p class="verse-p">(शिखादि अस्त्रपर्यन्तं एकत्रिंशदंगन्यासः दिग्बन्ध सहितः प्रथमः)</p>
                     </div>
                 </div>
@@ -2891,7 +2952,7 @@
                         <p class="verse-p">गं नमः (कण्ठाय) । 			वं नमः (हृदयाय) ।</p>
                         <p class="verse-p">तें नमः (दक्षिण हस्ताय) । 	रुं नमः (वाम हस्ताय) ।</p>
                         <p class="verse-p">द्रां नमः (नाभ्यै) । 			यं नमः (पादाभ्यां) ॥</p>
-                        <p class="verse-p">-----------इति द्वितीय न्यासः----------</p>
+                        <p class="verse-p">इति द्वितीय न्यासः----------</p>
                         <p class="verse-p">मूर्धादि पादान्तं दशांग न्यासः द्वितीयः</p>
                     </div>
                 </div>
@@ -3001,10 +3062,9 @@
                 <div class="anuvaka-block level-2" id="sec-7-3">
                     <div class="anuvaka-header">
                         <span class="anuvaka-num level-2">7.3 षोडशांग रौद्रीकरणं</span>
-                        
+                        <span class="anuvaka-code">TS 1.3.3.1</span>
                     </div>
                     <div class="verse-text">
-                        <p class="verse-p">(TS 1.3.3.1 )</p>
                         <p class="verse-p">वि<span class="accent-anudatta">&#x0952;</span>भूर<span class="accent-swarita">&#x0951;</span>सि प्र<span class="accent-anudatta">&#x0952;</span>वाह<span class="accent-swarita">&#x0951;</span>णो<span class="accent-anudatta">&#x0952;</span> रौद्रे<span class="accent-anudatta">&#x0952;</span>णानी<span class="accent-swarita">&#x0951;</span>केन पा<span class="accent-anudatta">&#x0952;</span>हि मा<span class="accent-deergha">&#x1CDA;</span>ऽग्ने</p>
                         <p class="verse-p">पिपृ<span class="accent-anudatta">&#x0952;</span>हि मा<span class="accent-anudatta">&#x0952;</span> मा मा<span class="accent-swarita">&#x0951;</span> हिꣳसीः । 1</p>
                         <p class="verse-p">वह्नि<span class="accent-swarita">&#x0951;</span>रसि हव्य<span class="accent-anudatta">&#x0952;</span>वाह<span class="accent-swarita">&#x0951;</span>नो<span class="accent-anudatta">&#x0952;</span> रौद्रे<span class="accent-anudatta">&#x0952;</span>णानी<span class="accent-swarita">&#x0951;</span>केन पा<span class="accent-anudatta">&#x0952;</span>हि मा<span class="accent-deergha">&#x1CDA;</span>ऽग्ने</p>
@@ -3041,7 +3101,7 @@
                         <p class="verse-p">तथो भूत-प्रेत-पिशाच-ब्रह्मराक्षस-यक्ष-यमदूत-शाकिनी-डाकिनी-सर्प-श्वापद-वृश्चिक-तस्कराद् उपद्रवाद् उपघाताः ।</p>
                         <p class="verse-p">सर्वे (ग्रहाः) ज्वलन्तं पश्यन्तु । मां रक्षन्तु ।</p>
                         <p class="verse-p">यजमानं सकुटुंबं रक्षन्तु । सर्वान् महाजनान् रक्षन्तु ।</p>
-                        <p class="verse-p">-----------इति तृतीयः न्यासः------------</p>
+                        <p class="verse-p">इति तृतीयः न्यासः------------</p>
                         <p class="verse-p">पादाति मूर्धान्तं पञ्चांग न्यासः</p>
                     </div>
                 </div>
@@ -3074,10 +3134,9 @@
                 <div class="anuvaka-block level-2" id="sec-8-2">
                     <div class="anuvaka-header">
                         <span class="anuvaka-num level-2">8.2 आत्मरक्षा</span>
-                        
+                        <span class="anuvaka-code">T.B.2.3.11.1 to T.B.2.3.11.4) for para for full &quot;8.2&quot;</span>
                     </div>
                     <div class="verse-text">
-                        <p class="verse-p">(T.B.2.3.11.1 to T.B.2.3.11.4) for para for full "8.2")</p>
                         <p class="verse-p">ब्रह्मा<span class="accent-deergha">&#x1CDA;</span>त्म<span class="accent-anudatta">&#x0952;</span>न् वद<span class="accent-swarita">&#x0951;</span>सृजत । तद<span class="accent-swarita">&#x0951;</span>कामयत । समा<span class="accent-anudatta">&#x0952;</span>त्मना<span class="accent-swarita">&#x0951;</span> पद्ये<span class="accent-anudatta">&#x0952;</span>येति<span class="accent-swarita">&#x0951;</span> ।</p>
                         <p class="verse-p">आत्म<span class="accent-anudatta">&#x0952;</span>न्ना-त्म<span class="accent-anudatta">&#x0952;</span>न्नित्या-म<span class="accent-swarita">&#x0951;</span>न्त्रयत । तस्मै<span class="accent-swarita">&#x0951;</span> दश<span class="accent-anudatta">&#x0952;</span>मꣳ हू<span class="accent-anudatta">&#x0952;</span>तः प्रत्य<span class="accent-swarita">&#x0951;</span>शृणोत् ।</p>
                         <p class="verse-p">स दश<span class="accent-swarita">&#x0951;</span>हूतोऽभवत् । दश<span class="accent-swarita">&#x0951;</span>हूतो ह<span class="accent-anudatta">&#x0952;</span>वै नामै<span class="accent-anudatta">&#x0952;</span>षः । तं ँवा ए<span class="accent-anudatta">&#x0952;</span>तं दश<span class="accent-swarita">&#x0951;</span>हूत<span class="accent-anudatta">&#x0952;&#x0952;</span>ꣳ<span class="accent-anudatta">&#x0952;</span> सन्तं<span class="accent-deergha">&#x1CDA;</span> ।</p>
@@ -3096,7 +3155,7 @@
                         <p class="verse-p">त्वयै<span class="accent-swarita">&#x0951;</span> नानाख्या<span class="accent-anudatta">&#x0952;</span>तार<span class="accent-anudatta">&#x0952;</span> इति<span class="accent-swarita">&#x0951;</span> । तस्मा<span class="accent-anudatta">&#x0952;</span>न्नुहै<span class="accent-swarita">&#x0951;</span>ना<span class="accent-anudatta">&#x0952;</span>ᳺ<span class="accent-anudatta">&#x0952;</span>-श्च<span class="accent-swarita">&#x0951;</span>तुर्.होतार<span class="accent-anudatta">&#x0952;</span> इत्याच<span class="accent-swarita">&#x0951;</span>क्षते ।</p>
                         <p class="verse-p">तस्मा<span class="accent-deergha">&#x1CDA;</span>च्छुश्रू<span class="accent-anudatta">&#x0952;</span>षुः पु<span class="accent-anudatta">&#x0952;</span>त्राणा<span class="accent-anudatta">&#x0952;</span>ꣳ<span class="accent-anudatta">&#x0952;</span> हृद्य<span class="accent-swarita">&#x0951;</span>तमः । नेदि<span class="accent-swarita">&#x0951;</span>ष्ठो<span class="accent-anudatta">&#x0952;</span> हृद्य<span class="accent-swarita">&#x0951;</span>तमः ।</p>
                         <p class="verse-p">नेदि<span class="accent-swarita">&#x0951;</span>ष्ठो<span class="accent-anudatta">&#x0952;</span> ब्रह्म<span class="accent-swarita">&#x0951;</span>णो भवति । य ए<span class="accent-anudatta">&#x0952;</span>वं ँवेद<span class="accent-swarita">&#x0951;</span> ॥ 6 (आत्मने<span class="accent-anudatta">&#x0952;</span> नमः<span class="accent-swarita accent-visarga">&#x0951;</span>)</p>
-                        <p class="verse-p">------------इति चतुर्थ न्यासः------------</p>
+                        <p class="verse-p">इति चतुर्थ न्यासः------------</p>
                         <p class="verse-p">गुह्यादि मस्तकान्त षडंगन्यासः चतुर्थः</p>
                     </div>
                 </div>
@@ -3106,10 +3165,9 @@
                 <div class="anuvaka-block level-2" id="sec-9-1">
                     <div class="anuvaka-header">
                         <span class="anuvaka-num level-2">9.1 शिव संकल्पः</span>
-                        
+                        <span class="anuvaka-code">Rig veda Khila Kaandam , 4th Chapter , 11 Suktam – for full 9.1</span>
                     </div>
                     <div class="verse-text">
-                        <p class="verse-p">(Rig वेद ख्हिल खान्दम् , 4थ् Chapter , 11 शुक्तम् – fओर् fउल्ल् 9.1)</p>
                         <p class="verse-p">येने<span class="accent-anudatta">&#x0952;</span>दं भू<span class="accent-anudatta">&#x0952;</span>तं भुव<span class="accent-swarita">&#x0951;</span>नं भवि<span class="accent-anudatta">&#x0952;</span>ष्यत् परि<span class="accent-swarita">&#x0951;</span>गृहीत-म<span class="accent-anudatta">&#x0952;</span>मृते<span class="accent-swarita">&#x0951;</span>न<span class="accent-anudatta">&#x0952;</span> सर्वं<span class="accent-deergha">&#x1CDA;</span> । येन<span class="accent-swarita">&#x0951;</span> य<span class="accent-anudatta">&#x0952;</span>ज्ञस्ता<span class="accent-swarita">&#x0951;</span>यते</p>
                         <p class="verse-p">(य<span class="accent-anudatta">&#x0952;</span>ज्ञस्त्रा<span class="accent-swarita">&#x0951;</span>यते) स<span class="accent-anudatta">&#x0952;</span>प्तहो<span class="accent-swarita">&#x0951;</span>ता<span class="accent-anudatta">&#x0952;</span> तन्मे<span class="accent-anudatta">&#x0952;</span> मनः<span class="accent-swarita accent-visarga">&#x0951;</span> शि<span class="accent-anudatta">&#x0952;</span>वसं<span class="accent-swarita">&#x0951;</span>क<span class="accent-anudatta">&#x0952;</span>ल्पम<span class="accent-swarita">&#x0951;</span>स्तु ॥ 1</p>
                         <p class="verse-p">येन<span class="accent-anudatta">&#x0952;</span> कर्मा<span class="accent-swarita">&#x0951;</span>णि प्र<span class="accent-anudatta">&#x0952;</span>चर<span class="accent-swarita">&#x0951;</span>न्ति<span class="accent-anudatta">&#x0952;</span> धीरा<span class="accent-anudatta">&#x0952;</span> यतो<span class="accent-swarita">&#x0951;</span> वा<span class="accent-anudatta">&#x0952;</span>चा मन<span class="accent-swarita">&#x0951;</span>सा<span class="accent-anudatta">&#x0952;</span> चारु<span class="accent-anudatta">&#x0952;</span>यन्ति<span class="accent-swarita">&#x0951;</span> ।</p>
@@ -3182,10 +3240,9 @@
                 <div class="anuvaka-block level-2" id="sec-9-2">
                     <div class="anuvaka-header">
                         <span class="anuvaka-num level-2">9.2 पुरुष सूक्तं</span>
-                        
+                        <span class="anuvaka-code">T.A.3.12.1 t0 T.A.3.12.7</span>
                     </div>
                     <div class="verse-text">
-                        <p class="verse-p">(T.A.3.12.1 t0 T.A.3.12.7)</p>
                         <p class="verse-p">स<span class="accent-anudatta">&#x0952;</span>हस्र<span class="accent-swarita">&#x0951;</span>शीर्षा<span class="accent-anudatta">&#x0952;</span> पुरु<span class="accent-swarita">&#x0951;</span>षः । स<span class="accent-anudatta">&#x0952;</span>ह<span class="accent-anudatta">&#x0952;</span>स्रा<span class="accent-anudatta">&#x0952;</span>क्षः स<span class="accent-anudatta">&#x0952;</span>हस्र<span class="accent-swarita">&#x0951;</span>पात् । स भूमिं<span class="accent-swarita">&#x0951;</span> ँवि<span class="accent-anudatta">&#x0952;</span>श्वतो<span class="accent-swarita">&#x0951;</span> वृ<span class="accent-anudatta">&#x0952;</span>त्वा । अत्य<span class="accent-swarita">&#x0951;</span>तिष्ठद् दशाङ्गु<span class="accent-anudatta">&#x0952;</span>लं । पुरु<span class="accent-swarita">&#x0951;</span>ष ए<span class="accent-anudatta">&#x0952;</span>वेदꣳ सर्वं<span class="accent-deergha">&#x1CDA;</span> । यद् भू<span class="accent-anudatta">&#x0952;</span>तं ँयच्च<span class="accent-anudatta">&#x0952;</span> भव्यं<span class="accent-deergha">&#x1CDA;</span> ।</p>
                         <p class="verse-p">उ<span class="accent-anudatta">&#x0952;</span>तामृ<span class="accent-swarita">&#x0951;</span>त<span class="accent-anudatta">&#x0952;</span>त्वस्येशा<span class="accent-swarita">&#x0951;</span>नः । यदन्ने<span class="accent-swarita">&#x0951;</span>ना-ति<span class="accent-anudatta">&#x0952;</span>रोह<span class="accent-swarita">&#x0951;</span>ति ।</p>
                         <p class="verse-p">ए<span class="accent-anudatta">&#x0952;</span>तावा<span class="accent-swarita">&#x0951;</span>नस्य महि<span class="accent-anudatta">&#x0952;</span>मा । अतो<span class="accent-anudatta">&#x0952;</span> ज्यायाᳺ<span class="accent-swarita">&#x0951;</span>श्च<span class="accent-anudatta">&#x0952;</span> पूरु<span class="accent-swarita">&#x0951;</span>षः ॥ 1</p>
@@ -3211,10 +3268,9 @@
                 <div class="anuvaka-block level-2" id="sec-9-3">
                     <div class="anuvaka-header">
                         <span class="anuvaka-num level-2">9.3 उत्तर नारायणं</span>
-                        
+                        <span class="anuvaka-code">T.A.3.13.1 to T.A.3.13.2</span>
                     </div>
                     <div class="verse-text">
-                        <p class="verse-p">(T.A.3.13.1 to T.A.3.13.2)</p>
                         <p class="verse-p">अ<span class="accent-anudatta">&#x0952;</span>द्भ्यः संभू<span class="accent-swarita">&#x0951;</span>तः पृथि<span class="accent-anudatta">&#x0952;</span>व्यै रसा<span class="accent-deergha">&#x1CDA;</span>च्च । वि<span class="accent-anudatta">&#x0952;</span>श्वक<span class="accent-swarita">&#x0951;</span>र्मणः<span class="accent-anudatta accent-visarga">&#x0952;</span> सम<span class="accent-swarita">&#x0951;</span>वर्त्त<span class="accent-anudatta">&#x0952;</span>ताधि<span class="accent-swarita">&#x0951;</span> ।</p>
                         <p class="verse-p">तस्य<span class="accent-anudatta">&#x0952;</span> त्वष्टा<span class="accent-swarita">&#x0951;</span> वि<span class="accent-anudatta">&#x0952;</span>दध<span class="accent-swarita">&#x0951;</span>द् रू<span class="accent-anudatta">&#x0952;</span>पमे<span class="accent-swarita">&#x0951;</span>ति । तत्पुरु<span class="accent-swarita">&#x0951;</span>षस्य<span class="accent-anudatta">&#x0952;</span> विश्व<span class="accent-anudatta">&#x0952;</span>माजा<span class="accent-swarita">&#x0951;</span>न<span class="accent-anudatta">&#x0952;</span>मग्रे<span class="accent-deergha">&#x1CDA;</span> ।</p>
                         <p class="verse-p">वेदा<span class="accent-anudatta">&#x0952;</span>हमे<span class="accent-anudatta">&#x0952;</span>तं पुरु<span class="accent-swarita">&#x0951;</span>षं म<span class="accent-anudatta">&#x0952;</span>हान्तं<span class="accent-deergha">&#x1CDA;</span> । आ<span class="accent-anudatta">&#x0952;</span>दि<span class="accent-anudatta">&#x0952;</span>त्यव<span class="accent-swarita">&#x0951;</span>र्णं<span class="accent-anudatta">&#x0952;</span> तम<span class="accent-swarita">&#x0951;</span>सः<span class="accent-anudatta accent-visarga">&#x0952;</span> पर<span class="accent-swarita">&#x0951;</span>स्तात् ।</p>
@@ -3229,10 +3285,9 @@
                 <div class="anuvaka-block level-2" id="sec-9-4">
                     <div class="anuvaka-header">
                         <span class="anuvaka-num level-2">9.4 अप्रतिरथं</span>
-                        
+                        <span class="anuvaka-code">TS 4.6.4.1 to TS 4.6.4.5</span>
                     </div>
                     <div class="verse-text">
-                        <p class="verse-p">(TS 4.6.4.1 to TS 4.6.4.5)</p>
                         <p class="verse-p">आ<span class="accent-anudatta">&#x0952;</span>शुः शिशा<span class="accent-swarita">&#x0951;</span>नो वृष<span class="accent-anudatta">&#x0952;&#x0952;</span>भो न यु<span class="accent-anudatta">&#x0952;&#x0952;</span>ध्मो घ<span class="accent-swarita">&#x0951;</span>नाघ<span class="accent-anudatta">&#x0952;&#x0952;</span>नः क्षोभ<span class="accent-swarita">&#x0951;</span>ण-श्चर्.षणी<span class="accent-anudatta">&#x0952;&#x0952;</span>नां ।</p>
                         <p class="verse-p">सं<span class="accent-anudatta">&#x0952;&#x0952;</span>क्रन्द<span class="accent-swarita">&#x0951;</span>नो-ऽनिमि<span class="accent-anudatta">&#x0952;</span>ष ए<span class="accent-swarita">&#x0951;</span>क वी<span class="accent-anudatta">&#x0952;</span>रश्श<span class="accent-anudatta">&#x0952;</span>तꣳ सेना<span class="accent-swarita">&#x0951;</span> अजयथ्सा<span class="accent-anudatta">&#x0952;</span>-कमिन्द्रः<span class="accent-swarita accent-visarga">&#x0951;</span> ।</p>
                         <p class="verse-p">सं<span class="accent-anudatta">&#x0952;</span>क्रन्द<span class="accent-swarita">&#x0951;</span>नेना निमि<span class="accent-anudatta">&#x0952;</span>षेण<span class="accent-swarita">&#x0951;</span> जि<span class="accent-anudatta">&#x0952;</span>ष्णुना<span class="accent-swarita">&#x0951;</span> युत्का<span class="accent-anudatta">&#x0952;</span>रेण<span class="accent-swarita">&#x0951;</span> दुश्च्यव<span class="accent-anudatta">&#x0952;</span>नेन<span class="accent-swarita">&#x0951;</span> धृ<span class="accent-anudatta">&#x0952;</span>ष्णुना<span class="accent-deergha">&#x1CDA;</span> ।</p>
@@ -3262,11 +3317,9 @@
                 <div class="anuvaka-block level-2" id="sec-9-5">
                     <div class="anuvaka-header">
                         <span class="anuvaka-num level-2">9.5 प्रति पूरुषद्वयं</span>
-                        
+                        <span class="anuvaka-code">&lt;lang=eng&gt;(TS 1.8.6.1 to TS 1.8.6.2 for para 1 to 2 / T.B.1.6.10.1 to T.B.1.6.10.5 for para 3 to 7</span>
                     </div>
                     <div class="verse-text">
-                        <p class="verse-p">(TS 1.8.6.1 to TS 1.8.6.2 for para 1 to 2</p>
-                        <p class="verse-p">(T.B.1.6.10.1 to T.B.1.6.10.5 for para 3 to 7)</p>
                         <p class="verse-p">प्र<span class="accent-anudatta">&#x0952;</span>ति<span class="accent-anudatta">&#x0952;</span>पू<span class="accent-anudatta">&#x0952;</span>रु<span class="accent-anudatta">&#x0952;</span>ष मेक<span class="accent-swarita">&#x0951;</span>कपाला<span class="accent-anudatta">&#x0952;</span>न् निर्व<span class="accent-swarita">&#x0951;</span>प<span class="accent-anudatta">&#x0952;</span>त्ये-क<span class="accent-anudatta">&#x0952;</span>मति<span class="accent-swarita">&#x0951;</span>रिक्तं<span class="accent-anudatta">&#x0952;</span> ँयाव<span class="accent-swarita">&#x0951;</span>न्तो गृ<span class="accent-anudatta">&#x0952;</span>ह्याः<span class="accent-deergha accent-visarga">&#x1CDA;</span> स्मस्तेभ्यः<span class="accent-anudatta accent-visarga">&#x0952;</span> कम<span class="accent-swarita">&#x0951;</span>करं पशू<span class="accent-anudatta">&#x0952;</span>नाꣳ शर्मा<span class="accent-swarita">&#x0951;</span>सि<span class="accent-anudatta">&#x0952;</span> शर्म<span class="accent-anudatta">&#x0952;</span> यज<span class="accent-swarita">&#x0951;</span>मानस्य<span class="accent-anudatta">&#x0952;</span> शर्म<span class="accent-swarita">&#x0951;</span> मे</p>
                         <p class="verse-p">य<span class="accent-anudatta">&#x0952;</span>च्छैक<span class="accent-swarita">&#x0951;</span> ए<span class="accent-anudatta">&#x0952;</span>व रु<span class="accent-anudatta">&#x0952;</span>द्रो न द्वि<span class="accent-anudatta">&#x0952;</span>तीया<span class="accent-swarita">&#x0951;</span>य तस्थ आ<span class="accent-anudatta">&#x0952;</span>खुस्ते<span class="accent-swarita">&#x0951;</span> रुद्र प<span class="accent-anudatta">&#x0952;</span>शुस्तं जु<span class="accent-swarita">&#x0951;</span>षस्वै<span class="accent-anudatta">&#x0952;</span>ष ते<span class="accent-swarita">&#x0951;</span> रुद्र भा<span class="accent-anudatta">&#x0952;</span>गः स<span class="accent-anudatta">&#x0952;</span>ह स्वस्रां-ऽबि<span class="accent-swarita">&#x0951;</span>कया<span class="accent-anudatta">&#x0952;</span> तंजु<span class="accent-swarita">&#x0951;</span>षस्व भेष<span class="accent-anudatta">&#x0952;</span>जं गवेऽश्वा<span class="accent-swarita">&#x0951;</span>य<span class="accent-anudatta">&#x0952;</span></p>
                         <p class="verse-p">पुरु<span class="accent-swarita">&#x0951;</span>षाय भेष<span class="accent-anudatta">&#x0952;</span>जमथो<span class="accent-swarita">&#x0951;</span> अ<span class="accent-anudatta">&#x0952;</span>स्मभ्यं<span class="accent-swarita">&#x0951;</span> भेष<span class="accent-anudatta">&#x0952;</span>जꣳ सुभे<span class="accent-swarita">&#x0951;</span>षजं<span class="accent-anudatta">&#x0952;</span> ँयथाऽस<span class="accent-swarita">&#x0951;</span>ति । 1</p>
@@ -3293,10 +3346,9 @@
                 <div class="anuvaka-block level-2" id="sec-9-6">
                     <div class="anuvaka-header">
                         <span class="anuvaka-num level-2">9.6 शत रुद्रीयं</span>
-                        
+                        <span class="anuvaka-code">&lt;lang=eng&gt;T.B.3.11.2.1 to T.B.3.11.2.4 for full 9.6</span>
                     </div>
                     <div class="verse-text">
-                        <p class="verse-p">T.B.3.11.2.1 to T.B.3.11.2.4 for full 9.6</p>
                         <p class="verse-p">त्वम<span class="accent-swarita">&#x0951;</span>ग्ने रु<span class="accent-anudatta">&#x0952;</span>द्रो असु<span class="accent-swarita">&#x0951;</span>रो म<span class="accent-anudatta">&#x0952;</span>हो दि<span class="accent-anudatta">&#x0952;</span>वः । त्वꣳ शर्द्धो<span class="accent-anudatta">&#x0952;</span> मारु<span class="accent-swarita">&#x0951;</span>तं पृ<span class="accent-anudatta">&#x0952;</span>क्ष ई<span class="accent-swarita">&#x0951;</span>शिषे ।</p>
                         <p class="verse-p">त्वं ँवातै<span class="accent-swarita">&#x0951;</span>ररु<span class="accent-anudatta">&#x0952;</span>णै र्या<span class="accent-swarita">&#x0951;</span>सि शंग<span class="accent-anudatta">&#x0952;</span>यः । त्वं पू<span class="accent-anudatta">&#x0952;</span>षा वि<span class="accent-swarita">&#x0951;</span>ध<span class="accent-anudatta">&#x0952;</span>तः पा<span class="accent-swarita">&#x0951;</span>सि<span class="accent-anudatta">&#x0952;</span> नुत्मनाः<span class="accent-deergha accent-visarga">&#x1CDA;</span> ।</p>
                         <p class="verse-p">देवा<span class="accent-swarita">&#x0951;</span> दे<span class="accent-anudatta">&#x0952;</span>वेषु<span class="accent-swarita">&#x0951;</span> श्रयद्ध्वं । प्रथ<span class="accent-swarita">&#x0951;</span>मा द्वि<span class="accent-anudatta">&#x0952;</span>तीये<span class="accent-swarita">&#x0951;</span>षु श्रयद्ध्वं ।</p>
@@ -3372,7 +3424,7 @@
                         <p class="verse-p">नित्यं च शाश्वतं शुद्धं धृव-मक्षर-मव्ययं ।</p>
                         <p class="verse-p">सर्व व्यापिन-मीशानं रुद्रं वै विश्वरूपिणं ॥ 5</p>
                         <p class="verse-p">(उमामहेश्वराभ्यां नमः ।)</p>
-                        <p class="verse-p">-----इति पञ्चमः न्यासः-----</p>
+                        <p class="verse-p">इति पञ्चमः न्यासः-----</p>
                         <p class="verse-p">हृदयादि अस्त्रान्तं षडंग न्यासः पञ्चमः</p>
                     </div>
                 </div>
@@ -3417,7 +3469,6 @@
                         <p class="verse-p">आरा<span class="accent-swarita">&#x0951;</span>ध<span class="accent-anudatta">&#x0952;</span>या<span class="accent-swarita">&#x0951;</span>मि भक्त्या<span class="accent-anudatta">&#x0952;</span> त्वा<span class="accent-anudatta">&#x0952;</span>ऽनु<span class="accent-anudatta">&#x0952;</span>ग्रहा<span class="accent-swarita">&#x0951;</span>ण म<span class="accent-anudatta">&#x0952;</span>हेश्व<span class="accent-swarita">&#x0951;</span>र ॥ 3</p>
                         <p class="verse-p">Note for point No.3</p>
                         <p class="verse-p">(Given as per existing convention in use, source not available in classic vedic texts.)</p>
-                        <p class="verse-p">------------------------------------------------------------------------------</p>
                     </div>
                 </div>
             </section>
@@ -3451,7 +3502,6 @@
                         <p class="verse-p">12.	शं॑ च मे॒ (item No.12.12)</p>
                         <p class="verse-p">13.	श्री रुद्र दशाक्षरी महामन्त्रः (item No.12.13)</p>
                         <p class="verse-p">14.	रुद्रं (item No. 12.14)</p>
-                        <p class="verse-p">============================================</p>
                     </div>
                 </div>
                 <div class="anuvaka-block level-2" id="sec-11-2">
@@ -4612,7 +4662,6 @@
                         <p class="verse-p">सु<span class="accent-anudatta">&#x0952;</span>गं च<span class="accent-swarita">&#x0951;</span> मे<span class="accent-anudatta">&#x0952;</span>, 									शय<span class="accent-swarita">&#x0951;</span>नं च मे,</p>
                         <p class="verse-p">सू<span class="accent-anudatta">&#x0952;</span>षा च<span class="accent-swarita">&#x0951;</span> मे, 		 								सु<span class="accent-anudatta">&#x0952;</span>दिनं<span class="accent-swarita">&#x0951;</span> च मे ॥ 3 (36)</p>
                         <p class="verse-p">ॐ शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-anudatta accent-visarga">&#x0952;</span> शान्तिः<span class="accent-swarita accent-visarga">&#x0951;</span> ।</p>
-                        <p class="verse-p">--------------------------</p>
                     </div>
                 </div>
                 <div class="anuvaka-block level-2" id="sec-12-13">
@@ -5729,7 +5778,6 @@
                         <p class="verse-p">ॐ नमो<span class="accent-anudatta">&#x0952;</span> ब्रह्म<span class="accent-swarita">&#x0951;</span>णे<span class="accent-anudatta">&#x0952;</span> नमो<span class="accent-swarita">&#x0951;</span> अस्त्व<span class="accent-anudatta">&#x0952;</span>ग्नये<span class="accent-anudatta">&#x0952;</span> नमः<span class="accent-swarita accent-visarga">&#x0951;</span> पृथि<span class="accent-anudatta">&#x0952;</span>व्यै नम<span class="accent-anudatta">&#x0952;</span> ओष<span class="accent-swarita">&#x0951;</span>धीभ्यः ।</p>
                         <p class="verse-p">नमो॑ वा॒चे नमो॑ वा॒चस्पत॑ये॒ नमो॒ विष्ण॑वे बृह॒ते क॑रोमि ॥ ( 3 times)</p>
                         <p class="verse-p">(Perform the Udvaapanam of Sadyo Jaatha Kalasham or Pancha Kalashams and perform abhishekam to the deities)</p>
-                        <p class="verse-p">======================================</p>
                     </div>
                 </div>
             </section>
@@ -8382,7 +8430,7 @@
                         <p class="verse-p">अनन्त पुण्य फलदमतः शान्तिं प्रयच्छमे ।</p>
                         <p class="verse-p">अस्मिन् रुद्रैकादशन्याख्य महाप्रायश्चित्त कर्मणि तत्फल स्वीकरणार्थं उक्तदक्षिणा प्रत्याम्नायत्वेन इदं हिरण्यं पूजाजप कर्तृभ्यो ब्राह्मणेभ्येः संप्रददे ।</p>
                         <p class="verse-p">नमः । न मम । ॐ तथ्सत् । ब्रह्मार्पणमस्तु ॥</p>
-                        <p class="verse-p">------शुभं-----</p>
+                        <p class="verse-p">शुभं-----</p>
                     </div>
                 </div>
             </section>
@@ -8481,13 +8529,11 @@
                 <div class="anuvaka-block level-2" id="sec-22">
 
                     <div class="verse-text">
-                        <p class="verse-p">========================================</p>
                         <p class="verse-p">Here bodhAyanamaharShi is giving the mahanyaasa in a capsule form.</p>
                         <p class="verse-p">He is directly teaching the mahanyaasa method (विधिं व्याख्यास्यामः).</p>
                         <p class="verse-p">ॐ अथातः पञ्चांगरुद्राणां न्यासपूर्वकं जपहोमार्चनाभिषेकविधिं व्याख्यास्यामः ॥</p>
                         <p class="verse-p">( पञ्चांगरुद्रस्य अयमर्त्थः पञ्चप्रकाराः अङ्गन्यासाः येषु ते पञ्चांग रुद्राः । एवं षडंगरुद्रस्यापि षट्प्रकाराः अंगन्यासाः यस्य सः इत्यर्त्थः । तत्र शिखाद्यस्त्रपर्यन्तं एकत्रिंशदंगन्यासः दिग्बन्ध सहितः प्रथमः)</p>
                         <p class="verse-p">न्यासम् 1 - (शिखाद्यस्त्रपर्यन्तं एकत्रिंशदंगन्यासः दिग्बन्ध सहितः प्रथमः)</p>
-                        <p class="verse-p">=======</p>
                         <p class="verse-p">1. याते रुद्रेति शिखायां । अस्मिन् महत्यर्णव इति शिरसि ।</p>
                         <p class="verse-p">सहस्राणीति ललाटे । हꣳसः शुचिषदिति भृवोर्मद्ध्ये ।</p>
                         <p class="verse-p">त्र्यंबकं यजामहे इति नेत्रयोः । नमः सृत्यायेति कर्णयोः ।</p>
@@ -8506,7 +8552,6 @@
                         <p class="verse-p">नमो अस्तु नीलग्रीवायेति तृतीयं नेत्रं ।</p>
                         <p class="verse-p">प्रमुञ्च धन्वन इत्यस्त्रं । य एतावन्तश्चेति दिग्बन्धः ॥</p>
                         <p class="verse-p">न्यासम् 2 - (मूर्द्धादिपादान्तं दशांङ्गन्यासः द्वितीयः)</p>
-                        <p class="verse-p">=======</p>
                         <p class="verse-p">2. ॐ नमो भगवते रुद्रायेति नमस्कारान् न्यसेत् ।</p>
                         <p class="verse-p">i) ॐङ्कारं मूर्द्ध्नि विन्यस्य नकारं नासिकाग्रतः ।</p>
                         <p class="verse-p">मोकारं तू ललाटे वै भकारं मुखमद्ध्यतः ॥</p>
@@ -8514,7 +8559,6 @@
                         <p class="verse-p">तेकारं दक्षिणे हस्ते रुकारं वामतो न्यसेत् ॥</p>
                         <p class="verse-p">iii) द्राकारं नाभिदेशे तु यकारं पादयोर् न्यसेत् ॥</p>
                         <p class="verse-p">न्यासम् 3 - पादादिमूर्द्धान्तं पञ्चांगन्यासः तृतीयः</p>
-                        <p class="verse-p">=========</p>
                         <p class="verse-p">3 i) सद्यं च पादयोर्न्यस्य वामं न्यस्योरुमद्ध्यतः ।</p>
                         <p class="verse-p">अघोरं हृदि विन्यस्य मुखे तत् पुरुषं न्यसेत् ॥</p>
                         <p class="verse-p">ii) ईशानं मूर्द्धनि विन्यस्य हंसो नामसदाशिवः ।</p>
@@ -8530,7 +8574,6 @@
                         <p class="verse-p">4 	मनोज्योतिः, अबोद्ध्यग्निः, अग्निर्मूर्द्धा, मूर्द्धानं, मर्माणि ते, जातवेदा,</p>
                         <p class="verse-p">इति गुह्य-नाभि-हृदय-कण्ठ-मुख-शिरांस्यभिमन्त्र्य आत्मरक्षा कर्त्तव्या ब्रह्मात्मन्वदसृजतेत्यनुवाकेन ।</p>
                         <p class="verse-p">न्यासम् 5 - हृदयाद्य स्त्रान्तं षडंगन्यासः पञ्चमः</p>
-                        <p class="verse-p">=======</p>
                         <p class="verse-p">5) 	शिवसङ्कल्पं हृदयं, पुरुषसूक्तं शिरः, उत्तरनारायणं शिखा, अप्रतिरथं कवचं, प्रतिपुरुषद्वयं 	नेत्रं, शतरुद्रियमित्यस्त्रं ।</p>
                         <p class="verse-p">Korvai forशिवसङ्कल्पं</p>
                         <p class="verse-p">1. येनेदं, येन कर्माणि, येनकर्माण्यपसो, यत् प्रज्ञानग्ं, सुषारथिर्, यस्मिन्नृचो, यदत्र षष्ठं, यज्जाग्रतो, येनेदं, येन द्यौः पृथिवी दश ।</p>
@@ -8609,6 +8652,9 @@
                     </div>
                 </div>
             </section>
+            <footer class="reader-footer">
+                <div class="footer-meta">Generated: 20-09-2026 09:58:16 • VedaVMS Vedic Reader</div>
+            </footer>
         </main>
     </div>
 

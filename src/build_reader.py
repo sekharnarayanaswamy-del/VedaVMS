@@ -15,6 +15,7 @@ import re
 import json
 import zipfile
 import argparse
+import datetime
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -199,8 +200,8 @@ def format_vedic_html(text: str) -> str:
     if text.startswith('<table') or text.startswith('<div') or text.startswith('<!--') or is_english_text(text):
         return text
 
-    # 1. Normalize ASCII colons to Visarga
-    text = text.replace(':', 'ः')
+    # 1. Normalize ASCII colons to Visarga (only outside HTML tags)
+    text = re.sub(r':(?![^<]*>)', 'ः', text)
 
     # 2. Reorder accents that landed before Visarga so syllable + ः remain contiguous
     text = re.sub(r'([\u0951\u0952\u1CDA]+)\s*ः', r'ः\1', text)
@@ -241,6 +242,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
     subtitle = book_meta.get("subtitle", "कृष्ण यजुर्वेदीय आरण्यकम्")
     back_link = book_meta.get("back_link", "index.html")
     back_label = book_meta.get("back_label", "← Home")
+    generated_at = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
     fonts_js = json.dumps(fonts, ensure_ascii=False)
 
@@ -250,6 +252,8 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="generator" content="VedaVMS Reader Generator">
+    <meta name="generated-at" content="{generated_at}">
     <title>{title} - Sanskrit Vedic Text</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -766,16 +770,28 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
         .main-title h1 {{
             font-family: 'Noto Serif Devanagari', serif;
-            font-size: 2.25rem;
+            font-size: 2.6rem;
             color: var(--maroon);
             margin-bottom: 0.5rem;
             letter-spacing: 0.5px;
         }}
 
-        .main-title .sub-heading {{
-            font-size: 1.15rem;
+        .main-title .sub-heading,
+        .main-title .subheading {{
+            font-family: 'Noto Serif Devanagari', 'Adishila San', 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2rem;
             color: var(--saffron);
             font-weight: 600;
+            line-height: 1.45;
+            margin-bottom: 0.6rem;
+        }}
+
+        .main-title .generation-timestamp {{
+            font-family: monospace, system-ui, -apple-system, sans-serif;
+            font-size: 0.84rem;
+            color: #8C7B70;
+            margin-top: 0.45rem;
+            letter-spacing: 0.03em;
         }}
 
         .chapter-container {{
@@ -796,6 +812,11 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-family: 'Noto Serif Devanagari', serif;
             box-shadow: 0 4px 12px rgba(123,17,19,0.28);
             letter-spacing: 0.015em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
         }}
 
         .anuvaka-block {{
@@ -836,6 +857,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             border-bottom: 1px dashed #E0D0C0;
             padding-bottom: 0.65rem;
             margin-bottom: 1.15rem;
+            gap: 0.75rem;
         }}
 
         .anuvaka-num {{
@@ -864,6 +886,45 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             background: #EFEFEF;
             padding: 0.2rem 0.55rem;
             border-radius: 4px;
+            font-family: monospace;
+            margin-left: auto;
+            text-align: right;
+            white-space: normal;
+        }}
+
+        .chapter-heading .chapter-code {{
+            font-size: 0.82rem;
+            font-weight: normal;
+            vertical-align: middle;
+            margin-left: auto;
+            display: inline-block;
+            color: #333;
+            background: #FFFDF9;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+        }}
+
+        .inline-citation {{
+            font-size: 0.86em;
+            color: #6B5B52;
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.045);
+            padding: 0.1em 0.38em;
+            border-radius: 3px;
+            vertical-align: baseline;
+            font-weight: normal;
+        }}
+
+        .vedic-italic, i, em {{
+            font-style: italic;
+        }}
+
+        .reader-footer {{
+            margin-top: 3.5rem;
+            padding: 1.5rem 0;
+            border-top: 1px dashed #D6C2A8;
+            text-align: center;
+            font-size: 0.82rem;
+            color: #8C7B70;
             font-family: monospace;
         }}
 
@@ -1251,14 +1312,17 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             }}
 
             .main-title h1 {{
-                font-size: 1.45rem;
+                font-size: 1.65rem;
                 line-height: 1.35;
                 word-break: break-word;
                 overflow-wrap: break-word;
             }}
 
-            .main-title .sub-heading {{
-                font-size: 0.92rem;
+            .main-title .sub-heading,
+            .main-title .subheading {{
+                font-size: 1.35rem;
+                line-height: 1.4;
+                margin-bottom: 0.45rem;
             }}
 
             .chapter-container {{
@@ -1623,24 +1687,26 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         <main class="main-content">
             <div class="main-title">
                 <h1>{title}</h1>
-                <div class="sub-heading">{subtitle}</div>
+                <div class="sub-heading subheading">{subtitle}</div>
+                <div class="generation-timestamp">Generated: {generated_at}</div>
             </div>
 ''')
 
     for ch in chapters:
         ch_id = f"chapter-{ch['num']}"
+        ch_code_span = f'<span class="anuvaka-code chapter-code">{esc(ch["ta_code"])}</span>' if ch.get("ta_code") else ''
         html_parts.append(f'''            <section class="chapter-container" id="{ch_id}">
-                <h2 class="chapter-heading">{ch['title_deva']}</h2>
+                <h2 class="chapter-heading">{ch['title_deva']}{(" " + ch_code_span) if ch_code_span else ""}</h2>
 ''')
         for sec in ch["sections"]:
             sec_id = f"sec-{sec['num'].replace('.', '-')}"
-            code_span = f'<span class="anuvaka-code">{sec["ta_code"]}</span>' if sec["ta_code"] else ''
+            code_span = f'<span class="anuvaka-code">{esc(sec["ta_code"])}</span>' if sec.get("ta_code") else ''
             is_intro = sec.get('is_intro', False) or sec['num'] == str(ch['num']) or '.' not in sec['num'] or (not sec.get('title_raw') or sec.get('title_raw') == ch.get('title_raw'))
             sec_parts = [p for p in sec['num'].split('.') if p.strip().isdigit()]
             lvl_class = "level-3" if len(sec_parts) >= 3 else "level-2"
 
             if is_intro:
-                if code_span:
+                if code_span and not ch.get("ta_code"):
                     header_html = f'''                    <div class="anuvaka-header">
                         {code_span}
                     </div>'''
@@ -1672,7 +1738,10 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         html_parts.append('''            </section>
 ''')
 
-    html_parts.append(f'''        </main>
+    html_parts.append(f'''            <footer class="reader-footer">
+                <div class="footer-meta">Generated: {generated_at} • VedaVMS Vedic Reader</div>
+            </footer>
+        </main>
     </div>
 
     <script>
@@ -2474,6 +2543,32 @@ def build_book(book_id: str, config: dict, input_override: str = None, output_ov
         f.write(html_content)
 
     print(f"Successfully generated {out_path} ({os.path.getsize(out_path):,} bytes)")
+
+    # Post-generation audit check between reference PDF index and generated HTML
+    try:
+        try:
+            from .audit_reader import audit_book, print_audit_report
+        except ImportError:
+            from audit_reader import audit_book, print_audit_report
+
+        pdf_p = book_meta.get('pdf_path')
+        if not pdf_p:
+            title_simple = book_meta.get('title', '').split(',')[0].strip()
+            for cand in [
+                Path("data/pdf") / f"{title_simple} Sanskrit.pdf",
+                Path("data/pdf") / f"{book_id.replace('_', ' ').title()} Sanskrit.pdf",
+                Path("data/pdf") / f"{book_id.replace('_', ' ').capitalize()} Sanskrit.pdf"
+            ]:
+                if cand.exists():
+                    pdf_p = str(cand)
+                    break
+        if pdf_p and Path(pdf_p).exists():
+            print(f"[AUDIT] Running post-generation TOC audit against {pdf_p}...")
+            audit_res = audit_book(pdf_p, out_path)
+            print_audit_report(audit_res)
+    except Exception as e:
+        print(f"[AUDIT NOTICE] PDF audit check skipped: {e}")
+
     return out_path
 
 
@@ -2506,11 +2601,34 @@ def main():
     with open(config_path, "r", encoding="utf-8") as f:
         config = json.load(f)
 
+    built_paths = []
     if args.all:
         for b_id in config.get("books", {}):
-            build_book(b_id, config)
+            built_paths.append(build_book(b_id, config))
     else:
-        build_book(args.book, config, args.input, args.output)
+        built_paths.append(build_book(args.book, config, args.input, args.output))
+
+    # Save comprehensive audit reports to build/audit_report.md and build/audit_report.txt
+    try:
+        try:
+            from .audit_reader import audit_book, save_audit_reports
+        except ImportError:
+            from audit_reader import audit_book, save_audit_reports
+
+        audit_results = []
+        for b_id, b_meta in config.get("books", {}).items():
+            pdf_p = b_meta.get("pdf_path")
+            html_p = b_meta.get("output_html")
+            if pdf_p and Path(pdf_p).exists() and html_p and Path(html_p).exists():
+                audit_results.append(audit_book(pdf_p, html_p))
+
+        if audit_results:
+            md_p, txt_p = save_audit_reports(audit_results, out_dir="build")
+            print(f"\n[AUDIT] Saved latest audit reports to:")
+            print(f"        - {md_p}")
+            print(f"        - {txt_p}\n")
+    except Exception as e:
+        print(f"[AUDIT NOTICE] Could not save audit report files: {e}")
 
 
 if __name__ == "__main__":
