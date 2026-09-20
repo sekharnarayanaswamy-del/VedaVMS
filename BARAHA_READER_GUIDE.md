@@ -54,6 +54,9 @@ src/
 * **Accent & Anusvara Ordering**: Accents immediately following `M` attach to the Anusvara (`ं॑` / `ं॒`).
 * **Consecutive Virama Cleanup**: Duplicate viramas (`््`) are collapsed.
 * **Whitespace & Accent Detachment**: Accents separated by whitespace or punctuation are stripped to prevent orphaned accent glyphs.
+* **Alphanumeric Code Preservation**: Parenthesized combinations of letters and numbers (e.g. `(26B)`, `(9B)`, `(A26)`) are recognized as reference codes and preserved in English without Devanagari transliteration.
+* **Swara Matra Duration Preservation**: Numerals in braces/parentheses such as `(3)` or `(2)` (e.g., `हा(3)`, `दो(2)`) represent matra duration for swaras and are preserved without being replaced or dropped.
+* **Korvai & Inline Tag Protection**: Lines containing `Korvai`, `Special Korvai`, `Prapaataka Korvai`, or tagged with `</inline>` / `<inline>` are preserved in their original English form (e.g. `Special Korvai` instead of `स्पेचिअल् खोर्वै`).
 
 ---
 

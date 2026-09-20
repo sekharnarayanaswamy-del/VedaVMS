@@ -227,6 +227,19 @@ python scripts/deploy_site.py --rollback --production
 python scripts/deploy_site.py --rollback --production --snapshot backup_production_vedavms_in
 ```
 
+### Method D: Deploy via Git Commit Message Flags (`git push`)
+When pushing code or reader updates to GitHub:
+- **Default (Staging - `new.vedavms.in`)**: Standard `git push origin main` automatically deploys to **Staging**:
+  ```bash
+  git commit -m "Update reader styling"
+  git push origin main
+  ```
+- **Production (`vedavms.in`)**: Include `[prod]` or `[production]` in your commit message to trigger **Live Production Deployment**:
+  ```bash
+  git commit -m "Publish new readers [prod]"
+  git push origin main
+  ```
+
 ---
 
 ## 🎨 Step 4: UI Styling & Design Fine-Tuning (Templates, Colors & Controls)

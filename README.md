@@ -91,6 +91,19 @@ Maintainers can deploy directly from the spreadsheet without terminal access:
 - **`🚀 VedaVMS` ➔ `1. 🚀 Publish to Staging (new.vedavms.in)`**: Builds and pushes to staging; logs timestamp in cell **`J2`**.
 - **`🚀 VedaVMS` ➔ `2. 🌐 Push Staging to Production (vedavms.in)`**: Promotes build to live production; logs timestamp in cell **`J3`**.
 
+### 4. Git Push Deployment Flags (Staging vs. Production)
+When pushing commits to GitHub, you can target Staging or Production via your commit message:
+- **Default (Staging - `new.vedavms.in`)**: Standard `git push origin main` automatically triggers deployment to **Staging** (`new.vedavms.in`).
+  ```bash
+  git commit -m "Update reader styles"
+  git push origin main
+  ```
+- **Production (`vedavms.in`)**: Include `[prod]` or `[production]` in your commit message to deploy directly to live **Production**:
+  ```bash
+  git commit -m "Publish new readers [prod]"
+  git push origin main
+  ```
+
 ---
 
 ### 4. Regenerate Document Pages Locally
