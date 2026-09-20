@@ -209,18 +209,12 @@ def format_vedic_html(text: str) -> str:
 
     # 2. Reorder accents that landed before Visarga so syllable + ः remain contiguous
     text = re.sub(r'([\u0951\u0952\u1CDA]+)\s*ः', r'ः\1', text)
-    text = re.sub(r'(\([1-4]\))\s*ः', r'ः\1', text)
 
     # 3. Accents following Visarga receive .accent-visarga to shift backwards over the syllable
     text = text.replace('ः\u0951', 'ः<span class="accent-swarita accent-visarga">&#x0951;</span>')
     text = text.replace('ः\u1CDA', 'ः<span class="accent-deergha accent-visarga">&#x1CDA;</span>')
     text = text.replace('ः\u0952\u0952', 'ः<span class="accent-anudatta accent-visarga">&#x0952;&#x0952;</span>')
     text = text.replace('ः\u0952', 'ः<span class="accent-anudatta accent-visarga">&#x0952;</span>')
-
-    text = text.replace('ः(1)', 'ः<span class="accent-swarita accent-visarga">&#x0951;</span>')
-    text = text.replace('ः(2)', 'ः<span class="accent-anudatta accent-visarga">&#x0952;</span>')
-    text = text.replace('ः(3)', 'ः<span class="accent-deergha accent-visarga">&#x1CDA;</span>')
-    text = text.replace('ः(4)', 'ः<span class="accent-deergha accent-visarga">&#x1CDA;</span>')
 
     # 4. Standard accents (on syllables without Visarga)
     # Svarita (U+0951)
@@ -230,12 +224,6 @@ def format_vedic_html(text: str) -> str:
     # Anudatta (U+0952): handle double anudatta then single anudatta
     text = text.replace('\u0952\u0952', '<span class="accent-anudatta">&#x0952;&#x0952;</span>')
     text = text.replace('\u0952', '<span class="accent-anudatta">&#x0952;</span>')
-
-    # Also handle ASCII / Baraha accent markers if any remain
-    text = text.replace('(1)', '<span class="accent-swarita">&#x0951;</span>')
-    text = text.replace('(2)', '<span class="accent-anudatta">&#x0952;</span>')
-    text = text.replace('(3)', '<span class="accent-deergha">&#x1CDA;</span>')
-    text = text.replace('(4)', '<span class="accent-deergha">&#x1CDA;</span>')
 
     return text
 

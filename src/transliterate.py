@@ -413,6 +413,9 @@ def baraha_to_devanagari(text: str) -> str:
         if re.match(r'^(?:fOr|for)\s+.*kalaSa', inside, re.I):
             placeholders.append(open_b + clean_baraha_english(inside) + close_b)
             return f'\uE000{len(placeholders)-1}\uE001'
+        if re.search(r'\b\d+[a-zA-Z]+\b|\b[a-zA-Z]+\d+\b', inside):
+            placeholders.append(open_b + clean_baraha_english(inside) + close_b)
+            return f'\uE000{len(placeholders)-1}\uE001'
 
         # 3. Word-based English check
         words = [x.lower() for x in re.findall(r'[a-zA-Z]+', inside)]
@@ -459,8 +462,10 @@ def baraha_to_devanagari(text: str) -> str:
         text,
         flags=re.I
     )
-    # Standalone letter+digit codes e.g. A1, A7, T.A.1.2.3, T.B.3.11.7.1
+    # Standalone letter+digit codes e.g. A1, A7, 26B, 9B, T.A.1.2.3, T.B.3.11.7.1
     text = re.sub(r'\b[A-Za-z]\d+\b', repl_eng, text)
+    text = re.sub(r'\b\d+[A-Za-z]+\b', repl_eng, text)
+    text = re.sub(r'\b[A-Za-z]+\d+\b', repl_eng, text)
     text = re.sub(r'\b[A-Z]\.[A-Z0-9\.]+\b', repl_eng, text)
     # Standalone citation prefix without numbers if remaining
     text = re.sub(r'\b(?:TS|TB|TA|RV|SV|AV|APMB|ApMB|MS|KS|SB|VS|EAK)\b', repl_eng, text)
