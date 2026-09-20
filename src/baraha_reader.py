@@ -268,9 +268,15 @@ def preprocess_inline_citations(text: str) -> str:
     if '</inline>' not in text.lower() and '<inline>' not in text.lower():
         return text
 
+    # Strip rogue leading/trailing inline tags without content
+    text = re.sub(r'^\s*</?inline>\s*', '', text, flags=re.I)
+    text = re.sub(r'\s*</?inline>\s*$', '', text, flags=re.I)
+
     # 1. Explicit <inline>...</inline>
     def repl_explicit(m):
         content = m.group(1).strip()
+        if not content:
+            return ""
         return f'<lang=eng><span class="inline-citation">{clean_baraha_english(content)}</span><lang=def>'
     text = re.sub(r'<inline>(.*?)</inline>', repl_explicit, text, flags=re.I)
 
@@ -278,12 +284,16 @@ def preprocess_inline_citations(text: str) -> str:
     def repl_paren(m):
         prefix = m.group(1)
         cit = m.group(2).strip()
+        if not cit:
+            return prefix
         return f'{prefix}<lang=eng><span class="inline-citation">{clean_baraha_english(cit)}</span><lang=def>'
     text = re.sub(r'^(.*?)((?:\([^\)]+\)|\[[^\]]+\]))\s*</inline>', repl_paren, text, flags=re.I)
 
     # 3. Standalone citation line with </inline>, e.g. "TB 3.10.5.1 for para 17 </inline>"
     def repl_bare(m):
         cit = m.group(1).strip()
+        if not cit:
+            return ""
         return f'<lang=eng><span class="inline-citation">{clean_baraha_english(cit)}</span><lang=def>'
     text = re.sub(r'^(.*?)\s*</inline>', repl_bare, text, flags=re.I)
 
@@ -415,6 +425,7 @@ def parse_baraha_elements(
             continue
 
         p = re.sub(r'^[+\-*=_~#]{2,}\s*', '', p).strip()
+        p = re.sub(r'^\s*</?inline>\s*', '', p, flags=re.I).strip()
         if not p:
             i += 1
             continue

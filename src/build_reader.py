@@ -914,6 +914,10 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-weight: normal;
         }}
 
+        .inline-citation:empty {{
+            display: none !important;
+        }}
+
         .vedic-italic, i, em {{
             font-style: italic;
         }}
