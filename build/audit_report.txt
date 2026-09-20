@@ -2,26 +2,23 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\taittiriya_upanishad_sanskrit.html
-  Generated At     : 20-09-2026 11:32:06
-  HTML File Size   : 1,122,333 bytes
+  Generated At     : 20-09-2026 11:41:31
+  HTML File Size   : 1,112,933 bytes
   Reference PDF    : data\pdf\Taittiriya Upanishad Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 6
   HTML Chapters    : 6
   PDF Subsections  : 106
-  HTML Subsections : 132
+  HTML Subsections : 106
 ----------------------------------------------------------------------
-  [HTML SUBSECTIONS]   : 26 additional granular subsections in HTML
-                         (T.B.3.11.10.1, T.B.3.11.10.2, T.B.3.11.10.3, T.B.3.11.10.4, T.B.3.11.7.1, ... +21 more)
-----------------------------------------------------------------------
-  ℹ NOTE: Taittiriya Upanishad Chapter 6 (Trinachiketam) includes 26 granular Taittiriya Brahmana mantras (T.B.3.11.x) directly indexed in the HTML reader.
+  ✓ All chapters and subsections match the reference PDF exactly.
 ======================================================================
 
 ======================================================================
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\udaka_shanti_sanskrit.html
-  Generated At     : 20-09-2026 11:32:07
+  Generated At     : 20-09-2026 11:41:32
   HTML File Size   : 799,273 bytes
   Reference PDF    : data\pdf\Udaka Shanti Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -40,8 +37,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\shanti_japam_sanskrit.html
-  Generated At     : 20-09-2026 11:32:08
-  HTML File Size   : 1,394,890 bytes
+  Generated At     : 20-09-2026 11:41:33
+  HTML File Size   : 1,394,911 bytes
   Reference PDF    : data\pdf\Shanti Japam Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 40
@@ -60,8 +57,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\siva_stuti_sanskrit.html
-  Generated At     : 20-09-2026 11:32:12
-  HTML File Size   : 2,164,375 bytes
+  Generated At     : 20-09-2026 11:41:35
+  HTML File Size   : 2,164,381 bytes
   Reference PDF    : data\pdf\Siva Stuti Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 22
@@ -76,7 +73,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\udaka_shanti_anushangam_sanskrit.html
-  Generated At     : 20-09-2026 11:32:13
+  Generated At     : 20-09-2026 11:41:36
   HTML File Size   : 821,392 bytes
   Reference PDF    : data\pdf\Udaka Shanti Sanskrit ASCT.pdf
 ----------------------------------------------------------------------

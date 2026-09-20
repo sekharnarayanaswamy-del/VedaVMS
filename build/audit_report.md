@@ -1,12 +1,12 @@
 # VedaVMS Post-Generation TOC Audit Report
 
-> **Generated at**: `20-09-2026 11:32:17`
+> **Generated at**: `20-09-2026 11:41:38`
 
 ## Summary
 
 | Document | Reference PDF | PDF Ch/Sec | HTML Ch/Sec | Status |
 | :--- | :--- | :---: | :---: | :---: |
-| [`taittiriya_upanishad_sanskrit.html`](taittiriya_upanishad_sanskrit.html) | `Taittiriya Upanishad Sanskrit.pdf` | 6 / 106 | 6 / 132 | ✅ PASS |
+| [`taittiriya_upanishad_sanskrit.html`](taittiriya_upanishad_sanskrit.html) | `Taittiriya Upanishad Sanskrit.pdf` | 6 / 106 | 6 / 106 | ✅ PASS |
 | [`udaka_shanti_sanskrit.html`](udaka_shanti_sanskrit.html) | `Udaka Shanti Sanskrit.pdf` | 1 / 40 | 1 / 47 | ✅ PASS |
 | [`shanti_japam_sanskrit.html`](shanti_japam_sanskrit.html) | `Shanti Japam Sanskrit.pdf` | 40 / 42 | 40 / 84 | ✅ PASS |
 | [`siva_stuti_sanskrit.html`](siva_stuti_sanskrit.html) | `Siva Stuti Sanskrit.pdf` | 22 / 232 | 22 / 232 | ✅ PASS |
@@ -20,23 +20,19 @@
 
 - **HTML Document**: [`build\taittiriya_upanishad_sanskrit.html`](taittiriya_upanishad_sanskrit.html)
 - **Reference PDF**: `data\pdf\Taittiriya Upanishad Sanskrit.pdf`
-- **Generated At**: `20-09-2026 11:32:06`
-- **HTML File Size**: `1,122,333 bytes`
+- **Generated At**: `20-09-2026 11:41:31`
+- **HTML File Size**: `1,112,933 bytes`
 - **Chapters**: PDF: `6`, HTML: `6`
-- **Subsections**: PDF: `106`, HTML: `132`
+- **Subsections**: PDF: `106`, HTML: `106`
 
-- **Additional Granular HTML Subsections** (26):
-  `T.B.3.11.10.1`, `T.B.3.11.10.2`, `T.B.3.11.10.3`, `T.B.3.11.10.4`, `T.B.3.11.7.1`, `T.B.3.11.7.2`, `T.B.3.11.7.3`, `T.B.3.11.7.4`, `T.B.3.11.7.5`, `T.B.3.11.8.1`, `T.B.3.11.8.2`, `T.B.3.11.8.3`, `T.B.3.11.8.4`, `T.B.3.11.8.5`, `T.B.3.11.8.6`, ... (+11 more)
-
-> [!NOTE]
-> Taittiriya Upanishad Chapter 6 (Trinachiketam) includes 26 granular Taittiriya Brahmana mantras (T.B.3.11.x) directly indexed in the HTML reader.
+✓ *All chapters and subsections match the reference PDF exactly.*
 
 
 ### udaka_shanti_sanskrit.html `[PASS]`
 
 - **HTML Document**: [`build\udaka_shanti_sanskrit.html`](udaka_shanti_sanskrit.html)
 - **Reference PDF**: `data\pdf\Udaka Shanti Sanskrit.pdf`
-- **Generated At**: `20-09-2026 11:32:07`
+- **Generated At**: `20-09-2026 11:41:32`
 - **HTML File Size**: `799,273 bytes`
 - **Chapters**: PDF: `1`, HTML: `1`
 - **Subsections**: PDF: `40`, HTML: `47`
@@ -52,8 +48,8 @@
 
 - **HTML Document**: [`build\shanti_japam_sanskrit.html`](shanti_japam_sanskrit.html)
 - **Reference PDF**: `data\pdf\Shanti Japam Sanskrit.pdf`
-- **Generated At**: `20-09-2026 11:32:08`
-- **HTML File Size**: `1,394,890 bytes`
+- **Generated At**: `20-09-2026 11:41:33`
+- **HTML File Size**: `1,394,911 bytes`
 - **Chapters**: PDF: `40`, HTML: `40`
 - **Subsections**: PDF: `42`, HTML: `84`
 
@@ -71,8 +67,8 @@
 
 - **HTML Document**: [`build\siva_stuti_sanskrit.html`](siva_stuti_sanskrit.html)
 - **Reference PDF**: `data\pdf\Siva Stuti Sanskrit.pdf`
-- **Generated At**: `20-09-2026 11:32:12`
-- **HTML File Size**: `2,164,375 bytes`
+- **Generated At**: `20-09-2026 11:41:35`
+- **HTML File Size**: `2,164,381 bytes`
 - **Chapters**: PDF: `22`, HTML: `22`
 - **Subsections**: PDF: `232`, HTML: `232`
 
@@ -83,7 +79,7 @@
 
 - **HTML Document**: [`build\udaka_shanti_anushangam_sanskrit.html`](udaka_shanti_anushangam_sanskrit.html)
 - **Reference PDF**: `data\pdf\Udaka Shanti Sanskrit ASCT.pdf`
-- **Generated At**: `20-09-2026 11:32:13`
+- **Generated At**: `20-09-2026 11:41:36`
 - **HTML File Size**: `821,392 bytes`
 - **Chapters**: PDF: `1`, HTML: `1`
 - **Subsections**: PDF: `41`, HTML: `44`

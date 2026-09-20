@@ -542,8 +542,10 @@ def parse_baraha_elements(
                 continue
 
         # Numbered section check (e.g. 3.1, 16.1, 16.1.1 or T.B. 3.11.1.1)
+        # Note: Trinachiketam TB citations (T.B.3.11.x) are verse markers within chapter 6, not TOC subsections
+        is_trinachiketam = bool(current_ch and (current_ch['num'] == 6 or 'triNAcikE' in current_ch.get('title_raw', '').lower() or 'त्रिणाचिकेतं' in current_ch.get('title_deva', '')))
         sm = sec_regex.match(p) if not is_forced_inline else None
-        tb_m = tb_regex.match(p) if not is_forced_inline else None
+        tb_m = tb_regex.match(p) if (not is_forced_inline and not is_trinachiketam) else None
         if (sm or tb_m) and current_ch:
             sec_num = sm.group(1) if sm else tb_m.group(1)
             sec_name = sm.group(2).strip() if sm else ''

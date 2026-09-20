@@ -446,13 +446,12 @@ def baraha_to_devanagari(text: str) -> str:
 
     # Standalone scriptural citation codes e.g. TS 5.6.1.1, TB 1.4.8.1, T.A.6.58.1, RV.10.173.5, EAK 1.9.5, T.S. 5-4-8-1
     text = re.sub(
-        r'\b(?:TS|TB|TA|RV|SV|AV|APMB|ApMB|MS|KS|SB|VS|EAK)\b\s*[\d\.\,\-]+(?:[a-z]|\b)',
+        r'\b(?:TS|TB|TA|RV|SV|AV|APMB|ApMB|MS|KS|SB|VS|EAK|Ts|Tb|Ta|Rv|Sv|Av)\b\s*[\.\,\-]?\s*\d+[\d\.\,\-]*(?:[a-z]\b|\b)',
         repl_clean_eng,
-        text,
-        flags=re.I
+        text
     )
     text = re.sub(
-        r'\b(?:T\.S|T\.B|T\.A|R\.V|S\.V|A\.V|A\.P\.M\.B)\.?\s*[\d\.\,\-]+(?:[a-z]|\b)',
+        r'\b(?:T\.S|T\.B|T\.A|R\.V|S\.V|A\.V|A\.P\.M\.B)\.?\s*[\.\,\-]?\s*\d+[\d\.\,\-]*(?:[a-z]\b|\b)',
         repl_clean_eng,
         text,
         flags=re.I
