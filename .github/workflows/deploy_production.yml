@@ -1,6 +1,9 @@
 name: Deploy to Production (vedavms.in)
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       target_dir:
@@ -18,7 +21,15 @@ on:
 
 jobs:
   promote-to-production:
-    if: github.event_name == 'repository_dispatch' || github.event.inputs.confirm_deploy == 'DEPLOY'
+    if: >-
+      github.event_name == 'repository_dispatch' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.confirm_deploy == 'DEPLOY') ||
+      (github.event_name == 'push' && (
+        contains(github.event.head_commit.message, '[prod]') ||
+        contains(github.event.head_commit.message, '[production]') ||
+        contains(github.event.head_commit.message, '[deploy:prod]') ||
+        contains(github.event.head_commit.message, 'prod:')
+      ))
     runs-on: ubuntu-latest
     environment: staging
     env:
