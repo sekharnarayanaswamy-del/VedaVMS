@@ -2,8 +2,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\taittiriya_upanishad_sanskrit.html
-  Generated At     : 20-09-2026 11:41:31
-  HTML File Size   : 1,112,933 bytes
+  Generated At     : 20-09-2026 12:09:15
+  HTML File Size   : 1,113,129 bytes
   Reference PDF    : data\pdf\Taittiriya Upanishad Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 6
@@ -18,8 +18,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\udaka_shanti_sanskrit.html
-  Generated At     : 20-09-2026 11:41:32
-  HTML File Size   : 799,273 bytes
+  Generated At     : 20-09-2026 12:09:16
+  HTML File Size   : 799,469 bytes
   Reference PDF    : data\pdf\Udaka Shanti Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 1
@@ -37,8 +37,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\shanti_japam_sanskrit.html
-  Generated At     : 20-09-2026 11:41:33
-  HTML File Size   : 1,394,911 bytes
+  Generated At     : 20-09-2026 12:09:17
+  HTML File Size   : 1,395,107 bytes
   Reference PDF    : data\pdf\Shanti Japam Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 40
@@ -57,8 +57,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\siva_stuti_sanskrit.html
-  Generated At     : 20-09-2026 11:41:35
-  HTML File Size   : 2,164,381 bytes
+  Generated At     : 20-09-2026 12:09:19
+  HTML File Size   : 2,164,577 bytes
   Reference PDF    : data\pdf\Siva Stuti Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 22
@@ -73,8 +73,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\udaka_shanti_anushangam_sanskrit.html
-  Generated At     : 20-09-2026 11:41:36
-  HTML File Size   : 821,392 bytes
+  Generated At     : 20-09-2026 12:09:20
+  HTML File Size   : 821,588 bytes
   Reference PDF    : data\pdf\Udaka Shanti Sanskrit ASCT.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 1

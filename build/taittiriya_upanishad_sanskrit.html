@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="generator" content="VedaVMS Reader Generator">
-    <meta name="generated-at" content="20-09-2026 11:41:31">
+    <meta name="generated-at" content="20-09-2026 12:09:15">
     <title>तैत्तिरीयोपनिषत्, अरुणप्रश्नम्, तृणाचिकेतम् - Sanskrit Vedic Text</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,7 +73,8 @@
             --mantra-size: calc(var(--font-size) * 1.18);
             --swarita-bottom: 0.2em;
             --anudatta-bottom: -0.25em;
-            --visarga-offset: -0.42em;
+            --accent-offset: -0.20em;
+            --visarga-offset: -0.55em;
             --accent-font: 'AdishilaVedic', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
             --verse-font: 'Noto Serif Devanagari', 'Adishila San', 'Tiro Devanagari Sanskrit', serif;
             --verse-weight: 500;
@@ -717,7 +718,7 @@
             font-weight: bold;
             font-size: 1.2em;
             position: relative;
-            left: 0;
+            left: var(--accent-offset, -0.20em);
             bottom: var(--swarita-bottom);
             isolation: isolate;
         }
@@ -731,7 +732,7 @@
             font-weight: bold;
             font-size: 1.2em;
             position: relative;
-            left: 0;
+            left: var(--accent-offset, -0.20em);
             bottom: var(--anudatta-bottom);
             isolation: isolate;
         }
@@ -745,14 +746,14 @@
             font-weight: bold;
             font-size: 1.2em;
             position: relative;
-            left: 0;
+            left: var(--accent-offset, -0.20em);
             bottom: var(--swarita-bottom);
             isolation: isolate;
         }
 
         /* When accent follows Visarga (ः), shift backwards over the syllable to eliminate dotted circles & prevent drift */
         .accent-visarga {
-            left: var(--visarga-offset, -0.42em) !important;
+            left: var(--visarga-offset, -0.55em) !important;
         }
 
         /* Vedic & General Tables */
@@ -1556,7 +1557,7 @@
             <div class="main-title">
                 <h1>तैत्तिरीयोपनिषत्, अरुणप्रश्नम्, तृणाचिकेतम्</h1>
                 <div class="sub-heading subheading">कृष्ण यजुर्वेदीय तैत्तिरीय आरण्यकम् (वेदमन्त्राः सस्वराः)</div>
-                <div class="generation-timestamp">Generated: 20-09-2026 11:41:31</div>
+                <div class="generation-timestamp">Generated: 20-09-2026 12:09:15</div>
             </div>
             <section class="chapter-container" id="chapter-1">
                 <h2 class="chapter-heading">1. शीक्षा वल्ली</h2>
@@ -4018,7 +4019,7 @@
                 </div>
             </section>
             <footer class="reader-footer">
-                <div class="footer-meta">Generated: 20-09-2026 11:41:31 • VedaVMS Vedic Reader</div>
+                <div class="footer-meta">Generated: 20-09-2026 12:09:15 • VedaVMS Vedic Reader</div>
             </footer>
         </main>
     </div>
@@ -4390,12 +4391,13 @@
                         font-weight: bold !important;
                         font-size: 1.2em !important;
                         position: relative !important;
+                        left: var(--accent-offset, -0.20em) !important;
                         isolation: isolate !important;
                     }
                     .accent-swarita { bottom: var(--swarita-bottom, 0.2em) !important; }
                     .accent-anudatta { bottom: var(--anudatta-bottom, -0.25em) !important; }
                     .accent-deergha { bottom: var(--swarita-bottom, 0.2em) !important; }
-                    .accent-visarga { left: var(--visarga-offset, -0.42em) !important; }
+                    .accent-visarga { left: var(--visarga-offset, -0.55em) !important; }
                     @media print {
                         body { margin: 0 !important; padding: 0 !important; }
                     }

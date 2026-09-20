@@ -322,7 +322,8 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             --mantra-size: calc(var(--font-size) * 1.18);
             --swarita-bottom: 0.2em;
             --anudatta-bottom: -0.25em;
-            --visarga-offset: -0.42em;
+            --accent-offset: -0.20em;
+            --visarga-offset: -0.55em;
             --accent-font: 'AdishilaVedic', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
             --verse-font: 'Noto Serif Devanagari', 'Adishila San', 'Tiro Devanagari Sanskrit', serif;
             --verse-weight: 500;
@@ -966,7 +967,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-weight: bold;
             font-size: 1.2em;
             position: relative;
-            left: 0;
+            left: var(--accent-offset, -0.20em);
             bottom: var(--swarita-bottom);
             isolation: isolate;
         }}
@@ -980,7 +981,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-weight: bold;
             font-size: 1.2em;
             position: relative;
-            left: 0;
+            left: var(--accent-offset, -0.20em);
             bottom: var(--anudatta-bottom);
             isolation: isolate;
         }}
@@ -994,14 +995,14 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-weight: bold;
             font-size: 1.2em;
             position: relative;
-            left: 0;
+            left: var(--accent-offset, -0.20em);
             bottom: var(--swarita-bottom);
             isolation: isolate;
         }}
 
         /* When accent follows Visarga (ः), shift backwards over the syllable to eliminate dotted circles & prevent drift */
         .accent-visarga {{
-            left: var(--visarga-offset, -0.42em) !important;
+            left: var(--visarga-offset, -0.55em) !important;
         }}
 
         /* Vedic & General Tables */
@@ -2115,12 +2116,13 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                         font-weight: bold !important;
                         font-size: 1.2em !important;
                         position: relative !important;
+                        left: var(--accent-offset, -0.20em) !important;
                         isolation: isolate !important;
                     }}
                     .accent-swarita {{ bottom: var(--swarita-bottom, 0.2em) !important; }}
                     .accent-anudatta {{ bottom: var(--anudatta-bottom, -0.25em) !important; }}
                     .accent-deergha {{ bottom: var(--swarita-bottom, 0.2em) !important; }}
-                    .accent-visarga {{ left: var(--visarga-offset, -0.42em) !important; }}
+                    .accent-visarga {{ left: var(--visarga-offset, -0.55em) !important; }}
                     @media print {{
                         body {{ margin: 0 !important; padding: 0 !important; }}
                     }}
