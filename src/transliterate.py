@@ -156,6 +156,9 @@ def is_english_text(text: str) -> bool:
     """Check if an entire line/paragraph or title is English/citation and should NOT be transliterated."""
     if not text:
         return False
+    # If text contains Devanagari or Vedic accent/nasal characters, it is not English text
+    if re.search(r'[\u0900-\u097F\u1CD0-\u1CFF\uA8E0-\uA8FF]', text):
+        return False
     t = re.sub(r'</?lang=[^>]+>', '', text).strip()
     if '<lang=eng>' in t.lower():
         return True

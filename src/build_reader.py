@@ -196,8 +196,12 @@ def format_vedic_html(text: str) -> str:
     if not text:
         return text
 
-    # Pass through raw HTML (tables, custom blocks) or pure English text as-is
-    if text.startswith('<table') or text.startswith('<div') or text.startswith('<!--') or is_english_text(text):
+    # Pass through raw HTML (tables, custom blocks) as-is
+    if text.startswith('<table') or text.startswith('<div') or text.startswith('<!--'):
+        return text
+
+    # Pass through pure English text as-is (only if no Devanagari or Vedic accents present)
+    if not re.search(r'[\u0900-\u097F\u0951\u0952\u1CDA\uA8E0-\uA8FF]', text) and is_english_text(text):
         return text
 
     # 1. Normalize ASCII colons to Visarga (only outside HTML tags)

@@ -1,6 +1,6 @@
 # VedaVMS Post-Generation TOC Audit Report
 
-> **Generated at**: `20-09-2026 12:09:22`
+> **Generated at**: `20-09-2026 12:26:56`
 
 ## Summary
 
@@ -20,8 +20,8 @@
 
 - **HTML Document**: [`build\taittiriya_upanishad_sanskrit.html`](taittiriya_upanishad_sanskrit.html)
 - **Reference PDF**: `data\pdf\Taittiriya Upanishad Sanskrit.pdf`
-- **Generated At**: `20-09-2026 12:09:15`
-- **HTML File Size**: `1,113,129 bytes`
+- **Generated At**: `20-09-2026 12:26:44`
+- **HTML File Size**: `1,133,765 bytes`
 - **Chapters**: PDF: `6`, HTML: `6`
 - **Subsections**: PDF: `106`, HTML: `106`
 
@@ -32,8 +32,8 @@
 
 - **HTML Document**: [`build\udaka_shanti_sanskrit.html`](udaka_shanti_sanskrit.html)
 - **Reference PDF**: `data\pdf\Udaka Shanti Sanskrit.pdf`
-- **Generated At**: `20-09-2026 12:09:16`
-- **HTML File Size**: `799,469 bytes`
+- **Generated At**: `20-09-2026 12:26:45`
+- **HTML File Size**: `802,298 bytes`
 - **Chapters**: PDF: `1`, HTML: `1`
 - **Subsections**: PDF: `40`, HTML: `47`
 
@@ -48,8 +48,8 @@
 
 - **HTML Document**: [`build\shanti_japam_sanskrit.html`](shanti_japam_sanskrit.html)
 - **Reference PDF**: `data\pdf\Shanti Japam Sanskrit.pdf`
-- **Generated At**: `20-09-2026 12:09:17`
-- **HTML File Size**: `1,395,107 bytes`
+- **Generated At**: `20-09-2026 12:26:46`
+- **HTML File Size**: `1,406,689 bytes`
 - **Chapters**: PDF: `40`, HTML: `40`
 - **Subsections**: PDF: `42`, HTML: `84`
 
@@ -67,8 +67,8 @@
 
 - **HTML Document**: [`build\siva_stuti_sanskrit.html`](siva_stuti_sanskrit.html)
 - **Reference PDF**: `data\pdf\Siva Stuti Sanskrit.pdf`
-- **Generated At**: `20-09-2026 12:09:19`
-- **HTML File Size**: `2,164,577 bytes`
+- **Generated At**: `20-09-2026 12:26:50`
+- **HTML File Size**: `2,174,197 bytes`
 - **Chapters**: PDF: `22`, HTML: `22`
 - **Subsections**: PDF: `232`, HTML: `232`
 
@@ -79,8 +79,8 @@
 
 - **HTML Document**: [`build\udaka_shanti_anushangam_sanskrit.html`](udaka_shanti_anushangam_sanskrit.html)
 - **Reference PDF**: `data\pdf\Udaka Shanti Sanskrit ASCT.pdf`
-- **Generated At**: `20-09-2026 12:09:20`
-- **HTML File Size**: `821,588 bytes`
+- **Generated At**: `20-09-2026 12:26:52`
+- **HTML File Size**: `824,294 bytes`
 - **Chapters**: PDF: `1`, HTML: `1`
 - **Subsections**: PDF: `41`, HTML: `44`
 
