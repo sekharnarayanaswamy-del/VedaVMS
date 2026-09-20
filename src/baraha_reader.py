@@ -425,13 +425,14 @@ def parse_baraha_elements(
             continue
 
         p = re.sub(r'^[+\-*=_~#]{2,}\s*', '', p).strip()
+
+        # Check if line contains </inline> or <i> forcing it to remain as body text (not heading/badge)
+        is_forced_inline = bool(re.search(r'</?inline>', p, flags=re.I) or re.search(r'</?(?:i|em)\b', p, flags=re.I))
+
         p = re.sub(r'^\s*</?inline>\s*', '', p, flags=re.I).strip()
         if not p:
             i += 1
             continue
-
-        # Check if line contains </inline> or <i> forcing it to remain as body text (not heading/badge)
-        is_forced_inline = bool(re.search(r'</?inline>', p, flags=re.I) or re.search(r'</?(?:i|em)\b', p, flags=re.I))
 
         low_p = p.lower()
 
