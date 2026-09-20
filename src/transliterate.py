@@ -115,6 +115,7 @@ ENGLISH_METADATA_WORDS = {
     'rig', 'veda', 'vedas', 'khila', 'kaandam', 'kanda', 'sruti', 'sruthi',
     'rutvik', 'abhishekam', 'recital', 'conduct', 'known', 'definite', 'exact',
     'shanti', 'japam', 'shiva', 'stuti',
+    'korvai', 'korvais', 'prapaataka', 'padam', 'padams', 'dasini', 'dasinis', 'series',
 }
 
 ALL_ENGLISH_WORDS = ENGLISH_CORE_STOPWORDS | ENGLISH_METADATA_WORDS
@@ -164,6 +165,8 @@ def is_english_text(text: str) -> bool:
         return True
 
     # 1. Explicit documentation header patterns
+    if re.search(r'\bkorvai\b', t, re.I) or re.search(r'</?inline>', t, re.I):
+        return True
     if re.match(r'^(?:Notes for Users|Coding is more|Special care|Confirm corrections|Kindly notify|Document source|Lot of issues|dt\s+\d|~\w\s+is\s+nasal|H\s+is\s+visargam|\^\^\s+symbol|Base\s+(?:file|source)|Vedic/Swara|Vedic/)', t, re.I):
         return True
 

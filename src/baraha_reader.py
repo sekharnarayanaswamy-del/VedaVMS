@@ -264,13 +264,9 @@ def build_krama_table(rows: list[tuple[str, str]]) -> str:
 
 
 def preprocess_inline_citations(text: str) -> str:
-    """Process </inline> and <inline> tags in Baraha lines, preserving citations as English text."""
-    if '</inline>' not in text.lower() and '<inline>' not in text.lower():
+    """Preprocess <inline> or </inline> tagged citation lines in Baraha text."""
+    if not text:
         return text
-
-    # Strip rogue leading/trailing inline tags without content
-    text = re.sub(r'^\s*</?inline>\s*', '', text, flags=re.I)
-    text = re.sub(r'\s*</?inline>\s*$', '', text, flags=re.I)
 
     # 1. Explicit <inline>...</inline>
     def repl_explicit(m):
@@ -289,13 +285,13 @@ def preprocess_inline_citations(text: str) -> str:
         return f'{prefix}<lang=eng><span class="inline-citation">{clean_baraha_english(cit)}</span><lang=def>'
     text = re.sub(r'^(.*?)((?:\([^\)]+\)|\[[^\]]+\]))\s*</inline>', repl_paren, text, flags=re.I)
 
-    # 3. Standalone citation line with </inline>, e.g. "TB 3.10.5.1 for para 17 </inline>"
+    # 3. Standalone citation line with </inline>, e.g. "Special Korvai </inline>", "</inline>Special Korvai", "TB 3.10.5.1 for para 17 </inline>"
     def repl_bare(m):
         cit = m.group(1).strip()
         if not cit:
             return ""
         return f'<lang=eng><span class="inline-citation">{clean_baraha_english(cit)}</span><lang=def>'
-    text = re.sub(r'^(.*?)\s*</inline>', repl_bare, text, flags=re.I)
+    text = re.sub(r'^(?:</inline>)?\s*(.*?)\s*</inline>', repl_bare, text, flags=re.I)
 
     # Clean any remaining inline tags
     text = re.sub(r'</?inline>', '', text, flags=re.I)
