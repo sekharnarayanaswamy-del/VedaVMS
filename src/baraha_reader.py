@@ -342,6 +342,8 @@ def is_scriptural_citation(text: str) -> bool:
     clean = text.strip('() \t*')
     if not clean:
         return False
+    if re.search(r'\bto\b|\bfor\s+full\s+item\b|\bitem\s+No\b', clean, re.I):
+        return False
     if re.match(r'^(?:T\.?[ABS]\.?|R\.?V\.?|Rig\s*V[Ee]da|TS|TB|TA|RV|EAK)\b', clean, re.I):
         return True
     if re.match(r'^(?:Exact\s+source|Starting\s+frOm\s+TB|To\s+bE\s+chanted|Rig\s*Vedic\s+convention|Part\s+\d+\s*\(|OrdEr\s+of\s+chanting|No\s+Definite\s+Source)', clean, re.I):
@@ -351,6 +353,7 @@ def is_scriptural_citation(text: str) -> bool:
     if re.search(r'\b(?:T\.?[ABS]\.?|R\.?V\.?|TS|TB|TA|RV)\s*[\d\.]+', clean, re.I) and ('/' in clean or 'for' in clean.lower()):
         return True
     return False
+
 
 
 def parse_baraha_elements(
@@ -546,7 +549,7 @@ def parse_baraha_elements(
         # Note: Trinachiketam TB citations (T.B.3.11.x) are verse markers within chapter 6, not TOC subsections
         is_trinachiketam = bool(current_ch and (current_ch['num'] == 6 or 'triNAcikE' in current_ch.get('title_raw', '').lower() or 'त्रिणाचिकेतं' in current_ch.get('title_deva', '')))
         sm = sec_regex.match(p) if not is_forced_inline else None
-        tb_m = tb_regex.match(p) if (not is_forced_inline and not is_trinachiketam) else None
+        tb_m = tb_regex.match(p) if (not is_forced_inline and not is_trinachiketam and not re.search(r'\bto\b|\bfor\b|\bitem\b', p, re.I)) else None
         if (sm or tb_m) and current_ch:
             sec_num = sm.group(1) if sm else tb_m.group(1)
             sec_name = sm.group(2).strip() if sm else ''
