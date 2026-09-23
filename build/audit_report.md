@@ -1,6 +1,6 @@
 # VedaVMS Post-Generation TOC Audit Report
 
-> **Generated at**: `20-09-2026 17:55:35`
+> **Generated at**: `23-09-2026 22:20:37`
 
 ## Summary
 
@@ -20,8 +20,8 @@
 
 - **HTML Document**: [`build\taittiriya_upanishad_sanskrit.html`](taittiriya_upanishad_sanskrit.html)
 - **Reference PDF**: `data\pdf\Taittiriya Upanishad Sanskrit.pdf`
-- **Generated At**: `20-09-2026 17:55:28`
-- **HTML File Size**: `1,119,253 bytes`
+- **Generated At**: `23-09-2026 22:20:34`
+- **HTML File Size**: `1,132,830 bytes`
 - **Chapters**: PDF: `6`, HTML: `6`
 - **Subsections**: PDF: `106`, HTML: `106`
 

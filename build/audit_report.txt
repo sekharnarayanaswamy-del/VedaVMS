@@ -2,8 +2,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\taittiriya_upanishad_sanskrit.html
-  Generated At     : 20-09-2026 17:55:28
-  HTML File Size   : 1,119,253 bytes
+  Generated At     : 23-09-2026 22:20:34
+  HTML File Size   : 1,132,830 bytes
   Reference PDF    : data\pdf\Taittiriya Upanishad Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 6
