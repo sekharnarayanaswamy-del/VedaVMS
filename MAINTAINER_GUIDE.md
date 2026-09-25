@@ -163,7 +163,7 @@ python generate_documents.py --offline --export-csv data/vedavms_documents.csv -
 - **Example**: When `1) Shanti Japam` is set to `Hidden`, the next active book (`2) TaittirIyopanishat`) automatically displays as `1)`, its sub-book `2A) Surya namaskara` automatically becomes `1A)`, and `3) Udaka Shanti` becomes `2)`. If `Shanti Japam` is later unhidden, the numbering automatically shifts back.
 
 ### 🕒 Recent Updates & Static Site Generation Constraint
-- **Rolling 90-Day Window**: The "Recent Updates" feed on the Home page automatically aggregates all active documents whose release date (`Date`) or errata update date (`Corrections_Date`) falls within the last 90 days (`[today - 90 days, today]`).
+- **Rolling Window (Last 90 Days + Future Releases)**: The "Recent Updates" feed on the Home page automatically aggregates all active documents whose release date (`Date`) or errata update date (`Corrections_Date`) falls within the last 90 days or is dated for the future (`[today - 90 days, future]`).
 - **Independent Tracking of Errata**:
   - If a document's initial `Date` is within 90 days, it appears with a `[PDF]` link badge.
   - If `Corrections_URL` has a separate `Corrections_Date` within 90 days, it appears with a `[Corrections]` link badge.

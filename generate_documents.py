@@ -1525,8 +1525,8 @@ def get_recent_updates_grouped(lang_sections: dict[str, list[Section]], max_days
                 corr_date_str = doc.corrections_date or doc.date
                 corr_dt = parse_doc_date(corr_date_str) if doc.corrections else None
 
-                doc_in_window = bool(doc_dt and cutoff <= doc_dt <= now + datetime.timedelta(days=2))
-                corr_in_window = bool(corr_dt and cutoff <= corr_dt <= now + datetime.timedelta(days=2))
+                doc_in_window = bool(doc_dt and doc_dt >= cutoff)
+                corr_in_window = bool(corr_dt and corr_dt >= cutoff)
 
                 if not doc_in_window and not corr_in_window:
                     continue
@@ -1540,7 +1540,7 @@ def get_recent_updates_grouped(lang_sections: dict[str, list[Section]], max_days
                     dedup = (month_key, doc.title, lang_key)
                     if dedup not in seen_in_month:
                         seen_in_month.add(dedup)
-                        is_new = (now - dt).days <= 30 and dt <= now + datetime.timedelta(days=2)
+                        is_new = (now - dt).days <= 30
                         by_month[m_key][lang_key].append({
                             "dt": dt,
                             "date_str": doc.date,
@@ -1565,7 +1565,7 @@ def get_recent_updates_grouped(lang_sections: dict[str, list[Section]], max_days
                         dedup = (month_key, doc.title + "_doc", lang_key)
                         if dedup not in seen_in_month:
                             seen_in_month.add(dedup)
-                            is_new = (now - dt).days <= 30 and dt <= now + datetime.timedelta(days=2)
+                            is_new = (now - dt).days <= 30
                             by_month[m_key][lang_key].append({
                                 "dt": dt,
                                 "date_str": doc.date,
@@ -1589,7 +1589,7 @@ def get_recent_updates_grouped(lang_sections: dict[str, list[Section]], max_days
                         dedup = (month_key, doc.title + "_corr", lang_key)
                         if dedup not in seen_in_month:
                             seen_in_month.add(dedup)
-                            is_new = (now - dt).days <= 30 and dt <= now + datetime.timedelta(days=2)
+                            is_new = (now - dt).days <= 30
                             by_month[m_key][lang_key].append({
                                 "dt": dt,
                                 "date_str": corr_date_str,
