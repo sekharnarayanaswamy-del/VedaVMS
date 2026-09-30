@@ -9,7 +9,7 @@ on:
       target_dir:
         description: 'Target Remote Directory on Web Server'
         required: true
-        default: '/public_html/'
+        default: '/'
         type: string
       confirm_deploy:
         description: 'Type "DEPLOY" to confirm live production rollout'
@@ -94,7 +94,7 @@ jobs:
           server: ${{ steps.ftp-config.outputs.clean_server }}
           username: ${{ env.PROD_FTP_USERNAME }}
           password: ${{ env.PROD_FTP_PASSWORD }}
-          server-dir: ${{ github.event.inputs.target_dir || '/public_html/' }}
+          server-dir: ${{ github.event.inputs.target_dir || '/' }}
           protocol: ftps
           port: 21
           security: loose

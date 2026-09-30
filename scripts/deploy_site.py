@@ -302,9 +302,9 @@ def perform_rollback(args, repo_dir: str, target_dir: str, is_production: bool, 
 
 def main():
     parser = argparse.ArgumentParser(description="Deploy VedaVMS build files to target server folder or rollback to an archived snapshot.")
-    parser.add_argument("--dir", default=None, help="Target remote folder (e.g. '/public_html' or '/new.vedavms.in')")
+    parser.add_argument("--dir", default=None, help="Target remote folder (e.g. '/' or '/new.vedavms.in')")
     parser.add_argument("--staging", action="store_true", help="Shortcut for --dir /new.vedavms.in (new.vedavms.in)")
-    parser.add_argument("--production", "--live", action="store_true", help="Shortcut for --dir /public_html (vedavms.in)")
+    parser.add_argument("--production", "--live", action="store_true", help="Shortcut for --dir / (vedavms.in)")
     parser.add_argument("--server", default="103.69.196.157", help="FTP Host (default: 103.69.196.157)")
     parser.add_argument("--user", default="vedavmsi", help="FTP Username (default: vedavmsi)")
     parser.add_argument("--password", default=None, help="FTP Password")
@@ -327,27 +327,27 @@ def main():
 
     target_dir = args.dir
     if args.production:
-        target_dir = "/public_html"
+        target_dir = "/"
     elif args.staging:
         target_dir = "/new.vedavms.in"
 
     if not target_dir:
         print("\nTarget folder not specified. Choose a target:")
         print("  1) Staging    (/new.vedavms.in  -> https://new.vedavms.in)")
-        print("  2) Production (/public_html     -> https://vedavms.in)")
+        print("  2) Production (/               -> https://vedavms.in)")
         print("  3) Custom path")
         choice = input("\nEnter choice [1/2/3] (default 1): ").strip()
         if choice == "2":
-            target_dir = "/public_html"
+            target_dir = "/"
         elif choice == "3":
-            target_dir = input("Enter remote folder path (e.g. /public_html): ").strip()
+            target_dir = input("Enter remote folder path (e.g. /): ").strip()
         else:
             target_dir = "/new.vedavms.in"
 
     if not target_dir.startswith("/"):
         target_dir = "/" + target_dir
 
-    is_production = target_dir.rstrip("/") in ("/public_html", "/httpdocs")
+    is_production = target_dir.rstrip("/") in ("", "/")
     site_label = "Production (vedavms.in)" if is_production else f"Target Folder ({target_dir})"
     site_url = "https://vedavms.in" if is_production else ("https://new.vedavms.in" if "new.vedavms.in" in target_dir else "")
 
