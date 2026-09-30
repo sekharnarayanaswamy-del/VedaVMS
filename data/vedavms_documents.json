@@ -1,7 +1,7 @@
 {
   "sanskrit": {
     "label": "Sanskrit",
-    "tab": "संस्कृत Sanskrit",
+    "tab": "संस्कृतम् Sanskrit",
     "sections": [
       {
         "title": "Vedic Books by Subject",
@@ -2999,28 +2999,28 @@
         "docs": [
           {
             "title": "1) Shanti Japam - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Shanti%20Japam%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/Shanti%20Japam%20Kannada.pdf",
             "version": "V0.0",
             "date": "Jan 31, 2019",
             "corrections": ""
           },
           {
             "title": "2) TaittirIya Upanishad - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Taittiriya%20Upanishad%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/Taittiriya%20Upanishad%20Kannada.pdf",
             "version": "V0.0",
             "date": "Jun 1, 2019",
             "corrections": ""
           },
           {
             "title": "3) Udaka Shanti - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Udaka%20Shanti%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/Udaka%20Shanti%20Kannada.pdf",
             "version": "V0.0",
             "date": "Jun 1, 2019",
             "corrections": ""
           },
           {
             "title": "4) Siva Stuti - Kannada (without kramam)",
-            "url": "https://vedavms.in/docs/kannada/Siva%20Stuti%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/Siva%20Stuti%20Kannada.pdf",
             "version": "V0.0",
             "date": "Jun 1, 2019",
             "corrections": ""
@@ -3034,77 +3034,77 @@
           },
           {
             "title": "6) AbhisravaNam - Kannada",
-            "url": "https://vedavms.in/docs/kannada/abhisravaNam%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/abhisravaNam%20Kannada.pdf",
             "version": "V0.0",
             "date": "Jun 30, 2019",
             "corrections": ""
           },
           {
             "title": "7) Rudra Ghanam - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Rudra%20Ghanam%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/Rudra%20Ghanam%20Kannada.pdf",
             "version": "V0.0",
             "date": "May 31, 2019",
             "corrections": ""
           },
           {
             "title": "8) Chamaka Ghanam - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Chamaka%20Ghanam%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/Chamaka%20Ghanam%20Kannada.pdf",
             "version": "V0.0",
             "date": "May 31, 2019",
             "corrections": ""
           },
           {
             "title": "9) Rudra Kramam Column - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Rudra%20Kramam%20kannada%20Column.pdf",
+            "url": "https://vedavms.in/docs/kannada/Rudra%20Kramam%20Kannada%20Column.pdf",
             "version": "",
             "date": "Jun 30, 2021",
             "corrections": ""
           },
           {
             "title": "10) Chamaka Kramam Column - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Chamaka%20Kramam%20kannada%20Column.pdf",
+            "url": "https://vedavms.in/docs/kannada/Chamaka%20Kramam%20Kannada%20Column.pdf",
             "version": "",
             "date": "Jun 30, 2021",
             "corrections": ""
           },
           {
             "title": "11) TaittirIya brAhmaNam -prapAtakam 1 .1-1.4 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TB%201.1-1.4%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/TB%201.1-1.4%20Kannada.pdf",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
           },
           {
             "title": "12) TaittirIya brAhmaNam -prapAtakam 1.5-1.8 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TB%201.5-1.8%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/TB%201.5-1.8%20Kannada.pdf",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
           },
           {
             "title": "13) TaittirIya brAhmaNam -prapAtakam 2.1-2.4 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TB%202.1-2.4%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/TB%202.1-2.4%20Kannada.pdf",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
           },
           {
             "title": "14) TaittirIya brAhmaNam -prapAtakam 2.5-2.8 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TB%202.5-2.8%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/TB%202.5-2.8%20Kannada.pdf",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
           },
           {
             "title": "15) TaittirIya brAhmaNam -prapAtakam 3.1-3.6 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TB%203.1-3.6%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/TB%203.1-3.6%20Kannada.pdf",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
           },
           {
             "title": "16) TaittirIya brAhmaNam -prapAtakam 3 .7-3.12 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TB%203.7-3.12%20kannada.pdf",
+            "url": "https://vedavms.in/docs/kannada/TB%203.7-3.12%20Kannada.pdf",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
@@ -3220,56 +3220,56 @@
         "docs": [
           {
             "title": "1) Shanti Japam - Telugu",
-            "url": "https://vedavms.in/docs/telugu/Shanti%20Japam%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/Shanti%20Japam%20Telugu.pdf",
             "version": "V0.0",
             "date": "Mar 1, 2019",
             "corrections": ""
           },
           {
             "title": "2) TaittirIya Upanishad - Telugu",
-            "url": "https://vedavms.in/docs/telugu/Taittiriya%20Upanishad%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/Taittiriya%20Upanishad%20Telugu.pdf",
             "version": "V0.0",
             "date": "Jun 1, 2019",
             "corrections": ""
           },
           {
             "title": "3) Udaka Shanti - Telugu",
-            "url": "https://vedavms.in/docs/telugu/Udaka%20Shanti%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/Udaka%20Shanti%20Telugu.pdf",
             "version": "V0.0",
             "date": "Jun 1, 2019",
             "corrections": ""
           },
           {
             "title": "4) Siva Stuti - Telugu (without Kramam)",
-            "url": "https://vedavms.in/docs/telugu/Siva%20Stuti%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/Siva%20Stuti%20Telugu.pdf",
             "version": "V0.0",
             "date": "Jun 1, 2019",
             "corrections": ""
           },
           {
             "title": "5) accChidram, aSvamedham & kAThakam - Telugu",
-            "url": "https://vedavms.in/docs/telugu/AAK-telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/AAK-Telugu.pdf",
             "version": "",
             "date": "Mar 31, 2020",
             "corrections": ""
           },
           {
             "title": "6) AbhisravaNam - Telugu",
-            "url": "https://vedavms.in/docs/telugu/abhisravaNam%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/abhisravaNam%20Telugu.pdf",
             "version": "V0.0",
             "date": "Jun 30, 2019",
             "corrections": ""
           },
           {
             "title": "7) Rudra Ghanam - Telugu",
-            "url": "https://vedavms.in/docs/telugu/Rudra%20Ghanam%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/Rudra%20Ghanam%20Telugu.pdf",
             "version": "V0.0",
             "date": "May 31, 2019",
             "corrections": ""
           },
           {
             "title": "8) Chamaka Ghanam - Telugu",
-            "url": "https://vedavms.in/docs/telugu/Chamaka%20Ghanam%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/Chamaka%20Ghanam%20Telugu.pdf",
             "version": "V0.0",
             "date": "May 31, 2019",
             "corrections": ""
@@ -3290,42 +3290,42 @@
           },
           {
             "title": "11) TaittirIya brAhmaNam -prapAtakam 3 - TB 1.1-1.4 Telugu",
-            "url": "https://vedavms.in/docs/telugu/TB%201.1-1.4%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/TB%201.1-1.4%20Telugu.pdf",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
           },
           {
             "title": "12) TaittirIya brAhmaNam -prapAtakam 3 - TB 1.5-1.8 Telugu",
-            "url": "https://vedavms.in/docs/telugu/TB%201.5-1.8%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/TB%201.5-1.8%20Telugu.pdf",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
           },
           {
             "title": "13) TaittirIya brAhmaNam -prapAtakam 3 - TB 2.1-2.4 Telugu",
-            "url": "https://vedavms.in/docs/telugu/TB%202.1-2.4%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/TB%202.1-2.4%20Telugu.pdf",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
           },
           {
             "title": "14) TaittirIya brAhmaNam -prapAtakam 3 - TB 2.5-2.8 Telugu",
-            "url": "https://vedavms.in/docs/telugu/TB%202.5-2.8%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/TB%202.5-2.8%20Telugu.pdf",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
           },
           {
             "title": "15) TaittirIya brAhmaNam -prapAtakam 3 - TB 3.1-3.6 Telugu",
-            "url": "https://vedavms.in/docs/telugu/TB%203.1-3.6%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/TB%203.1-3.6%20Telugu.pdf",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
           },
           {
             "title": "16) TaittirIya brAhmaNam -prapAtakam 3 - TB 3.7-3.12 Telugu",
-            "url": "https://vedavms.in/docs/telugu/TB%203.7-3.12%20telugu.pdf",
+            "url": "https://vedavms.in/docs/telugu/TB%203.7-3.12%20Telugu.pdf",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
@@ -7492,6 +7492,21 @@
         ]
       }
     ]
+  },
+  "articles": {
+    "label": "Articles",
+    "tab": "Articles",
+    "sections": []
+  },
+  "videos_tamil": {
+    "label": "Videos (Tamil)",
+    "tab": "Videos (Tamil)",
+    "sections": []
+  },
+  "videos_english": {
+    "label": "Videos (English)",
+    "tab": "Videos (English)",
+    "sections": []
   },
   "external_links": {
     "label": "External Links",
