@@ -26,6 +26,14 @@ x
 scratch/
 *.tmp
 *.temp
+scripts/probe_*.py
+scripts/test_*.py
+scripts/diagnose_*.py
+scripts/deep_probe_*.py
+scripts/audit_migration.py
+scripts/compare_folders.py
+scripts/update_csv_casing.py
+scripts/verify_telugu_all.py
 
 # Cache
 .cache/
