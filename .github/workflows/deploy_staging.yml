@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     env:
-      STAGING_FTP_SERVER: ${{ secrets.STAGING_FTP_SERVER || vars.STAGING_FTP_SERVER || secrets.FTP_SERVER || vars.FTP_SERVER || '103.69.196.157' }}
+      STAGING_FTP_SERVER: ${{ secrets.STAGING_FTP_SERVER || vars.STAGING_FTP_SERVER || secrets.FTP_SERVER || vars.FTP_SERVER || '185.151.30.169' }}
       STAGING_FTP_USERNAME: ${{ secrets.STAGING_FTP_USERNAME || vars.STAGING_FTP_USERNAME || secrets.FTP_USERNAME || vars.FTP_USERNAME || 'vedavmsi' }}
       STAGING_FTP_PASSWORD: ${{ secrets.STAGING_FTP_PASSWORD || vars.STAGING_FTP_PASSWORD || secrets.FTP_PASSWORD || vars.FTP_PASSWORD }}
       STAGING_REMOTE_DIR: ${{ secrets.STAGING_REMOTE_DIR || vars.STAGING_REMOTE_DIR || '/new.vedavms.in/' }}
@@ -63,12 +63,12 @@ jobs:
           # Strip protocol prefix (e.g. ftp://, ftps://), trailing path, port, quotes and whitespace
           CLEAN_SERVER=$(echo "$RAW_SERVER" | sed -e 's|^[a-zA-Z0-9\+\.\-]*://||' -e 's|/.*$||' -e 's|:.*$||' | tr -d '[:space:]"')
           if [ -z "$CLEAN_SERVER" ]; then
-            CLEAN_SERVER="103.69.196.157"
+            CLEAN_SERVER="185.151.30.169"
           fi
           # If the hostname fails DNS resolution, fall back to known server IP
           if ! getent hosts "$CLEAN_SERVER" > /dev/null 2>&1; then
-            echo "::warning::Configured server '$CLEAN_SERVER' failed DNS lookup. Falling back to 103.69.196.157"
-            CLEAN_SERVER="103.69.196.157"
+            echo "::warning::Configured server '$CLEAN_SERVER' failed DNS lookup. Falling back to 185.151.30.169"
+            CLEAN_SERVER="185.151.30.169"
           fi
           echo "clean_server=$CLEAN_SERVER" >> $GITHUB_OUTPUT
 
