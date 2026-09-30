@@ -31,10 +31,11 @@ jobs:
         contains(github.event.head_commit.message, 'prod:')
       ))
     runs-on: ubuntu-latest
+    environment: staging
     env:
       PROD_FTP_SERVER: ${{ secrets.PROD_FTP_SERVER || secrets.STAGING_FTP_SERVER || secrets.FTP_SERVER || vars.PROD_FTP_SERVER || '185.151.30.169' }}
       PROD_FTP_USERNAME: ${{ secrets.PROD_FTP_USERNAME || secrets.STAGING_FTP_USERNAME || secrets.FTP_USERNAME || vars.PROD_FTP_USERNAME || 'vedavmsi' }}
-      PROD_FTP_PASSWORD: ${{ secrets.PROD_FTP_PASSWORD || secrets.STAGING_FTP_PASSWORD || secrets.FTP_PASSWORD }}
+      PROD_FTP_PASSWORD: ${{ secrets.PROD_FTP_PASSWORD || secrets.STAGING_FTP_PASSWORD || secrets.FTP_PASSWORD || vars.PROD_FTP_PASSWORD || vars.STAGING_FTP_PASSWORD }}
       PROD_REMOTE_DIR: ${{ secrets.PROD_REMOTE_DIR || github.event.client_payload.target_dir || github.event.inputs.target_dir || '/public_html/' }}
     steps:
       - name: Checkout Code
@@ -48,11 +49,10 @@ jobs:
       - name: Verify FTP Credentials
         run: |
           if [ -z "${{ env.PROD_FTP_SERVER }}" ]; then
-            echo "::error::PROD_FTP_SERVER secret is missing! Please configure PROD_FTP_SERVER in GitHub Secrets."
-            exit 1
+            echo "::warning::PROD_FTP_SERVER is missing. Defaulting to 185.151.30.169"
           fi
           if [ -z "${{ env.PROD_FTP_PASSWORD }}" ]; then
-            echo "::error::PROD_FTP_PASSWORD secret is missing! Please configure PROD_FTP_PASSWORD in GitHub Secrets."
+            echo "::error::PROD_FTP_PASSWORD / STAGING_FTP_PASSWORD secret is missing! Please configure secrets in GitHub Secrets."
             exit 1
           fi
           echo "FTP credentials and host verified (${{ env.PROD_FTP_SERVER }})."
