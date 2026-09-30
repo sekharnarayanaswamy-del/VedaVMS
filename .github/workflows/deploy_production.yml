@@ -1,4 +1,4 @@
-name: Deploy to Production (vedavms.in)
+﻿name: Deploy to Production (vedavms.in)
 
 on:
   push:
@@ -31,11 +31,12 @@ jobs:
         contains(github.event.head_commit.message, 'prod:')
       ))
     runs-on: ubuntu-latest
+    environment: production
     env:
-      PROD_FTP_SERVER: ${{ secrets.PROD_FTP_SERVER || secrets.FTP_SERVER || vars.PROD_FTP_SERVER }}
-      PROD_FTP_USERNAME: ${{ secrets.PROD_FTP_USERNAME || secrets.FTP_USERNAME || vars.PROD_FTP_USERNAME }}
-      PROD_FTP_PASSWORD: ${{ secrets.PROD_FTP_PASSWORD || secrets.FTP_PASSWORD }}
-      PROD_REMOTE_DIR: ${{ secrets.PROD_REMOTE_DIR || github.event.inputs.target_dir || '/public_html/' }}
+      PROD_FTP_SERVER: ${{ secrets.PROD_FTP_SERVER || secrets.STAGING_FTP_SERVER || secrets.FTP_SERVER || vars.PROD_FTP_SERVER || vars.STAGING_FTP_SERVER || '103.69.196.157' }}
+      PROD_FTP_USERNAME: ${{ secrets.PROD_FTP_USERNAME || secrets.STAGING_FTP_USERNAME || secrets.FTP_USERNAME || vars.PROD_FTP_USERNAME || 'vedavmsi' }}
+      PROD_FTP_PASSWORD: ${{ secrets.PROD_FTP_PASSWORD || secrets.STAGING_FTP_PASSWORD || secrets.FTP_PASSWORD }}
+      PROD_REMOTE_DIR: ${{ secrets.PROD_REMOTE_DIR || github.event.client_payload.target_dir || github.event.inputs.target_dir || '/public_html/' }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -55,7 +56,7 @@ jobs:
             echo "::error::PROD_FTP_PASSWORD secret is missing! Please configure PROD_FTP_PASSWORD in GitHub Secrets."
             exit 1
           fi
-          echo "✓ FTP credentials and host verified (${{ env.PROD_FTP_SERVER }})."
+          echo "FTP credentials and host verified (${{ env.PROD_FTP_SERVER }})."
 
       - name: Generate Website Bundle
         env:
@@ -84,6 +85,13 @@ jobs:
         run: |
           RAW_SERVER="${{ env.PROD_FTP_SERVER }}"
           CLEAN_SERVER=$(echo "$RAW_SERVER" | sed -e 's|^[a-zA-Z0-9\+\.\-]*://||' -e 's|/.*$||' -e 's|:.*$||' | tr -d '[:space:]"')
+          if [ -z "$CLEAN_SERVER" ]; then
+            CLEAN_SERVER="103.69.196.157"
+          fi
+          if ! getent hosts "$CLEAN_SERVER" > /dev/null 2>&1; then
+            echo "::warning::Configured server '$CLEAN_SERVER' failed DNS lookup. Falling back to 103.69.196.157"
+            CLEAN_SERVER="103.69.196.157"
+          fi
           echo "clean_server=$CLEAN_SERVER" >> $GITHUB_OUTPUT
 
       - name: Deploy to Production Web Server
