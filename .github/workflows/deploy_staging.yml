@@ -79,7 +79,7 @@ jobs:
           server: ${{ steps.ftp-config.outputs.clean_server }}
           username: ${{ env.STAGING_FTP_USERNAME }}
           password: ${{ env.STAGING_FTP_PASSWORD }}
-          server-dir: /new.vedavms.in/
+          server-dir: ${{ env.STAGING_REMOTE_DIR }}
           protocol: ftps
           port: 21
           security: loose
