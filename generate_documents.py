@@ -1943,7 +1943,9 @@ def main() -> int:
                     help="use cached pages in .cache/ instead of fetching")
     ap.add_argument("--check", action="store_true",
                     help="verify every emitted PDF link returns 200 application/pdf")
-    ap.add_argument("--source-csv", default="",
+    default_csv_path = os.path.join(ROOT, "data", "vedavms_documents.csv")
+    default_csv = default_csv_path if os.path.exists(default_csv_path) else ""
+    ap.add_argument("--source-csv", default=default_csv,
                     help="path or Google Sheets URL to load documents from CSV instead of scraping")
     ap.add_argument("--export-csv", default="",
                     help="path to export current extracted documents to CSV (e.g. for Google Sheets)")
@@ -2064,6 +2066,12 @@ def main() -> int:
                     import shutil
                     shutil.copy2(src, dst)
                     copied_pages.append(fname)
+
+    # Copy master CSV file to build directory
+    import shutil
+    csv_src = args.source_csv if (args.source_csv and not args.source_csv.startswith("http")) else os.path.join(ROOT, "data", "vedavms_documents.csv")
+    if os.path.exists(csv_src):
+        shutil.copy2(csv_src, os.path.join(build_dir, "vedavms_documents.csv"))
 
     unique = sorted(set(all_urls))
     print(f"\n  {total} documents, {len(unique)} unique PDF links")
