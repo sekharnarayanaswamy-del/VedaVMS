@@ -1932,6 +1932,71 @@ def generate_videos_html(src_path: str, dst_path: str, tamil_sections: list[Sect
     return (len(tamil_docs), len(english_docs))
 
 
+def generate_legacy_redirect_stubs(build_dir: str) -> list[str]:
+    """Generate lightweight HTML redirect stubs for legacy docs_*.html pages."""
+    generated = []
+    template = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=documents.html#{key}">
+  <link rel="canonical" href="https://vedavms.in/documents.html#{key}">
+  <title>Redirecting to {title} Documents - VedaVMS</title>
+  <script>
+    window.location.replace("documents.html#{key}");
+  </script>
+  <style>
+    body {{
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #faf7f2;
+      color: #3b2a1a;
+      text-align: center;
+    }}
+    .redirect-card {{
+      background: white;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      max-width: 480px;
+    }}
+    a {{
+      color: #b33927;
+      text-decoration: underline;
+      font-weight: 600;
+    }}
+  </style>
+</head>
+<body>
+  <div class="redirect-card">
+    <h2>VedaVMS Documents</h2>
+    <p>Redirecting to <strong>{title}</strong> documents...</p>
+    <p>If you are not redirected automatically, <a href="documents.html#{key}">click here</a>.</p>
+  </div>
+</body>
+</html>
+"""
+    for key, live_page, title, _ in LANGUAGES:
+        target_file = os.path.join(build_dir, live_page)
+        content = template.format(key=key, title=title)
+        with open(target_file, "w", encoding="utf-8") as f:
+            f.write(content)
+        generated.append(live_page)
+
+        # Also create lowercase variant if live_page has uppercase characters
+        if live_page != live_page.lower():
+            lower_file = os.path.join(build_dir, live_page.lower())
+            with open(lower_file, "w", encoding="utf-8") as f:
+                f.write(content)
+            generated.append(live_page.lower())
+
+    return generated
+
+
 # --------------------------------------------------------------------------
 # main
 # --------------------------------------------------------------------------
@@ -2066,6 +2131,10 @@ def main() -> int:
                     import shutil
                     shutil.copy2(src, dst)
                     copied_pages.append(fname)
+
+    # Generate legacy redirect stubs for all docs_*.html pages
+    redirect_stubs = generate_legacy_redirect_stubs(build_dir)
+    copied_pages.append(f"{len(redirect_stubs)} legacy redirect stubs")
 
     # Copy master CSV file to build directory
     import shutil
