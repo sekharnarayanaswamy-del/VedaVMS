@@ -19,16 +19,30 @@ body {
     padding: 0;
 }
 
-/* Headings & Page-Break Control */
+/* Headings & Strict Page-Break Control */
 h1, h2, h3, h4, h5, h6 {
     color: #7b1113;
     font-weight: 700;
     line-height: 1.3;
-    margin-top: 1.5em;
+    margin-top: 1.6em;
     margin-bottom: 0.6em;
     /* Prevent orphan headings at the bottom of pages */
     page-break-after: avoid !important;
+    break-after: avoid !important;
     break-after: avoid-page !important;
+}
+
+/* Force the element directly following ANY heading to NEVER break before */
+h1 + *, h2 + *, h3 + *, h4 + *, h5 + *, h6 + * {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+    break-before: avoid-page !important;
+}
+
+/* Prevent HR directly above a heading from leaving the heading orphaned */
+hr + h1, hr + h2, hr + h3, hr + h4, hr + h5, hr + h6 {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
 }
 
 h1 {
@@ -40,8 +54,8 @@ h1 {
 
 /* Force major h1 sections (except first) to start on a new page */
 h1:not(:first-of-type) {
-    page-break-before: always;
-    break-before: page;
+    page-break-before: always !important;
+    break-before: page !important;
     margin-top: 0;
 }
 
