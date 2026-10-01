@@ -1,7 +1,217 @@
-:not(pre):not(.hljs)>code {
-    color: #7B1113 !important;
-    background-color: #FFF3E6 !important;
-    padding: 1px 5px !important;
+/* ==========================================================================
+   VedaVMS Markdown-PDF Print & Pagination Stylesheet
+   ========================================================================== */
+
+/* Page Setup & Margins */
+@page {
+    size: A4 portrait;
+    margin: 20mm 18mm 20mm 18mm;
+}
+
+/* Base Body & Typography */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.6;
+    color: #2b231d;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+/* Headings & Page-Break Control */
+h1, h2, h3, h4, h5, h6 {
+    color: #7b1113;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-top: 1.5em;
+    margin-bottom: 0.6em;
+    /* Prevent orphan headings at the bottom of pages */
+    page-break-after: avoid !important;
+    break-after: avoid-page !important;
+}
+
+h1 {
+    font-size: 20pt;
+    border-bottom: 2px solid #ea6b00;
+    padding-bottom: 0.3em;
+    margin-top: 0.8em;
+}
+
+/* Force major h1 sections (except first) to start on a new page */
+h1:not(:first-of-type) {
+    page-break-before: always;
+    break-before: page;
+    margin-top: 0;
+}
+
+h2 {
+    font-size: 15pt;
+    border-bottom: 1px solid #ebd9c8;
+    padding-bottom: 0.2em;
+}
+
+h3 {
+    font-size: 12.5pt;
+    color: #ea6b00;
+}
+
+h4 {
+    font-size: 11pt;
+    color: #4a3424;
+}
+
+/* Paragraphs & Lists */
+p, li {
+    orphans: 3;
+    widows: 3;
+    margin-bottom: 0.8em;
+}
+
+ul, ol {
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+}
+
+li {
+    margin-bottom: 0.4em;
+}
+
+/* Code & Syntax Highlighting */
+code {
+    font-family: "Cascadia Code", "Fira Code", Consolas, "Courier New", monospace;
+    font-size: 9pt;
+}
+
+:not(pre):not(.hljs) > code {
+    color: #7b1113 !important;
+    background-color: #fff8f0 !important;
+    padding: 2px 6px !important;
     border-radius: 4px !important;
-    border: 1px solid #EADDC9 !important;
+    border: 1px solid #ead6c3 !important;
+}
+
+pre {
+    background-color: #fcf9f5 !important;
+    border: 1px solid #e3d5c5 !important;
+    border-left: 4px solid #ea6b00 !important;
+    border-radius: 6px !important;
+    padding: 12px 16px !important;
+    font-size: 8.5pt !important;
+    line-height: 1.45 !important;
+    overflow-x: auto;
+    /* Prevent code blocks splitting awkwardly across pages */
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
+}
+
+pre code {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    color: #2b231d !important;
+}
+
+/* Tables & Grid Pagination */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2em 0;
+    font-size: 9.5pt;
+    /* Prevent table breaking inside row groups */
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
+}
+
+thead {
+    display: table-header-group; /* Repeat headers on page split */
+}
+
+tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
+}
+
+th, td {
+    border: 1px solid #dfd1c2;
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background-color: #7b1113;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fdfaf6;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Blockquotes & GitHub Alert Callouts */
+blockquote {
+    margin: 1.2em 0;
+    padding: 10px 16px;
+    background-color: #fff9f2;
+    border-left: 4px solid #ea6b00;
+    color: #4a382a;
+    font-style: normal;
+    border-radius: 0 6px 6px 0;
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
+}
+
+blockquote p {
+    margin: 0.3em 0;
+}
+
+/* Horizontal Rules & Manual Page Breaks */
+hr {
+    border: none;
+    border-top: 1px solid #e2d2c1;
+    margin: 2em 0;
+}
+
+/* Class to force explicit page break in markdown using <div class="page-break"></div> or <hr class="page-break"> */
+.page-break, hr.page-break {
+    page-break-after: always !important;
+    break-after: page !important;
+    height: 0;
+    margin: 0;
+    border: none;
+}
+
+/* Links */
+a {
+    color: #b33927;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #8b2500;
+}
+
+/* Mermaid Diagrams & Visual Media */
+svg, figure, img, .mermaid {
+    max-width: 100%;
+    height: auto;
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
+}
+
+/* Badges & Status Highlights */
+.badge, .version-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    font-size: 8pt;
+    font-weight: 600;
+    border-radius: 4px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
 }
