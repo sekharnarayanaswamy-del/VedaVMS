@@ -21,7 +21,7 @@ jobs:
       STAGING_FTP_SERVER: ${{ secrets.STAGING_FTP_SERVER || secrets.PROD_FTP_SERVER || secrets.FTP_SERVER || vars.STAGING_FTP_SERVER || vars.PROD_FTP_SERVER || vars.FTP_SERVER || 'ftp.vedavms.in' }}
       STAGING_FTP_USERNAME: ${{ secrets.STAGING_FTP_USERNAME || secrets.PROD_FTP_USERNAME || secrets.FTP_USERNAME || vars.STAGING_FTP_USERNAME || vars.PROD_FTP_USERNAME || vars.FTP_USERNAME || 'vedavmsi' }}
       STAGING_FTP_PASSWORD: ${{ secrets.STAGING_FTP_PASSWORD || secrets.PROD_FTP_PASSWORD || secrets.FTP_PASSWORD || vars.STAGING_FTP_PASSWORD || vars.PROD_FTP_PASSWORD || vars.FTP_PASSWORD }}
-      STAGING_REMOTE_DIR: ${{ secrets.STAGING_REMOTE_DIR || vars.STAGING_REMOTE_DIR || '/public_html/new.vedavms.in/' }}
+      STAGING_REMOTE_DIR: ${{ secrets.STAGING_REMOTE_DIR || vars.STAGING_REMOTE_DIR || '/new/' }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -71,7 +71,7 @@ jobs:
           RAW_DIR="${{ env.STAGING_REMOTE_DIR }}"
           CLEAN_DIR=$(echo "$RAW_DIR" | tr -d '[:space:]"')
           if [ -z "$CLEAN_DIR" ]; then
-            CLEAN_DIR="/public_html/new.vedavms.in/"
+            CLEAN_DIR="/new/"
           fi
           case "$CLEAN_DIR" in
             /*) ;;
