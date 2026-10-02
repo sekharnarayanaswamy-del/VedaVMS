@@ -72,16 +72,38 @@ python src/build_reader.py
 # Build all books configured in src/config.json
 python src/build_reader.py --all
 
-# Build a specific book by ID defined in src/config.json
+# Build specific books by ID defined in src/config.json
 python src/build_reader.py --book taittiriya_upanishad
+python src/build_reader.py --book shiva_stuti
+python src/build_reader.py --book shanti_japam
+python src/build_reader.py --book udaka_shanti
+python src/build_reader.py --book udaka_shanti_anushangam
+python src/build_reader.py --book tb_3_7_achidram
+python src/build_reader.py --book tb_3_8_aswamedham_vaiswadevam
+python src/build_reader.py --book tb_3_9_aswamedham_havirdhanam
 ```
 
-### 2. Override Paths on the Fly
+### 2. Output Location & Directory Structure
+All generated readers and the HTML viewer hub are located in the dedicated `/viewer/` subfolder:
+- Directory Hub: [`build/viewer/html_viewer.html`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/build/viewer/html_viewer.html) (or `build/viewer/index.html`)
+- Taittiriya Upanishad: [`build/viewer/taittiriya_upanishad_sanskrit.html`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/build/viewer/taittiriya_upanishad_sanskrit.html)
+- Shiva Stuti: [`build/viewer/siva_stuti_sanskrit.html`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/build/viewer/siva_stuti_sanskrit.html)
+- Shanti Japam: [`build/viewer/shanti_japam_sanskrit.html`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/build/viewer/shanti_japam_sanskrit.html)
+- Udaka Shanti: [`build/viewer/udaka_shanti_sanskrit.html`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/build/viewer/udaka_shanti_sanskrit.html)
+- Udaka Shanti Anushangam: [`build/viewer/udaka_shanti_anushangam_sanskrit.html`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/build/viewer/udaka_shanti_anushangam_sanskrit.html)
+- TB 3.7 (अच्छिद्रं): [`build/viewer/tb_3_7_achidram_sanskrit.html`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/build/viewer/tb_3_7_achidram_sanskrit.html)
+- TB 3.8 (अश्वमेधं-वैश्वदेवम्): [`build/viewer/tb_3_8_aswamedham_vaiswadevam_sanskrit.html`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/build/viewer/tb_3_8_aswamedham_vaiswadevam_sanskrit.html)
+- TB 3.9 (अश्वमेधं-हविर्धानम्): [`build/viewer/tb_3_9_aswamedham_havirdhanam_sanskrit.html`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/build/viewer/tb_3_9_aswamedham_havirdhanam_sanskrit.html)
+
+### 3. Multi-Prapāṭhaka Slicing Support (Taittiriya Brahmana)
+For composite source documents containing multiple prapāṭhakas in a single DOCX (such as `data/baraha/TB 3.7-3.12 Baraha.docx`), [`src/baraha_reader.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/src/baraha_reader.py) and [`src/build_reader.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/src/build_reader.py) automatically slice the source document into individual prapāṭhaka sections with exact Anuvaka Table of Contents matching canonical reference PDFs.
+
+### 4. Override Paths on the Fly
 ```bash
-python src/build_reader.py --input tu_baraha.docx --output taittiriya_upanishad_sanskrit.html
+python src/build_reader.py --input data/baraha/Taittiriya\ Upanishad\ Baraha.docx --output build/viewer/taittiriya_upanishad_sanskrit.html
 ```
 
-### 3. Test Transliteration Standalone
+### 5. Test Transliteration Standalone
 ```bash
 python src/transliterate.py
 ```
@@ -90,22 +112,23 @@ python src/transliterate.py
 
 ## 📖 How to Add a New Vedic Book
 
-To configure a new book (e.g., *Taittiriya Brahmana*):
+To configure a new book (e.g., *Taittiriya Aranyakam*):
 
-1. Place your Baraha `.docx` source file in the repository (e.g. `tb_baraha.docx`).
+1. Place your Baraha `.docx` source file in `data/baraha/` (e.g. `data/baraha/ta_baraha.docx`).
 2. Add a new book entry in [`src/config.json`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/src/config.json):
 
 ```json
 {
   "books": {
-    "taittiriya_brahmanam": {
-      "title": "तैत्तिरीय ब्राह्मणम्",
-      "subtitle": "कृष्ण यजुर्वेदीय तैत्तिरीय ब्राह्मणम् (सस्वरम्)",
-      "input_docx": "tb_baraha.docx",
-      "output_html": "taittiriya_brahmanam_sanskrit.html",
-      "back_link": "documents.html",
-      "back_label": "← Documents Index",
-      "chapter_regex": "^([1-3])(?!\\.)\\s*(.*(?:kANDa|ashtaka).*)$"
+    "taittiriya_aranyakam": {
+      "title": "तैत्तिरीय आरण्यकम्",
+      "subtitle": "कृष्ण यजुर्वेदीय तैत्तिरीय आरण्यकम् (सस्वरम्)",
+      "input_docx": "data/baraha/ta_baraha.docx",
+      "output_html": "build/viewer/taittiriya_aranyakam_sanskrit.html",
+      "pdf_path": "data/pdf/Taittiriya Aranyakam Sanskrit.pdf",
+      "back_link": "../index.html",
+      "back_label": "← Home",
+      "chapter_regex": "^([1-6])(?!\\.)\\s*(.*(?:prashna|aranya).*)$"
     }
   }
 }
@@ -113,7 +136,7 @@ To configure a new book (e.g., *Taittiriya Brahmana*):
 
 3. Run the generator:
 ```bash
-python src/build_reader.py --book taittiriya_brahmanam
+python src/build_reader.py --book taittiriya_aranyakam
 ```
 
 ---

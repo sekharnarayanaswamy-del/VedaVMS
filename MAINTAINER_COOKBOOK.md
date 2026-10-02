@@ -15,10 +15,9 @@ Step 1: Upload PDF in Plesk  ──>  Step 2: Copy Link from Browser  ──>  S
 
 ### Step 1: Upload the PDF File
 
-1. Log into **Plesk** (`https://103.69.196.157:8443`).
-2. Go to **Websites & Domains** &rarr; **vedavms.in** &rarr; **File Manager**.
-3. Open **`httpdocs`** &rarr; **`docs`** &rarr; open the relevant folder (e.g. `TU`, `sanskrit`, `Shiva-Stuti`, etc.).
-4. Click the blue **+ (Upload)** button and select your PDF file.
+1. Log into **cPanel** / Server File Manager (`https://vedavms.in:2083` or FTP).
+2. Go to **File Manager** &rarr; **`public_html`** &rarr; **`docs`** &rarr; open the relevant folder (e.g. `TU`, `sanskrit`, `Shiva-Stuti`, `TB`, etc.).
+3. Click the **Upload** button and select your PDF file.
 
 ---
 
