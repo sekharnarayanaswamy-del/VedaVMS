@@ -18,9 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     env:
-      STAGING_FTP_SERVER: ${{ secrets.STAGING_FTP_SERVER || secrets.PROD_FTP_SERVER || secrets.FTP_SERVER || vars.STAGING_FTP_SERVER || vars.PROD_FTP_SERVER || vars.FTP_SERVER || 'ftp.vedavms.in' }}
-      STAGING_FTP_USERNAME: ${{ secrets.STAGING_FTP_USERNAME || secrets.PROD_FTP_USERNAME || secrets.FTP_USERNAME || vars.STAGING_FTP_USERNAME || vars.PROD_FTP_USERNAME || vars.FTP_USERNAME || 'vedavmsi' }}
-      STAGING_FTP_PASSWORD: ${{ secrets.STAGING_FTP_PASSWORD || secrets.PROD_FTP_PASSWORD || secrets.FTP_PASSWORD || vars.STAGING_FTP_PASSWORD || vars.PROD_FTP_PASSWORD || vars.FTP_PASSWORD }}
+      STAGING_FTP_SERVER: ${{ secrets.PROD_FTP_SERVER || secrets.FTP_SERVER || secrets.STAGING_FTP_SERVER || vars.PROD_FTP_SERVER || vars.STAGING_FTP_SERVER || 'ftp.vedavms.in' }}
+      STAGING_FTP_USERNAME: ${{ secrets.PROD_FTP_USERNAME || secrets.FTP_USERNAME || secrets.STAGING_FTP_USERNAME || vars.PROD_FTP_USERNAME || vars.STAGING_FTP_USERNAME || 'vedavmsi' }}
+      STAGING_FTP_PASSWORD: ${{ secrets.PROD_FTP_PASSWORD || secrets.FTP_PASSWORD || secrets.STAGING_FTP_PASSWORD || vars.PROD_FTP_PASSWORD || vars.STAGING_FTP_PASSWORD }}
       STAGING_REMOTE_DIR: ${{ secrets.STAGING_REMOTE_DIR || vars.STAGING_REMOTE_DIR || '/public_html/new/' }}
     steps:
       - name: Checkout Code
@@ -84,6 +84,57 @@ jobs:
             *) CLEAN_DIR="$CLEAN_DIR/" ;;
           esac
           echo "clean_dir=$CLEAN_DIR" >> $GITHUB_OUTPUT
+
+      - name: Test FTP Connection and Remote Directory
+        env:
+          FTP_HOST: ${{ steps.ftp-config.outputs.clean_server }}
+          FTP_USER: ${{ env.STAGING_FTP_USERNAME }}
+          FTP_PASS: ${{ env.STAGING_FTP_PASSWORD }}
+          TARGET_DIR: ${{ steps.ftp-config.outputs.clean_dir }}
+        run: |
+          python - << 'EOF'
+          import ftplib, ssl, os, sys
+          host = os.environ.get('FTP_HOST', 'ftp.vedavms.in')
+          user = os.environ.get('FTP_USER', 'vedavmsi')
+          pwd = os.environ.get('FTP_PASS', '')
+          target_dir = os.environ.get('TARGET_DIR', '/public_html/new/')
+
+          print(f"Connecting to FTPS host: {host}:21 as {user}...")
+          if not pwd:
+              print("::error::FTP Password is empty! Please check GitHub Secrets.")
+              sys.exit(1)
+
+          try:
+              ftps = ftplib.FTP_TLS(timeout=20)
+              ftps.connect(host, 21)
+              ftps.auth()
+              ftps.login(user, pwd)
+              ftps.prot_p()
+              print(f"FTPS login successful as {user}!")
+              print("Current working directory:", ftps.pwd())
+              
+              # Ensure target directory exists
+              parts = [p for p in target_dir.strip('/').split('/') if p]
+              curr = ""
+              for part in parts:
+                  curr += "/" + part
+                  try:
+                      ftps.cwd(curr)
+                      print(f"Verified directory: {curr}")
+                  except Exception:
+                      print(f"Directory {curr} does not exist, creating...")
+                      ftps.mkd(curr)
+                      ftps.cwd(curr)
+                      print(f"Created and entered: {curr}")
+              
+              print(f"Listing files in {target_dir}:")
+              ftps.dir()
+              ftps.quit()
+              print("Pre-deployment FTP verification completed successfully.")
+          except Exception as e:
+              print(f"::error::FTP connection/directory verification failed: {e}")
+              sys.exit(1)
+          EOF
 
       - name: Deploy to Staging Web Server (FTP / SFTP)
         if: env.STAGING_FTP_PASSWORD != ''
