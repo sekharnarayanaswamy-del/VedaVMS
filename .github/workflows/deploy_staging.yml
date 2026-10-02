@@ -85,26 +85,7 @@ jobs:
           esac
           echo "clean_dir=$CLEAN_DIR" >> $GITHUB_OUTPUT
 
-      - name: Test FTP Connection and Remote Directory
-        env:
-          FTP_HOST: ${{ steps.ftp-config.outputs.clean_server }}
-          FTP_USER: ${{ env.STAGING_FTP_USERNAME }}
-          FTP_PASS: ${{ env.STAGING_FTP_PASSWORD }}
-          TARGET_DIR: ${{ steps.ftp-config.outputs.clean_dir }}
-        run: |
-          python - << 'EOF'
-          import ftplib, ssl, os, sys
-          host = os.environ.get('FTP_HOST', 'ftp.vedavms.in')
-          user = os.environ.get('FTP_USER', 'vedavmsi')
-          pwd = os.environ.get('FTP_PASS', '')
-          target_dir = os.environ.get('TARGET_DIR', '/public_html/new/')
-
-          print(f"Connecting to FTPS host: {host}:21 as {user}...")
-          if not pwd:
-              print("::error::FTP Password is empty! Please check GitHub Secrets.")
-              sys.exit(1)
-
-      - name: Deploy to Staging Web Server (Sync Candidates & Permissions)
+      - name: Deploy to Staging Web Server (/public_html/new/)
         env:
           FTP_HOST: ${{ steps.ftp-config.outputs.clean_server }}
           FTP_USER: ${{ env.STAGING_FTP_USERNAME }}
@@ -117,7 +98,7 @@ jobs:
           host = os.environ.get('FTP_HOST', 'ftp.vedavms.in')
           user = os.environ.get('FTP_USER', 'vedavmsi')
           pwd = os.environ.get('FTP_PASS', '')
-          primary_target = os.environ.get('TARGET_DIR', '/public_html/new/').rstrip('/')
+          target_dir = os.environ.get('TARGET_DIR', '/public_html/new/').rstrip('/')
 
           if not pwd:
               print("::error::FTP password is empty!")
@@ -131,54 +112,72 @@ jobs:
               ftps.prot_p()
               print(f"Connected to FTPS host {host} as {user}")
 
-              candidates = list(dict.fromkeys([
-                  primary_target,
-                  '/public_html/new',
-                  '/new.vedavms.in',
-                  '/public_html/new.vedavms.in'
-              ]))
+              def remove_remote_dir_recursive(path):
+                  try:
+                      lines = []
+                      ftps.retrlines(f"LIST {path}", lines.append)
+                      for line in lines:
+                          parts = line.split(maxsplit=8)
+                          if len(parts) >= 9:
+                              perms, name = parts[0], parts[8]
+                              if name in ['.', '..']:
+                                  continue
+                              item = f"{path}/{name}"
+                              if perms.startswith('d'):
+                                  remove_remote_dir_recursive(item)
+                              else:
+                                  try:
+                                      ftps.delete(item)
+                                  except Exception:
+                                      pass
+                      ftps.rmd(path)
+                      print(f"Cleaned up obsolete folder: {path}")
+                  except Exception as e:
+                      pass
 
-              for cand in candidates:
-                  print(f"\n--- Syncing to Document Root Candidate: {cand} ---")
-                  # Ensure path exists
-                  parts = [p for p in cand.strip('/').split('/') if p]
-                  curr = ""
-                  for part in parts:
-                      curr += "/" + part
+              # Clean up any obsolete/discovery folders if they exist
+              for obsolete in ['/new.vedavms.in', '/public_html/new.vedavms.in', '/httpdocs']:
+                  remove_remote_dir_recursive(obsolete)
+
+              print(f"\n--- Deploying exclusively to Target Directory: {target_dir} ---")
+              parts = [p for p in target_dir.strip('/').split('/') if p]
+              curr = ""
+              for part in parts:
+                  curr += "/" + part
+                  try:
+                      ftps.cwd(curr)
+                  except Exception:
                       try:
+                          ftps.mkd(curr)
                           ftps.cwd(curr)
+                          ftps.sendcmd(f"SITE CHMOD 755 {curr}")
+                          print(f"Created directory: {curr}")
+                      except Exception as e:
+                          print(f"Directory {curr} notice: {e}")
+
+              # Upload all build files
+              for root, dirs, files in os.walk('build'):
+                  rel_dir = os.path.relpath(root, 'build').replace('\\', '/')
+                  target_sub = target_dir if rel_dir == '.' else f"{target_dir}/{rel_dir}"
+                  for d in dirs:
+                      try:
+                          ftps.mkd(f"{target_sub}/{d}")
+                          ftps.sendcmd(f"SITE CHMOD 755 {target_sub}/{d}")
                       except Exception:
-                          try:
-                              ftps.mkd(curr)
-                              ftps.cwd(curr)
-                              ftps.sendcmd(f"SITE CHMOD 755 {curr}")
-                              print(f"Created directory: {curr}")
-                          except Exception as e:
-                              print(f"Directory {curr} notice: {e}")
+                          pass
+                  for f in files:
+                      local_f = os.path.join(root, f)
+                      remote_f = f"{target_sub}/{f}"
+                      with open(local_f, 'rb') as fp:
+                          ftps.storbinary(f"STOR {remote_f}", fp)
+                      try:
+                          ftps.sendcmd(f"SITE CHMOD 644 {remote_f}")
+                      except Exception:
+                          pass
 
-                  # Upload all build files
-                  for root, dirs, files in os.walk('build'):
-                      rel_dir = os.path.relpath(root, 'build').replace('\\', '/')
-                      target_sub = cand if rel_dir == '.' else f"{cand}/{rel_dir}"
-                      for d in dirs:
-                          try:
-                              ftps.mkd(f"{target_sub}/{d}")
-                              ftps.sendcmd(f"SITE CHMOD 755 {target_sub}/{d}")
-                          except Exception:
-                              pass
-                      for f in files:
-                          local_f = os.path.join(root, f)
-                          remote_f = f"{target_sub}/{f}"
-                          with open(local_f, 'rb') as fp:
-                              ftps.storbinary(f"STOR {remote_f}", fp)
-                          try:
-                              ftps.sendcmd(f"SITE CHMOD 644 {remote_f}")
-                          except Exception:
-                              pass
-                  print(f"Sync complete for: {cand}")
-
+              ftps.sendcmd(f"SITE CHMOD 755 {target_dir}")
               ftps.quit()
-              print("All staging targets successfully updated.")
+              print(f"Staging deployment to {target_dir} successfully completed.")
           except Exception as e:
               print(f"::error::Staging deployment failed: {e}")
               sys.exit(1)
