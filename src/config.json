@@ -66,6 +66,36 @@
       "back_link": "../index.html",
       "back_label": "← Home",
       "chapter_regex": "^(1)\\s+(udaka\\s*SAnti.*)$"
+    },
+    "tb_3_7_achidram": {
+      "title": "तैत्तिरीय ब्राह्मणे तृतीयाष्टके सप्तमः प्रपाठकः (अच्छिद्रं)",
+      "title_sanskrit": "अच्छिद्रं",
+      "subtitle": "कृष्ण यजुर्वेदीय तैत्तिरीय ब्राह्मणम् (TB 3.7)",
+      "input_docx": "data/baraha/TB 3.7-3.12 Baraha.docx",
+      "output_html": "build/viewer/tb_3_7_achidram_sanskrit.html",
+      "pdf_path": "data/pdf/TB 3.7-3.12 Sanskrit.pdf",
+      "back_link": "../index.html",
+      "back_label": "← Home"
+    },
+    "tb_3_8_aswamedham_vaiswadevam": {
+      "title": "तैत्तिरीय ब्राह्मणे तृतीयाष्टके अष्टमः प्रपाठकः (अश्वमेधं-वैश्वदेवम्)",
+      "title_sanskrit": "अश्वमेधं-वैश्वदेवम्",
+      "subtitle": "कृष्ण यजुर्वेदीय तैत्तिरीय ब्राह्मणम् (TB 3.8)",
+      "input_docx": "data/baraha/TB 3.7-3.12 Baraha.docx",
+      "output_html": "build/viewer/tb_3_8_aswamedham_vaiswadevam_sanskrit.html",
+      "pdf_path": "data/pdf/TB 3.7-3.12 Sanskrit.pdf",
+      "back_link": "../index.html",
+      "back_label": "← Home"
+    },
+    "tb_3_9_aswamedham_havirdhanam": {
+      "title": "तैत्तिरीय ब्राह्मणे तृतीयाष्टके नवमः प्रपाठकः (अश्वमेधं-हविर्धानम्)",
+      "title_sanskrit": "अश्वमेधं-हविर्धानम्",
+      "subtitle": "कृष्ण यजुर्वेदीय तैत्तिरीय ब्राह्मणम् (TB 3.9)",
+      "input_docx": "data/baraha/TB 3.7-3.12 Baraha.docx",
+      "output_html": "build/viewer/tb_3_9_aswamedham_havirdhanam_sanskrit.html",
+      "pdf_path": "data/pdf/TB 3.7-3.12 Sanskrit.pdf",
+      "back_link": "../index.html",
+      "back_label": "← Home"
     }
   },
   "fonts": [
