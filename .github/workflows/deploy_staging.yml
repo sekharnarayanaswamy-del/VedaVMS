@@ -113,31 +113,49 @@ jobs:
               print(f"Connected to FTPS host {host} as {user}")
 
               def remove_remote_dir_recursive(path):
+                  print(f"Attempting removal of: {path}")
                   try:
-                      lines = []
-                      ftps.retrlines(f"LIST {path}", lines.append)
-                      for line in lines:
+                      ftps.cwd(path)
+                      items = []
+                      ftps.retrlines("LIST", items.append)
+                      for line in items:
                           parts = line.split(maxsplit=8)
                           if len(parts) >= 9:
                               perms, name = parts[0], parts[8]
                               if name in ['.', '..']:
                                   continue
-                              item = f"{path}/{name}"
+                              item_path = f"{path.rstrip('/')}/{name}"
                               if perms.startswith('d'):
-                                  remove_remote_dir_recursive(item)
+                                  remove_remote_dir_recursive(item_path)
+                                  ftps.cwd(path)
                               else:
                                   try:
-                                      ftps.delete(item)
-                                  except Exception:
-                                      pass
+                                      ftps.delete(name)
+                                      print(f"  Deleted file: {item_path}")
+                                  except Exception as fe:
+                                      print(f"  Failed deleting file {item_path}: {fe}")
+                      ftps.cwd('/')
                       ftps.rmd(path)
-                      print(f"Cleaned up obsolete folder: {path}")
+                      print(f"Successfully removed obsolete directory: {path}")
                   except Exception as e:
-                      pass
+                      print(f"Notice on {path}: {e}")
+                      try:
+                          ftps.cwd('/')
+                          ftps.rmd(path)
+                          print(f"Direct rmd succeeded for {path}")
+                      except Exception as e2:
+                          print(f"Direct rmd {path}: {e2}")
 
               # Clean up any obsolete/discovery folders if they exist
-              for obsolete in ['/new.vedavms.in', '/public_html/new.vedavms.in', '/httpdocs']:
+              for obsolete in ['/new.vedavms.in', '/public_html/new.vedavms.in', '/httpdocs', '/public_html/httpdocs']:
                   remove_remote_dir_recursive(obsolete)
+
+              print("\n--- Current Root Directory Listing ---")
+              ftps.cwd('/')
+              root_lines = []
+              ftps.retrlines("LIST", root_lines.append)
+              for rl in root_lines:
+                  print("  ROOT:", rl)
 
               print(f"\n--- Deploying exclusively to Target Directory: {target_dir} ---")
               parts = [p for p in target_dir.strip('/').split('/') if p]
