@@ -51,6 +51,18 @@ vedavms/
 
 ## 🚀 Usage & Deployment CLI
 
+### 🌐 Live Production Deployment Conditions (`vedavms.in`)
+The live production web server (`vedavms.in` at remote `/public_html/`) is updated **only under 5 conditions**:
+1. **Commit Message Flag on `main`**: Push to `main` with commit message containing `[prod]`, `[production]`, `[deploy:prod]`, or `prod:`.
+2. **Google Sheets One-Click Publish**: Maintainer clicks **`🚀 VedaVMS` ➔ `🔴 Publish to Production (vedavms.in)`** (logs timestamp in cell **`J3`**).
+3. **GitHub Actions Web UI**: Manually triggering **Deploy to Production (vedavms.in)** with `confirm_deploy = "DEPLOY"`.
+4. **Repository Dispatch Webhook**: API `repository_dispatch` event of type `deploy_production` or `google_sheet_production_deploy`.
+5. **Laptop CLI Command or Rollback**: Executing `python scripts/deploy_site.py --production` (or `python scripts/deploy_site.py --rollback --production`).
+
+> 💡 **Default behavior**: Standard `git push origin main` without production tags automatically deploys to **Staging** ([`new.vedavms.in`](https://new.vedavms.in)), leaving live production untouched.
+
+---
+
 ### 1. Unified Deployment CLI (`scripts/deploy_site.py`)
 
 Deploy directly from your laptop to Staging or Production, with automated pre-deploy backups and instant rollback support:
@@ -103,6 +115,7 @@ When pushing commits to GitHub, you can target Staging or Production via your co
   git commit -m "Publish new readers [prod]"
   git push origin main
   ```
+
 
 ---
 

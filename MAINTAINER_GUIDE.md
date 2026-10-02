@@ -175,9 +175,34 @@ python generate_documents.py --offline --export-csv data/vedavms_documents.csv -
 
 ## ⚡ Step 3: Publishing Changes (Staging & Production)
 
-There are three convenient methods to publish changes:
+### 🌐 Production Server Deployment Conditions (`vedavms.in`)
+The live production web server (**`vedavms.in`** at remote directory `/public_html/`) is updated **only when one of the following 5 conditions is met**:
 
-### Method A: One-Click Trigger from Google Sheets (Recommended for Maintainers)
+1. **Git Commit Message Tag on `main` (`git push`)**:
+   A `git push origin main` is executed **and** the head commit message contains a production tag:
+   - `[prod]`
+   - `[production]`
+   - `[deploy:prod]`
+   - `prod:` (e.g. `git commit -m "prod: Update documents catalog"`)
+   *(Note: Standard `git push origin main` without these tags triggers deployment to **Staging** `new.vedavms.in`, NOT Production).*
+
+2. **One-Click Trigger from Google Sheets**:
+   A maintainer opens the Google Sheet menu **`🚀 VedaVMS`** and selects **`🔴 Publish to Production (vedavms.in)`** (dispatches `deploy_production.yml` with `confirm_deploy="DEPLOY"` and logs the timestamp in cell **`J3`**).
+
+3. **Manual Workflow Run in GitHub Actions UI (`workflow_dispatch`)**:
+   A maintainer navigates to GitHub **Actions** ➔ **Deploy to Production (vedavms.in)** ➔ **Run workflow** (setting `confirm_deploy` to `"DEPLOY"`).
+
+4. **GitHub API Repository Dispatch (`repository_dispatch`)**:
+   An external system dispatches a `repository_dispatch` webhook event of type `deploy_production` or `google_sheet_production_deploy`.
+
+5. **Direct Laptop CLI Command or Rollback (`scripts/deploy_site.py`)**:
+   A developer executes `python scripts/deploy_site.py --production` (or performs an interactive rollback via `python scripts/deploy_site.py --rollback --production`).
+
+---
+
+### Deployment Methods Breakdown
+
+#### Method A: One-Click Trigger from Google Sheets (Recommended for Maintainers)
 Maintainers can publish changes directly from the Google Sheet without touching code or command lines:
 1. Open the [VedaVMS Google Sheet](https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/).
 2. In the top menu, click **`🚀 VedaVMS`**:
@@ -197,7 +222,7 @@ Maintainers can publish changes directly from the Google Sheet without touching 
 3. Confirm the prompt by clicking **Yes**.
 4. A popup confirms when the build completes successfully.
 
-### Method B: Trigger via GitHub Actions (Web UI)
+#### Method B: Trigger via GitHub Actions (Web UI)
 1. Go to the GitHub repository in your browser: `sekharnarayanaswamy-del/VedaVMS`.
 2. Click the **Actions** tab at the top.
 3. Select either:
@@ -205,7 +230,7 @@ Maintainers can publish changes directly from the Google Sheet without touching 
    - **Deploy to Production (vedavms.in)**
 4. Click **Run workflow** ➔ **Run workflow**.
 
-### Method C: Deploy & Rollback CLI from Laptop (Developer / Admin)
+#### Method C: Deploy & Rollback CLI from Laptop (Developer / Admin)
 Run `scripts/deploy_site.py` for direct deployment, dry-runs, and instant rollbacks:
 ```powershell
 # 1. Deploy to Staging (new.vedavms.in):
@@ -227,7 +252,7 @@ python scripts/deploy_site.py --rollback --production
 python scripts/deploy_site.py --rollback --production --snapshot backup_production_vedavms_in
 ```
 
-### Method D: Deploy via Git Commit Message Flags (`git push`)
+#### Method D: Deploy via Git Commit Message Flags (`git push`)
 When pushing code or reader updates to GitHub:
 - **Default (Staging - `new.vedavms.in`)**: Standard `git push origin main` automatically deploys to **Staging**:
   ```bash
@@ -239,6 +264,7 @@ When pushing code or reader updates to GitHub:
   git commit -m "Publish new readers [prod]"
   git push origin main
   ```
+
 
 ---
 
