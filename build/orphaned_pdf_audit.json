@@ -1,0 +1,449 @@
+{
+  "timestamp": "2026-10-02 20:51:02 IST",
+  "total_tested": 1904,
+  "live_in_csv_count": 1576,
+  "orphaned_live_count": 22,
+  "csv_missing_count": 3,
+  "orphaned_live_by_directory": {
+    "": [
+      {
+        "url": "https://vedavms.in/conventions.pdf",
+        "filename": "conventions.pdf",
+        "unquoted_path": "/conventions.pdf",
+        "size_bytes": 134788,
+        "size_kb": 131.6,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_121141\\documents.html",
+          ".\\backup_production_vedavms_in\\docs.html",
+          ".\\backups\\backup_httpdocs_20260920_100025\\documents.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\convention.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\documents.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\mockup\\convention.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_122731\\convention.html",
+          ".\\build\\convention.html",
+          ".\\backups\\backup_httpdocs_20260920_100025\\convention.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\documents.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\convention.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\convention.html",
+          ".\\backups\\backup_httpdocs_20260920_113307\\documents.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\convention.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\convention.html",
+          ".\\backups\\backup_httpdocs_20260920_122731\\documents.html",
+          ".\\scripts\\probe_5_broken_links.py",
+          ".\\backups\\backup_httpdocs_20260920_121123\\documents.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\documents.html",
+          ".\\backups\\backup_httpdocs_20260920_113307\\convention.html"
+        ]
+      }
+    ],
+    "/docs/SIkShA": [
+      {
+        "url": "https://vedavms.in/docs/SIkShA/Letter%20from%20Kolatu.pdf",
+        "filename": "Letter from Kolatu.pdf",
+        "unquoted_path": "/docs/SIkShA/Letter from Kolatu.pdf",
+        "size_bytes": 946603,
+        "size_kb": 924.4,
+        "sources": [
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backup_production_vedavms_in\\docs_SikShA.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md"
+        ]
+      }
+    ],
+    "/docs/Shanti-Japam": [
+      {
+        "url": "https://vedavms.in/docs/Shanti-Japam/Shanti%20Japam%20Telugu.pdf",
+        "filename": "Shanti Japam Telugu.pdf",
+        "unquoted_path": "/docs/Shanti-Japam/Shanti Japam Telugu.pdf",
+        "size_bytes": 762341,
+        "size_kb": 744.5,
+        "sources": [
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\scripts\\test_working_patterns.py",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md"
+        ]
+      }
+    ],
+    "/docs/Telugu": [
+      {
+        "url": "https://vedavms.in/docs/Telugu/AAK-Telugu.pdf",
+        "filename": "AAK-Telugu.pdf",
+        "unquoted_path": "/docs/Telugu/AAK-Telugu.pdf",
+        "size_bytes": 631456,
+        "size_kb": 616.7,
+        "sources": [
+          ".\\scripts\\probe_telugu_paths.py",
+          ".\\scripts\\deep_probe_telugu.py",
+          ".\\scripts\\diagnose_telugu.py",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\build\\orphaned_pdf_audit.json"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/Telugu/Chamaka%20Ghanam%20Telugu.pdf",
+        "filename": "Chamaka Ghanam Telugu.pdf",
+        "unquoted_path": "/docs/Telugu/Chamaka Ghanam Telugu.pdf",
+        "size_bytes": 357211,
+        "size_kb": 348.8,
+        "sources": [
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\scripts\\deep_probe_telugu.py",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/Telugu/Shanti%20Japam%20Telugu.pdf",
+        "filename": "Shanti Japam Telugu.pdf",
+        "unquoted_path": "/docs/Telugu/Shanti Japam Telugu.pdf",
+        "size_bytes": 762341,
+        "size_kb": 744.5,
+        "sources": [
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\scripts\\diagnose_telugu.py",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md"
+        ]
+      }
+    ],
+    "/docs/articles": [
+      {
+        "url": "https://vedavms.in/docs/articles/00Sanskrit%20Letters.pdf",
+        "filename": "00Sanskrit Letters.pdf",
+        "unquoted_path": "/docs/articles/00Sanskrit Letters.pdf",
+        "size_bytes": 379648,
+        "size_kb": 370.8,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_122731\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\articles.html",
+          ".\\backup_production_vedavms_in\\article.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_113307\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\articles.html",
+          ".\\build\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\articles.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backups\\backup_httpdocs_20260920_100025\\articles.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\articles.html"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/articles/01ABasics%20of%20Veda%20Recital.pdf",
+        "filename": "01ABasics of Veda Recital.pdf",
+        "unquoted_path": "/docs/articles/01ABasics of Veda Recital.pdf",
+        "size_bytes": 701213,
+        "size_kb": 684.8,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_122731\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\articles.html",
+          ".\\backup_production_vedavms_in\\article.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_113307\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\articles.html",
+          ".\\build\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\articles.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backups\\backup_httpdocs_20260920_100025\\articles.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\articles.html"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/articles/01Basics%20of%20Veda%20Swaras.pdf",
+        "filename": "01Basics of Veda Swaras.pdf",
+        "unquoted_path": "/docs/articles/01Basics of Veda Swaras.pdf",
+        "size_bytes": 284161,
+        "size_kb": 277.5,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_122731\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\articles.html",
+          ".\\backup_production_vedavms_in\\article.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_113307\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\articles.html",
+          ".\\build\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\articles.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backups\\backup_httpdocs_20260920_100025\\articles.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\articles.html"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/articles/02Basics%20of%20Veda-Dheerga%20Swaritam.pdf",
+        "filename": "02Basics of Veda-Dheerga Swaritam.pdf",
+        "unquoted_path": "/docs/articles/02Basics of Veda-Dheerga Swaritam.pdf",
+        "size_bytes": 307047,
+        "size_kb": 299.9,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_122731\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\articles.html",
+          ".\\backup_production_vedavms_in\\article.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_113307\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\articles.html",
+          ".\\build\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\articles.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backups\\backup_httpdocs_20260920_100025\\articles.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\articles.html"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/articles/03Basics%20of%20Veda-Visarga%20Sandhi.pdf",
+        "filename": "03Basics of Veda-Visarga Sandhi.pdf",
+        "unquoted_path": "/docs/articles/03Basics of Veda-Visarga Sandhi.pdf",
+        "size_bytes": 536080,
+        "size_kb": 523.5,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_122731\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\articles.html",
+          ".\\backup_production_vedavms_in\\article.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_113307\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\articles.html",
+          ".\\build\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\articles.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backups\\backup_httpdocs_20260920_100025\\articles.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\articles.html"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/articles/04Basics%20of%20Veda-Avagraha.pdf",
+        "filename": "04Basics of Veda-Avagraha.pdf",
+        "unquoted_path": "/docs/articles/04Basics of Veda-Avagraha.pdf",
+        "size_bytes": 545866,
+        "size_kb": 533.1,
+        "sources": [
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\build\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/articles/05Basics%20of%20Veda-Chandas.pdf",
+        "filename": "05Basics of Veda-Chandas.pdf",
+        "unquoted_path": "/docs/articles/05Basics of Veda-Chandas.pdf",
+        "size_bytes": 198758,
+        "size_kb": 194.1,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_122731\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\articles.html",
+          ".\\backup_production_vedavms_in\\article.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_113307\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\articles.html",
+          ".\\build\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\articles.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backups\\backup_httpdocs_20260920_100025\\articles.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\articles.html"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/articles/06Basics%20of%20Veda-Krama%20Paatam.pdf",
+        "filename": "06Basics of Veda-Krama Paatam.pdf",
+        "unquoted_path": "/docs/articles/06Basics of Veda-Krama Paatam.pdf",
+        "size_bytes": 196701,
+        "size_kb": 192.1,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_122731\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\articles.html",
+          ".\\backup_production_vedavms_in\\article.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_113307\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\articles.html",
+          ".\\build\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\articles.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backups\\backup_httpdocs_20260920_100025\\articles.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\articles.html"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/articles/07Basics%20of%20Veda-Ghana%20Paatam.pdf",
+        "filename": "07Basics of Veda-Ghana Paatam.pdf",
+        "unquoted_path": "/docs/articles/07Basics of Veda-Ghana Paatam.pdf",
+        "size_bytes": 179358,
+        "size_kb": 175.2,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_122731\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\articles.html",
+          ".\\backup_production_vedavms_in\\article.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_113307\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\articles.html",
+          ".\\build\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\articles.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backups\\backup_httpdocs_20260920_100025\\articles.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\articles.html"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/articles/08Basics%20of%20Veda-Vowel%20Sandhi.pdf",
+        "filename": "08Basics of Veda-Vowel Sandhi.pdf",
+        "unquoted_path": "/docs/articles/08Basics of Veda-Vowel Sandhi.pdf",
+        "size_bytes": 553196,
+        "size_kb": 540.2,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_122731\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\articles.html",
+          ".\\backup_production_vedavms_in\\article.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_113307\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\articles.html",
+          ".\\build\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\articles.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backups\\backup_httpdocs_20260920_100025\\articles.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\articles.html"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/articles/09Basics%20of%20Veda-Consonant%20Sandhi.pdf",
+        "filename": "09Basics of Veda-Consonant Sandhi.pdf",
+        "unquoted_path": "/docs/articles/09Basics of Veda-Consonant Sandhi.pdf",
+        "size_bytes": 624543,
+        "size_kb": 609.9,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_122731\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\articles.html",
+          ".\\backup_production_vedavms_in\\article.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_113307\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\articles.html",
+          ".\\build\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\articles.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backups\\backup_httpdocs_20260920_100025\\articles.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\articles.html"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/articles/10Basics%20of%20Veda-Jata%20Paatam.pdf",
+        "filename": "10Basics of Veda-Jata Paatam.pdf",
+        "unquoted_path": "/docs/articles/10Basics of Veda-Jata Paatam.pdf",
+        "size_bytes": 221263,
+        "size_kb": 216.1,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_122731\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\articles.html",
+          ".\\backup_production_vedavms_in\\article.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_113307\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\articles.html",
+          ".\\build\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\articles.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backups\\backup_httpdocs_20260920_100025\\articles.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\articles.html"
+        ]
+      },
+      {
+        "url": "https://vedavms.in/docs/articles/11Basics%20of%20Veda-Pada%20Paatam.pdf",
+        "filename": "11Basics of Veda-Pada Paatam.pdf",
+        "unquoted_path": "/docs/articles/11Basics of Veda-Pada Paatam.pdf",
+        "size_bytes": 1157653,
+        "size_kb": 1130.5,
+        "sources": [
+          ".\\backups\\backup_httpdocs_20260920_122731\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_114215\\articles.html",
+          ".\\backup_production_vedavms_in\\article.html",
+          ".\\backups\\backup_httpdocs_20260919_223614\\articles.html",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md",
+          ".\\backups\\backup_httpdocs_20260920_113307\\articles.html",
+          ".\\mockup\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121141\\articles.html",
+          ".\\build\\articles.html",
+          ".\\backups\\backup_httpdocs_20260920_121123\\articles.html",
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\backups\\backup_httpdocs_20260920_100025\\articles.html",
+          ".\\backups\\backup_httpdocs_20260915_101138\\articles.html"
+        ]
+      }
+    ],
+    "/docs/tsg6": [
+      {
+        "url": "https://vedavms.in/docs/tsg6/TS%206.1%20Ghanam%20Sanskrit.pdf",
+        "filename": "TS 6.1 Ghanam Sanskrit.pdf",
+        "unquoted_path": "/docs/tsg6/TS 6.1 Ghanam Sanskrit.pdf",
+        "size_bytes": 9604547,
+        "size_kb": 9379.4,
+        "sources": [
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\scripts\\test_casing_fix.py",
+          ".\\scripts\\probe_case.py",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md"
+        ]
+      }
+    ],
+    "/docs/tsg7": [
+      {
+        "url": "https://vedavms.in/docs/tsg7/TS%207.1%20Ghanam%20Sanskrit.pdf",
+        "filename": "TS 7.1 Ghanam Sanskrit.pdf",
+        "unquoted_path": "/docs/tsg7/TS 7.1 Ghanam Sanskrit.pdf",
+        "size_bytes": 2775610,
+        "size_kb": 2710.6,
+        "sources": [
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\scripts\\test_casing_fix.py",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md"
+        ]
+      }
+    ],
+    "/docs/tsj7": [
+      {
+        "url": "https://vedavms.in/docs/tsj7/TS%207.1%20Jatai%20Sanskrit.pdf",
+        "filename": "TS 7.1 Jatai Sanskrit.pdf",
+        "unquoted_path": "/docs/tsj7/TS 7.1 Jatai Sanskrit.pdf",
+        "size_bytes": 2382794,
+        "size_kb": 2326.9,
+        "sources": [
+          ".\\build\\orphaned_pdf_audit.json",
+          ".\\scripts\\test_casing_fix.py",
+          ".\\ORPHANED_PDF_AUDIT_REPORT.md"
+        ]
+      }
+    ]
+  },
+  "csv_missing": [
+    {
+      "url": "https://vedavms.in/sansknet/vedas/yajurveda/jatadarpana/index.htm",
+      "status": 404,
+      "sources": []
+    },
+    {
+      "url": "https://vedavms.in/shiksha/shiksha_vedicreserve.html",
+      "status": 404,
+      "sources": []
+    },
+    {
+      "url": "https://vedavms.in/yajurveda/index.html",
+      "status": 404,
+      "sources": []
+    }
+  ]
+}
