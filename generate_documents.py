@@ -1293,6 +1293,72 @@ def export_to_json(filepath: str, lang_sections: dict[str, list[Section]]) -> No
         json.dump(data, fh, indent=2, ensure_ascii=False)
 
 
+def doc_sort_key_title(title: str):
+    """Sort key for Vedic reading order: Indexes -> Sequential parts (1.1, 1.2... or Ashtakam 1 -> 3)."""
+    t = (title or "").strip()
+    tl = t.lower()
+
+    # 1. Indexes and Introductory Reference material come FIRST (at top of section)
+    if "index" in tl and "alpha" in tl:
+        return (0, 1, 0, 0, 0, t)
+    if "index" in tl and ("dasini" in tl or "panchaati" in tl or "panchati" in tl or "panchat" in tl):
+        return (0, 2, 0, 0, 0, t)
+    if "index" in tl:
+        return (0, 3, 0, 0, 0, t)
+    if "notes and symbols" in tl:
+        return (0, 4, 0, 0, 0, t)
+    if "prayer" in tl:
+        return (0, 5, 0, 0, 0, t)
+    if "first and last" in tl:
+        return (0, 6, 0, 0, 0, t)
+    if "comparison" in tl:
+        return (0, 7, 0, 0, 0, t)
+
+    # 2. Ashtakam / Prapatakam (Brahmanam)
+    m_ash = re.search(r'ashtakam\s*(\d+)', tl)
+    if m_ash:
+        ash_num = int(m_ash.group(1))
+        m_prap = re.search(r'prap[aā]t[aā]k?am\s*(\d+)(?:\s*-\s*(\d+))?', tl)
+        p1 = int(m_prap.group(1)) if m_prap else 0
+        p2 = int(m_prap.group(2)) if m_prap and m_prap.group(2) else p1
+        return (1, ash_num, p1, p2, 0, t)
+
+    # 3. Aranyakam Prapatakam
+    m_ar_prap = re.search(r'prap[aā]t[aā]m?\s*(\d+)(?:\s*-\s*(\d+))?', tl)
+    if m_ar_prap:
+        p1 = int(m_ar_prap.group(1))
+        p2 = int(m_ar_prap.group(2)) if m_ar_prap.group(2) else p1
+        return (1, 0, p1, p2, 0, t)
+
+    # 4. Samhita Kandam
+    m_kan = re.search(r'k[aā]ndam\s*(\d+)', tl)
+    if m_kan:
+        kan_num = int(m_kan.group(1))
+        return (1, kan_num, 0, 0, 0, t)
+
+    # 5. TS X.Y (Pada, Krama, Jata, Ghana)
+    m_ts = re.search(r'TS\s*(\d+)\.(\d+)', t, re.I)
+    if m_ts:
+        k = int(m_ts.group(1))
+        p = int(m_ts.group(2))
+        return (1, k, p, 0, 0, t)
+
+    # 6. Numbered items: 1), 2), 2A), 3), 3A)
+    m_num = re.match(r'^(\d+)([A-Za-z]?)\)', t)
+    if m_num:
+        n = int(m_num.group(1))
+        sub = m_num.group(2) or ''
+        sub_ord = ord(sub.upper()[0]) if sub else 0
+        return (1, n, sub_ord, 0, 0, t)
+
+    # 7. Kanva A01 - A40
+    m_kanva = re.search(r'A(\d+)', t, re.I)
+    if m_kanva:
+        return (1, int(m_kanva.group(1)), 0, 0, 0, t)
+
+    return (2, 0, 0, 0, 0, t)
+
+
 def load_from_csv(source: str) -> dict[str, list[Section]]:
     """Load documents from a local CSV file path or a Google Sheets / HTTP CSV export URL."""
     if source.startswith("http://") or source.startswith("https://"):
@@ -1464,7 +1530,12 @@ def load_from_csv(source: str) -> dict[str, list[Section]]:
 
     out: dict[str, list[Section]] = {}
     for key in all_keys:
-        out[key] = list(sections_by_lang[key].values())
+        sec_list = list(sections_by_lang[key].values())
+        for sec in sec_list:
+            sec.docs.sort(key=lambda d: doc_sort_key_title(d.title))
+            for sub in sec.subsections:
+                sub.docs.sort(key=lambda d: doc_sort_key_title(d.title))
+        out[key] = sec_list
     return out
 
 

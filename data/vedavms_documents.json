@@ -25,7 +25,7 @@
             "url": "https://vedavms.in/docs/TU/Surya%20Namaskaram%20Sanskrit.pdf",
             "version": "V0.0",
             "date": "Nov 30, 2021",
-            "corrections": "https://vedavms.in/docs/TU/surya%20namaskaram%20Sanskrit%20corrections.pdf"
+            "corrections": "https://vedavms.in/docs/TU/Surya%20Namaskaram%20Sanskrit%20corrections.pdf"
           },
           {
             "title": "3) Udaka Shanti - Sanskrit",
@@ -145,6 +145,27 @@
         "title": "TaittirIya SamhitA",
         "docs": [
           {
+            "title": "TaittirIya samhitA - Index-Alphabetical- Sanskrit",
+            "url": "https://vedavms.in/docs/TS/TS_Index_Alpha_31032024.pdf",
+            "version": "",
+            "date": "Mar 31, 2024",
+            "corrections": ""
+          },
+          {
+            "title": "TaittirIya samhitA - Index-Panchaatiwise- Sanskrit",
+            "url": "https://vedavms.in/docs/TS/TS_Index_Panchaati_31032024.pdf",
+            "version": "",
+            "date": "Mar 31, 2024",
+            "corrections": ""
+          },
+          {
+            "title": "TaittirIya samhitA - First and Last Panchati - Sanskrit",
+            "url": "https://vedavms.in/docs/TS/TS%20First%20and%20last%20Panchati%20-%20Sanskrit.pdf",
+            "version": "V0.0",
+            "date": "Jun 30, 2025",
+            "corrections": ""
+          },
+          {
             "title": "TaittirIya samhitA - kANDam 1- Sanskrit",
             "url": "https://vedavms.in/docs/TS/TS%201%20Sanskrit.pdf",
             "version": "V3.1",
@@ -192,33 +213,26 @@
             "version": "V1.1",
             "date": "Sep 30, 2021",
             "corrections": "https://vedavms.in/docs/TS/TS%207%20Sanskrit%20Corrections.pdf"
-          },
-          {
-            "title": "TaittirIya samhitA - First and Last Panchati - Sanskrit",
-            "url": "https://vedavms.in/docs/TS/TS%20First%20and%20last%20Panchati%20-%20Sanskrit.pdf",
-            "version": "V0.0",
-            "date": "Jun 30, 2025",
-            "corrections": ""
-          },
-          {
-            "title": "TaittirIya samhitA - Index-Alphabetical- Sanskrit",
-            "url": "https://vedavms.in/docs/TS/TS_Index_Alpha_31032024.pdf",
-            "version": "",
-            "date": "Mar 31, 2024",
-            "corrections": ""
-          },
-          {
-            "title": "TaittirIya samhitA - Index-Panchaatiwise- Sanskrit",
-            "url": "https://vedavms.in/docs/TS/TS_Index_Panchaati_31032024.pdf",
-            "version": "",
-            "date": "Mar 31, 2024",
-            "corrections": ""
           }
         ]
       },
       {
         "title": "TaittirIya brAhmaNam",
         "docs": [
+          {
+            "title": "TaittirIya brAhmaNam - Index-Alphabetical- Sanskrit",
+            "url": "https://vedavms.in/docs/TB/TB_Index_Alpha_31032024.pdf",
+            "version": "",
+            "date": "Mar 31, 2024",
+            "corrections": ""
+          },
+          {
+            "title": "TaittirIya brAhmaNam - Index-Dasini wise- Sanskrit",
+            "url": "https://vedavms.in/docs/TB/TB_Index_Dasini_31032024.pdf",
+            "version": "",
+            "date": "Mar 31, 2024",
+            "corrections": ""
+          },
           {
             "title": "TaittirIya brAhmaNAm ashtakam 1 - prapAtakam 1-4 - Sanskrit",
             "url": "https://vedavms.in/docs/TB/TB%201.1-1.4%20Sanskrit.pdf",
@@ -260,26 +274,33 @@
             "version": "V2.0",
             "date": "Aug 31, 2026",
             "corrections": "https://vedavms.in/docs/TB/TB%203.7-3.12%20Sanskrit%20Corrections.pdf"
-          },
-          {
-            "title": "TaittirIya brAhmaNam - Index-Alphabetical- Sanskrit",
-            "url": "https://vedavms.in/docs/TB/TB_Index_Alpha_31032024.pdf",
-            "version": "",
-            "date": "Mar 31, 2024",
-            "corrections": ""
-          },
-          {
-            "title": "TaittirIya brAhmaNam - Index-Dasini wise- Sanskrit",
-            "url": "https://vedavms.in/docs/TB/TB_Index_Dasini_31032024.pdf",
-            "version": "",
-            "date": "Mar 31, 2024",
-            "corrections": ""
           }
         ]
       },
       {
         "title": "TaittirIya Aranyakam",
         "docs": [
+          {
+            "title": "TaittirIya Aranyakam - Index-Alphabetical- Sanskrit",
+            "url": "https://vedavms.in/docs/TA/TA_Index_Alpha_31032024.pdf",
+            "version": "",
+            "date": "Mar 31, 2024",
+            "corrections": ""
+          },
+          {
+            "title": "TaittirIya Aranyakam - Index-Dasini wise- Sanskrit",
+            "url": "https://vedavms.in/docs/TA/TA_Index_Dasini_31032024.pdf",
+            "version": "",
+            "date": "Mar 31, 2024",
+            "corrections": ""
+          },
+          {
+            "title": "TaittirIya Aranyakam - Comparison of different publications",
+            "url": "https://vedavms.in/docs/TA/Comparison%20TA-Sanskrit.pdf",
+            "version": "",
+            "date": "",
+            "corrections": ""
+          },
           {
             "title": "TaittirIya Aranyakam - prapAtam 1 - 4 -Sanskrit",
             "url": "https://vedavms.in/docs/TA/TA%201-4%20Sanskrit.pdf",
@@ -300,27 +321,6 @@
             "version": "V1.0",
             "date": "Mar 31, 2020",
             "corrections": "https://vedavms.in/docs/TA/TA%207-8%20Sanskrit%20Corrections.pdf"
-          },
-          {
-            "title": "TaittirIya Aranyakam - Comparison of different publications",
-            "url": "https://vedavms.in/docs/TA/Comparison%20TA-Sanskrit.pdf",
-            "version": "",
-            "date": "",
-            "corrections": ""
-          },
-          {
-            "title": "TaittirIya Aranyakam - Index-Alphabetical- Sanskrit",
-            "url": "https://vedavms.in/docs/TA/TA_Index_Alpha_31032024.pdf",
-            "version": "",
-            "date": "Mar 31, 2024",
-            "corrections": ""
-          },
-          {
-            "title": "TaittirIya Aranyakam - Index-Dasini wise- Sanskrit",
-            "url": "https://vedavms.in/docs/TA/TA_Index_Dasini_31032024.pdf",
-            "version": "",
-            "date": "Mar 31, 2024",
-            "corrections": ""
           }
         ]
       },
@@ -1170,6 +1170,13 @@
         "title": "TaittirIya SamhitA",
         "docs": [
           {
+            "title": "TaittirIya samhitA - First and Last Panchati - Tamil",
+            "url": "https://vedavms.in/docs/TS/TS%20First%20and%20last%20Panchati%20-%20Tamil.pdf",
+            "version": "V0.0",
+            "date": "Jun 30, 2025",
+            "corrections": ""
+          },
+          {
             "title": "TaittirIya samhitA - kAnDAm 1- Tamil",
             "url": "https://vedavms.in/docs/TS/TS%201%20Tamil.pdf",
             "version": "V3.1",
@@ -1217,13 +1224,6 @@
             "version": "V1.1",
             "date": "Sep 30, 2021",
             "corrections": "https://vedavms.in/docs/TS/TS%207%20Tamil%20Corrections.pdf"
-          },
-          {
-            "title": "TaittirIya samhitA - First and Last Panchati - Tamil",
-            "url": "https://vedavms.in/docs/TS/TS%20First%20and%20last%20Panchati%20-%20Tamil.pdf",
-            "version": "V0.0",
-            "date": "Jun 30, 2025",
-            "corrections": ""
           }
         ]
       },
@@ -1278,6 +1278,13 @@
         "title": "TaittirIya Aranyakam",
         "docs": [
           {
+            "title": "TaittirIya Aranyakam Comparison of Different Publications",
+            "url": "https://vedavms.in/docs/TA/Comparison%20TA-Tamil.pdf",
+            "version": "",
+            "date": "",
+            "corrections": ""
+          },
+          {
             "title": "TaittirIya Aranyakam - prapAtakam 1- 4 - Tamil",
             "url": "https://vedavms.in/docs/TA/TA%201-4%20Tamil.pdf",
             "version": "V2.0",
@@ -1297,13 +1304,6 @@
             "version": "V1.0",
             "date": "Mar 31, 2020",
             "corrections": "https://vedavms.in/docs/TA/TA%207-8%20Tamil%20Corrections.pdf"
-          },
-          {
-            "title": "TaittirIya Aranyakam Comparison of Different Publications",
-            "url": "https://vedavms.in/docs/TA/Comparison%20TA-Tamil.pdf",
-            "version": "",
-            "date": "",
-            "corrections": ""
           }
         ]
       },
@@ -2153,6 +2153,13 @@
         "title": "TaittirIya SamhitA",
         "docs": [
           {
+            "title": "TaittirIya SamhitA - First and Last Panchati - Malayalam",
+            "url": "https://vedavms.in/docs/TS/TS%20First%20and%20last%20Panchati%20-%20Malayalam.pdf",
+            "version": "V0.0",
+            "date": "Jun 30, 2025",
+            "corrections": ""
+          },
+          {
             "title": "TaittirIya SamhitA - kANDam 1- Malayalam",
             "url": "https://vedavms.in/docs/TS/TS%201%20Malayalam.pdf",
             "version": "V3.1",
@@ -2200,13 +2207,6 @@
             "version": "V1.1",
             "date": "Sep 30, 2021",
             "corrections": "https://vedavms.in/docs/TS/TS%207%20Malayalam%20Corrections.pdf"
-          },
-          {
-            "title": "TaittirIya SamhitA - First and Last Panchati - Malayalam",
-            "url": "https://vedavms.in/docs/TS/TS%20First%20and%20last%20Panchati%20-%20Malayalam.pdf",
-            "version": "V0.0",
-            "date": "Jun 30, 2025",
-            "corrections": ""
           }
         ]
       },
@@ -2261,6 +2261,13 @@
         "title": "TaittirIya Aranyakam",
         "docs": [
           {
+            "title": "TaittirIya Aranyakam - Comparison of Different Publications",
+            "url": "https://vedavms.in/docs/TA/Comparison%20TA-Malayalam.pdf",
+            "version": "",
+            "date": "",
+            "corrections": ""
+          },
+          {
             "title": "TaittirIya Aranyakam - prapAtakam 1- 4 - Malayalam",
             "url": "https://vedavms.in/docs/TA/TA%201-4%20Malayalam.pdf",
             "version": "V2.0",
@@ -2280,13 +2287,6 @@
             "version": "V1.0",
             "date": "Mar 31, 2020",
             "corrections": "https://vedavms.in/docs/TA/TA%207-8%20Malayalam%20Corrections.pdf"
-          },
-          {
-            "title": "TaittirIya Aranyakam - Comparison of Different Publications",
-            "url": "https://vedavms.in/docs/TA/Comparison%20TA-Malayalam.pdf",
-            "version": "",
-            "date": "",
-            "corrections": ""
           }
         ]
       },
@@ -3005,206 +3005,206 @@
             "corrections": ""
           },
           {
-            "title": "2) TaittirIya Upanishad - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Taittiriya%20Upanishad%20Kannada.pdf",
-            "version": "V0.0",
-            "date": "Jun 1, 2019",
-            "corrections": ""
-          },
-          {
-            "title": "3) Udaka Shanti - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Udaka%20Shanti%20Kannada.pdf",
-            "version": "V0.0",
-            "date": "Jun 1, 2019",
-            "corrections": ""
-          },
-          {
-            "title": "4) Siva Stuti - Kannada (without kramam)",
-            "url": "https://vedavms.in/docs/kannada/Siva%20Stuti%20Kannada.pdf",
-            "version": "V0.0",
-            "date": "Jun 1, 2019",
-            "corrections": ""
-          },
-          {
-            "title": "5) acChidram, aSvamedham & kAThakam - Kannada",
-            "url": "https://vedavms.in/docs/kannada/AAK-Kannada.pdf",
-            "version": "",
-            "date": "Mar 31, 2020",
-            "corrections": ""
-          },
-          {
-            "title": "6) AbhisravaNam - Kannada",
-            "url": "https://vedavms.in/docs/kannada/AbhisravaNam%20Kannada.pdf",
-            "version": "V0.0",
-            "date": "Jun 30, 2019",
-            "corrections": ""
-          },
-          {
-            "title": "7) Rudra Ghanam - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Rudra%20Ghanam%20Kannada.pdf",
-            "version": "V0.0",
-            "date": "May 31, 2019",
-            "corrections": ""
-          },
-          {
-            "title": "8) Chamaka Ghanam - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Chamaka%20Ghanam%20Kannada.pdf",
-            "version": "V0.0",
-            "date": "May 31, 2019",
-            "corrections": ""
-          },
-          {
-            "title": "9) Rudra Kramam Column - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Rudra%20Kramam%20Kannada%20Column.pdf",
-            "version": "",
-            "date": "Jun 30, 2021",
-            "corrections": ""
-          },
-          {
-            "title": "10) Chamaka Kramam Column - Kannada",
-            "url": "https://vedavms.in/docs/kannada/Chamaka%20Kramam%20Kannada%20Column.pdf",
-            "version": "",
-            "date": "Jun 30, 2021",
-            "corrections": ""
-          },
-          {
-            "title": "11) TaittirIya brAhmaNam -prapAtakam 1 .1-1.4 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TB%201.1-1.4%20Kannada.pdf",
-            "version": "",
-            "date": "Feb 28, 2021",
-            "corrections": ""
-          },
-          {
-            "title": "12) TaittirIya brAhmaNam -prapAtakam 1.5-1.8 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TB%201.5-1.8%20Kannada.pdf",
-            "version": "",
-            "date": "Feb 28, 2021",
-            "corrections": ""
-          },
-          {
-            "title": "13) TaittirIya brAhmaNam -prapAtakam 2.1-2.4 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TB%202.1-2.4%20Kannada.pdf",
-            "version": "",
-            "date": "Feb 28, 2021",
-            "corrections": ""
-          },
-          {
-            "title": "14) TaittirIya brAhmaNam -prapAtakam 2.5-2.8 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TB%202.5-2.8%20Kannada.pdf",
-            "version": "",
-            "date": "Feb 28, 2021",
-            "corrections": ""
-          },
-          {
-            "title": "15) TaittirIya brAhmaNam -prapAtakam 3.1-3.6 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TB%203.1-3.6%20Kannada.pdf",
-            "version": "",
-            "date": "Feb 28, 2021",
-            "corrections": ""
-          },
-          {
-            "title": "16) TaittirIya brAhmaNam -prapAtakam 3 .7-3.12 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TB%203.7-3.12%20Kannada.pdf",
-            "version": "",
-            "date": "Feb 28, 2021",
-            "corrections": ""
-          },
-          {
-            "title": "17) TaittirIya SamhitA kANDam 1 Kannada",
+            "title": "2) TaittirIya SamhitA kANDam 1 Kannada",
             "url": "https://vedavms.in/docs/kannada/TS1%20Kannada.pdf",
             "version": "",
             "date": "Nov 30, 2022",
             "corrections": ""
           },
           {
-            "title": "18) TaittirIya SamhitA kANDam 2 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TS2%20Kannada.pdf",
-            "version": "",
-            "date": "Nov 30, 2022",
-            "corrections": ""
-          },
-          {
-            "title": "19) TaittirIya SamhitA kANDam 3 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TS3%20Kannada.pdf",
-            "version": "",
-            "date": "Nov 30, 2022",
-            "corrections": ""
-          },
-          {
-            "title": "20) TaittirIya SamhitA kANDam 4 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TS4%20Kannada.pdf",
-            "version": "",
-            "date": "Nov 30, 2022",
-            "corrections": ""
-          },
-          {
-            "title": "21) TaittirIya SamhitA kANDam 5 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TS5%20Kannada.pdf",
-            "version": "",
-            "date": "Nov 30, 2022",
-            "corrections": ""
-          },
-          {
-            "title": "22) TaittirIya SamhitA kANDam 6 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TS6%20Kannada.pdf",
-            "version": "",
-            "date": "Nov 30, 2022",
-            "corrections": ""
-          },
-          {
-            "title": "23) TaittirIya SamhitA kANDam 7 Kannada",
-            "url": "https://vedavms.in/docs/kannada/TS7%20Kannada.pdf",
-            "version": "",
-            "date": "Nov 30, 2022",
-            "corrections": ""
-          },
-          {
-            "title": "24) TaittirIya SamhitA Pada Paatam kANDam 1 Kannada",
+            "title": "3) TaittirIya SamhitA Pada Paatam kANDam 1 Kannada",
             "url": "https://vedavms.in/docs/kannada/TS1%20Kannada%20Pada%20Paatam.pdf",
             "version": "",
             "date": "Jun 30, 2022",
             "corrections": ""
           },
           {
-            "title": "25) TaittirIya SamhitA Pada Paatam kANDam 2 Kannada",
+            "title": "4) TaittirIya SamhitA kANDam 2 Kannada",
+            "url": "https://vedavms.in/docs/kannada/TS2%20Kannada.pdf",
+            "version": "",
+            "date": "Nov 30, 2022",
+            "corrections": ""
+          },
+          {
+            "title": "5) TaittirIya Upanishad - Kannada",
+            "url": "https://vedavms.in/docs/kannada/Taittiriya%20Upanishad%20Kannada.pdf",
+            "version": "V0.0",
+            "date": "Jun 1, 2019",
+            "corrections": ""
+          },
+          {
+            "title": "6) TaittirIya SamhitA Pada Paatam kANDam 2 Kannada",
             "url": "https://vedavms.in/docs/kannada/TS2%20Kannada%20Pada%20Paatam.pdf",
             "version": "",
             "date": "Jun 30, 2022",
             "corrections": ""
           },
           {
-            "title": "26) TaittirIya SamhitA Pada Paatam kANDam 3 Kannada",
+            "title": "7) TaittirIya SamhitA kANDam 3 Kannada",
+            "url": "https://vedavms.in/docs/kannada/TS3%20Kannada.pdf",
+            "version": "",
+            "date": "Nov 30, 2022",
+            "corrections": ""
+          },
+          {
+            "title": "8) TaittirIya SamhitA Pada Paatam kANDam 3 Kannada",
             "url": "https://vedavms.in/docs/kannada/TS3%20Kannada%20Pada%20Paatam.pdf",
             "version": "",
             "date": "Jun 30, 2022",
             "corrections": ""
           },
           {
-            "title": "27) TaittirIya SamhitA Pada Paatam kANDam 4 Kannada",
+            "title": "9) Udaka Shanti - Kannada",
+            "url": "https://vedavms.in/docs/kannada/Udaka%20Shanti%20Kannada.pdf",
+            "version": "V0.0",
+            "date": "Jun 1, 2019",
+            "corrections": ""
+          },
+          {
+            "title": "10) TaittirIya SamhitA kANDam 4 Kannada",
+            "url": "https://vedavms.in/docs/kannada/TS4%20Kannada.pdf",
+            "version": "",
+            "date": "Nov 30, 2022",
+            "corrections": ""
+          },
+          {
+            "title": "11) TaittirIya SamhitA Pada Paatam kANDam 4 Kannada",
             "url": "https://vedavms.in/docs/kannada/TS4%20Kannada%20Pada%20Paatam.pdf",
             "version": "",
             "date": "Jun 30, 2022",
             "corrections": ""
           },
           {
-            "title": "28) TaittirIya SamhitA Pada Paatam kANDam 5 Kannada",
+            "title": "12) Siva Stuti - Kannada (without kramam)",
+            "url": "https://vedavms.in/docs/kannada/Siva%20Stuti%20Kannada.pdf",
+            "version": "V0.0",
+            "date": "Jun 1, 2019",
+            "corrections": ""
+          },
+          {
+            "title": "13) TaittirIya SamhitA kANDam 5 Kannada",
+            "url": "https://vedavms.in/docs/kannada/TS5%20Kannada.pdf",
+            "version": "",
+            "date": "Nov 30, 2022",
+            "corrections": ""
+          },
+          {
+            "title": "14) TaittirIya SamhitA Pada Paatam kANDam 5 Kannada",
             "url": "https://vedavms.in/docs/kannada/TS5%20Kannada%20Pada%20Paatam.pdf",
             "version": "",
             "date": "Jun 30, 2022",
             "corrections": ""
           },
           {
-            "title": "29) TaittirIya SamhitA Pada Paatam kANDam 6 Kannada",
+            "title": "15) acChidram, aSvamedham & kAThakam - Kannada",
+            "url": "https://vedavms.in/docs/kannada/AAK-Kannada.pdf",
+            "version": "",
+            "date": "Mar 31, 2020",
+            "corrections": ""
+          },
+          {
+            "title": "16) TaittirIya SamhitA kANDam 6 Kannada",
+            "url": "https://vedavms.in/docs/kannada/TS6%20Kannada.pdf",
+            "version": "",
+            "date": "Nov 30, 2022",
+            "corrections": ""
+          },
+          {
+            "title": "17) TaittirIya SamhitA Pada Paatam kANDam 6 Kannada",
             "url": "https://vedavms.in/docs/kannada/TS6%20Kannada%20Pada%20Paatam.pdf",
             "version": "",
             "date": "Jun 30, 2022",
             "corrections": ""
           },
           {
-            "title": "30) TaittirIya SamhitA Pada Paatam kANDam 7 Kannada",
+            "title": "18) AbhisravaNam - Kannada",
+            "url": "https://vedavms.in/docs/kannada/AbhisravaNam%20Kannada.pdf",
+            "version": "V0.0",
+            "date": "Jun 30, 2019",
+            "corrections": ""
+          },
+          {
+            "title": "19) TaittirIya SamhitA kANDam 7 Kannada",
+            "url": "https://vedavms.in/docs/kannada/TS7%20Kannada.pdf",
+            "version": "",
+            "date": "Nov 30, 2022",
+            "corrections": ""
+          },
+          {
+            "title": "20) TaittirIya SamhitA Pada Paatam kANDam 7 Kannada",
             "url": "https://vedavms.in/docs/kannada/TS7%20Kannada%20Pada%20Paatam.pdf",
             "version": "",
             "date": "Jun 30, 2022",
+            "corrections": ""
+          },
+          {
+            "title": "21) Rudra Ghanam - Kannada",
+            "url": "https://vedavms.in/docs/kannada/Rudra%20Ghanam%20Kannada.pdf",
+            "version": "V0.0",
+            "date": "May 31, 2019",
+            "corrections": ""
+          },
+          {
+            "title": "22) Chamaka Ghanam - Kannada",
+            "url": "https://vedavms.in/docs/kannada/Chamaka%20Ghanam%20Kannada.pdf",
+            "version": "V0.0",
+            "date": "May 31, 2019",
+            "corrections": ""
+          },
+          {
+            "title": "23) Rudra Kramam Column - Kannada",
+            "url": "https://vedavms.in/docs/kannada/Rudra%20Kramam%20Kannada%20Column.pdf",
+            "version": "",
+            "date": "Jun 30, 2021",
+            "corrections": ""
+          },
+          {
+            "title": "24) Chamaka Kramam Column - Kannada",
+            "url": "https://vedavms.in/docs/kannada/Chamaka%20Kramam%20Kannada%20Column.pdf",
+            "version": "",
+            "date": "Jun 30, 2021",
+            "corrections": ""
+          },
+          {
+            "title": "25) TaittirIya brAhmaNam -prapAtakam 1 .1-1.4 Kannada",
+            "url": "https://vedavms.in/docs/kannada/TB%201.1-1.4%20Kannada.pdf",
+            "version": "",
+            "date": "Feb 28, 2021",
+            "corrections": ""
+          },
+          {
+            "title": "26) TaittirIya brAhmaNam -prapAtakam 1.5-1.8 Kannada",
+            "url": "https://vedavms.in/docs/kannada/TB%201.5-1.8%20Kannada.pdf",
+            "version": "",
+            "date": "Feb 28, 2021",
+            "corrections": ""
+          },
+          {
+            "title": "27) TaittirIya brAhmaNam -prapAtakam 2.1-2.4 Kannada",
+            "url": "https://vedavms.in/docs/kannada/TB%202.1-2.4%20Kannada.pdf",
+            "version": "",
+            "date": "Feb 28, 2021",
+            "corrections": ""
+          },
+          {
+            "title": "28) TaittirIya brAhmaNam -prapAtakam 2.5-2.8 Kannada",
+            "url": "https://vedavms.in/docs/kannada/TB%202.5-2.8%20Kannada.pdf",
+            "version": "",
+            "date": "Feb 28, 2021",
+            "corrections": ""
+          },
+          {
+            "title": "29) TaittirIya brAhmaNam -prapAtakam 3.1-3.6 Kannada",
+            "url": "https://vedavms.in/docs/kannada/TB%203.1-3.6%20Kannada.pdf",
+            "version": "",
+            "date": "Feb 28, 2021",
+            "corrections": ""
+          },
+          {
+            "title": "30) TaittirIya brAhmaNam -prapAtakam 3 .7-3.12 Kannada",
+            "url": "https://vedavms.in/docs/kannada/TB%203.7-3.12%20Kannada.pdf",
+            "version": "",
+            "date": "Feb 28, 2021",
             "corrections": ""
           }
         ]
@@ -3473,17 +3473,17 @@
             "corrections": ""
           },
           {
+            "title": "TS 1.1. Pada Paatam Latin Coding",
+            "url": "https://vedavms.in/docs/Latin/TS%201.1%20Latin%20Pada%20Paatam.docx",
+            "version": "V0.0",
+            "date": "Dec 31, 2020",
+            "corrections": ""
+          },
+          {
             "title": "TaittirIya samhitA Kandam 2 Latin Coding (IAST)",
             "url": "https://vedavms.in/docs/Latin/TS%202%20Latin.docx",
             "version": "V0.0",
             "date": "Jan 31, 2021",
-            "corrections": ""
-          },
-          {
-            "title": "TaittirIya samhitA Kandam 3 Latin Coding (IAST)",
-            "url": "https://vedavms.in/docs/Latin/TS%203%20Latin.docx",
-            "version": "V0.0",
-            "date": "Feb 28, 2021",
             "corrections": ""
           },
           {
@@ -3529,10 +3529,10 @@
             "corrections": ""
           },
           {
-            "title": "TS 1.1. Pada Paatam Latin Coding",
-            "url": "https://vedavms.in/docs/Latin/TS%201.1%20Latin%20Pada%20Paatam.docx",
+            "title": "TaittirIya samhitA Kandam 3 Latin Coding (IAST)",
+            "url": "https://vedavms.in/docs/Latin/TS%203%20Latin.docx",
             "version": "V0.0",
-            "date": "Dec 31, 2020",
+            "date": "Feb 28, 2021",
             "corrections": ""
           }
         ]
@@ -3683,15 +3683,15 @@
             "corrections": ""
           },
           {
-            "title": "TaittirIya BrAhmaNam - aShtakam 2- TB 2.1-2.4",
-            "url": "https://vedavms.in/docs/Baraha/TB%202.1-2.4%20Baraha.docx",
+            "title": "TaittirIya BrAhmaNam - aShtakam 2 - TB 2.5-2.8",
+            "url": "https://vedavms.in/docs/Baraha/TB%202.5-2.8%20Baraha.docx",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
           },
           {
-            "title": "TaittirIya BrAhmaNam - aShtakam 2 - TB 2.5-2.8",
-            "url": "https://vedavms.in/docs/Baraha/TB%202.5-2.8%20Baraha.docx",
+            "title": "TaittirIya BrAhmaNam - aShtakam 2- TB 2.1-2.4",
+            "url": "https://vedavms.in/docs/Baraha/TB%202.1-2.4%20Baraha.docx",
             "version": "",
             "date": "Feb 28, 2021",
             "corrections": ""
@@ -5180,6 +5180,13 @@
             "title": "Kandam 1",
             "docs": [
               {
+                "title": "TS 1.1 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ1/TS%201.1%20Jatai%20Malayalam.pdf",
+                "version": "",
+                "date": "Jun 30, 2026",
+                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.1%20Jatai%20Malayalam%20Corrections.pdf"
+              },
+              {
                 "title": "TS 1.1 Jatai Sanskrit",
                 "url": "https://vedavms.in/docs/TSJ1/TS%201.1%20Jatai%20Sanskrit.pdf",
                 "version": "",
@@ -5194,11 +5201,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ1/TS%201.1%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.1 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ1/TS%201.1%20Jatai%20Malayalam.pdf",
+                "title": "TS 1.2 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ1/TS%201.2%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.1%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.2%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.2 Jatai Sanskrit",
@@ -5215,11 +5222,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ1/TS%201.2%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.2 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ1/TS%201.2%20Jatai%20Malayalam.pdf",
+                "title": "TS 1.3 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ1/TS%201.3%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.2%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.3%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.3 Jatai Sanskrit",
@@ -5236,11 +5243,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ1/TS%201.3%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.3 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ1/TS%201.3%20Jatai%20Malayalam.pdf",
+                "title": "TS 1.4 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ1/TS%201.4%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.3%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.4%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.4 Jatai Sanskrit",
@@ -5257,11 +5264,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ1/TS%201.4%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.4 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ1/TS%201.4%20Jatai%20Malayalam.pdf",
+                "title": "TS 1.5 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ1/TS%201.5%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.4%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.5%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.5 Jatai Sanskrit",
@@ -5278,11 +5285,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ1/TS%201.5%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.5 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ1/TS%201.5%20Jatai%20Malayalam.pdf",
+                "title": "TS 1.6 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ1/TS%201.6%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.5%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.6%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.6 Jatai Sanskrit",
@@ -5299,11 +5306,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ1/TS%201.6%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.6 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ1/TS%201.6%20Jatai%20Malayalam.pdf",
+                "title": "TS 1.7 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ1/TS%201.7%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.6%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.7%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.7 Jatai Sanskrit",
@@ -5320,11 +5327,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ1/TS%201.7%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.7 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ1/TS%201.7%20Jatai%20Malayalam.pdf",
+                "title": "TS 1.8 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ1/TS%201.8%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.7%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.8%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.8 Jatai Sanskrit",
@@ -5339,19 +5346,19 @@
                 "version": "",
                 "date": "Jun 30, 2026",
                 "corrections": "https://vedavms.in/docs/TSJ1/TS%201.8%20Jatai%20Tamil%20Corrections.pdf"
-              },
-              {
-                "title": "TS 1.8 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ1/TS%201.8%20Jatai%20Malayalam.pdf",
-                "version": "",
-                "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ1/TS%201.8%20Jatai%20Malayalam%20Corrections.pdf"
               }
             ]
           },
           {
             "title": "Kandam 2",
             "docs": [
+              {
+                "title": "TS 2.1 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ2/TS%202.1%20Jatai%20Malayalam.pdf",
+                "version": "",
+                "date": "Jul 31, 2026",
+                "corrections": "https://vedavms.in/docs/TSJ2/TS%202.1%20Jatai%20Malayalam%20Corrections.pdf"
+              },
               {
                 "title": "TS 2.1 Jatai Sanskrit",
                 "url": "https://vedavms.in/docs/TSJ2/TS%202.1%20Jatai%20Sanskrit.pdf",
@@ -5367,11 +5374,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ2/TS%202.1%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 2.1 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ2/TS%202.1%20Jatai%20Malayalam.pdf",
+                "title": "TS 2.2 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ2/TS%202.2%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ2/TS%202.1%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ2/TS%202.2%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 2.2 Jatai Sanskrit",
@@ -5388,11 +5395,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ2/TS%202.2%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 2.2 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ2/TS%202.2%20Jatai%20Malayalam.pdf",
+                "title": "TS 2.3 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ2/TS%202.3%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ2/TS%202.2%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ2/TS%202.3%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 2.3 Jatai Sanskrit",
@@ -5409,11 +5416,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ2/TS%202.3%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 2.3 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ2/TS%202.3%20Jatai%20Malayalam.pdf",
+                "title": "TS 2.4 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ2/TS%202.4%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ2/TS%202.3%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ2/TS%202.4%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 2.4 Jatai Sanskrit",
@@ -5430,11 +5437,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ2/TS%202.4%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 2.4 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ2/TS%202.4%20Jatai%20Malayalam.pdf",
+                "title": "TS 2.5 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ2/TS%202.5%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ2/TS%202.4%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ2/TS%202.5%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 2.5 Jatai Sanskrit",
@@ -5451,11 +5458,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ2/TS%202.5%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 2.5 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ2/TS%202.5%20Jatai%20Malayalam.pdf",
+                "title": "TS 2.6 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ2/TS%202.6%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ2/TS%202.5%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ2/TS%202.6%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 2.6 Jatai Sanskrit",
@@ -5470,19 +5477,19 @@
                 "version": "",
                 "date": "Jul 31, 2026",
                 "corrections": "https://vedavms.in/docs/TSJ2/TS%202.6%20Jatai%20Tamil%20Corrections.pdf"
-              },
-              {
-                "title": "TS 2.6 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ2/TS%202.6%20Jatai%20Malayalam.pdf",
-                "version": "",
-                "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ2/TS%202.6%20Jatai%20Malayalam%20Corrections.pdf"
               }
             ]
           },
           {
             "title": "Kandam 3",
             "docs": [
+              {
+                "title": "TS 3.1 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ3/TS%203.1%20Jatai%20Malayalam.pdf",
+                "version": "",
+                "date": "Oct 31, 2023",
+                "corrections": "https://vedavms.in/docs/TSJ3/TS%203.1%20Jatai%20Malayalam%20Corrections.pdf"
+              },
               {
                 "title": "TS 3.1 Jatai Sanskrit",
                 "url": "https://vedavms.in/docs/TSJ3/TS%203.1%20Jatai%20Sanskrit.pdf",
@@ -5498,11 +5505,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ3/TS%203.1%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 3.1 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ3/TS%203.1%20Jatai%20Malayalam.pdf",
+                "title": "TS 3.2 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ3/TS%203.2%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Oct 31, 2023",
-                "corrections": "https://vedavms.in/docs/TSJ3/TS%203.1%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ3/TS%203.2%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 3.2 Jatai Sanskrit",
@@ -5519,11 +5526,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ3/TS%203.2%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 3.2 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ3/TS%203.2%20Jatai%20Malayalam.pdf",
+                "title": "TS 3.3 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ3/TS%203.3%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Oct 31, 2023",
-                "corrections": "https://vedavms.in/docs/TSJ3/TS%203.2%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Nov 30, 2023",
+                "corrections": "https://vedavms.in/docs/TSJ3/TS%203.3%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 3.3 Jatai Sanskrit",
@@ -5540,11 +5547,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ3/TS%203.3%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 3.3 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ3/TS%203.3%20Jatai%20Malayalam.pdf",
+                "title": "TS 3.4 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ3/TS%203.4%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Nov 30, 2023",
-                "corrections": "https://vedavms.in/docs/TSJ3/TS%203.3%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Jan 31, 2024",
+                "corrections": "https://vedavms.in/docs/TSJ3/TS%203.4%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 3.4 Jatai Sanskrit",
@@ -5561,11 +5568,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ3/TS%203.4%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 3.4 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ3/TS%203.4%20Jatai%20Malayalam.pdf",
+                "title": "TS 3.5 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ3/TS%203.5%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Jan 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ3/TS%203.4%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Feb 29, 2024",
+                "corrections": "https://vedavms.in/docs/TSJ3/TS%203.5%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 3.5 Jatai Sanskrit",
@@ -5580,19 +5587,19 @@
                 "version": "",
                 "date": "Feb 29, 2024",
                 "corrections": "https://vedavms.in/docs/TSJ3/TS%203.5%20Jatai%20Tamil%20Corrections.pdf"
-              },
-              {
-                "title": "TS 3.5 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ3/TS%203.5%20Jatai%20Malayalam.pdf",
-                "version": "",
-                "date": "Feb 29, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ3/TS%203.5%20Jatai%20Malayalam%20Corrections.pdf"
               }
             ]
           },
           {
             "title": "Kandam 4",
             "docs": [
+              {
+                "title": "TS 4.1 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ4/TS%204.1%20Jatai%20Malayalam.pdf",
+                "version": "",
+                "date": "Feb 29, 2024",
+                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.1%20Jatai%20Malayalam%20Corrections.pdf"
+              },
               {
                 "title": "TS 4.1 Jatai Sanskrit",
                 "url": "https://vedavms.in/docs/TSJ4/TS%204.1%20Jatai%20Sanskrit.pdf",
@@ -5608,11 +5615,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ4/TS%204.1%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 4.1 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ4/TS%204.1%20Jatai%20Malayalam.pdf",
+                "title": "TS 4.2 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ4/TS%204.2%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Feb 29, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.1%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Mar 31, 2024",
+                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.2%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 4.2 Jatai Sanskrit",
@@ -5629,11 +5636,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ4/TS%204.2%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 4.2 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ4/TS%204.2%20Jatai%20Malayalam.pdf",
+                "title": "TS 4.3 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ4/TS%204.3%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Mar 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.2%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.3%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 4.3 Jatai Sanskrit",
@@ -5650,11 +5657,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ4/TS%204.3%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 4.3 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ4/TS%204.3%20Jatai%20Malayalam.pdf",
+                "title": "TS 4.4 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ4/TS%204.4%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Mar 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.3%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Apr 30, 2024",
+                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.4%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 4.4 Jatai Sanskrit",
@@ -5671,11 +5678,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ4/TS%204.4%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 4.4 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ4/TS%204.4%20Jatai%20Malayalam.pdf",
+                "title": "TS 4.5 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ4/TS%204.5%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "Apr 30, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.4%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.5%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 4.5 Jatai Sanskrit",
@@ -5692,11 +5699,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ4/TS%204.5%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 4.5 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ4/TS%204.5%20Jatai%20Malayalam.pdf",
+                "title": "TS 4.6 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ4/TS%204.6%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Apr 30, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.5%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "May 31, 2024",
+                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.6%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 4.6 Jatai Sanskrit",
@@ -5713,11 +5720,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ4/TS%204.6%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 4.6 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ4/TS%204.6%20Jatai%20Malayalam.pdf",
+                "title": "TS 4.7 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ4/TS%204.7%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "May 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.6%20Jatai%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.7%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 4.7 Jatai Sanskrit",
@@ -5732,19 +5739,19 @@
                 "version": "",
                 "date": "May 31, 2024",
                 "corrections": "https://vedavms.in/docs/TSJ4/TS%204.7%20Jatai%20Tamil%20Corrections.pdf"
-              },
-              {
-                "title": "TS 4.7 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ4/TS%204.7%20Jatai%20Malayalam.pdf",
-                "version": "",
-                "date": "May 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ4/TS%204.7%20Jatai%20Malayalam%20Corrections.pdf"
               }
             ]
           },
           {
             "title": "Kandam 5",
             "docs": [
+              {
+                "title": "TS 5.1 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ5/TS%205.1%20Jatai%20Malayalam.pdf",
+                "version": "",
+                "date": "Jun 30, 2024",
+                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.1%20Jatai%20Malayalam%20Corrections.pdf"
+              },
               {
                 "title": "TS 5.1 Jatai Sanskrit",
                 "url": "https://vedavms.in/docs/TSJ5/TS%205.1%20Jatai%20Sanskrit.pdf",
@@ -5760,11 +5767,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ5/TS%205.1%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 5.1 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ5/TS%205.1%20Jatai%20Malayalam.pdf",
+                "title": "TS 5.2 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ5/TS%205.2%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Jun 30, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.1%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Jul 31, 2024",
+                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.2%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 5.2 Jatai Sanskrit",
@@ -5781,11 +5788,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ5/TS%205.2%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 5.2 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ5/TS%205.2%20Jatai%20Malayalam.pdf",
+                "title": "TS 5.3 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ5/TS%205.3%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Jul 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.2%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Sep 30, 2024",
+                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.3%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 5.3 Jatai Sanskrit",
@@ -5802,11 +5809,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ5/TS%205.3%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 5.3 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ5/TS%205.3%20Jatai%20Malayalam.pdf",
+                "title": "TS 5.4 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ5/TS%205.4%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Sep 30, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.3%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Oct 31, 2024",
+                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.4%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 5.4 Jatai Sanskrit",
@@ -5823,11 +5830,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ5/TS%205.4%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 5.4 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ5/TS%205.4%20Jatai%20Malayalam.pdf",
+                "title": "TS 5.5 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ5/TS%205.5%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Oct 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.4%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Nov 30, 2024",
+                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.5%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 5.5 Jatai Sanskrit",
@@ -5844,11 +5851,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ5/TS%205.5%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 5.5 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ5/TS%205.5%20Jatai%20Malayalam.pdf",
+                "title": "TS 5.6 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ5/TS%205.6%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Nov 30, 2024",
-                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.5%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Mar 31, 2025",
+                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.6%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 5.6 Jatai Sanskrit",
@@ -5865,11 +5872,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ5/TS%205.6%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 5.6 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ5/TS%205.6%20Jatai%20Malayalam.pdf",
+                "title": "TS 5.7 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ5/TS%205.7%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Mar 31, 2025",
-                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.6%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Apr 30, 2025",
+                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.7%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 5.7 Jatai Sanskrit",
@@ -5884,19 +5891,19 @@
                 "version": "",
                 "date": "Apr 30, 2025",
                 "corrections": "https://vedavms.in/docs/TSJ5/TS%205.7%20Jatai%20Tamil%20Corrections.pdf"
-              },
-              {
-                "title": "TS 5.7 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ5/TS%205.7%20Jatai%20Malayalam.pdf",
-                "version": "",
-                "date": "Apr 30, 2025",
-                "corrections": "https://vedavms.in/docs/TSJ5/TS%205.7%20Jatai%20Malayalam%20Corrections.pdf"
               }
             ]
           },
           {
             "title": "Kandam 6",
             "docs": [
+              {
+                "title": "TS 6.1 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ6/TS%206.1%20Jatai%20Malayalam.pdf",
+                "version": "",
+                "date": "May 31, 2025",
+                "corrections": "https://vedavms.in/docs/TSJ6/TS%206.1%20Jatai%20Malayalam%20Corrections.pdf"
+              },
               {
                 "title": "TS 6.1 Jatai Sanskrit",
                 "url": "https://vedavms.in/docs/TSJ6/TS%206.1%20Jatai%20Sanskrit.pdf",
@@ -5912,11 +5919,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ6/TS%206.1%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 6.1 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ6/TS%206.1%20Jatai%20Malayalam.pdf",
+                "title": "TS 6.2 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ6/TS%206.2%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "May 31, 2025",
-                "corrections": "https://vedavms.in/docs/TSJ6/TS%206.1%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Jul 31, 2025",
+                "corrections": "https://vedavms.in/docs/TSJ6/TS%206.2%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 6.2 Jatai Sanskrit",
@@ -5933,11 +5940,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ6/TS%206.2%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 6.2 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ6/TS%206.2%20Jatai%20Malayalam.pdf",
+                "title": "TS 6.3 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ6/TS%206.3%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Jul 31, 2025",
-                "corrections": "https://vedavms.in/docs/TSJ6/TS%206.2%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Sep 30, 2025",
+                "corrections": "https://vedavms.in/docs/TSJ6/TS%206.3%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 6.3 Jatai Sanskrit",
@@ -5954,11 +5961,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ6/TS%206.3%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 6.3 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ6/TS%206.3%20Jatai%20Malayalam.pdf",
+                "title": "TS 6.4 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ6/TS%206.4%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Sep 30, 2025",
-                "corrections": "https://vedavms.in/docs/TSJ6/TS%206.3%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Jan 31, 2026",
+                "corrections": "https://vedavms.in/docs/TSJ6/TS%206.4%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 6.4 Jatai Sanskrit",
@@ -5975,11 +5982,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ6/TS%206.4%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 6.4 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ6/TS%206.4%20Jatai%20Malayalam.pdf",
+                "title": "TS 6.5 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ6/TS%206.5%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Jan 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ6/TS%206.4%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Feb 28, 2026",
+                "corrections": "https://vedavms.in/docs/TSJ6/TS%206.5%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 6.5 Jatai Sanskrit",
@@ -5996,11 +6003,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ6/TS%206.5%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 6.5 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ6/TS%206.5%20Jatai%20Malayalam.pdf",
+                "title": "TS 6.6 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ6/TS%206.6%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Feb 28, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ6/TS%206.5%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Apr 30, 2026",
+                "corrections": "https://vedavms.in/docs/TSJ6/TS%206.6%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 6.6 Jatai Sanskrit",
@@ -6015,19 +6022,19 @@
                 "version": "",
                 "date": "Apr 30, 2026",
                 "corrections": "https://vedavms.in/docs/TSJ6/TS%206.6%20Jatai%20Tamil%20Corrections.pdf"
-              },
-              {
-                "title": "TS 6.6 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ6/TS%206.6%20Jatai%20Malayalam.pdf",
-                "version": "",
-                "date": "Apr 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ6/TS%206.6%20Jatai%20Malayalam%20Corrections.pdf"
               }
             ]
           },
           {
             "title": "Kandam 7",
             "docs": [
+              {
+                "title": "TS 7.1 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ7/TS%207.1%20Jatai%20Malayalam.pdf",
+                "version": "",
+                "date": "May 31, 2026",
+                "corrections": "https://vedavms.in/docs/TSJ7/TS%207.1%20Jatai%20Malayalam%20Corrections.pdf"
+              },
               {
                 "title": "TS 7.1 Jatai Sanskrit",
                 "url": "https://vedavms.in/docs/TSJ7/TS%207.1%20Jatai%20Sanskrit.pdf",
@@ -6043,11 +6050,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ7/TS%207.1%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 7.1 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ7/TS%207.1%20Jatai%20Malayalam.pdf",
+                "title": "TS 7.2 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ7/TS%207.2%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "May 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ7/TS%207.1%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Jun 30, 2026",
+                "corrections": "https://vedavms.in/docs/TSJ7/TS%207.2%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 7.2 Jatai Sanskrit",
@@ -6064,11 +6071,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ7/TS%207.2%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 7.2 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ7/TS%207.2%20Jatai%20Malayalam.pdf",
+                "title": "TS 7.3 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ7/TS%207.3%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ7/TS%207.2%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "Jul 31, 2026",
+                "corrections": "https://vedavms.in/docs/TSJ7/TS%207.3%20Jatai%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 7.3 Jatai Sanskrit",
@@ -6085,11 +6092,11 @@
                 "corrections": "https://vedavms.in/docs/TSJ7/TS%207.3%20Jatai%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 7.3 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ7/TS%207.3%20Jatai%20Malayalam.pdf",
+                "title": "TS 7.4 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ7/TS%207.4%20Jatai%20Malayalam.pdf",
                 "version": "",
-                "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSJ7/TS%207.3%20Jatai%20Malayalam%20Corrections.pdf"
+                "date": "May 31, 2024",
+                "corrections": ""
               },
               {
                 "title": "TS 7.4 Jatai Sanskrit",
@@ -6106,8 +6113,8 @@
                 "corrections": ""
               },
               {
-                "title": "TS 7.4 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ7/TS%207.4%20Jatai%20Malayalam.pdf",
+                "title": "TS 7.5 Jatai Malayalam",
+                "url": "https://vedavms.in/docs/TSJ7/TS%207.5%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "May 31, 2024",
                 "corrections": ""
@@ -6122,13 +6129,6 @@
               {
                 "title": "TS 7.5 Jatai Tamil",
                 "url": "https://vedavms.in/docs/TSJ7/TS%207.5%20Jatai%20Tamil.pdf",
-                "version": "",
-                "date": "May 31, 2024",
-                "corrections": ""
-              },
-              {
-                "title": "TS 7.5 Jatai Malayalam",
-                "url": "https://vedavms.in/docs/TSJ7/TS%207.5%20Jatai%20Malayalam.pdf",
                 "version": "",
                 "date": "May 31, 2024",
                 "corrections": ""
@@ -6151,6 +6151,13 @@
             "title": "Kandam 1",
             "docs": [
               {
+                "title": "TS 1.1 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG1/TS%201.1%20Ghanam%20Malayalam.pdf",
+                "version": "",
+                "date": "Jun 30, 2026",
+                "corrections": "https://vedavms.in/docs/TSG1/TS%201.1%20Ghanam%20Malayalam%20Corrections.pdf"
+              },
+              {
                 "title": "TS 1.1 Ghanam Sanskrit",
                 "url": "https://vedavms.in/docs/TSG1/TS%201.1%20Ghanam%20Sanskrit.pdf",
                 "version": "",
@@ -6165,11 +6172,11 @@
                 "corrections": "https://vedavms.in/docs/TSG1/TS%201.1%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.1 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG1/TS%201.1%20Ghanam%20Malayalam.pdf",
+                "title": "TS 1.2 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG1/TS%201.2%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSG1/TS%201.1%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG1/TS%201.2%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.2 Ghanam Sanskrit",
@@ -6186,11 +6193,11 @@
                 "corrections": "https://vedavms.in/docs/TSG1/TS%201.2%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.2 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG1/TS%201.2%20Ghanam%20Malayalam.pdf",
+                "title": "TS 1.3 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG1/TS%201.3%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSG1/TS%201.2%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG1/TS%201.3%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.3 Ghanam Sanskrit",
@@ -6207,11 +6214,11 @@
                 "corrections": "https://vedavms.in/docs/TSG1/TS%201.3%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.3 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG1/TS%201.3%20Ghanam%20Malayalam.pdf",
+                "title": "TS 1.4 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG1/TS%201.4%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSG1/TS%201.3%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG1/TS%201.4%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.4 Ghanam Sanskrit",
@@ -6228,11 +6235,11 @@
                 "corrections": "https://vedavms.in/docs/TSG1/TS%201.4%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.4 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG1/TS%201.4%20Ghanam%20Malayalam.pdf",
+                "title": "TS 1.5 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG1/TS%201.5%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSG1/TS%201.4%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG1/TS%201.5%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.5 Ghanam Sanskrit",
@@ -6249,11 +6256,11 @@
                 "corrections": "https://vedavms.in/docs/TSG1/TS%201.5%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.5 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG1/TS%201.5%20Ghanam%20Malayalam.pdf",
+                "title": "TS 1.6 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG1/TS%201.6%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSG1/TS%201.5%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG1/TS%201.6%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.6 Ghanam Sanskrit",
@@ -6270,11 +6277,11 @@
                 "corrections": "https://vedavms.in/docs/TSG1/TS%201.6%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.6 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG1/TS%201.6%20Ghanam%20Malayalam.pdf",
+                "title": "TS 1.7 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG1/TS%201.7%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSG1/TS%201.6%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG1/TS%201.7%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.7 Ghanam Sanskrit",
@@ -6291,11 +6298,11 @@
                 "corrections": "https://vedavms.in/docs/TSG1/TS%201.7%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 1.7 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG1/TS%201.7%20Ghanam%20Malayalam.pdf",
+                "title": "TS 1.8 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG1/TS%201.8%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSG1/TS%201.7%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG1/TS%201.8%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 1.8 Ghanam Sanskrit",
@@ -6310,19 +6317,19 @@
                 "version": "",
                 "date": "Jun 30, 2026",
                 "corrections": "https://vedavms.in/docs/TSG1/TS%201.8%20Ghanam%20Tamil%20Corrections.pdf"
-              },
-              {
-                "title": "TS 1.8 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG1/TS%201.8%20Ghanam%20Malayalam.pdf",
-                "version": "",
-                "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSG1/TS%201.8%20Ghanam%20Malayalam%20Corrections.pdf"
               }
             ]
           },
           {
             "title": "Kandam 2",
             "docs": [
+              {
+                "title": "TS 2.1 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG2/TS%202.1%20Ghanam%20Malayalam.pdf",
+                "version": "",
+                "date": "Jul 31, 2026",
+                "corrections": "https://vedavms.in/docs/TSG2/TS%202.1%20Ghanam%20Malayalam%20Corrections.pdf"
+              },
               {
                 "title": "TS 2.1 Ghanam Sanskrit",
                 "url": "https://vedavms.in/docs/TSG2/TS%202.1%20Ghanam%20Sanskrit.pdf",
@@ -6338,11 +6345,11 @@
                 "corrections": "https://vedavms.in/docs/TSG2/TS%202.1%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 2.1 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG2/TS%202.1%20Ghanam%20Malayalam.pdf",
+                "title": "TS 2.2 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG2/TS%202.2%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSG2/TS%202.1%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG2/TS%202.2%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 2.2 Ghanam Sanskrit",
@@ -6359,11 +6366,11 @@
                 "corrections": "https://vedavms.in/docs/TSG2/TS%202.2%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 2.2 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG2/TS%202.2%20Ghanam%20Malayalam.pdf",
+                "title": "TS 2.3 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG2/TS%202.3%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSG2/TS%202.2%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG2/TS%202.3%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 2.3 Ghanam Sanskrit",
@@ -6380,11 +6387,11 @@
                 "corrections": "https://vedavms.in/docs/TSG2/TS%202.3%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 2.3 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG2/TS%202.3%20Ghanam%20Malayalam.pdf",
+                "title": "TS 2.4 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG2/TS%202.4%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSG2/TS%202.3%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG2/TS%202.4%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 2.4 Ghanam Sanskrit",
@@ -6401,11 +6408,11 @@
                 "corrections": "https://vedavms.in/docs/TSG2/TS%202.4%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 2.4 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG2/TS%202.4%20Ghanam%20Malayalam.pdf",
+                "title": "TS 2.5 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG2/TS%202.5%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSG2/TS%202.4%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG2/TS%202.5%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 2.5 Ghanam Sanskrit",
@@ -6422,11 +6429,11 @@
                 "corrections": "https://vedavms.in/docs/TSG2/TS%202.5%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 2.5 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG2/TS%202.5%20Ghanam%20Malayalam.pdf",
+                "title": "TS 2.6 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG2/TS%202.6%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSG2/TS%202.5%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG2/TS%202.6%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 2.6 Ghanam Sanskrit",
@@ -6441,19 +6448,19 @@
                 "version": "",
                 "date": "Jul 31, 2026",
                 "corrections": "https://vedavms.in/docs/TSG2/TS%202.6%20Ghanam%20Tamil%20Corrections.pdf"
-              },
-              {
-                "title": "TS 2.6 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG2/TS%202.6%20Ghanam%20Malayalam.pdf",
-                "version": "",
-                "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSG2/TS%202.6%20Ghanam%20Malayalam%20Corrections.pdf"
               }
             ]
           },
           {
             "title": "Kandam 3",
             "docs": [
+              {
+                "title": "TS 3.1 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG3/TS%203.1%20Ghanam%20Malayalam.pdf",
+                "version": "",
+                "date": "Oct 31, 2023",
+                "corrections": "https://vedavms.in/docs/TSG3/TS%203.1%20Ghanam%20Malayalam%20Corrections.pdf"
+              },
               {
                 "title": "TS 3.1 Ghanam Sanskrit",
                 "url": "https://vedavms.in/docs/TSG3/TS%203.1%20Ghanam%20Sanskrit.pdf",
@@ -6469,11 +6476,11 @@
                 "corrections": "https://vedavms.in/docs/TSG3/TS%203.1%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 3.1 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG3/TS%203.1%20Ghanam%20Malayalam.pdf",
+                "title": "TS 3.2 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG3/TS%203.2%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Oct 31, 2023",
-                "corrections": "https://vedavms.in/docs/TSG3/TS%203.1%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG3/TS%203.2%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 3.2 Ghanam Sanskrit",
@@ -6490,11 +6497,11 @@
                 "corrections": "https://vedavms.in/docs/TSG3/TS%203.2%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 3.2 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG3/TS%203.2%20Ghanam%20Malayalam.pdf",
+                "title": "TS 3.3 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG3/TS%203.3%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Oct 31, 2023",
-                "corrections": "https://vedavms.in/docs/TSG3/TS%203.2%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Nov 30, 2023",
+                "corrections": "https://vedavms.in/docs/TSG3/TS%203.3%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 3.3 Ghanam Sanskrit",
@@ -6511,11 +6518,11 @@
                 "corrections": "https://vedavms.in/docs/TSG3/TS%203.3%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 3.3 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG3/TS%203.3%20Ghanam%20Malayalam.pdf",
+                "title": "TS 3.4 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG3/TS%203.4%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Nov 30, 2023",
-                "corrections": "https://vedavms.in/docs/TSG3/TS%203.3%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Jan 31, 2024",
+                "corrections": "https://vedavms.in/docs/TSG3/TS%203.4%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 3.4 Ghanam Sanskrit",
@@ -6532,11 +6539,11 @@
                 "corrections": "https://vedavms.in/docs/TSG3/TS%203.4%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 3.4 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG3/TS%203.4%20Ghanam%20Malayalam.pdf",
+                "title": "TS 3.5 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG3/TS%203.5%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Jan 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSG3/TS%203.4%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Feb 29, 2024",
+                "corrections": "https://vedavms.in/docs/TSG3/TS%203.5%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 3.5 Ghanam Sanskrit",
@@ -6551,19 +6558,19 @@
                 "version": "",
                 "date": "Feb 29, 2024",
                 "corrections": "https://vedavms.in/docs/TSG3/TS%203.5%20Ghanam%20Tamil%20Corrections.pdf"
-              },
-              {
-                "title": "TS 3.5 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG3/TS%203.5%20Ghanam%20Malayalam.pdf",
-                "version": "",
-                "date": "Feb 29, 2024",
-                "corrections": "https://vedavms.in/docs/TSG3/TS%203.5%20Ghanam%20Malayalam%20Corrections.pdf"
               }
             ]
           },
           {
             "title": "Kandam 4",
             "docs": [
+              {
+                "title": "TS 4.1 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG4/TS%204.1%20Ghanam%20Malayalam.pdf",
+                "version": "",
+                "date": "Feb 29, 2024",
+                "corrections": "https://vedavms.in/docs/TSG4/TS%204.1%20Ghanam%20Malayalam%20Corrections.pdf"
+              },
               {
                 "title": "TS 4.1 Ghanam Sanskrit",
                 "url": "https://vedavms.in/docs/TSG4/TS%204.1%20Ghanam%20Sanskrit.pdf",
@@ -6579,11 +6586,11 @@
                 "corrections": "https://vedavms.in/docs/TSG4/TS%204.1%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 4.1 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG4/TS%204.1%20Ghanam%20Malayalam.pdf",
+                "title": "TS 4.2 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG4/TS%204.2%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Feb 29, 2024",
-                "corrections": "https://vedavms.in/docs/TSG4/TS%204.1%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Mar 31, 2024",
+                "corrections": "https://vedavms.in/docs/TSG4/TS%204.2%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 4.2 Ghanam Sanskrit",
@@ -6600,11 +6607,11 @@
                 "corrections": "https://vedavms.in/docs/TSG4/TS%204.2%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 4.2 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG4/TS%204.2%20Ghanam%20Malayalam.pdf",
+                "title": "TS 4.3 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG4/TS%204.3%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Mar 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSG4/TS%204.2%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG4/TS%204.3%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 4.3 Ghanam Sanskrit",
@@ -6621,11 +6628,11 @@
                 "corrections": "https://vedavms.in/docs/TSG4/TS%204.3%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 4.3 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG4/TS%204.3%20Ghanam%20Malayalam.pdf",
+                "title": "TS 4.4 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG4/TS%204.4%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Mar 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSG4/TS%204.3%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Apr 30, 2024",
+                "corrections": "https://vedavms.in/docs/TSG4/TS%204.4%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 4.4 Ghanam Sanskrit",
@@ -6642,11 +6649,11 @@
                 "corrections": "https://vedavms.in/docs/TSG4/TS%204.4%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 4.4 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG4/TS%204.4%20Ghanam%20Malayalam.pdf",
+                "title": "TS 4.5 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG4/TS%204.5%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "Apr 30, 2024",
-                "corrections": "https://vedavms.in/docs/TSG4/TS%204.4%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG4/TS%204.5%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 4.5 Ghanam Sanskrit",
@@ -6663,11 +6670,11 @@
                 "corrections": "https://vedavms.in/docs/TSG4/TS%204.5%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 4.5 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG4/TS%204.5%20Ghanam%20Malayalam.pdf",
+                "title": "TS 4.6 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG4/TS%204.6%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Apr 30, 2024",
-                "corrections": "https://vedavms.in/docs/TSG4/TS%204.5%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "May 31, 2024",
+                "corrections": "https://vedavms.in/docs/TSG4/TS%204.6%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 4.6 Ghanam Sanskrit",
@@ -6684,11 +6691,11 @@
                 "corrections": "https://vedavms.in/docs/TSG4/TS%204.6%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 4.6 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG4/TS%204.6%20Ghanam%20Malayalam.pdf",
+                "title": "TS 4.7 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG4/TS%204.7%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "May 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSG4/TS%204.6%20Ghanam%20Malayalam%20Corrections.pdf"
+                "corrections": "https://vedavms.in/docs/TSG4/TS%204.7%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 4.7 Ghanam Sanskrit",
@@ -6703,19 +6710,19 @@
                 "version": "",
                 "date": "May 31, 2024",
                 "corrections": "https://vedavms.in/docs/TSG4/TS%204.7%20Ghanam%20Tamil%20Corrections.pdf"
-              },
-              {
-                "title": "TS 4.7 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG4/TS%204.7%20Ghanam%20Malayalam.pdf",
-                "version": "",
-                "date": "May 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSG4/TS%204.7%20Ghanam%20Malayalam%20Corrections.pdf"
               }
             ]
           },
           {
             "title": "Kandam 5",
             "docs": [
+              {
+                "title": "TS 5.1 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG5/TS%205.1%20Ghanam%20Malayalam.pdf",
+                "version": "",
+                "date": "Jun 30, 2024",
+                "corrections": "https://vedavms.in/docs/TSG5/TS%205.1%20Ghanam%20Malayalam%20Corrections.pdf"
+              },
               {
                 "title": "TS 5.1 Ghanam Sanskrit",
                 "url": "https://vedavms.in/docs/TSG5/TS%205.1%20Ghanam%20Sanskrit.pdf",
@@ -6731,11 +6738,11 @@
                 "corrections": "https://vedavms.in/docs/TSG5/TS%205.1%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 5.1 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG5/TS%205.1%20Ghanam%20Malayalam.pdf",
+                "title": "TS 5.2 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG5/TS%205.2%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Jun 30, 2024",
-                "corrections": "https://vedavms.in/docs/TSG5/TS%205.1%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Jul 31, 2024",
+                "corrections": "https://vedavms.in/docs/TSG5/TS%205.2%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 5.2 Ghanam Sanskrit",
@@ -6752,11 +6759,11 @@
                 "corrections": "https://vedavms.in/docs/TSG5/TS%205.2%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 5.2 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG5/TS%205.2%20Ghanam%20Malayalam.pdf",
+                "title": "TS 5.3 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG5/TS%205.3%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Jul 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSG5/TS%205.2%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Sep 30, 2024",
+                "corrections": "https://vedavms.in/docs/TSG5/TS%205.3%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 5.3 Ghanam Sanskrit",
@@ -6773,11 +6780,11 @@
                 "corrections": "https://vedavms.in/docs/TSG5/TS%205.3%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 5.3 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG5/TS%205.3%20Ghanam%20Malayalam.pdf",
+                "title": "TS 5.4 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG5/TS%205.4%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Sep 30, 2024",
-                "corrections": "https://vedavms.in/docs/TSG5/TS%205.3%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Oct 31, 2024",
+                "corrections": "https://vedavms.in/docs/TSG5/TS%205.4%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 5.4 Ghanam Sanskrit",
@@ -6794,11 +6801,11 @@
                 "corrections": "https://vedavms.in/docs/TSG5/TS%205.4%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 5.4 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG5/TS%205.4%20Ghanam%20Malayalam.pdf",
+                "title": "TS 5.5 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG5/TS%205.5%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Oct 31, 2024",
-                "corrections": "https://vedavms.in/docs/TSG5/TS%205.4%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Nov 30, 2024",
+                "corrections": "https://vedavms.in/docs/TSG5/TS%205.5%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 5.5 Ghanam Sanskrit",
@@ -6815,11 +6822,11 @@
                 "corrections": "https://vedavms.in/docs/TSG5/TS%205.5%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 5.5 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG5/TS%205.5%20Ghanam%20Malayalam.pdf",
+                "title": "TS 5.6 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG5/TS%205.6%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Nov 30, 2024",
-                "corrections": "https://vedavms.in/docs/TSG5/TS%205.5%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Mar 31, 2025",
+                "corrections": "https://vedavms.in/docs/TSG5/TS%205.6%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 5.6 Ghanam Sanskrit",
@@ -6836,11 +6843,11 @@
                 "corrections": "https://vedavms.in/docs/TSG5/TS%205.6%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 5.6 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG5/TS%205.6%20Ghanam%20Malayalam.pdf",
+                "title": "TS 5.7 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG5/TS%205.7%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Mar 31, 2025",
-                "corrections": "https://vedavms.in/docs/TSG5/TS%205.6%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Apr 30, 2025",
+                "corrections": "https://vedavms.in/docs/TSG5/TS%205.7%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 5.7 Ghanam Sanskrit",
@@ -6855,19 +6862,19 @@
                 "version": "",
                 "date": "Apr 30, 2025",
                 "corrections": "https://vedavms.in/docs/TSG5/TS%205.7%20Ghanam%20Tamil%20Corrections.pdf"
-              },
-              {
-                "title": "TS 5.7 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG5/TS%205.7%20Ghanam%20Malayalam.pdf",
-                "version": "",
-                "date": "Apr 30, 2025",
-                "corrections": "https://vedavms.in/docs/TSG5/TS%205.7%20Ghanam%20Malayalam%20Corrections.pdf"
               }
             ]
           },
           {
             "title": "Kandam 6",
             "docs": [
+              {
+                "title": "TS 6.1 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG6/TS%206.1%20Ghanam%20Malayalam.pdf",
+                "version": "",
+                "date": "May 31, 2025",
+                "corrections": "https://vedavms.in/docs/TSG6/TS%206.1%20Ghanam%20Malayalam%20Corrections.pdf"
+              },
               {
                 "title": "TS 6.1 Ghanam Sanskrit",
                 "url": "https://vedavms.in/docs/TSG6/TS%206.1%20Ghanam%20Sanskrit.pdf",
@@ -6883,11 +6890,11 @@
                 "corrections": "https://vedavms.in/docs/TSG6/TS%206.1%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 6.1 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG6/TS%206.1%20Ghanam%20Malayalam.pdf",
+                "title": "TS 6.2 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG6/TS%206.2%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "May 31, 2025",
-                "corrections": "https://vedavms.in/docs/TSG6/TS%206.1%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Jul 31, 2025",
+                "corrections": "https://vedavms.in/docs/TSG6/TS%206.2%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 6.2 Ghanam Sanskrit",
@@ -6904,11 +6911,11 @@
                 "corrections": "https://vedavms.in/docs/TSG6/TS%206.2%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 6.2 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG6/TS%206.2%20Ghanam%20Malayalam.pdf",
+                "title": "TS 6.3 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG6/TS%206.3%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Jul 31, 2025",
-                "corrections": "https://vedavms.in/docs/TSG6/TS%206.2%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Sep 30, 2025",
+                "corrections": "https://vedavms.in/docs/TSG6/TS%206.3%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 6.3 Ghanam Sanskrit",
@@ -6925,11 +6932,11 @@
                 "corrections": "https://vedavms.in/docs/TSG6/TS%206.3%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 6.3 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG6/TS%206.3%20Ghanam%20Malayalam.pdf",
+                "title": "TS 6.4 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG6/TS%206.4%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Sep 30, 2025",
-                "corrections": "https://vedavms.in/docs/TSG6/TS%206.3%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Jan 31, 2026",
+                "corrections": "https://vedavms.in/docs/TSG6/TS%206.4%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 6.4 Ghanam Sanskrit",
@@ -6946,11 +6953,11 @@
                 "corrections": "https://vedavms.in/docs/TSG6/TS%206.4%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 6.4 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG6/TS%206.4%20Ghanam%20Malayalam.pdf",
+                "title": "TS 6.5 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG6/TS%206.5%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Jan 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSG6/TS%206.4%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Feb 28, 2026",
+                "corrections": "https://vedavms.in/docs/TSG6/TS%206.5%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 6.5 Ghanam Sanskrit",
@@ -6967,11 +6974,11 @@
                 "corrections": "https://vedavms.in/docs/TSG6/TS%206.5%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 6.5 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG6/TS%206.5%20Ghanam%20Malayalam.pdf",
+                "title": "TS 6.6 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG6/TS%206.6%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Feb 28, 2026",
-                "corrections": "https://vedavms.in/docs/TSG6/TS%206.5%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Apr 30, 2026",
+                "corrections": "https://vedavms.in/docs/TSG6/TS%206.6%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 6.6 Ghanam Sanskrit",
@@ -6986,19 +6993,19 @@
                 "version": "",
                 "date": "Apr 30, 2026",
                 "corrections": "https://vedavms.in/docs/TSG6/TS%206.6%20Ghanam%20Tamil%20Corrections.pdf"
-              },
-              {
-                "title": "TS 6.6 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG6/TS%206.6%20Ghanam%20Malayalam.pdf",
-                "version": "",
-                "date": "Apr 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSG6/TS%206.6%20Ghanam%20Malayalam%20Corrections.pdf"
               }
             ]
           },
           {
             "title": "Kandam 7",
             "docs": [
+              {
+                "title": "TS 7.1 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG7/TS%207.1%20Ghanam%20Malayalam.pdf",
+                "version": "",
+                "date": "May 31, 2026",
+                "corrections": "https://vedavms.in/docs/TSG7/TS%207.1%20Ghanam%20Malayalam%20Corrections.pdf"
+              },
               {
                 "title": "TS 7.1 Ghanam Sanskrit",
                 "url": "https://vedavms.in/docs/TSG7/TS%207.1%20Ghanam%20Sanskrit.pdf",
@@ -7014,11 +7021,11 @@
                 "corrections": "https://vedavms.in/docs/TSG7/TS%207.1%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 7.1 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG7/TS%207.1%20Ghanam%20Malayalam.pdf",
+                "title": "TS 7.2 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG7/TS%207.2%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "May 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSG7/TS%207.1%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Jun 30, 2026",
+                "corrections": "https://vedavms.in/docs/TSG7/TS%207.2%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 7.2 Ghanam Sanskrit",
@@ -7035,11 +7042,11 @@
                 "corrections": "https://vedavms.in/docs/TSG7/TS%207.2%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 7.2 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG7/TS%207.2%20Ghanam%20Malayalam.pdf",
+                "title": "TS 7.3 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG7/TS%207.3%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Jun 30, 2026",
-                "corrections": "https://vedavms.in/docs/TSG7/TS%207.2%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "Jul 31, 2026",
+                "corrections": "https://vedavms.in/docs/TSG7/TS%207.3%20Ghanam%20Malayalam%20Corrections.pdf"
               },
               {
                 "title": "TS 7.3 Ghanam Sanskrit",
@@ -7056,11 +7063,11 @@
                 "corrections": "https://vedavms.in/docs/TSG7/TS%207.3%20Ghanam%20Tamil%20Corrections.pdf"
               },
               {
-                "title": "TS 7.3 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG7/TS%207.3%20Ghanam%20Malayalam.pdf",
+                "title": "TS 7.4 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG7/TS%207.4%20Ghanam%20Malayalam.pdf",
                 "version": "",
-                "date": "Jul 31, 2026",
-                "corrections": "https://vedavms.in/docs/TSG7/TS%207.3%20Ghanam%20Malayalam%20Corrections.pdf"
+                "date": "May 31, 2024",
+                "corrections": ""
               },
               {
                 "title": "TS 7.4 Ghanam Sanskrit",
@@ -7077,8 +7084,8 @@
                 "corrections": ""
               },
               {
-                "title": "TS 7.4 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG7/TS%207.4%20Ghanam%20Malayalam.pdf",
+                "title": "TS 7.5 Ghanam Malayalam",
+                "url": "https://vedavms.in/docs/TSG7/TS%207.5%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "May 31, 2024",
                 "corrections": ""
@@ -7093,13 +7100,6 @@
               {
                 "title": "TS 7.5 Ghanam Tamil",
                 "url": "https://vedavms.in/docs/TSG7/TS%207.5%20Ghanam%20Tamil.pdf",
-                "version": "",
-                "date": "May 31, 2024",
-                "corrections": ""
-              },
-              {
-                "title": "TS 7.5 Ghanam Malayalam",
-                "url": "https://vedavms.in/docs/TSG7/TS%207.5%20Ghanam%20Malayalam.pdf",
                 "version": "",
                 "date": "May 31, 2024",
                 "corrections": ""
