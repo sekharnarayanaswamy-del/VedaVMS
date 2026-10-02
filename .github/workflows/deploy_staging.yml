@@ -62,9 +62,11 @@ jobs:
           RAW_SERVER="${{ env.STAGING_FTP_SERVER }}"
           # Strip protocol prefix (e.g. ftp://, ftps://), trailing path, port, quotes and whitespace
           CLEAN_SERVER=$(echo "$RAW_SERVER" | sed -e 's|^[a-zA-Z0-9\+\.\-]*://||' -e 's|/.*$||' -e 's|:.*$||' | tr -d '[:space:]"')
-          if [ -z "$CLEAN_SERVER" ] || [ "$CLEAN_SERVER" = "185.151.30.169" ]; then
-            CLEAN_SERVER="ftp.vedavms.in"
-          fi
+          case "$CLEAN_SERVER" in
+            ""|"vedavms.in"|"new.vedavms.in"|"185.151.30.169"|"www.vedavms.in")
+              CLEAN_SERVER="ftp.vedavms.in"
+              ;;
+          esac
           echo "clean_server=$CLEAN_SERVER" >> $GITHUB_OUTPUT
 
           # Sanitize remote directory path to guarantee leading and trailing slash
