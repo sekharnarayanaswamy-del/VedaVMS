@@ -87,7 +87,27 @@ jobs:
           if [ -z "$CLEAN_SERVER" ]; then
             CLEAN_SERVER="185.151.30.169"
           fi
+          if ! getent hosts "$CLEAN_SERVER" > /dev/null 2>&1; then
+            echo "::warning::Configured server '$CLEAN_SERVER' failed DNS lookup. Falling back to 185.151.30.169"
+            CLEAN_SERVER="185.151.30.169"
+          fi
           echo "clean_server=$CLEAN_SERVER" >> $GITHUB_OUTPUT
+
+          # Sanitize remote directory path to guarantee leading and trailing slash
+          RAW_DIR="${{ env.PROD_REMOTE_DIR }}"
+          CLEAN_DIR=$(echo "$RAW_DIR" | tr -d '[:space:]"')
+          if [ -z "$CLEAN_DIR" ]; then
+            CLEAN_DIR="/public_html/"
+          fi
+          case "$CLEAN_DIR" in
+            /*) ;;
+            *) CLEAN_DIR="/$CLEAN_DIR" ;;
+          esac
+          case "$CLEAN_DIR" in
+            */) ;;
+            *) CLEAN_DIR="$CLEAN_DIR/" ;;
+          esac
+          echo "clean_dir=$CLEAN_DIR" >> $GITHUB_OUTPUT
 
       - name: Deploy to Production Web Server
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -95,7 +115,7 @@ jobs:
           server: ${{ steps.ftp-config.outputs.clean_server }}
           username: ${{ env.PROD_FTP_USERNAME }}
           password: ${{ env.PROD_FTP_PASSWORD }}
-          server-dir: ${{ env.PROD_REMOTE_DIR }}
+          server-dir: ${{ steps.ftp-config.outputs.clean_dir }}
           protocol: ftps
           port: 21
           security: loose
