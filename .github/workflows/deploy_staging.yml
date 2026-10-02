@@ -113,26 +113,24 @@ jobs:
               print(f"FTPS login successful as {user}!")
               print("Current working directory:", ftps.pwd())
               
-              # Ensure target directory exists
-              parts = [p for p in target_dir.strip('/').split('/') if p]
-              curr = ""
-              for part in parts:
-                  curr += "/" + part
-                  try:
-                      ftps.cwd(curr)
-                      print(f"Verified directory: {curr}")
-                  except Exception:
-                      print(f"Directory {curr} does not exist, creating...")
-                      ftps.mkd(curr)
-                      ftps.cwd(curr)
-                      print(f"Created and entered: {curr}")
+              print("Root directory contents:")
+              ftps.cwd('/')
+              lines = []
+              ftps.retrlines('LIST', lines.append)
+              for l in lines:
+                  print("  ROOT:", l)
               
-              print(f"Listing files in {target_dir}:")
-              ftps.dir()
+              # Also check if /new.vedavms.in exists
+              for candidate in ['/new.vedavms.in', '/public_html/new.vedavms.in', '/public_html/new']:
+                  try:
+                      ftps.cwd(candidate)
+                      print(f"Candidate directory exists: {candidate}")
+                  except Exception as ce:
+                      print(f"Candidate {candidate} error: {ce}")
+
               ftps.quit()
-              print("Pre-deployment FTP verification completed successfully.")
           except Exception as e:
-              print(f"::error::FTP connection/directory verification failed: {e}")
+              print(f"::error::FTP directory inspection failed: {e}")
               sys.exit(1)
           EOF
 
