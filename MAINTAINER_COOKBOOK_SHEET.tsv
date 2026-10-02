@@ -4,16 +4,15 @@ A quick recipe for maintainers who upload PDF documents and update the Google Sh
 📌 Note: This cookbook covers the everyday workflow. For the complete system architecture, one-time setup, or server credentials, see MAINTAINER_GUIDE.md.
 
 🍳 The 3-Step Recipe
-Step 1: Upload PDF in Plesk  ──>  Step 2: Copy Link from Browser  ──>  Step 3: Paste in Google Sheet
+Step 1: Upload PDF in Control Panel  ──>  Step 2: Copy Link from Browser  ──>  Step 3: Paste in Google Sheet
 
 Step 1: Upload the PDF File
-1. Log into Plesk: https://103.69.196.157:8443
-2. Go to Websites & Domains ➔ vedavms.in ➔ File Manager
-3. Open httpdocs ➔ docs ➔ open relevant folder (e.g. TU, sanskrit, Shiva-Stuti, etc.)
-4. Click the blue + (Upload) button and select your PDF file.
+1. Log into Web Hosting Control Panel: https://cp.controlpanel.systems (vedavms.in Control Panel)
+2. Open File Manager ➔ public_html ➔ docs ➔ open relevant folder (e.g. TU, sanskrit, Shiva-Stuti, TB, etc.)
+3. Click the Upload button and select your PDF file.
 
 Step 2: Get the Link (Zero Typing)
-1. Find your uploaded PDF in the Plesk file list.
+1. Find your uploaded PDF in the file list.
 2. Click the three-dots menu (...) on the right side of the row.
 3. Click "Open in Browser" (the PDF opens in a new browser tab).
 4. Click the browser address bar and copy the URL (Ctrl + C).
@@ -32,7 +31,7 @@ Corrections_URL	(Optional) Errata PDF link	(leave blank if none)
 Status	Set to Active or Hidden	Active
 
 📝 Updating an Existing Document (New Version / Errata)
-1. Upload the new PDF to Plesk and copy its URL (Steps 1 & 2 above).
+1. Upload the new PDF via Control Panel and copy its URL (Steps 1 & 2 above).
 2. In Google Sheets, find the existing row for that document.
 3. Update PDF_URL with the new link, and update Version (e.g. V1.1) and Date.
 4. If there is an errata sheet, paste its link into Corrections_URL.

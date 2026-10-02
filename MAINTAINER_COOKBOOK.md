@@ -8,14 +8,14 @@
 ## 🍳 The 3-Step Recipe
 
 ```
-Step 1: Upload PDF in Plesk  ──>  Step 2: Copy Link from Browser  ──>  Step 3: Paste in Google Sheet
+Step 1: Upload PDF in Control Panel  ──>  Step 2: Copy Link from Browser  ──>  Step 3: Paste in Google Sheet
 ```
 
 ---
 
 ### Step 1: Upload the PDF File
 
-1. Log into **cPanel** / Server File Manager (`https://vedavms.in:2083` or FTP).
+1. Log into the **Web Hosting Control Panel** at [https://cp.controlpanel.systems](https://cp.controlpanel.systems) with your credentials (takes you to the **vedavms.in Control Panel** / File Manager) or connect via FTP.
 2. Go to **File Manager** &rarr; **`public_html`** &rarr; **`docs`** &rarr; open the relevant folder (e.g. `TU`, `sanskrit`, `Shiva-Stuti`, `TB`, etc.).
 3. Click the **Upload** button and select your PDF file.
 
@@ -53,7 +53,7 @@ Open the [VedaVMS Google Sheet](https://docs.google.com/spreadsheets/d/1O-pBNmfE
 ## 📝 Updating an Existing Document
 
 If you are publishing a new edition or adding an errata/corrections PDF:
-1. Upload the new file to Plesk and copy its URL (Steps 1 & 2 above).
+1. Upload the new file via the Control Panel and copy its URL (Steps 1 & 2 above).
 2. In Google Sheets, find the existing row for that document:
    - Update **`PDF_URL`** with the new link.
    - Update **`Version`** (e.g. change `V1.0` &rarr; `V1.1`) and **`Date`**.

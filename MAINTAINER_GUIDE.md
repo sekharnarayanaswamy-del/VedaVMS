@@ -22,7 +22,7 @@ flowchart TD
     subgraph ContentLayer["📝 Content & Asset Management"]
         GS["Google Sheets<br/>(Master Metadata DB)"]
         GAS["Google Apps Script<br/>('🚀 VedaVMS' Menu)"]
-        PDF["Plesk File Manager<br/>(Uploads /docs/*.pdf)"]
+        PDF["Control Panel File Manager<br/>(Uploads /public_html/docs/*.pdf)"]
     end
 
     subgraph GitHubLayer["⚙️ GitHub CI/CD Automation"]
@@ -33,10 +33,10 @@ flowchart TD
         GEN["Static Generator<br/>(generate_documents.py)"]
     end
 
-    subgraph ServerLayer["🌐 Web Server (103.69.196.157)"]
-        IIS["Windows IIS / Plesk Hosting"]
-        STAGING["Staging Site Directory<br/>(/new.vedavms.in/)"]
-        PROD["Production Directory<br/>(/httpdocs/)"]
+    subgraph ServerLayer["🌐 Web Server (ftp.vedavms.in / 103.69.196.157)"]
+        IIS["Hosting Server"]
+        STAGING["Staging Site Directory<br/>(/public_html/new/)"]
+        PROD["Production Directory<br/>(/public_html/)"]
         BK["Automatic Backup Snapshots<br/>(backups/backup_production_*)"]
     end
 
@@ -80,12 +80,12 @@ flowchart TD
 ```
 
 ### Flow Summary
-1. **PDF Upload**: Maintainer uploads the PDF document using Plesk File Manager into the `/httpdocs/docs/` directory.
+1. **PDF Upload**: Maintainer logs into the Web Hosting Control Panel (`https://cp.controlpanel.systems`) and uploads the PDF document using File Manager into the `/public_html/docs/` directory.
 2. **Sheet Update**: Maintainer enters the document title, version, category, and PDF link into the Google Sheet.
 3. **One-Click Staging Trigger**: Maintainer clicks **`🚀 VedaVMS` ➔ `1. 🚀 Publish to Staging (new.vedavms.in)`** in Google Sheets.
-   - Google Apps Script calls GitHub Actions (`deploy_staging.yml`), builds the site from live CSV, uploads to `/new.vedavms.in/`, and logs the timestamp in cell **`J2`**.
+   - Google Apps Script calls GitHub Actions (`deploy_staging.yml`), builds the site from live CSV, uploads to `/public_html/new/`, and logs the timestamp in cell **`J2`**.
 4. **One-Click Production Promotion**: After reviewing staging, maintainer clicks **`🚀 VedaVMS` ➔ `2. 🌐 Push Staging to Production (vedavms.in)`**.
-   - Google Apps Script requests explicit confirmation, triggers `deploy_production.yml`, automatically captures a pre-deploy backup snapshot, updates `/httpdocs/`, and logs the timestamp in cell **`J3`**.
+   - Google Apps Script requests explicit confirmation, triggers `deploy_production.yml`, automatically captures a pre-deploy backup snapshot, updates `/public_html/`, and logs the timestamp in cell **`J3`**.
 5. **Laptop Developer / Admin Tools**: Technical maintainers can run `python scripts/deploy_site.py --staging`, `python scripts/deploy_site.py --production`, or instant rollback via `python scripts/deploy_site.py --rollback --production`.
 
 ---
@@ -207,12 +207,12 @@ Maintainers can publish changes directly from the Google Sheet without touching 
 1. Open the [VedaVMS Google Sheet](https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/).
 2. In the top menu, click **`🚀 VedaVMS`**:
    - **`1. 🚀 Publish to Staging (new.vedavms.in)`**:
-     - Deploys the latest sheet updates to the staging preview area (`/new.vedavms.in/`).
+     - Deploys the latest sheet updates to the staging preview area (`/public_html/new/`).
      - Shows live build progress in the spreadsheet.
      - Logs the completion timestamp in cell **`J2`** (IST).
    - **`2. 🌐 Push Staging to Production (vedavms.in)`**:
      - Requests explicit confirmation before modifying the live site.
-     - Promotes the build to the live production server (`/httpdocs/`).
+     - Promotes the build to the live production server (`/public_html/`).
      - Automatically creates a timestamped pre-deploy backup snapshot in `backups/`.
      - Logs the live production deployment timestamp in cell **`J3`** (IST).
    - **`3. 🔄 Check Last Run Status`**:
@@ -442,7 +442,7 @@ GitHub Secrets are encrypted key-value pairs stored securely within GitHub's inf
 
 #### Why We Use Them in VedaVMS
 1. **Public Repository Protection**: The VedaVMS repository is public. Hardcoding FTP passwords or server keys in code would expose them to the internet. Secrets allow the CI/CD pipeline to deploy securely without committing sensitive data.
-2. **Target Isolation**: By configuring secrets under the `staging` environment (`STAGING_FTP_SERVER`, `STAGING_FTP_USERNAME`, `STAGING_FTP_PASSWORD`, `STAGING_REMOTE_DIR`), we ensure that staging deployments are strictly isolated to `/new.vedavms.in/` and have zero permission or ability to overwrite the live production website (`/httpdocs/`).
+2. **Target Isolation**: By configuring secrets under the `staging` environment (`STAGING_FTP_SERVER`, `STAGING_FTP_USERNAME`, `STAGING_FTP_PASSWORD`, `STAGING_REMOTE_DIR`), we ensure that staging deployments are strictly isolated to `/public_html/new/` and have zero permission or ability to overwrite the live production website (`/public_html/`).
 
 ---
 
@@ -582,19 +582,21 @@ Use this checklist to complete the autonomous setup:
 
 ## 🔒 Server Configuration & Directory Paths
 
-The website files reside on the Windows IIS / Plesk hosting server at `103.69.196.157`:
+The website files reside on the Linux web hosting server (`ftp.vedavms.in` / `103.69.196.157`):
+
+- **Control Panel URL**: [https://cp.controlpanel.systems](https://cp.controlpanel.systems) &rarr; **vedavms.in Control Panel**
 
 | Environment | Web Root Folder | URL | Purpose |
 | :--- | :--- | :--- | :--- |
-| **Live Production** | `/httpdocs/` | `https://vedavms.in` | Main live website |
-| **Staging Preview** | `/new.vedavms.in/` | `https://new.vedavms.in` | Redesign testing & review area |
+| **Live Production** | `/public_html/` | `https://vedavms.in` | Main live website |
+| **Staging Preview** | `/public_html/new/` | `https://new.vedavms.in` | Redesign testing & review area |
 
 ### GitHub Secrets for Pipeline:
 Configure these in GitHub under **Settings > Secrets and variables > Actions**:
-- `STAGING_FTP_SERVER`: `103.69.196.157`
+- `STAGING_FTP_SERVER`: `ftp.vedavms.in`
 - `STAGING_FTP_USERNAME`: `vedavmsi`
 - `STAGING_FTP_PASSWORD`: `(your FTP password)`
-- `STAGING_REMOTE_DIR`: `/new.vedavms.in/`
+- `STAGING_REMOTE_DIR`: `/public_html/new/`
 
 ---
 
@@ -603,16 +605,16 @@ Configure these in GitHub under **Settings > Secrets and variables > Actions**:
 We provide a parameterized deployment script `scripts/deploy_site.py` that takes the target directory as a parameter, creates an automatic backup snapshot of existing remote files before overwriting, uploads `build/` files, and provides 1-click rollbacks:
 
 ```bash
-# 1. Deploy to Staging (new.vedavms.in at /new.vedavms.in)
+# 1. Deploy to Staging (new.vedavms.in at /public_html/new)
 python scripts/deploy_site.py --staging
 # or explicitly:
-python scripts/deploy_site.py --dir /new.vedavms.in
+python scripts/deploy_site.py --dir /public_html/new
 
-# 2. Promote to Live Production (vedavms.in at /httpdocs)
+# 2. Promote to Live Production (vedavms.in at /public_html)
 # Automatically creates a pre-deploy backup snapshot in backups/ before deploying!
 python scripts/deploy_site.py --production
 # or explicitly:
-python scripts/deploy_site.py --dir /httpdocs
+python scripts/deploy_site.py --dir /public_html
 
 # 3. Dry-run mode (preview which files would be deployed without modifying server)
 python scripts/deploy_site.py --production --dry-run
