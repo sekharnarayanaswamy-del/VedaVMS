@@ -92,9 +92,11 @@ jobs:
           # Sanitize remote directory path to guarantee leading and trailing slash
           RAW_DIR="${{ env.PROD_REMOTE_DIR }}"
           CLEAN_DIR=$(echo "$RAW_DIR" | tr -d '[:space:]"')
-          if [ -z "$CLEAN_DIR" ]; then
-            CLEAN_DIR="/public_html/"
-          fi
+          case "$CLEAN_DIR" in
+            ""|"/httpdocs"*|"httpdocs"*|*"/httpdocs"*)
+              CLEAN_DIR="/public_html/"
+              ;;
+          esac
           case "$CLEAN_DIR" in
             /*) ;;
             *) CLEAN_DIR="/$CLEAN_DIR" ;;
