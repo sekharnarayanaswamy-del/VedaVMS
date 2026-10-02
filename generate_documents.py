@@ -2108,6 +2108,65 @@ def generate_legacy_redirect_stubs(build_dir: str) -> list[str]:
 </body>
 </html>
 """
+    viewer_redirects = [
+        ("html_viewer.html", "viewer/html_viewer.html", "HTML Vedic Viewers Directory"),
+        ("taittiriya_upanishad_sanskrit.html", "viewer/taittiriya_upanishad_sanskrit.html", "Taittiriya Upanishad Sanskrit"),
+        ("udaka_shanti_anushangam_sanskrit.html", "viewer/udaka_shanti_anushangam_sanskrit.html", "Udaka Shanti Anushangam Sanskrit"),
+        ("udaka_shanti_sanskrit.html", "viewer/udaka_shanti_sanskrit.html", "Udaka Shanti Sanskrit"),
+        ("shanti_japam_sanskrit.html", "viewer/shanti_japam_sanskrit.html", "Shanti Japam Sanskrit"),
+        ("siva_stuti_sanskrit.html", "viewer/siva_stuti_sanskrit.html", "Siva Stuti Sanskrit"),
+    ]
+    viewer_template = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url={target}">
+  <link rel="canonical" href="https://vedavms.in/{target}">
+  <title>Redirecting to {title} - VedaVMS</title>
+  <script>
+    window.location.replace("{target}");
+  </script>
+  <style>
+    body {{
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #faf7f2;
+      color: #3b2a1a;
+      text-align: center;
+    }}
+    .redirect-card {{
+      background: white;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      max-width: 480px;
+    }}
+    a {{
+      color: #b33927;
+      text-decoration: underline;
+      font-weight: 600;
+    }}
+  </style>
+</head>
+<body>
+  <div class="redirect-card">
+    <h2>VedaVMS HTML Reader</h2>
+    <p>Redirecting to <strong>{title}</strong>...</p>
+    <p>If you are not redirected automatically, <a href="{target}">click here</a>.</p>
+  </div>
+</body>
+</html>
+"""
+    for src_file, target_url, v_title in viewer_redirects:
+        target_file = os.path.join(build_dir, src_file)
+        with open(target_file, "w", encoding="utf-8") as f:
+            f.write(viewer_template.format(target=target_url, title=v_title))
+        generated.append(src_file)
+
     for key, live_page, title, _ in LANGUAGES:
         target_file = os.path.join(build_dir, live_page)
         content = template.format(key=key, title=title)
@@ -2236,35 +2295,58 @@ def main() -> int:
         fh.write(page)
 
     # Generate dynamic index.html, articles.html, videos.html, and copy other companion pages
+    import shutil
     build_dir = os.path.dirname(os.path.abspath(args.out))
     mockup_dir = os.path.join(ROOT, "mockup")
     copied_pages = []
     if os.path.exists(mockup_dir):
-        for fname in os.listdir(mockup_dir):
-            if fname.endswith(".html") and fname != "documents.html":
-                src = os.path.join(mockup_dir, fname)
-                dst = os.path.join(build_dir, fname)
-                if fname == "index.html":
-                    num_updates = generate_index_html(src, dst, lang_sections, gen_time)
-                    copied_pages.append(f"index.html ({num_updates} recent updates < 3 mo)")
-                elif fname == "articles.html":
-                    num_articles = generate_articles_html(src, dst, lang_sections.get("articles", []), gen_time)
-                    copied_pages.append(f"articles.html ({num_articles} articles)")
-                elif fname == "videos.html":
-                    num_t, num_e = generate_videos_html(
-                        src, dst,
-                        lang_sections.get("videos_tamil", []),
-                        lang_sections.get("videos_english", []),
-                        gen_time
-                    )
-                    copied_pages.append(f"videos.html ({num_t} Tamil, {num_e} English)")
+        for root, dirs, files in os.walk(mockup_dir):
+            rel_dir = os.path.relpath(root, mockup_dir)
+            target_sub = build_dir if rel_dir == "." else os.path.join(build_dir, rel_dir)
+            os.makedirs(target_sub, exist_ok=True)
+
+            for fname in files:
+                src = os.path.join(root, fname)
+                dst = os.path.join(target_sub, fname)
+
+                if rel_dir == ".":
+                    if fname == "documents.html":
+                        continue
+                    elif fname == "index.html":
+                        num_updates = generate_index_html(src, dst, lang_sections, gen_time)
+                        copied_pages.append(f"index.html ({num_updates} recent updates < 3 mo)")
+                    elif fname == "articles.html":
+                        num_articles = generate_articles_html(src, dst, lang_sections.get("articles", []), gen_time)
+                        copied_pages.append(f"articles.html ({num_articles} articles)")
+                    elif fname == "videos.html":
+                        num_t, num_e = generate_videos_html(
+                            src, dst,
+                            lang_sections.get("videos_tamil", []),
+                            lang_sections.get("videos_english", []),
+                            gen_time
+                        )
+                        copied_pages.append(f"videos.html ({num_t} Tamil, {num_e} English)")
+                    elif fname.endswith(".html"):
+                        with open(src, "r", encoding="utf-8") as f_in:
+                            c_in = f_in.read()
+                        c_out = inject_footer_timestamp(c_in, gen_time)
+                        with open(dst, "w", encoding="utf-8") as f_out:
+                            f_out.write(c_out)
+                        copied_pages.append(fname)
+                    else:
+                        shutil.copy2(src, dst)
+                        copied_pages.append(fname)
                 else:
-                    with open(src, "r", encoding="utf-8") as f_in:
-                        c_in = f_in.read()
-                    c_out = inject_footer_timestamp(c_in, gen_time)
-                    with open(dst, "w", encoding="utf-8") as f_out:
-                        f_out.write(c_out)
-                    copied_pages.append(fname)
+                    if fname.endswith(".html"):
+                        with open(src, "r", encoding="utf-8") as f_in:
+                            c_in = f_in.read()
+                        c_out = inject_footer_timestamp(c_in, gen_time)
+                        with open(dst, "w", encoding="utf-8") as f_out:
+                            f_out.write(c_out)
+                        copied_pages.append(os.path.join(rel_dir, fname).replace("\\", "/"))
+                    else:
+                        shutil.copy2(src, dst)
+                        copied_pages.append(os.path.join(rel_dir, fname).replace("\\", "/"))
 
     # Generate legacy redirect stubs for all docs_*.html pages
     redirect_stubs = generate_legacy_redirect_stubs(build_dir)
