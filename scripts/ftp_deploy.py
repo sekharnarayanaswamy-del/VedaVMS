@@ -26,8 +26,17 @@ class ExplicitFTP_TLS(ftplib.FTP_TLS):
         return conn, size
 
 
-def connect_ftp(host, user, passwd, port=21, timeout=30):
+def connect_ftp(host, user, passwd, port=21, timeout=30, force_plain=False):
     """Attempt FTPS connection first, fallback to standard FTP if needed."""
+    if force_plain:
+        print(f"Connecting via standard FTP to {host}:{port} as {user} ...")
+        ftp = ftplib.FTP(timeout=timeout)
+        ftp.connect(host, port)
+        ftp.login(user, passwd)
+        ftp.set_pasv(True)
+        print("  Connected via standard FTP.")
+        return ftp
+
     print(f"Connecting to FTP server: {host}:{port} as {user} ...")
     try:
         ctx = ssl.create_default_context()
@@ -38,6 +47,7 @@ def connect_ftp(host, user, passwd, port=21, timeout=30):
         ftp.connect(host, port)
         ftp.login(user, passwd)
         ftp.prot_p()
+        ftp.set_pasv(True)
         print("  Connected securely via FTPS (Explicit TLS).")
         return ftp
     except Exception as e:
@@ -45,6 +55,7 @@ def connect_ftp(host, user, passwd, port=21, timeout=30):
         ftp = ftplib.FTP(timeout=timeout)
         ftp.connect(host, port)
         ftp.login(user, passwd)
+        ftp.set_pasv(True)
         print("  Connected via standard FTP.")
         return ftp
 
@@ -52,21 +63,27 @@ def connect_ftp(host, user, passwd, port=21, timeout=30):
 def ensure_remote_dir(ftp, remote_path):
     """Ensure remote path exists by traversing and creating folders recursively."""
     parts = [p for p in remote_path.strip("/").split("/") if p]
-    current = "/"
     ftp.cwd("/")
+    current = ""
     for part in parts:
-        current = f"{current}{part}/"
+        current = f"{current}/{part}"
         try:
             ftp.cwd(current)
-        except ftplib.error_perm:
-            print(f"  Directory '{current}' not found. Creating...")
+        except Exception:
+            print(f"  Directory '{current}' not found. Attempting to create...")
             try:
                 ftp.mkd(current)
                 ftp.cwd(current)
                 print(f"  Created '{current}' successfully.")
             except Exception as mkd_err:
-                print(f"  Error creating '{current}': {mkd_err}")
-                raise
+                print(f"  Notice on mkd('{current}'): {mkd_err}. Trying relative path '{part}'...")
+                try:
+                    ftp.mkd(part)
+                    ftp.cwd(part)
+                    print(f"  Created relative '{part}' successfully.")
+                except Exception as rel_err:
+                    print(f"  Could not create '{current}': {rel_err}")
+                    raise
 
 
 def upload_directory(ftp, local_dir, remote_dir):
@@ -83,10 +100,10 @@ def upload_directory(ftp, local_dir, remote_dir):
         ftp.cwd("/")
         root_items = []
         ftp.retrlines("LIST", root_items.append)
-        for item in root_items[:15]:
+        for item in root_items[:20]:
             print(f"  {item}")
-        if len(root_items) > 15:
-            print(f"  ... and {len(root_items) - 15} more items")
+        if len(root_items) > 20:
+            print(f"  ... and {len(root_items) - 20} more items")
     except Exception as list_err:
         print(f"  Could not list root directory: {list_err}")
 
@@ -138,14 +155,23 @@ def main():
         print("Error: FTP password is empty. Set FTP_PASSWORD environment variable or --password.")
         sys.exit(1)
 
-    ftp = connect_ftp(server, args.username, args.password, port=args.port)
     try:
+        ftp = connect_ftp(server, args.username, args.password, port=args.port)
         upload_directory(ftp, args.local_dir, args.server_dir)
-    finally:
         try:
             ftp.quit()
         except Exception:
             ftp.close()
+    except Exception as err:
+        print(f"\nFTPS upload encountered an issue: {err}. Retrying with plain FTP connection...")
+        ftp_plain = connect_ftp(server, args.username, args.password, port=args.port, force_plain=True)
+        try:
+            upload_directory(ftp_plain, args.local_dir, args.server_dir)
+        finally:
+            try:
+                ftp_plain.quit()
+            except Exception:
+                ftp_plain.close()
 
 
 if __name__ == "__main__":
