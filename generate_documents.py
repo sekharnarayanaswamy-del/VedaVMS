@@ -1844,7 +1844,51 @@ def render_recent_updates_html(months_data: list[dict]) -> str:
     return "\n".join(month_blocks)
 
 
-def generate_index_html(src_path: str, dst_path: str, lang_sections: dict[str, list[Section]]) -> int:
+def get_generation_timestamp() -> str:
+    """Return discreet generation timestamp formatted in IST."""
+    tz_ist = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
+    now = datetime.datetime.now(tz_ist)
+    return now.strftime("%d-%b-%Y %H:%M IST")
+
+
+def inject_footer_timestamp(html_text: str, timestamp_str: str) -> str:
+    """Inject or update a discreet generation timestamp in the footer."""
+    html_text = re.sub(r'\s*<div class="footer-meta"[^>]*>.*?</div>', '', html_text, flags=re.DOTALL)
+    meta_tag = f'<div class="footer-meta" style="margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.55;">Generated: {timestamp_str}</div>'
+
+    if re.search(r'<div class="footer-bottom"[^>]*>', html_text):
+        def _repl_fb(m):
+            body = m.group(1).rstrip()
+            closing = m.group(2)
+            return f"{body}\n            {meta_tag}\n        {closing}"
+        html_text = re.sub(
+            r'(<div class="footer-bottom"[^>]*>[\s\S]*?)(</div>)',
+            _repl_fb,
+            html_text,
+            count=1
+        )
+    elif re.search(r'<div style="[^"]*font-size:\s*0\.8rem[^"]*">[\s\S]*?&copy;[^\<]*</div>', html_text):
+        def _repl_copy(m):
+            body = m.group(1).rstrip()
+            closing = m.group(2)
+            return f"{body}\n            {meta_tag}\n        {closing}"
+        html_text = re.sub(
+            r'(<div style="[^"]*font-size:\s*0\.8rem[^"]*">[\s\S]*?&copy;[^\<]*)(</div>)',
+            _repl_copy,
+            html_text,
+            count=1
+        )
+    elif '</footer>' in html_text:
+        html_text = re.sub(
+            r'(</footer>)',
+            rf'        {meta_tag}\n\1',
+            html_text,
+            count=1
+        )
+    return html_text
+
+
+def generate_index_html(src_path: str, dst_path: str, lang_sections: dict[str, list[Section]], timestamp_str: str = "") -> int:
     with open(src_path, "r", encoding="utf-8") as fh:
         content = fh.read()
 
@@ -1871,13 +1915,16 @@ def generate_index_html(src_path: str, dst_path: str, lang_sections: dict[str, l
         )
         content = card_pattern.sub(rf'\g<1>{doc_count} documents\g<2>', content)
 
+    if timestamp_str:
+        content = inject_footer_timestamp(content, timestamp_str)
+
     with open(dst_path, "w", encoding="utf-8") as fh:
         fh.write(content)
 
     return total_updates
 
 
-def generate_articles_html(src_path: str, dst_path: str, article_sections: list[Section]) -> int:
+def generate_articles_html(src_path: str, dst_path: str, article_sections: list[Section], timestamp_str: str = "") -> int:
     with open(src_path, "r", encoding="utf-8") as fh:
         content = fh.read()
 
@@ -1888,6 +1935,8 @@ def generate_articles_html(src_path: str, dst_path: str, article_sections: list[
             docs.extend(sub.docs)
 
     if not docs:
+        if timestamp_str:
+            content = inject_footer_timestamp(content, timestamp_str)
         with open(dst_path, "w", encoding="utf-8") as fh:
             fh.write(content)
         return 0
@@ -1918,13 +1967,16 @@ def generate_articles_html(src_path: str, dst_path: str, article_sections: list[
     if pattern.search(content):
         content = pattern.sub(rf'\1\n{cards_html}\n        \3', content)
 
+    if timestamp_str:
+        content = inject_footer_timestamp(content, timestamp_str)
+
     with open(dst_path, "w", encoding="utf-8") as fh:
         fh.write(content)
 
     return len(docs)
 
 
-def generate_videos_html(src_path: str, dst_path: str, tamil_sections: list[Section], english_sections: list[Section]) -> tuple[int, int]:
+def generate_videos_html(src_path: str, dst_path: str, tamil_sections: list[Section], english_sections: list[Section], timestamp_str: str = "") -> tuple[int, int]:
     with open(src_path, "r", encoding="utf-8") as fh:
         content = fh.read()
 
@@ -1941,6 +1993,8 @@ def generate_videos_html(src_path: str, dst_path: str, tamil_sections: list[Sect
             english_docs.extend(sub.docs)
 
     if not tamil_docs and not english_docs:
+        if timestamp_str:
+            content = inject_footer_timestamp(content, timestamp_str)
         with open(dst_path, "w", encoding="utf-8") as fh:
             fh.write(content)
         return (0, 0)
@@ -1996,6 +2050,9 @@ def generate_videos_html(src_path: str, dst_path: str, tamil_sections: list[Sect
         e_pattern = re.compile(r'(<div id="english"[^>]*>.*?<div class="video-grid">)(.*?)(</div>\s*</div>)', re.DOTALL)
         if e_pattern.search(content):
             content = e_pattern.sub(rf'\1\n{e_html}\n            \3', content)
+
+    if timestamp_str:
+        content = inject_footer_timestamp(content, timestamp_str)
 
     with open(dst_path, "w", encoding="utf-8") as fh:
         fh.write(content)
@@ -2170,7 +2227,9 @@ def main() -> int:
         export_to_json(args.export_json, lang_sections)
         print(f"  exported {total} documents to JSON: {args.export_json}")
 
+    gen_time = get_generation_timestamp()
     page = harden_tab_switching(splice(template, rendered))
+    page = inject_footer_timestamp(page, gen_time)
 
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as fh:
@@ -2186,21 +2245,25 @@ def main() -> int:
                 src = os.path.join(mockup_dir, fname)
                 dst = os.path.join(build_dir, fname)
                 if fname == "index.html":
-                    num_updates = generate_index_html(src, dst, lang_sections)
+                    num_updates = generate_index_html(src, dst, lang_sections, gen_time)
                     copied_pages.append(f"index.html ({num_updates} recent updates < 3 mo)")
                 elif fname == "articles.html":
-                    num_articles = generate_articles_html(src, dst, lang_sections.get("articles", []))
+                    num_articles = generate_articles_html(src, dst, lang_sections.get("articles", []), gen_time)
                     copied_pages.append(f"articles.html ({num_articles} articles)")
                 elif fname == "videos.html":
                     num_t, num_e = generate_videos_html(
                         src, dst,
                         lang_sections.get("videos_tamil", []),
-                        lang_sections.get("videos_english", [])
+                        lang_sections.get("videos_english", []),
+                        gen_time
                     )
                     copied_pages.append(f"videos.html ({num_t} Tamil, {num_e} English)")
-                elif os.path.abspath(src) != os.path.abspath(dst):
-                    import shutil
-                    shutil.copy2(src, dst)
+                else:
+                    with open(src, "r", encoding="utf-8") as f_in:
+                        c_in = f_in.read()
+                    c_out = inject_footer_timestamp(c_in, gen_time)
+                    with open(dst, "w", encoding="utf-8") as f_out:
+                        f_out.write(c_out)
                     copied_pages.append(fname)
 
     # Generate legacy redirect stubs for all docs_*.html pages
