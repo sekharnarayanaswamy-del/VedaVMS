@@ -149,5 +149,74 @@ jobs:
           security: loose
           local-dir: ./build/
 
+      - name: Ensure Staging Web Permissions and Verify
+        env:
+          FTP_HOST: ${{ steps.ftp-config.outputs.clean_server }}
+          FTP_USER: ${{ env.STAGING_FTP_USERNAME }}
+          FTP_PASS: ${{ env.STAGING_FTP_PASSWORD }}
+          TARGET_DIR: ${{ steps.ftp-config.outputs.clean_dir }}
+        run: |
+          python - << 'EOF'
+          import ftplib, ssl, os, urllib.request
+
+          host = os.environ.get('FTP_HOST', 'ftp.vedavms.in')
+          user = os.environ.get('FTP_USER', 'vedavmsi')
+          pwd = os.environ.get('FTP_PASS', '')
+          target_dir = os.environ.get('TARGET_DIR', '/public_html/new/')
+
+          if pwd:
+              try:
+                  ftps = ftplib.FTP_TLS(timeout=20)
+                  ftps.connect(host, 21)
+                  ftps.auth()
+                  ftps.login(user, pwd)
+                  ftps.prot_p()
+                  
+                  def fix_perms(path):
+                      try:
+                          ftps.sendcmd(f"SITE CHMOD 755 {path}")
+                      except Exception as e:
+                          print(f"chmod 755 {path}: {e}")
+                      
+                      lines = []
+                      try:
+                          ftps.retrlines(f"LIST {path}", lines.append)
+                      except Exception:
+                          pass
+                      for line in lines:
+                          parts = line.split(maxsplit=8)
+                          if len(parts) >= 9:
+                              perms, name = parts[0], parts[8]
+                              if name in ['.', '..']:
+                                  continue
+                              item = f"{path.rstrip('/')}/{name}"
+                              if perms.startswith('d'):
+                                  fix_perms(item)
+                              else:
+                                  try:
+                                      ftps.sendcmd(f"SITE CHMOD 644 {item}")
+                                  except Exception as e:
+                                      print(f"chmod 644 {item}: {e}")
+
+                  print(f"Setting permissions on {target_dir}...")
+                  fix_perms(target_dir.rstrip('/'))
+                  ftps.quit()
+                  print("Permissions successfully updated.")
+              except Exception as e:
+                  print(f"Warning during permission fix: {e}")
+
+          # Verify live staging site
+          ctx = ssl.create_default_context()
+          ctx.check_hostname = False
+          ctx.verify_mode = ssl.CERT_NONE
+          for url in ['https://new.vedavms.in/index.html', 'https://new.vedavms.in/articles.html']:
+              try:
+                  req = urllib.request.Request(url, headers={'User-Agent': 'GitHub-Actions-CI'})
+                  with urllib.request.urlopen(req, timeout=10, context=ctx) as resp:
+                      print(f"::notice::Live Staging Verification: {url} -> HTTP {resp.getcode()} (length: {len(resp.read())})")
+              except Exception as err:
+                  print(f"::warning::Live Staging Verification for {url}: {err}")
+          EOF
+
 
 
