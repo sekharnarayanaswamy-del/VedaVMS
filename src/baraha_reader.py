@@ -987,6 +987,152 @@ Examples:
         print(f"[INFO] HTML Reader successfully generated: {out_html} ({os.path.getsize(out_html):,} bytes)")
 
 
+def extract_tb_sections(docx_path="data/baraha/TB 3.7-3.12 Baraha.docx"):
+    """Extract and split TB 3.7-3.12 paragraphs by prapāṭhaka."""
+    docx_path = Path(docx_path)
+    if not docx_path.exists():
+        for cand in [
+            Path("data/baraha") / docx_path,
+            Path(__file__).parent.parent / "data/baraha" / docx_path,
+            Path(__file__).parent.parent / docx_path,
+            Path(__file__).parent / docx_path
+        ]:
+            if cand.exists():
+                docx_path = cand
+                break
+
+    with zipfile.ZipFile(docx_path, 'r') as z:
+        doc_xml = z.read('word/document.xml')
+
+    root = ET.fromstring(doc_xml)
+    paras = []
+    for p in root.findall('.//w:p', DOCX_NS):
+        parts = []
+        for node in p.iter():
+            tag = node.tag.split('}')[-1] if '}' in node.tag else node.tag
+            if tag == 't' and node.text:
+                parts.append(node.text)
+            elif tag == 'tab':
+                parts.append('\t')
+        text = ''.join(parts).strip()
+        if text:
+            paras.append(text)
+
+    tb_map = {'3.7': [], '3.8': [], '3.9': [], '3.10': [], '3.11': [], '3.12': []}
+    cur = None
+    for p in paras:
+        if re.match(r'^3\.7\b', p) and 'prapAThaka' in p:
+            cur = '3.7'
+        elif re.match(r'^3\.8\b', p) and 'prapAThaka' in p:
+            cur = '3.8'
+        elif re.match(r'^3\.9\b', p) and 'prapAThaka' in p:
+            cur = '3.9'
+        elif re.match(r'^3\.10\b', p) and ('prapAThaka' in p or 'praSna' in p):
+            cur = '3.10'
+        elif re.match(r'^3\.11\b', p) and ('prapAThaka' in p or 'praSna' in p):
+            cur = '3.11'
+        elif re.match(r'^3\.12\b', p) and ('prapAThaka' in p or 'praSna' in p):
+            cur = '3.12'
+
+        if cur in tb_map:
+            tb_map[cur].append(p)
+
+    return tb_map
+
+
+def parse_tb_book_paras(raw_paras, book_prefix, main_title_deva, main_subtitle_deva):
+    """Parse segmented TB prapāṭhaka paragraphs into reader chapters and Anuvaka sections."""
+    chapters = []
+    
+    current_chapter = {
+        'num': 1,
+        'title_raw': main_title_deva,
+        'title_deva': f"1. {main_title_deva}",
+        'title_display_deva': f"1. {main_title_deva}",
+        'title_display_raw': f"1. {main_title_deva}",
+        'sections': []
+    }
+    chapters.append(current_chapter)
+
+    current_section = None
+    anuvaka_re = re.compile(rf'^{re.escape(book_prefix)}\.(\d+)(?!\.\d+)\s*(?:anuvAka[mM]\s*\d+\s*[-–:]?\s*)?(.*)', re.I)
+    tb_num_re = re.compile(rf'^(?:T\.B\.)?{re.escape(book_prefix)}\.\d+\.\d+', re.I)
+
+    for p in raw_paras:
+        if re.match(rf'^{re.escape(book_prefix)}\s+taittirIya', p, re.I):
+            continue
+        
+        if tb_num_re.match(p):
+            if current_section:
+                current_section['content_raw'].append(p)
+                current_section['content_deva'].append(p)
+            continue
+
+        an_m = anuvaka_re.match(p)
+        if an_m and not re.search(r'[q#$|]', p):
+            an_num = an_m.group(1)
+            raw_title = an_m.group(2).strip()
+            
+            if raw_title:
+                deva_title = baraha_to_devanagari(raw_title)
+                deva_title = re.sub(r'^[-–:\s]+', '', deva_title).strip()
+                display_title = f"{book_prefix}.{an_num} {deva_title}"
+            else:
+                display_title = f"{book_prefix}.{an_num} अनुवाकम् {an_num}"
+
+            current_section = {
+                'num': f"{book_prefix}.{an_num}",
+                'title_raw': raw_title or f"anuvAkaM {an_num}",
+                'title_deva': display_title,
+                'ta_code': f"T.B. {book_prefix}.{an_num}",
+                'content_raw': [],
+                'content_deva': []
+            }
+            current_chapter['sections'].append(current_section)
+            continue
+
+        if 'prapATaka kOrvai' in p.lower() or 'prapaataka kOrvai' in p.lower():
+            korvai_title = f"{book_prefix} प्रपाठक कोर्वै"
+            current_section = {
+                'num': f"{book_prefix}.K",
+                'title_raw': p,
+                'title_deva': korvai_title,
+                'ta_code': '',
+                'content_raw': [p],
+                'content_deva': [baraha_to_devanagari(p)]
+            }
+            current_chapter['sections'].append(current_section)
+            continue
+
+        if 'samAptaH' in p or 'samAptam' in p:
+            if current_section:
+                current_section['content_raw'].append(p)
+                current_section['content_deva'].append(baraha_to_devanagari(p))
+            continue
+
+        if current_section is None:
+            if not current_chapter['sections']:
+                current_section = {
+                    'num': f"{book_prefix}.0",
+                    'title_raw': 'Introduction',
+                    'title_deva': f"{book_prefix}.0 उपोद्घातः",
+                    'ta_code': '',
+                    'content_raw': [p],
+                    'content_deva': [baraha_to_devanagari(p)],
+                    'is_intro': True
+                }
+                current_chapter['sections'].append(current_section)
+            else:
+                current_chapter['sections'][-1]['content_raw'].append(p)
+                current_chapter['sections'][-1]['content_deva'].append(baraha_to_devanagari(p))
+        else:
+            current_section['content_raw'].append(p)
+            current_section['content_deva'].append(baraha_to_devanagari(p))
+
+    return chapters
+
+
 if __name__ == '__main__':
     main()
+
 

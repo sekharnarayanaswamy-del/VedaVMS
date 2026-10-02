@@ -2522,12 +2522,23 @@ def build_book(book_id: str, config: dict, input_override: str = None, output_ov
     print(f"\n--- Building '{book_id}' ---")
     print(f"Loading DOCX: {input_file}")
 
-    try:
-        from .baraha_reader import parse_baraha_docx_to_ast, ast_to_reader_chapters
-    except ImportError:
-        from baraha_reader import parse_baraha_docx_to_ast, ast_to_reader_chapters
-    ast_data, _ = parse_baraha_docx_to_ast(input_file, title=book_meta.get("title_sanskrit"))
-    chapters = ast_to_reader_chapters(ast_data)
+    if book_id.startswith("tb_"):
+        try:
+            from .baraha_reader import extract_tb_sections, parse_tb_book_paras
+        except ImportError:
+            from baraha_reader import extract_tb_sections, parse_tb_book_paras
+        
+        prefix = "3.7" if "3_7" in book_id else ("3.8" if "3_8" in book_id else ("3.9" if "3_9" in book_id else "3.7"))
+        tb_map = extract_tb_sections(input_file)
+        raw_paras = tb_map.get(prefix, [])
+        chapters = parse_tb_book_paras(raw_paras, prefix, book_meta.get("title_sanskrit", ""), book_meta.get("subtitle", ""))
+    else:
+        try:
+            from .baraha_reader import parse_baraha_docx_to_ast, ast_to_reader_chapters
+        except ImportError:
+            from baraha_reader import parse_baraha_docx_to_ast, ast_to_reader_chapters
+        ast_data, _ = parse_baraha_docx_to_ast(input_file, title=book_meta.get("title_sanskrit"))
+        chapters = ast_to_reader_chapters(ast_data)
 
     print(f"Extracted {len(chapters)} chapters:")
     for ch in chapters:
