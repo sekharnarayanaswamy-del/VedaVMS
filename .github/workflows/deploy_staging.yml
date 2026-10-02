@@ -83,18 +83,15 @@ jobs:
           esac
           echo "clean_dir=$CLEAN_DIR" >> $GITHUB_OUTPUT
 
-      - name: Deploy to Staging Web Server (FTP / SFTP)
+      - name: Deploy to Staging Web Server (FTP / FTPS)
         if: env.STAGING_FTP_PASSWORD != ''
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ steps.ftp-config.outputs.clean_server }}
-          username: ${{ env.STAGING_FTP_USERNAME }}
-          password: ${{ env.STAGING_FTP_PASSWORD }}
-          server-dir: ${{ steps.ftp-config.outputs.clean_dir }}
-          protocol: ftps
-          port: 21
-          security: loose
-          local-dir: ./build/
+        run: |
+          python scripts/ftp_deploy.py \
+            --server "${{ steps.ftp-config.outputs.clean_server }}" \
+            --username "${{ env.STAGING_FTP_USERNAME }}" \
+            --password "${{ env.STAGING_FTP_PASSWORD }}" \
+            --server-dir "${{ steps.ftp-config.outputs.clean_dir }}" \
+            --local-dir "./build/"
 
 
 
