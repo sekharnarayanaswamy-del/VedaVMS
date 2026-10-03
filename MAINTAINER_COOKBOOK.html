@@ -303,7 +303,7 @@ pre code {
 </style>
 
 <style>
-/*
+﻿/*
  * Markdown PDF CSS
  */
 
@@ -342,7 +342,7 @@ code {
 
 /* for inline code */
 :not(pre):not(.hljs) > code {
-	color: #C9AE75; /* Change the old color so it seems less like an error */
+	color: #1f2328; background-color: #f3f4f6; padding: 2px 5px; border-radius: 3px; /* Change the old color so it seems less like an error */
 	font-size: inherit;
 }
 
@@ -352,8 +352,56 @@ code {
 	page-break-after: always;
 }
 
-</style>
 
+
+
+
+
+/* Table layout & automatic wrapping */
+table {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 1em 0 !important;
+    table-layout: auto !important;
+}
+
+th, td {
+    padding: 6px 8px !important;
+    vertical-align: top !important;
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+}
+
+/* First column (labels/steps) must never wrap letters vertically */
+th:first-child, td:first-child {
+    white-space: nowrap !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    width: 1% !important;
+    font-weight: 600 !important;
+}
+
+/* Other columns wrap long text cleanly */
+th:not(:first-child), td:not(:first-child) {
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+    color: #1f2328 !important;
+    background-color: #f3f4f6 !important;
+    padding: 2px 4px !important;
+    border-radius: 3px !important;
+    font-size: 10.5px !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    overflow-wrap: anywhere !important;
+}
+
+</style>
+<link rel="stylesheet" href="file:///c%3A/Users/sekha/OneDrive/Documents/GitHub/vedavms/.vscode/markdown-pdf.css" type="text/css">
 <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
 </head>
 <body>
@@ -372,15 +420,14 @@ code {
 </blockquote>
 <hr>
 <h2 id="%F0%9F%8D%B3-the-3-step-recipe">🍳 The 3-Step Recipe</h2>
-<pre class="hljs"><code><div>Step 1: Upload PDF in Plesk  ──&gt;  Step 2: Copy Link from Browser  ──&gt;  Step 3: Paste in Google Sheet
+<pre class="hljs"><code><div>Step 1: Upload PDF in Control Panel  ──&gt;  Step 2: Copy Link from Browser  ──&gt;  Step 3: Paste in Google Sheet
 </div></code></pre>
 <hr>
 <h3 id="step-1-upload-the-pdf-file">Step 1: Upload the PDF File</h3>
 <ol>
-<li>Log into <strong>Plesk</strong> (<code>https://103.69.196.157:8443</code>).</li>
-<li>Go to <strong>Websites &amp; Domains</strong> → <strong>vedavms.in</strong> → <strong>File Manager</strong>.</li>
-<li>Open <strong><code>httpdocs</code></strong> → <strong><code>docs</code></strong> → open the relevant folder (e.g. <code>TU</code>, <code>sanskrit</code>, <code>Shiva-Stuti</code>, etc.).</li>
-<li>Click the blue <strong>+ (Upload)</strong> button and select your PDF file.</li>
+<li>Log into the <strong>Web Hosting Control Panel</strong> at <a href="https://cp.controlpanel.systems">https://cp.controlpanel.systems</a> with your credentials (takes you to the <strong>vedavms.in Control Panel</strong> / File Manager) or connect via FTP.</li>
+<li>Go to <strong>File Manager</strong> → <strong><code>public_html</code></strong> → <strong><code>docs</code></strong> → open the relevant folder (e.g. <code>TU</code>, <code>sanskrit</code>, <code>Shiva-Stuti</code>, <code>TB</code>, etc.).</li>
+<li>Click the <strong>Upload</strong> button and select your PDF file.</li>
 </ol>
 <hr>
 <h3 id="step-2-get-the-link-zero-typing">Step 2: Get the Link (Zero Typing)</h3>
@@ -450,7 +497,7 @@ code {
 <h2 id="%F0%9F%93%9D-updating-an-existing-document">📝 Updating an Existing Document</h2>
 <p>If you are publishing a new edition or adding an errata/corrections PDF:</p>
 <ol>
-<li>Upload the new file to Plesk and copy its URL (Steps 1 &amp; 2 above).</li>
+<li>Upload the new file via the Control Panel and copy its URL (Steps 1 &amp; 2 above).</li>
 <li>In Google Sheets, find the existing row for that document:
 <ul>
 <li>Update <strong><code>PDF_URL</code></strong> with the new link.</li>
@@ -494,9 +541,9 @@ code {
 <li><strong>From GitHub Actions</strong>: Go to <strong>Actions</strong> ➔ select <strong>Deploy to Staging</strong> or <strong>Deploy to Production</strong> ➔ click <strong>Run workflow</strong>.</li>
 <li><strong>From Laptop / CLI</strong>: Run <code>python scripts/deploy_site.py --staging</code> or <code>python scripts/deploy_site.py --production</code> (with instant rollback via <code>python scripts/deploy_site.py --rollback --production</code>).</li>
 </ul>
-<h3 id="6-recent-updates-rolling-90-day-window">6. Recent Updates Rolling 90-Day Window</h3>
+<h3 id="6-recent-updates-rolling-window">6. Recent Updates Rolling Window</h3>
 <ul>
-<li>The <strong>Recent Updates</strong> feed automatically shows documents released in the last 90 days.</li>
+<li>The <strong>Recent Updates</strong> feed automatically shows documents released in the last 90 days as well as documents with future release dates.</li>
 <li>Because VedaVMS is a static site, this rolling window is computed when the site is <strong>built &amp; published</strong>. Deploying updates (via Google Sheets or GitHub) automatically refreshes the window for the current date.</li>
 </ul>
 

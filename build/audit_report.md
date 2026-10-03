@@ -1,6 +1,6 @@
 # VedaVMS Post-Generation TOC Audit Report
 
-> **Generated at**: `02-10-2026 23:32:10`
+> **Generated at**: `03-10-2026 16:22:03`
 
 ## Summary
 
@@ -23,8 +23,8 @@
 
 - **HTML Document**: [`build\viewer\taittiriya_upanishad_sanskrit.html`](taittiriya_upanishad_sanskrit.html)
 - **Reference PDF**: `data\pdf\Taittiriya Upanishad Sanskrit.pdf`
-- **Generated At**: `23-09-2026 22:20:34`
-- **HTML File Size**: `1,132,866 bytes`
+- **Generated At**: `03-10-2026 16:21:43`
+- **HTML File Size**: `1,132,833 bytes`
 - **Chapters**: PDF: `6`, HTML: `6`
 - **Subsections**: PDF: `106`, HTML: `106`
 
@@ -35,8 +35,8 @@
 
 - **HTML Document**: [`build\viewer\udaka_shanti_sanskrit.html`](udaka_shanti_sanskrit.html)
 - **Reference PDF**: `data\pdf\Udaka Shanti Sanskrit.pdf`
-- **Generated At**: `20-09-2026 17:55:29`
-- **HTML File Size**: `799,885 bytes`
+- **Generated At**: `03-10-2026 16:21:44`
+- **HTML File Size**: `799,852 bytes`
 - **Chapters**: PDF: `1`, HTML: `1`
 - **Subsections**: PDF: `40`, HTML: `40`
 
@@ -47,8 +47,8 @@
 
 - **HTML Document**: [`build\viewer\shanti_japam_sanskrit.html`](shanti_japam_sanskrit.html)
 - **Reference PDF**: `data\pdf\Shanti Japam Sanskrit.pdf`
-- **Generated At**: `20-09-2026 17:55:30`
-- **HTML File Size**: `1,406,392 bytes`
+- **Generated At**: `03-10-2026 16:21:45`
+- **HTML File Size**: `1,406,359 bytes`
 - **Chapters**: PDF: `40`, HTML: `40`
 - **Subsections**: PDF: `42`, HTML: `82`
 
@@ -63,8 +63,8 @@
 
 - **HTML Document**: [`build\viewer\siva_stuti_sanskrit.html`](siva_stuti_sanskrit.html)
 - **Reference PDF**: `data\pdf\Siva Stuti Sanskrit.pdf`
-- **Generated At**: `20-09-2026 17:55:32`
-- **HTML File Size**: `2,174,126 bytes`
+- **Generated At**: `03-10-2026 16:21:49`
+- **HTML File Size**: `2,174,093 bytes`
 - **Chapters**: PDF: `22`, HTML: `22`
 - **Subsections**: PDF: `232`, HTML: `232`
 
@@ -75,8 +75,8 @@
 
 - **HTML Document**: [`build\viewer\udaka_shanti_anushangam_sanskrit.html`](udaka_shanti_anushangam_sanskrit.html)
 - **Reference PDF**: `data\pdf\Udaka Shanti Sanskrit ASCT.pdf`
-- **Generated At**: `20-09-2026 17:55:33`
-- **HTML File Size**: `823,341 bytes`
+- **Generated At**: `03-10-2026 16:21:50`
+- **HTML File Size**: `823,308 bytes`
 - **Chapters**: PDF: `1`, HTML: `1`
 - **Subsections**: PDF: `41`, HTML: `41`
 
@@ -87,7 +87,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_7_achidram_sanskrit.html`](tb_3_7_achidram_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `02-10-2026 23:32:07`
+- **Generated At**: `03-10-2026 16:21:52`
 - **HTML File Size**: `522,883 bytes`
 - **Chapters**: PDF: `0`, HTML: `1`
 - **Subsections**: PDF: `96`, HTML: `15`
@@ -102,8 +102,8 @@
 
 - **HTML Document**: [`build\viewer\tb_3_8_aswamedham_vaiswadevam_sanskrit.html`](tb_3_8_aswamedham_vaiswadevam_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `02-10-2026 23:20:58`
-- **HTML File Size**: `416,782 bytes`
+- **Generated At**: `03-10-2026 16:21:54`
+- **HTML File Size**: `416,749 bytes`
 - **Chapters**: PDF: `0`, HTML: `1`
 - **Subsections**: PDF: `96`, HTML: `24`
 
@@ -117,8 +117,8 @@
 
 - **HTML Document**: [`build\viewer\tb_3_9_aswamedham_havirdhanam_sanskrit.html`](tb_3_9_aswamedham_havirdhanam_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `02-10-2026 23:20:59`
-- **HTML File Size**: `390,621 bytes`
+- **Generated At**: `03-10-2026 16:21:56`
+- **HTML File Size**: `390,588 bytes`
 - **Chapters**: PDF: `0`, HTML: `1`
 - **Subsections**: PDF: `96`, HTML: `24`
 
