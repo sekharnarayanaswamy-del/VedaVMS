@@ -2108,65 +2108,6 @@ def generate_legacy_redirect_stubs(build_dir: str) -> list[str]:
 </body>
 </html>
 """
-    viewer_redirects = [
-        ("html_viewer.html", "viewer/html_viewer.html", "HTML Vedic Viewers Directory"),
-        ("taittiriya_upanishad_sanskrit.html", "viewer/taittiriya_upanishad_sanskrit.html", "Taittiriya Upanishad Sanskrit"),
-        ("udaka_shanti_anushangam_sanskrit.html", "viewer/udaka_shanti_anushangam_sanskrit.html", "Udaka Shanti Anushangam Sanskrit"),
-        ("udaka_shanti_sanskrit.html", "viewer/udaka_shanti_sanskrit.html", "Udaka Shanti Sanskrit"),
-        ("shanti_japam_sanskrit.html", "viewer/shanti_japam_sanskrit.html", "Shanti Japam Sanskrit"),
-        ("siva_stuti_sanskrit.html", "viewer/siva_stuti_sanskrit.html", "Siva Stuti Sanskrit"),
-    ]
-    viewer_template = """<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url={target}">
-  <link rel="canonical" href="https://vedavms.in/{target}">
-  <title>Redirecting to {title} - VedaVMS</title>
-  <script>
-    window.location.replace("{target}");
-  </script>
-  <style>
-    body {{
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background: #faf7f2;
-      color: #3b2a1a;
-      text-align: center;
-    }}
-    .redirect-card {{
-      background: white;
-      padding: 2.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-      max-width: 480px;
-    }}
-    a {{
-      color: #b33927;
-      text-decoration: underline;
-      font-weight: 600;
-    }}
-  </style>
-</head>
-<body>
-  <div class="redirect-card">
-    <h2>VedaVMS HTML Reader</h2>
-    <p>Redirecting to <strong>{title}</strong>...</p>
-    <p>If you are not redirected automatically, <a href="{target}">click here</a>.</p>
-  </div>
-</body>
-</html>
-"""
-    for src_file, target_url, v_title in viewer_redirects:
-        target_file = os.path.join(build_dir, src_file)
-        with open(target_file, "w", encoding="utf-8") as f:
-            f.write(viewer_template.format(target=target_url, title=v_title))
-        generated.append(src_file)
-
     for key, live_page, title, _ in LANGUAGES:
         target_file = os.path.join(build_dir, live_page)
         content = template.format(key=key, title=title)
