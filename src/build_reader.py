@@ -253,7 +253,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
     <style>
         @font-face {{
             font-family: 'AdishilaVedic';
-            src: local('AdishilaVedic'), url('fonts/AdishilaVedic.ttf') format('truetype');
+            src: local('AdishilaVedic'), url('fonts/AdishilaVedic.ttf') format('truetype'), url('../fonts/AdishilaVedic.ttf') format('truetype'), url('/fonts/AdishilaVedic.ttf') format('truetype');
             font-weight: 400 500;
             font-style: normal;
             font-display: swap;
@@ -261,7 +261,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
         @font-face {{
             font-family: 'AdishilaVedic';
-            src: local('AdishilaVedicBold'), local('AdishilaVedic-Bold'), url('fonts/AdishilaVedicBold.ttf') format('truetype');
+            src: local('AdishilaVedicBold'), local('AdishilaVedic-Bold'), url('fonts/AdishilaVedicBold.ttf') format('truetype'), url('../fonts/AdishilaVedicBold.ttf') format('truetype'), url('/fonts/AdishilaVedicBold.ttf') format('truetype');
             font-weight: 600 700;
             font-style: normal;
             font-display: swap;
@@ -269,7 +269,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
         @font-face {{
             font-family: 'Adishila San';
-            src: local('Adishila San'), url('fonts/AdishilaSan.ttf') format('truetype');
+            src: local('Adishila San'), url('fonts/AdishilaSan.ttf') format('truetype'), url('../fonts/AdishilaSan.ttf') format('truetype'), url('/fonts/AdishilaSan.ttf') format('truetype');
             font-weight: 400 500;
             font-style: normal;
             font-display: swap;
@@ -277,7 +277,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
         @font-face {{
             font-family: 'Adishila San';
-            src: local('Adishila San Bold'), local('AdishilaSan-Bold'), url('fonts/AdishilaSanBoldB.ttf') format('truetype');
+            src: local('Adishila San Bold'), local('AdishilaSan-Bold'), url('fonts/AdishilaSanBoldB.ttf') format('truetype'), url('../fonts/AdishilaSanBoldB.ttf') format('truetype'), url('/fonts/AdishilaSanBoldB.ttf') format('truetype');
             font-weight: 600 700;
             font-style: normal;
             font-display: swap;
@@ -285,7 +285,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
         @font-face {{
             font-family: 'Adishila San';
-            src: local('Adishila San Italic'), local('AdishilaSan-Italic'), url('fonts/AdishilaSanItalic.ttf') format('truetype');
+            src: local('Adishila San Italic'), local('AdishilaSan-Italic'), url('fonts/AdishilaSanItalic.ttf') format('truetype'), url('../fonts/AdishilaSanItalic.ttf') format('truetype'), url('/fonts/AdishilaSanItalic.ttf') format('truetype');
             font-weight: 400 500;
             font-style: italic;
             font-display: swap;
@@ -293,7 +293,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
         @font-face {{
             font-family: 'Adishila San';
-            src: local('Adishila San Bold Italic'), local('AdishilaSan-BoldItalic'), url('fonts/AdishilaSanBoldItalic.ttf') format('truetype');
+            src: local('Adishila San Bold Italic'), local('AdishilaSan-BoldItalic'), url('fonts/AdishilaSanBoldItalic.ttf') format('truetype'), url('../fonts/AdishilaSanBoldItalic.ttf') format('truetype'), url('/fonts/AdishilaSanBoldItalic.ttf') format('truetype');
             font-weight: 600 700;
             font-style: italic;
             font-display: swap;
@@ -316,8 +316,8 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             --anudatta-bottom: -0.25em;
             --accent-offset: -0.10em;
             --visarga-offset: -0.35em;
-            --accent-font: 'AdishilaVedic', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
-            --verse-font: 'Noto Serif Devanagari', 'Adishila San', 'Tiro Devanagari Sanskrit', serif;
+            --accent-font: 'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
+            --verse-font: 'Adishila San', 'AdishilaVedic', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
             --verse-weight: 500;
         }}
 

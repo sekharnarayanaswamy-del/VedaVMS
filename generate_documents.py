@@ -2299,6 +2299,15 @@ def main() -> int:
     if os.path.exists(csv_src):
         shutil.copy2(csv_src, os.path.join(build_dir, "vedavms_documents.csv"))
 
+    # Copy Vedic web fonts to build/fonts/ and build/viewer/fonts/
+    fonts_src = os.path.join(ROOT, "fonts")
+    if os.path.exists(fonts_src):
+        for target_fonts_dir in [os.path.join(build_dir, "fonts"), os.path.join(build_dir, "viewer", "fonts")]:
+            os.makedirs(target_fonts_dir, exist_ok=True)
+            for f in os.listdir(fonts_src):
+                if f.endswith(".ttf"):
+                    shutil.copy2(os.path.join(fonts_src, f), os.path.join(target_fonts_dir, f))
+
     unique = sorted(set(all_urls))
     print(f"\n  {total} documents, {len(unique)} unique PDF links")
     print(f"  wrote {os.path.relpath(args.out, ROOT)}")

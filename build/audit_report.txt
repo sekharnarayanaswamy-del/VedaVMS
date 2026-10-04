@@ -2,8 +2,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\taittiriya_upanishad_sanskrit.html
-  Generated At     : 03-10-2026 23:07:25
-  HTML File Size   : 1,132,833 bytes
+  Generated At     : 04-10-2026 06:21:45
+  HTML File Size   : 1,133,536 bytes
   Reference PDF    : data\pdf\Taittiriya Upanishad Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 6
@@ -18,8 +18,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\udaka_shanti_sanskrit.html
-  Generated At     : 03-10-2026 23:07:25
-  HTML File Size   : 799,852 bytes
+  Generated At     : 04-10-2026 06:21:49
+  HTML File Size   : 800,555 bytes
   Reference PDF    : data\pdf\Udaka Shanti Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 1
@@ -34,8 +34,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\shanti_japam_sanskrit.html
-  Generated At     : 03-10-2026 23:07:26
-  HTML File Size   : 1,406,359 bytes
+  Generated At     : 04-10-2026 06:21:51
+  HTML File Size   : 1,407,062 bytes
   Reference PDF    : data\pdf\Shanti Japam Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 40
@@ -53,8 +53,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\siva_stuti_sanskrit.html
-  Generated At     : 03-10-2026 23:07:30
-  HTML File Size   : 2,174,093 bytes
+  Generated At     : 04-10-2026 06:21:55
+  HTML File Size   : 2,174,796 bytes
   Reference PDF    : data\pdf\Siva Stuti Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 22
@@ -69,8 +69,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\udaka_shanti_anushangam_sanskrit.html
-  Generated At     : 03-10-2026 23:07:32
-  HTML File Size   : 823,308 bytes
+  Generated At     : 04-10-2026 06:21:57
+  HTML File Size   : 824,011 bytes
   Reference PDF    : data\pdf\Udaka Shanti Sanskrit ASCT.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 1
@@ -85,8 +85,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✗ FAIL]
 ======================================================================
   HTML Document    : build\viewer\tb_3_7_achidram_sanskrit.html
-  Generated At     : 03-10-2026 23:07:33
-  HTML File Size   : 526,149 bytes
+  Generated At     : 04-10-2026 06:21:58
+  HTML File Size   : 526,852 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 0
@@ -104,8 +104,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✗ FAIL]
 ======================================================================
   HTML Document    : build\viewer\tb_3_8_aswamedham_vaiswadevam_sanskrit.html
-  Generated At     : 03-10-2026 23:07:35
-  HTML File Size   : 426,127 bytes
+  Generated At     : 04-10-2026 06:22:00
+  HTML File Size   : 426,830 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 0
@@ -123,8 +123,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✗ FAIL]
 ======================================================================
   HTML Document    : build\viewer\tb_3_9_aswamedham_havirdhanam_sanskrit.html
-  Generated At     : 03-10-2026 23:07:36
-  HTML File Size   : 397,243 bytes
+  Generated At     : 04-10-2026 06:22:02
+  HTML File Size   : 397,946 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 0
