@@ -6,6 +6,11 @@ on:
       - main
   workflow_dispatch:
     inputs:
+      catalog_version:
+        description: 'Catalog Semantic Version (e.g. 2.5.1, leave empty to use data/version.txt)'
+        required: false
+        default: ''
+        type: string
       target_dir:
         description: 'Target Remote Directory on Web Server'
         required: true
@@ -18,6 +23,9 @@ on:
         type: string
   repository_dispatch:
     types: [deploy_production, google_sheet_production_deploy]
+
+permissions:
+  contents: write
 
 jobs:
   promote-to-production:
@@ -40,6 +48,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -58,19 +68,33 @@ jobs:
           echo "FTP credentials and host verified (${{ env.PROD_FTP_SERVER }})."
 
       - name: Generate Website Bundle
+        id: generate-site
         env:
+          INPUT_URL: ${{ github.event.inputs.google_sheet_csv_url }}
+          INPUT_VERSION: ${{ github.event.inputs.catalog_version || github.event.client_payload.catalog_version }}
           SECRET_URL: ${{ secrets.GOOGLE_SHEET_CSV_URL }}
           VAR_URL: ${{ vars.GOOGLE_SHEET_CSV_URL }}
         run: |
           if [ -n "$SECRET_URL" ]; then
             SHEET_URL="$SECRET_URL"
+          elif [ -n "$INPUT_URL" ]; then
+            SHEET_URL="$INPUT_URL"
           elif [ -n "$VAR_URL" ]; then
             SHEET_URL="$VAR_URL"
           else
             SHEET_URL="data/vedavms_documents.csv"
           fi
-          echo "Generating website from: $SHEET_URL"
-          python generate_documents.py --source-csv "$SHEET_URL"
+          
+          VER_ARG=""
+          if [ -n "$INPUT_VERSION" ]; then
+            VER_ARG="--catalog-version $INPUT_VERSION"
+          fi
+          
+          echo "Generating website from: $SHEET_URL (version: ${INPUT_VERSION:-auto})"
+          python generate_documents.py --source-csv "$SHEET_URL" $VER_ARG
+          
+          CURR_VER=$(tr -d ' \r\n' < data/version.txt 2>/dev/null || echo "2.5.0")
+          echo "current_version=$CURR_VER" >> $GITHUB_OUTPUT
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
@@ -118,3 +142,24 @@ jobs:
           port: 21
           security: loose
           local-dir: ./build/
+
+      - name: Tag Release & Update Version in Git
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CATALOG_VER: ${{ steps.generate-site.outputs.current_version }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          if [ -n "$(git status --porcelain data/version.txt)" ]; then
+            git add data/version.txt
+            git commit -m "chore(release): bump catalog version to v$CATALOG_VER [skip ci]"
+            git push origin main || true
+          fi
+          
+          TAG_NAME="v$CATALOG_VER"
+          if ! git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            git tag -a "$TAG_NAME" -m "Production Release $TAG_NAME"
+            git push origin "$TAG_NAME" || true
+            echo "Created git tag: $TAG_NAME"
+          fi

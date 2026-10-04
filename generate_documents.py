@@ -1857,6 +1857,22 @@ def render_recent_updates_html(months_data: list[dict]) -> str:
     return "\n".join(month_blocks)
 
 
+def get_catalog_version(cli_version: str = "") -> str:
+    """Read catalog semantic version from CLI arg, data/version.txt, or fallback."""
+    if cli_version and cli_version.strip():
+        return cli_version.strip().lstrip("vV")
+    version_file = os.path.join(ROOT, "data", "version.txt")
+    if os.path.exists(version_file):
+        try:
+            with open(version_file, "r", encoding="utf-8") as fh:
+                v = fh.read().strip().lstrip("vV")
+                if v:
+                    return v
+        except Exception:
+            pass
+    return "2.5.0"
+
+
 def get_generation_timestamp() -> str:
     """Return discreet generation timestamp formatted in IST."""
     tz_ist = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
@@ -1864,10 +1880,11 @@ def get_generation_timestamp() -> str:
     return now.strftime("%d-%b-%Y %H:%M IST")
 
 
-def inject_footer_timestamp(html_text: str, timestamp_str: str) -> str:
-    """Inject or update a discreet generation timestamp in the footer."""
+def inject_footer_timestamp(html_text: str, timestamp_str: str, catalog_version: str = "") -> str:
+    """Inject or update a discreet generation timestamp and optional catalog version in the footer."""
     html_text = re.sub(r'\s*<div class="footer-meta"[^>]*>.*?</div>', '', html_text, flags=re.DOTALL)
-    meta_tag = f'<div class="footer-meta" style="margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.55;">Generated: {timestamp_str}</div>'
+    version_badge = f" • Catalog v{catalog_version}" if catalog_version else ""
+    meta_tag = f'<div class="footer-meta" style="margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.55;">Generated: {timestamp_str}{version_badge}</div>'
 
     if re.search(r'<div class="footer-bottom"[^>]*>', html_text):
         def _repl_fb(m):
@@ -1901,7 +1918,20 @@ def inject_footer_timestamp(html_text: str, timestamp_str: str) -> str:
     return html_text
 
 
-def generate_index_html(src_path: str, dst_path: str, lang_sections: dict[str, list[Section]], timestamp_str: str = "") -> int:
+def inject_version_and_meta(html_text: str, timestamp_str: str, catalog_version: str = "") -> str:
+    """Inject catalog version meta tag into <head> and versioned timestamp into footer."""
+    if catalog_version:
+        html_text = re.sub(r'\s*<meta\s+name="catalog-version"[^>]*>', '', html_text, flags=re.IGNORECASE)
+        meta_html = f'<meta name="catalog-version" content="{catalog_version}">'
+        if '<head>' in html_text:
+            html_text = html_text.replace('<head>', f'<head>\n  {meta_html}', 1)
+        elif '</head>' in html_text:
+            html_text = html_text.replace('</head>', f'  {meta_html}\n</head>', 1)
+
+    return inject_footer_timestamp(html_text, timestamp_str, catalog_version)
+
+
+def generate_index_html(src_path: str, dst_path: str, lang_sections: dict[str, list[Section]], timestamp_str: str = "", catalog_version: str = "") -> int:
     with open(src_path, "r", encoding="utf-8") as fh:
         content = fh.read()
 
@@ -1928,8 +1958,7 @@ def generate_index_html(src_path: str, dst_path: str, lang_sections: dict[str, l
         )
         content = card_pattern.sub(rf'\g<1>{doc_count} documents\g<2>', content)
 
-    if timestamp_str:
-        content = inject_footer_timestamp(content, timestamp_str)
+    content = inject_version_and_meta(content, timestamp_str, catalog_version)
 
     with open(dst_path, "w", encoding="utf-8") as fh:
         fh.write(content)
@@ -1937,7 +1966,7 @@ def generate_index_html(src_path: str, dst_path: str, lang_sections: dict[str, l
     return total_updates
 
 
-def generate_articles_html(src_path: str, dst_path: str, article_sections: list[Section], timestamp_str: str = "") -> int:
+def generate_articles_html(src_path: str, dst_path: str, article_sections: list[Section], timestamp_str: str = "", catalog_version: str = "") -> int:
     with open(src_path, "r", encoding="utf-8") as fh:
         content = fh.read()
 
@@ -1948,8 +1977,7 @@ def generate_articles_html(src_path: str, dst_path: str, article_sections: list[
             docs.extend(sub.docs)
 
     if not docs:
-        if timestamp_str:
-            content = inject_footer_timestamp(content, timestamp_str)
+        content = inject_version_and_meta(content, timestamp_str, catalog_version)
         with open(dst_path, "w", encoding="utf-8") as fh:
             fh.write(content)
         return 0
@@ -1980,8 +2008,7 @@ def generate_articles_html(src_path: str, dst_path: str, article_sections: list[
     if pattern.search(content):
         content = pattern.sub(rf'\1\n{cards_html}\n        \3', content)
 
-    if timestamp_str:
-        content = inject_footer_timestamp(content, timestamp_str)
+    content = inject_version_and_meta(content, timestamp_str, catalog_version)
 
     with open(dst_path, "w", encoding="utf-8") as fh:
         fh.write(content)
@@ -1989,7 +2016,7 @@ def generate_articles_html(src_path: str, dst_path: str, article_sections: list[
     return len(docs)
 
 
-def generate_videos_html(src_path: str, dst_path: str, tamil_sections: list[Section], english_sections: list[Section], timestamp_str: str = "") -> tuple[int, int]:
+def generate_videos_html(src_path: str, dst_path: str, tamil_sections: list[Section], english_sections: list[Section], timestamp_str: str = "", catalog_version: str = "") -> tuple[int, int]:
     with open(src_path, "r", encoding="utf-8") as fh:
         content = fh.read()
 
@@ -2006,8 +2033,7 @@ def generate_videos_html(src_path: str, dst_path: str, tamil_sections: list[Sect
             english_docs.extend(sub.docs)
 
     if not tamil_docs and not english_docs:
-        if timestamp_str:
-            content = inject_footer_timestamp(content, timestamp_str)
+        content = inject_version_and_meta(content, timestamp_str, catalog_version)
         with open(dst_path, "w", encoding="utf-8") as fh:
             fh.write(content)
         return (0, 0)
@@ -2064,8 +2090,7 @@ def generate_videos_html(src_path: str, dst_path: str, tamil_sections: list[Sect
         if e_pattern.search(content):
             content = e_pattern.sub(rf'\1\n{e_html}\n            \3', content)
 
-    if timestamp_str:
-        content = inject_footer_timestamp(content, timestamp_str)
+    content = inject_version_and_meta(content, timestamp_str, catalog_version)
 
     with open(dst_path, "w", encoding="utf-8") as fh:
         fh.write(content)
@@ -2153,6 +2178,8 @@ def main() -> int:
     default_csv = default_csv_path if os.path.exists(default_csv_path) else ""
     ap.add_argument("--source-csv", default=default_csv,
                     help="path or Google Sheets URL to load documents from CSV instead of scraping")
+    ap.add_argument("--catalog-version", default="",
+                    help="catalog semantic version (e.g. 2.5.0, default: from data/version.txt)")
     ap.add_argument("--export-csv", default="",
                     help="path to export current extracted documents to CSV (e.g. for Google Sheets)")
     ap.add_argument("--export-json", default="",
@@ -2162,6 +2189,16 @@ def main() -> int:
     ap.add_argument("--template", default=TEMPLATE,
                     help="mockup page to use as the design template")
     args = ap.parse_args()
+
+    version_str = get_catalog_version(args.catalog_version)
+    if args.catalog_version:
+        version_file = os.path.join(ROOT, "data", "version.txt")
+        try:
+            os.makedirs(os.path.dirname(version_file), exist_ok=True)
+            with open(version_file, "w", encoding="utf-8") as vf:
+                vf.write(version_str + "\n")
+        except Exception:
+            pass
 
     with open(args.template, encoding="utf-8") as fh:
         template = fh.read()
@@ -2242,7 +2279,7 @@ def main() -> int:
 
     gen_time = get_generation_timestamp()
     page = harden_tab_switching(splice(template, rendered))
-    page = inject_footer_timestamp(page, gen_time)
+    page = inject_version_and_meta(page, gen_time, version_str)
 
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as fh:
@@ -2267,23 +2304,24 @@ def main() -> int:
                     if fname == "documents.html":
                         continue
                     elif fname == "index.html":
-                        num_updates = generate_index_html(src, dst, lang_sections, gen_time)
+                        num_updates = generate_index_html(src, dst, lang_sections, gen_time, version_str)
                         copied_pages.append(f"index.html ({num_updates} recent updates < 3 mo)")
                     elif fname == "articles.html":
-                        num_articles = generate_articles_html(src, dst, lang_sections.get("articles", []), gen_time)
+                        num_articles = generate_articles_html(src, dst, lang_sections.get("articles", []), gen_time, version_str)
                         copied_pages.append(f"articles.html ({num_articles} articles)")
                     elif fname == "videos.html":
                         num_t, num_e = generate_videos_html(
                             src, dst,
                             lang_sections.get("videos_tamil", []),
                             lang_sections.get("videos_english", []),
-                            gen_time
+                            gen_time,
+                            version_str
                         )
                         copied_pages.append(f"videos.html ({num_t} Tamil, {num_e} English)")
                     elif fname.endswith(".html"):
                         with open(src, "r", encoding="utf-8") as f_in:
                             c_in = f_in.read()
-                        c_out = inject_footer_timestamp(c_in, gen_time)
+                        c_out = inject_version_and_meta(c_in, gen_time, version_str)
                         with open(dst, "w", encoding="utf-8") as f_out:
                             f_out.write(c_out)
                         copied_pages.append(fname)
@@ -2294,7 +2332,7 @@ def main() -> int:
                     if fname.endswith(".html"):
                         with open(src, "r", encoding="utf-8") as f_in:
                             c_in = f_in.read()
-                        c_out = inject_footer_timestamp(c_in, gen_time)
+                        c_out = inject_version_and_meta(c_in, gen_time, version_str)
                         with open(dst, "w", encoding="utf-8") as f_out:
                             f_out.write(c_out)
                         copied_pages.append(os.path.join(rel_dir, fname).replace("\\", "/"))
@@ -2311,6 +2349,11 @@ def main() -> int:
     csv_src = args.source_csv if (args.source_csv and not args.source_csv.startswith("http")) else os.path.join(ROOT, "data", "vedavms_documents.csv")
     if os.path.exists(csv_src):
         shutil.copy2(csv_src, os.path.join(build_dir, "vedavms_documents.csv"))
+
+    # Copy version.txt to build directory
+    ver_src = os.path.join(ROOT, "data", "version.txt")
+    if os.path.exists(ver_src):
+        shutil.copy2(ver_src, os.path.join(build_dir, "version.txt"))
 
     # Copy Vedic web fonts to build/fonts/ and build/viewer/fonts/
     fonts_src = os.path.join(ROOT, "fonts")

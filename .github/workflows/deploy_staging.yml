@@ -6,6 +6,11 @@ on:
       - main
   workflow_dispatch:
     inputs:
+      catalog_version:
+        description: 'Catalog Semantic Version (e.g. 2.5.0, leave empty to use data/version.txt)'
+        required: false
+        default: ''
+        type: string
       google_sheet_csv_url:
         description: 'Google Sheet CSV Export URL (Leave empty to use repository secret or data/vedavms_documents.csv)'
         required: false
@@ -34,6 +39,7 @@ jobs:
       - name: Generate Website
         env:
           INPUT_URL: ${{ github.event.inputs.google_sheet_csv_url }}
+          INPUT_VERSION: ${{ github.event.inputs.catalog_version || github.event.client_payload.catalog_version }}
           SECRET_URL: ${{ secrets.GOOGLE_SHEET_CSV_URL }}
           VAR_URL: ${{ vars.GOOGLE_SHEET_CSV_URL }}
         run: |
@@ -46,8 +52,14 @@ jobs:
           else
             SHEET_URL="data/vedavms_documents.csv"
           fi
-          echo "Generating documents using source: $SHEET_URL"
-          python generate_documents.py --source-csv "$SHEET_URL"
+          
+          VER_ARG=""
+          if [ -n "$INPUT_VERSION" ]; then
+            VER_ARG="--catalog-version $INPUT_VERSION"
+          fi
+          
+          echo "Generating documents using source: $SHEET_URL (version: ${INPUT_VERSION:-auto})"
+          python generate_documents.py --source-csv "$SHEET_URL" $VER_ARG
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4

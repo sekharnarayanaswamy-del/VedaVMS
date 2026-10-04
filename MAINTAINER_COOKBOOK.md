@@ -86,8 +86,9 @@ Import `data/vedavms_documents.csv` into Google Sheets via **File ➔ Import ➔
 
 ### 5. When Do Changes Go Live?
 - **From Google Sheets**:
-  - Click **`🚀 VedaVMS` ➔ `1. 🚀 Publish to Staging (new.vedavms.in)`** to preview changes in 1–2 minutes (logs timestamp in cell **`J2`**).
-  - Click **`🚀 VedaVMS` ➔ `2. 🌐 Push Staging to Production (vedavms.in)`** after review to promote to the live website (logs timestamp in cell **`J3`**).
+  - Click **`🚀 VedaVMS` ➔ `🚀 Publish to Staging (new.vedavms.in)`** to preview changes in 1–2 minutes (logs timestamp in cell **`J2`**).
+  - Click **`🚀 VedaVMS` ➔ `🔴 Publish to Production (vedavms.in)`** after review to promote to live production. This automatically bumps the **Patch Version** (e.g. `v2.5.0` $\rightarrow$ `v2.5.1`) in cell **`J1`**, stamps the release across all HTML pages, and logs the timestamp in cell **`J3`**.
+  - Click **`🚀 VedaVMS` ➔ `🏷️ Set / Bump Catalog Version...`** if you need to manually change or bump minor/major versions.
 - **From GitHub Actions**: Go to **Actions** ➔ select **Deploy to Staging** or **Deploy to Production** ➔ click **Run workflow**.
 - **From Laptop / CLI**: Run `python scripts/deploy_site.py --staging` or `python scripts/deploy_site.py --production` (with instant rollback via `python scripts/deploy_site.py --rollback --production`).
 

@@ -82,10 +82,10 @@ flowchart TD
 ### Flow Summary
 1. **PDF Upload**: Maintainer logs into the Web Hosting Control Panel (`https://cp.controlpanel.systems`) and uploads the PDF document using File Manager into the `/public_html/docs/` directory.
 2. **Sheet Update**: Maintainer enters the document title, version, category, and PDF link into the Google Sheet.
-3. **One-Click Staging Trigger**: Maintainer clicks **`🚀 VedaVMS` ➔ `1. 🚀 Publish to Staging (new.vedavms.in)`** in Google Sheets.
+3. **One-Click Staging Trigger**: Maintainer clicks **`🚀 VedaVMS` ➔ `🚀 Publish to Staging (new.vedavms.in)`** in Google Sheets.
    - Google Apps Script calls GitHub Actions (`deploy_staging.yml`), builds the site from live CSV, uploads to `/public_html/new/`, and logs the timestamp in cell **`J2`**.
-4. **One-Click Production Promotion**: After reviewing staging, maintainer clicks **`🚀 VedaVMS` ➔ `2. 🌐 Push Staging to Production (vedavms.in)`**.
-   - Google Apps Script requests explicit confirmation, triggers `deploy_production.yml`, automatically captures a pre-deploy backup snapshot, updates `/public_html/`, and logs the timestamp in cell **`J3`**.
+4. **One-Click Production Promotion & Version Auto-Increment**: After reviewing staging, maintainer clicks **`🚀 VedaVMS` ➔ `🔴 Publish to Production (vedavms.in)`**.
+   - Google Apps Script automatically increments the **Patch Version** (e.g. `v2.5.0` $\rightarrow$ `v2.5.1`), updates cell **`J1`**, triggers `deploy_production.yml`, stamps all HTML pages with the new catalog version and `<meta name="catalog-version">`, deploys to `/public_html/`, creates a Git release tag (`v2.5.1`), and logs the timestamp in cell **`J3`**.
 5. **Laptop Developer / Admin Tools**: Technical maintainers can run `python scripts/deploy_site.py --staging`, `python scripts/deploy_site.py --production`, or instant rollback via `python scripts/deploy_site.py --rollback --production`.
 
 ---
@@ -200,25 +200,49 @@ The live production web server (**`vedavms.in`** at remote directory `/public_ht
 
 ---
 
+### 🏷️ Semantic Versioning System (`v<Major>.<Minor>.<Patch>`)
+
+VedaVMS uses **Semantic Versioning** (`vX.Y.Z`) to track catalog releases and synchronize version identity across Google Sheets, generated HTML, git releases, and the web server:
+
+| Component | Format | Where Displayed / Stored | Automated Behavior |
+| :--- | :--- | :--- | :--- |
+| **Google Sheet** | `vX.Y.Z` | Cell **`J1`** (Label in **`I1`**) | Auto-incremented on every live production rollout; editable via `🏷️ Set / Bump Version...`. |
+| **Generated HTML** | `Catalog vX.Y.Z` | Footer of all portal and companion pages | Stamped during static generation (`Generated: DD-MMM-YYYY HH:MM IST • Catalog vX.Y.Z`). |
+| **HTML Metadata** | `<meta name="catalog-version" content="X.Y.Z">` | Inside `<head>` across all pages | Enables automated scrapers, crawlers, and frontend tools to inspect release versions. |
+| **Version Endpoint** | `X.Y.Z` | `https://vedavms.in/version.txt` | Clean, plain-text version file deployed directly at the web root. |
+| **Git Release Tags** | `vX.Y.Z` | GitHub Repository Releases & Tags | GitHub Actions automatically tags each production rollout commit with `vX.Y.Z`. |
+
+#### How Version Auto-Incrementing Works:
+1. When **`🔴 Publish to Production`** is clicked in Google Sheets, Google Apps Script reads the current version from **`J1`** (e.g. `2.5.0`).
+2. It automatically increments the **Patch Version** (e.g. `2.5.0` $\rightarrow$ `2.5.1`).
+3. It displays the version bump in the confirmation dialog.
+4. Upon confirmation, it updates **`J1`** immediately to `v2.5.1` and passes `catalog_version: '2.5.1'` in the GitHub Actions dispatch payload.
+5. GitHub Actions runs `python generate_documents.py --catalog-version 2.5.1`, stamps all pages and `data/version.txt`, deploys to the web server, and pushes git tag `v2.5.1`.
+
+---
+
 ### Deployment Methods Breakdown
 
 #### Method A: One-Click Trigger from Google Sheets (Recommended for Maintainers)
 Maintainers can publish changes directly from the Google Sheet without touching code or command lines:
 1. Open the [VedaVMS Google Sheet](https://docs.google.com/spreadsheets/d/1O-pBNmfEhBEHsbR47T-pMlrW36BpGdoJdiwHpVjDDjs/).
 2. In the top menu, click **`🚀 VedaVMS`**:
-   - **`1. 🚀 Publish to Staging (new.vedavms.in)`**:
+   - **`🚀 Publish to Staging (new.vedavms.in)`**:
      - Deploys the latest sheet updates to the staging preview area (`/public_html/new/`).
      - Shows live build progress in the spreadsheet.
-     - Logs the completion timestamp in cell **`J2`** (IST).
-   - **`2. 🌐 Push Staging to Production (vedavms.in)`**:
-     - Requests explicit confirmation before modifying the live site.
-     - Promotes the build to the live production server (`/public_html/`).
-     - Automatically creates a timestamped pre-deploy backup snapshot in `backups/`.
-     - Logs the live production deployment timestamp in cell **`J3`** (IST).
-   - **`3. 🔄 Check Last Run Status`**:
-     - Checks whether the most recent GitHub Actions deployment succeeded or encountered an error.
-   - **`4. ⚙️ Setup GitHub Token`**:
-     - Configures or updates your Personal Access Token (PAT) securely inside Google Apps Script properties.
+     - Logs the completion timestamp in cell **`J2`** (e.g. `🟡 Staging: 04-Oct-2026, 11:58:00 AM IST (v2.5.0)`).
+   - **`🔴 Publish to Production (vedavms.in)`**:
+     - Automatically calculates the next **Semantic Patch Version** (e.g. `v2.5.0` $\rightarrow$ `v2.5.1`).
+     - Displays confirmation showing the current version and the new release version.
+     - Updates cell **`J1`** with the new version badge (e.g. `v2.5.1`).
+     - Triggers `deploy_production.yml` on GitHub Actions with the new version payload.
+     - Stamps the version across all HTML page footers (`Generated: ... • Catalog v2.5.1`) and `<meta name="catalog-version" content="2.5.1">`.
+     - Creates and pushes Git release tag `v2.5.1`.
+     - Deploys to live production (`/public_html/`) and logs the timestamp in cell **`J3`** (e.g. `🟢 Production: 04-Oct-2026, 12:05:00 PM IST (v2.5.1)`).
+   - **`🏷️ Set / Bump Catalog Version...`**:
+     - Interactive dialog to manually set a custom major or minor release version (e.g. `2.6.0`, `3.0.0`) when significant structural additions are made.
+   - **`📋 Setup Sheet Status Headers (I1:J3)`**:
+     - Automatically configures, formats, and colors cells `I1:J3` for version and deployment status tracking.
 3. Confirm the prompt by clicking **Yes**.
 4. A popup confirms when the build completes successfully.
 
