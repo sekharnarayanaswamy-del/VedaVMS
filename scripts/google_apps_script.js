@@ -4,8 +4,8 @@
  * Provides a custom menu in Google Sheets with Semantic Versioning & live status tracking:
  *  - 🚀 Publish to Staging (new.vedavms.in)  -> updates Cell J2
  *  - 🔴 Publish to Production (vedavms.in)  -> auto-increments Patch version in Cell J1, updates Cell J3
- *  - 🏷️ Set / Bump Version...               -> allows manual major/minor/custom version bumping
- *  - 📋 Setup Sheet Status Headers          -> formats Cells I1:J3
+ *  - 🏷️ Set / Bump Catalog Version...       -> allows manual major/minor/custom version bumping
+ *  - 📋 Setup Sheet Status Headers (I1:J3)   -> formats Cells I1:J3
  */
 
 const REPO_OWNER = 'sekharnarayanaswamy-del';
@@ -27,6 +27,18 @@ function onOpen() {
     .addItem('🏷️ Set / Bump Catalog Version...', 'promptSetVersion')
     .addItem('📋 Setup Sheet Status Headers (I1:J3)', 'setupStatusHeaders')
     .addToUi();
+}
+
+/**
+ * Get the master sheet (targets 'vedavms_documents' or active sheet)
+ */
+function getMasterSheet(ss) {
+  if (!ss) ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("vedavms_documents");
+  if (!sheet) {
+    sheet = ss.getActiveSheet() || ss.getSheets()[0];
+  }
+  return sheet;
 }
 
 /**
@@ -73,11 +85,11 @@ function incrementMajorVersion(ver) {
 }
 
 /**
- * Get the current catalog version from the active sheet (Cell J1)
+ * Get the current catalog version from the master sheet (Cell J1)
  */
 function getCatalogVersion() {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var sheet = getMasterSheet();
     var val = sheet.getRange("J1").getValue();
     return cleanVersion(val);
   } catch (e) {
@@ -91,7 +103,7 @@ function getCatalogVersion() {
 function setCatalogVersion(versionStr) {
   var clean = cleanVersion(versionStr);
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var sheet = getMasterSheet();
     
     // Format I1 label
     sheet.getRange("I1")
@@ -117,7 +129,7 @@ function setCatalogVersion(versionStr) {
  */
 function setupStatusHeaders() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getActiveSheet();
+  var sheet = getMasterSheet(ss);
   var currentVer = getCatalogVersion();
 
   // Row 1: Version
@@ -158,7 +170,7 @@ function setupStatusHeaders() {
 
   SpreadsheetApp.getUi().alert(
     '✅ Setup Complete',
-    'Status headers (Cells I1:J3) and Catalog Version v' + currentVer + ' are configured and formatted.',
+    'Status headers (Cells I1:J3) and Catalog Version v' + currentVer + ' are configured and formatted on the catalog sheet.',
     SpreadsheetApp.getUi().ButtonSet.OK
   );
 }
@@ -187,7 +199,7 @@ function promptSetVersion() {
 
   ui.alert(
     '✅ Version Updated',
-    'Catalog version set to: v' + clean + '\n\nCell J1 updated.',
+    'Catalog version set to: v' + clean + '\n\nCell J1 updated on the master sheet.',
     ui.ButtonSet.OK
   );
 }
@@ -233,7 +245,7 @@ function monitorWorkflowRun(workflowFile, targetName, targetUrl, isProduction, v
               var nowStr = Utilities.formatDate(now, "Asia/Kolkata", "dd-MMM-yyyy, hh:mm:ss a 'IST'");
 
               try {
-                var sheet = ss.getActiveSheet();
+                var sheet = getMasterSheet(ss);
                 setCatalogVersion(versionStr);
 
                 if (!isProduction) {
@@ -347,6 +359,7 @@ function triggerStagingDeploy() {
  */
 function triggerProductionDeploy() {
   var ui = SpreadsheetApp.getUi();
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
   var currentVer = getCatalogVersion();
   var nextVer = incrementPatchVersion(currentVer);
 
@@ -368,8 +381,9 @@ function triggerProductionDeploy() {
     return;
   }
 
-  // Pre-update the version cell immediately
+  // Pre-update the version cell immediately and show toast
   setCatalogVersion(nextVer);
+  ss.toast('Catalog version bumped to v' + nextVer + ' in Cell J1. Dispatching build...', '🚀 VedaVMS', 5);
 
   var url = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/actions/workflows/deploy_production.yml/dispatches';
   var options = {
