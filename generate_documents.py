@@ -683,7 +683,13 @@ def extract_kandam_num(sec_title: str, doc: Doc | None = None) -> int | None:
     if m:
         return int(m.group(1))
     if doc:
+        m = KANDAM_NUM_RE.search(doc.title)
+        if m:
+            return int(m.group(1))
         m = URL_KANDAM_RE.search(doc.url)
+        if m:
+            return int(m.group(1))
+        m = re.search(r"TS(?:K|G|J)?(\d+)", doc.url, re.I)
         if m:
             return int(m.group(1))
         m = TS_NUM_RE.search(doc.title)
@@ -715,6 +721,13 @@ def nest_hierarchical_sections(sections: list[Section]) -> list[Section]:
     def is_ghanam(sec_title: str) -> bool:
         return bool(re.search(r"ghan[aA]+\s*p[aA]+th?[aA]+m", sec_title, re.I) and re.search(r"samhit", sec_title, re.I))
 
+    def should_nest(matched_sections: list[Section]) -> bool:
+        if len(matched_sections) > 1:
+            return True
+        if matched_sections and re.search(r"kandam\s*\d+", matched_sections[0].title, re.I):
+            return True
+        return False
+
     def build_container(container_title: str, matched_sections: list[Section]) -> Section:
         kandam_map: dict[int, list[Doc]] = {}
         for s in matched_sections:
@@ -729,13 +742,13 @@ def nest_hierarchical_sections(sections: list[Section]) -> list[Section]:
     for s in sections:
         if s.subsections:
             continue
-        if is_pada(s.title):
+        if is_pada(s.title) and should_nest([s]):
             pada_sections.append(s)
-        elif is_krama(s.title):
+        elif is_krama(s.title) and should_nest([s]):
             krama_sections.append(s)
-        elif is_jatai(s.title):
+        elif is_jatai(s.title) and should_nest([s]):
             jatai_sections.append(s)
-        elif is_ghanam(s.title):
+        elif is_ghanam(s.title) and should_nest([s]):
             ghanam_sections.append(s)
 
     pada_inserted = False
@@ -747,19 +760,19 @@ def nest_hierarchical_sections(sections: list[Section]) -> list[Section]:
         if s.subsections:
             out.append(s)
             continue
-        if is_pada(s.title):
+        if is_pada(s.title) and should_nest(pada_sections):
             if not pada_inserted:
                 out.append(build_container("TaittirIya SamhitA pada pAtam", pada_sections))
                 pada_inserted = True
-        elif is_krama(s.title):
+        elif is_krama(s.title) and should_nest(krama_sections):
             if not krama_inserted:
                 out.append(build_container("TaittirIya SamhitA krama pAtam", krama_sections))
                 krama_inserted = True
-        elif is_jatai(s.title):
+        elif is_jatai(s.title) and should_nest(jatai_sections):
             if not jatai_inserted:
                 out.append(build_container("TaittirIya SamhitA jatA pAtam", jatai_sections))
                 jatai_inserted = True
-        elif is_ghanam(s.title):
+        elif is_ghanam(s.title) and should_nest(ghanam_sections):
             if not ghanam_inserted:
                 out.append(build_container("TaittirIya SamhitA ghana pAtam", ghanam_sections))
                 ghanam_inserted = True
