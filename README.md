@@ -11,37 +11,39 @@ vedavms/
 ├── src/                                # Baraha transliteration & Vedic Reader generator
 │   ├── __init__.py
 │   ├── transliterate.py                # Baraha to Devanagari Unicode transliterator
-│   ├── build_reader.py                 # DOCX to interactive Vedic HTML reader generator
+│   ├── baraha_reader.py                # DOCX to structured JSON AST extractor & parser
+│   ├── build_reader.py                 # DOCX / AST to interactive Vedic HTML reader generator
 │   └── config.json                     # Multi-book configuration & font settings
-├── generate_documents.py               # Main document page generator script
+├── generate_documents.py               # Main static website & documents generator script
 ├── scripts/
 │   ├── deploy_site.py                  # Unified deploy & rollback CLI (staging, production, backups)
 │   ├── sync_staging.py                 # One-step Google Sheets fetch, build, and deploy to staging
-│   ├── google_apps_script.js           # Apps Script for 1-click deploy from Google Sheets
+│   ├── google_apps_script.js           # Google Sheet automation suite (menu, versioning, status logging)
 │   ├── check_runs.py                   # GitHub Actions workflow run monitor
 │   └── check_pages.py                  # Live page inspection utility
 ├── mockup/                             # Redesign mockup templates
-│   ├── index.html
-│   ├── documents.html
-│   ├── articles.html
-│   ├── videos.html
-│   ├── convention.html
-│   ├── donations.html
-│   └── about.html
-├── build/                              # Generated static pages ready for deployment
-│   ├── index.html
-│   ├── documents.html
-│   ├── articles.html
-│   ├── videos.html
-│   ├── convention.html
-│   ├── donations.html
-│   └── about.html
+│   ├── index.html                      # Portal homepage template
+│   ├── documents.html                  # 14-tab documents catalog template
+│   ├── articles.html                   # Dynamic articles template
+│   ├── videos.html                     # Dynamic videos template
+│   ├── convention.html                 # Conventions page
+│   ├── donations.html                  # Donations page
+│   ├── about.html                      # About page
+│   └── viewer/                         # Standalone Vedic HTML reader templates
+├── build/                              # Generated static production artifacts
+│   ├── index.html                      # Live portal homepage
+│   ├── documents.html                  # Master documents catalog
+│   ├── version.txt                     # Plain-text semantic version endpoint
+│   ├── fonts/                          # Bundled Vedic Adishila TTF web fonts
+│   └── viewer/                         # Standalone readers (TU, Siva Stuti, TB 3.7-3.9, Udaka Shanti)
 ├── backups/                            # Local & pre-deploy server backup snapshots
-├── data/                               # Snapshot texts and document metadata
+├── fonts/                              # TrueType Vedic fonts (Adishila San, Vedic, etc.)
+├── data/                               # Snapshot texts, version, and document metadata
+│   ├── version.txt                     # Current catalog semantic version (e.g. 2.5.0)
 │   └── vedavms_documents.csv           # Master documents database CSV
 ├── .github/workflows/
 │   ├── deploy_staging.yml              # CI/CD automated staging deployment (new.vedavms.in)
-│   └── deploy_production.yml           # CI/CD production promotion workflow (vedavms.in)
+│   └── deploy_production.yml           # CI/CD production deployment & release tagging (vedavms.in)
 ├── BARAHA_READER_GUIDE.md              # Guide for generating Vedic HTML readers from Baraha DOCX
 ├── MAINTAINER_GUIDE.md                 # Complete technical & maintainer manual
 └── MAINTAINER_COOKBOOK.md              # 3-step quick recipe for everyday editors
@@ -52,9 +54,9 @@ vedavms/
 ## 🚀 Usage & Deployment CLI
 
 ### 🌐 Live Production Deployment Conditions (`vedavms.in`)
-The live production web server (`vedavms.in` at remote `/public_html/`) is updated **only under 5 conditions**:
+The live production web server (`vedavms.in` at remote directory `/public_html/`) is updated **only under 5 conditions**:
 1. **Commit Message Flag on `main`**: Push to `main` with commit message containing `[prod]`, `[production]`, `[deploy:prod]`, or `prod:`.
-2. **Google Sheets One-Click Publish**: Maintainer clicks **`🚀 VedaVMS` ➔ `🔴 Publish to Production (vedavms.in)`** (logs timestamp in cell **`J3`**).
+2. **Google Sheets One-Click Publish**: Maintainer clicks **`🚀 VedaVMS` ➔ `🔴 Publish to Production (vedavms.in)`** (auto-increments patch version in cell **`J1`** and logs timestamp in cell **`J3`**).
 3. **GitHub Actions Web UI**: Manually triggering **Deploy to Production (vedavms.in)** with `confirm_deploy = "DEPLOY"`.
 4. **Repository Dispatch Webhook**: API `repository_dispatch` event of type `deploy_production` or `google_sheet_production_deploy`.
 5. **Laptop CLI Command or Rollback**: Executing `python scripts/deploy_site.py --production` (or `python scripts/deploy_site.py --rollback --production`).
@@ -68,10 +70,10 @@ The live production web server (`vedavms.in` at remote `/public_html/`) is updat
 Deploy directly from your laptop to Staging or Production, with automated pre-deploy backups and instant rollback support:
 
 ```bash
-# Deploy to Staging (new.vedavms.in at /new.vedavms.in)
+# Deploy to Staging (new.vedavms.in at /public_html/new/)
 python scripts/deploy_site.py --staging
 
-# Deploy to Live Production (vedavms.in at /httpdocs)
+# Deploy to Live Production (vedavms.in at /public_html/)
 # Automatically downloads a pre-deploy backup snapshot before uploading!
 python scripts/deploy_site.py --production
 
@@ -89,7 +91,7 @@ python scripts/deploy_site.py --rollback --production --snapshot backup_producti
 ```
 
 ### 2. One-Step Sync to Staging from Laptop
-Fetches the live Google Sheet, regenerates all 980+ documents into `build/` (with dynamic hierarchical numbering), and deploys directly to the staging site:
+Fetches the live Google Sheet, regenerates all 980+ documents into `build/` (with dynamic hierarchical numbering and version stamping), and deploys directly to the staging site:
 ```bash
 # Full fetch, build, and deploy:
 python scripts/sync_staging.py
@@ -98,10 +100,12 @@ python scripts/sync_staging.py
 python scripts/sync_staging.py --skip-build
 ```
 
-### 3. One-Click Deployment from Google Sheets
+### 3. One-Click Deployment & Semantic Versioning from Google Sheets
 Maintainers can deploy directly from the spreadsheet without terminal access:
-- **`🚀 VedaVMS` ➔ `1. 🚀 Publish to Staging (new.vedavms.in)`**: Builds and pushes to staging; logs timestamp in cell **`J2`**.
-- **`🚀 VedaVMS` ➔ `2. 🌐 Push Staging to Production (vedavms.in)`**: Promotes build to live production; logs timestamp in cell **`J3`**.
+- **`🚀 VedaVMS` ➔ `🚀 Publish to Staging (new.vedavms.in)`**: Builds and pushes to staging; logs timestamp in cell **`J2`**.
+- **`🚀 VedaVMS` ➔ `🔴 Publish to Production (vedavms.in)`**: Automatically increments the **Patch Version** (e.g. `v2.5.0` $\rightarrow$ `v2.5.1`), stamps all HTML pages and metadata, publishes to live production, pushes Git tag `v2.5.1`, and logs the timestamp in cell **`J3`**.
+- **`🚀 VedaVMS` ➔ `🏷️ Set / Bump Catalog Version...`**: Manually sets custom major/minor versions.
+- **`🚀 VedaVMS` ➔ `📋 Setup Sheet Status Headers (I1:J3)`**: Auto-configures and formats cells `I1:J3`.
 
 ### 4. Git Push Deployment Flags (Staging vs. Production)
 When pushing commits to GitHub, you can target Staging or Production via your commit message:

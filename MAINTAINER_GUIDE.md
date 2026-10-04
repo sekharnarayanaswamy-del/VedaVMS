@@ -65,6 +65,7 @@ flowchart TD
     GHA_PRD -->|"2. Uploads via FTPS"| PROD
 
     %% Live status & timestamps
+    GAS -.->|"Auto-increments Patch Version (J1)"| GS
     GHA_STG -.->|"Logs Staging timestamp (J2)"| GS
     GHA_PRD -.->|"Logs Production timestamp (J3)"| GS
 

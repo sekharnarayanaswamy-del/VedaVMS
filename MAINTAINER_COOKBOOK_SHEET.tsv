@@ -55,10 +55,12 @@ Status	Set to Active or Hidden	Active
    - To export all documents into a fresh CSV: python generate_documents.py --offline --export-csv data/vedavms_documents.csv
    - Import into Google Sheets via File ➔ Import ➔ Upload.
 
-5. When Do Changes Go Live?
+5. When Do Changes Go Live & Semantic Versioning
    - From Google Sheets:
-     • Click "🚀 VedaVMS" ➔ "1. 🚀 Publish to Staging (new.vedavms.in)" to preview changes in 1–2 minutes (logs in cell J2).
-     • Click "🚀 VedaVMS" ➔ "2. 🌐 Push Staging to Production (vedavms.in)" after review to promote to live (logs in cell J3).
+     • Click "🚀 VedaVMS" ➔ "🚀 Publish to Staging (new.vedavms.in)" to preview changes in 1–2 minutes (logs in cell J2).
+     • Click "🚀 VedaVMS" ➔ "🔴 Publish to Production (vedavms.in)" after review to promote to live. This automatically bumps the Patch Version in cell J1 (e.g. v2.5.0 ➔ v2.5.1), stamps the website, creates git tag v2.5.1, and logs in cell J3.
+     • Click "🚀 VedaVMS" ➔ "🏷️ Set / Bump Catalog Version..." to manually set custom major/minor versions.
+     • Click "🚀 VedaVMS" ➔ "📋 Setup Sheet Status Headers (I1:J3)" to format header and version cells.
    - From GitHub Actions: Go to Actions ➔ select Deploy to Staging or Deploy to Production ➔ click Run workflow.
    - From CLI: Run python scripts/deploy_site.py --staging or --production (with instant rollback via --rollback).
 
