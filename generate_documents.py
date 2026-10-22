@@ -2355,6 +2355,11 @@ def main() -> int:
     if os.path.exists(ver_src):
         shutil.copy2(ver_src, os.path.join(build_dir, "version.txt"))
 
+    # Copy assets folder to build/assets
+    assets_src = os.path.join(ROOT, "assets")
+    if os.path.exists(assets_src):
+        shutil.copytree(assets_src, os.path.join(build_dir, "assets"), dirs_exist_ok=True)
+
     # Copy Vedic web fonts to build/fonts/ and build/viewer/fonts/
     fonts_src = os.path.join(ROOT, "fonts")
     if os.path.exists(fonts_src):

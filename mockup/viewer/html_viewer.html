@@ -478,6 +478,45 @@
                 grid-template-columns: 1fr;
             }
         }
+    
+        /* Deity Thumbnails on Cards */
+        .card-mural-container {
+            display: flex;
+            gap: 1.15rem;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-mural-thumb {
+            width: 82px;
+            height: 82px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+            flex-shrink: 0;
+            background: #2D1810;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .card-mural-thumb:hover {
+            transform: scale(1.06);
+            box-shadow: 0 6px 14px rgba(128, 0, 0, 0.2);
+        }
+
+        .card-headings {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        @media (max-width: 480px) {
+            .card-mural-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+
     </style>
 </head>
 
@@ -576,9 +615,14 @@
                 <article class="reader-card" data-category="reader"
                     data-keywords="shiva stuti rudram chamakam rudra japam nyasam kramam dravya sampradayam rudraikaadasini sadyojatam shanti patham krishna yajurveda samhita शिव स्तुतिः रुद्र जपं चमकम्">
                     <div class="card-top">
-                        <div class="card-category">🔱 Krishna Yajurveda Samhita • Kanda 4</div>
-                        <h3 class="card-title-deva">शिव स्तुतिः (रुद्र जपं, न्यासं, चमकम्)</h3>
-                        <div class="card-title-eng">Shiva Stuti, Sri Rudram, Chamakam &amp; Rudraikaadashini</div>
+                        <div class="card-mural-container">
+                            <img src="../assets/images/devatas/shiva_kerala_mural.webp" alt="Lord Shiva" class="card-mural-thumb" loading="lazy">
+                            <div class="card-headings">
+                                <div class="card-category">🔱 Krishna Yajurveda Samhita • Kanda 4</div>
+                                <h3 class="card-title-deva">शिव स्तुतिः (रुद्र जपं, न्यासं, चमकम्)</h3>
+                                <div class="card-title-eng">Shiva Stuti, Sri Rudram, Chamakam &amp; Rudraikaadashini</div>
+                            </div>
+                        </div>
                         <p class="card-desc">
                             Comprehensive Rudra Parayanam compendium including Nyasam, Laghu Nyasam, Namakam, Chamakam,
                             Kramam, Dravya Sampradayam, Shanti Patham, and associated suktas with accurate svara
@@ -604,9 +648,14 @@
                 <article class="reader-card" data-category="reader"
                     data-keywords="shanti japam suktas pavamana durga purusha sri suktam bhagya ayushya vishnu udaka shanti krishna yajurveda शान्ति जपम् सूक्त">
                     <div class="card-top">
-                        <div class="card-category">🕊️ Universal Vedic Suktas • Samhita &amp; Aranyaka</div>
-                        <h3 class="card-title-deva">शान्ति जपम् (सर्वशान्ति मन्त्राः सूक्तानि च)</h3>
-                        <div class="card-title-eng">Shanti Japam &amp; Universal Vedic Suktas</div>
+                        <div class="card-mural-container">
+                            <img src="../assets/images/devatas/sri_suktam_lakshmi_kerala_mural.webp" alt="Sri Mahalakshmi" class="card-mural-thumb" loading="lazy">
+                            <div class="card-headings">
+                                <div class="card-category">🕊️ Universal Vedic Suktas • Samhita &amp; Aranyaka</div>
+                                <h3 class="card-title-deva">शान्ति जपम् (सर्वशान्ति मन्त्राः सूक्तानि च)</h3>
+                                <div class="card-title-eng">Shanti Japam &amp; Universal Vedic Suktas</div>
+                            </div>
+                        </div>
                         <p class="card-desc">
                             Collection of potent Shanti mantras, Pavamana Suktam, Durga Suktam, Purusha Suktam, Sri
                             Suktam, Bhagya Suktam, Ayushya Suktam, Vishnu Suktam, and Udaka Shanti selection for daily

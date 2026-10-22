@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="sa">
 <head>
-  <meta name="catalog-version" content="2.5.0">
+  <meta name="catalog-version" content="2.5.1">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="generator" content="VedaVMS Reader Generator">
@@ -1361,6 +1361,95 @@
                 overflow-wrap: break-word !important;
             }
         }
+    
+        /* Dhyāna Shloka Card */
+        .dhyana-card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 1.75rem;
+            background: linear-gradient(135deg, #FFFDF8 0%, #FFF8EE 100%);
+            border: 1px solid #E6D8C5;
+            border-left: 5px solid var(--maroon, #800000);
+            border-radius: 12px;
+            padding: 1.35rem 1.75rem;
+            margin: 1.5rem 0 2.5rem 0;
+            box-shadow: 0 4px 16px rgba(128, 0, 0, 0.07);
+        }
+
+        .dhyana-image-container {
+            flex-shrink: 0;
+            width: 145px;
+            height: 145px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid var(--gold, #DAA520);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+            background: #2D1810;
+        }
+
+        .dhyana-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .dhyana-image:hover {
+            transform: scale(1.05);
+        }
+
+        .dhyana-text-container {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .dhyana-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--maroon, #800000);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: #FDF2E9;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            border: 1px solid #F5CBA7;
+        }
+
+        .dhyana-shloka {
+            font-family: 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            line-height: 1.8;
+            color: #2D1810;
+            margin-bottom: 0.6rem;
+        }
+
+        .dhyana-translation {
+            font-size: 0.88rem;
+            color: #5D4037;
+            line-height: 1.55;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .dhyana-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.25rem 1rem;
+                gap: 1.1rem;
+            }
+            .dhyana-image-container {
+                width: 135px;
+                height: 135px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -2063,6 +2152,27 @@
             </section>
             <section class="chapter-container" id="chapter-10">
                 <h2 class="chapter-heading">10. श्री सूक्तं <span class="anuvaka-code chapter-code">Rig Veda Khila Kaandam - 5.8.7.1</span></h2>
+                <div class="dhyana-card">
+                    <div class="dhyana-image-container">
+                        <img src="../assets/images/devatas/sri_suktam_lakshmi_kerala_mural.webp" 
+                             alt="Sri Mahalakshmi" 
+                             class="dhyana-image" 
+                             loading="lazy">
+                    </div>
+                    <div class="dhyana-text-container">
+                        <span class="dhyana-badge">॥ श्री महालक्ष्मी ध्यान श्लोकः ॥</span>
+                        <p class="dhyana-shloka">
+                            हिरण्यवर्णां हरिणीं सुवर्णरजतस्रजाम् ।<br>
+                            चन्द्रां हिरण्मयीं लक्ष्मीं जातवेदो म आवह ॥<br>
+                            पद्मानने पद्मविपद्मपत्रे पद्मप्रिये पद्मदलायताक्षि ।<br>
+                            विश्वप्रिये विश्वमनोऽनुकूले त्वत्पादपद्मं मयि सन्निधत्स्व ॥
+                        </p>
+                        <p class="dhyana-translation">
+                            <em>"Invoke for me, O Agni (Jatavedas), Goddess Lakshmi, who is of golden luster, radiant with gold and silver garlands, enchanting like the moon, and full of golden opulence. O Mother whose face is like a lotus, beloved of the cosmos, bestow Your divine auspicious grace upon us."</em>
+                        </p>
+                    </div>
+                </div>
+
                 <div class="anuvaka-block level-2" id="sec-10">
 
                     <div class="verse-text">
@@ -5082,7 +5192,7 @@
                 </div>
             </section>
             <footer class="reader-footer">
-                    <div class="footer-meta" style="margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.55;">Generated: 04-Oct-2026 13:32 IST • Catalog v2.5.0</div>
+                    <div class="footer-meta" style="margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.55;">Generated: 22-Oct-2026 21:06 IST • Catalog v2.5.1</div>
 </footer>
         </main>
     </div>
