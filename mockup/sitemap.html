@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Map &amp; Visual Directory - VedaVMS</title>
+    <meta name="description"
+        content="Complete site map and visual directory of VedaVMS Vedic repository, HTML readers, documents, and sacred scriptures.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@500;600;700&family=Tiro+Devanagari+Sanskrit&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --saffron: #E65100;
+            --saffron-light: #FFF3E0;
+            --maroon: #800000;
+            --maroon-dark: #5c0000;
+            --cream: #FFFDF9;
+            --gold: #DAA520;
+            --gold-light: #FCF8E3;
+            --dark-brown: #3E2723;
+            --text-color: #2D2424;
+            --border-color: #E8DCCF;
+            --card-bg: #FFFFFF;
+            --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(128, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            color: var(--text-color);
+            background: #FAF7F2;
+            line-height: 1.65;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #153E75 0%, #1D5296 50%, #2563A8 100%);
+            color: white;
+            padding: 1.25rem 0;
+            text-align: center;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .logo {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+        }
+
+        .om-symbol {
+            font-size: 1.8rem;
+            color: #FFD54F;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .blessing {
+            font-size: 0.82rem;
+            color: #F0F7FF;
+            opacity: 0.95;
+            font-style: italic;
+            margin-top: 0.35rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav {
+            background: var(--card-bg);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-mobile-bar {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.65rem 1rem;
+            background: var(--card-bg);
+        }
+
+        .nav-mobile-brand {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--dark-brown);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-mobile-brand .om-symbol {
+            color: var(--saffron);
+            font-size: 1.25rem;
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 22px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .hamburger-bar {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--dark-brown);
+            border-radius: 3px;
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
+        }
+
+        .nav-toggle.open .hamburger-bar:nth-child(1) {
+            transform: translateY(9.5px) rotate(45deg);
+        }
+
+        .nav-toggle.open .hamburger-bar:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .nav-toggle.open .hamburger-bar:nth-child(3) {
+            transform: translateY(-9.5px) rotate(-45deg);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            display: inline-block;
+            color: var(--dark-brown);
+            text-decoration: none;
+            padding: 0.85rem 1.1rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .nav a:hover {
+            color: var(--saffron);
+            background: rgba(230, 81, 0, 0.05);
+        }
+
+        .nav a.active {
+            color: var(--maroon);
+            border-bottom: 3px solid var(--maroon);
+        }
+
+        .nav a.donate-btn {
+            color: var(--saffron);
+            border: 1.5px solid var(--saffron);
+            border-radius: 20px;
+            margin: 0.35rem 0.5rem;
+            padding: 0.5rem 1rem;
+            line-height: 1;
+            align-self: center;
+        }
+
+        .nav a.donate-btn:hover {
+            background: var(--saffron);
+            color: white;
+        }
+
+        @media (max-width: 860px) {
+            .nav-mobile-bar {
+                display: flex;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            .nav-container {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: var(--card-bg);
+                border-top: 1px solid var(--border-color);
+                padding: 0.5rem 0 1rem;
+            }
+
+            .nav-container.active {
+                display: flex;
+            }
+
+            .nav a {
+                padding: 0.75rem 1.5rem;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            }
+        }
+
+        .main-container {
+            max-width: 1140px;
+            margin: 2rem auto 4rem;
+            padding: 0 1.25rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        .page-intro {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .page-title {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2.2rem;
+            color: var(--maroon);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.05rem;
+            color: #5D4037;
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        /* Section Headings */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 0.6rem;
+            margin: 3rem 0 1.5rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Noto Serif Devanagari', serif;
+            font-size: 1.45rem;
+            color: var(--dark-brown);
+        }
+
+        .section-badge {
+            background: var(--saffron-light);
+            color: var(--saffron);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Grid & Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .sitemap-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            gap: 1.15rem;
+            align-items: flex-start;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .sitemap-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--gold);
+        }
+
+        .card-thumb {
+            width: 88px;
+            height: 88px;
+            min-width: 88px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1.5px solid var(--gold);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+            background: #FAFAFA;
+        }
+
+        .card-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-title {
+            font-family: 'Noto Serif Devanagari', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--maroon);
+            margin-bottom: 0.25rem;
+            line-height: 1.35;
+        }
+
+        .sitemap-card:hover .card-title {
+            color: var(--saffron);
+        }
+
+        .card-desc {
+            font-size: 0.88rem;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 0.6rem;
+        }
+
+        .card-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.4rem;
+        }
+
+        .card-tag {
+            font-size: 0.75rem;
+            color: #1D5296;
+            background: #EEF4FC;
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        /* Script Downloads Directory */
+        .script-directory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-top: 1.25rem;
+        }
+
+        .script-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+            display: block;
+        }
+
+        .script-box:hover {
+            border-color: var(--maroon);
+            background: #FFFDF8;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .script-box h4 {
+            color: var(--maroon);
+            font-size: 1rem;
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .script-box p {
+            font-size: 0.82rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2D2424;
+            color: #FFF8F0;
+            padding: 2.5rem 1rem 1.75rem;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: auto;
+            border-top: 3px solid var(--gold);
+        }
+
+        .footer a {
+            color: #FFD54F;
+            text-decoration: none;
+            margin: 0 0.65rem;
+            font-weight: 500;
+            display: inline-block;
+            padding: 0.2rem 0;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sitemap-card {
+                padding: 1rem;
+            }
+
+            .card-thumb {
+                width: 76px;
+                height: 76px;
+                min-width: 76px;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <a href="index.html" class="logo"><span class="om-symbol">ॐ</span><span>VedaVMS</span></a>
+        <div class="blessing">ॐ श्री महागणपतये नमः || श्री गुरुभ्यो नमः ||</div>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-mobile-bar">
+            <a href="index.html" class="nav-mobile-brand"><span class="om-symbol">ॐ</span><span>VedaVMS</span></a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false"
+                type="button">
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+            </button>
+        </div>
+        <div class="nav-container" id="navContainer">
+            <a href="index.html">Home</a>
+            <a href="documents.html">Documents</a>
+            <a href="viewer/html_viewer.html">HTML Viewers</a>
+            <a href="videos.html">Videos</a>
+            <a href="articles.html">Articles</a>
+            <a href="convention.html">Conventions</a>
+            <a href="about.html">About</a>
+            <a href="sitemap.html" class="active">Sitemap</a>
+            <a href="donations.html" class="donate-btn">Donate</a>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <div class="page-intro">
+            <h1 class="page-title">Site Map &amp; Visual Directory</h1>
+            <p class="page-subtitle">
+                An overview of all portals, interactive scripture readers and downloadable texts in the VedaVMS digital Vedic repository.
+            </p>
+        </div>
+
+        <!-- Section 1: Main Portals -->
+        <div class="section-header">
+            <h2>Primary Repository Portals</h2>
+            <span class="section-badge">Core Gateway</span>
+        </div>
+
+        <div class="cards-grid">
+            <!-- Home -->
+            <a href="index.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/lord_ganapati.webp" type="image/webp">
+                    <img src="assets/images/devatas/lord_ganapati.jpg" alt="Lord Maha Ganapati" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">Home Portal</h3>
+                    <p class="card-desc">Welcome entryway, announcements, recent updates, search access, and site highlights.</p>
+                    <div class="card-links">
+                        <span class="card-tag">Recent Updates</span>
+                        <span class="card-tag">Quick Links</span>
+                        <span class="card-tag">Search</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- About Us -->
+            <a href="about.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/shankara_and_disciples.webp" type="image/webp">
+                    <img src="assets/images/devatas/shankara_and_disciples.jpg" alt="Sri Adi Shankaracharya and Disciples" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">About Us</h3>
+                    <p class="card-desc">Mission of VedaVMS, Guru Parampara tradition, team background, and contact details.</p>
+                    <div class="card-links">
+                        <span class="card-tag">Guru Parampara</span>
+                        <span class="card-tag">Mission</span>
+                        <span class="card-tag">Contact</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Master Documents -->
+            <a href="documents.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/lord_vishnu.webp" type="image/webp">
+                    <img src="assets/images/devatas/lord_vishnu.jpg" alt="Lord Maha Vishnu" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">Master Documents &amp; PDFs</h3>
+                    <p class="card-desc">Complete catalog of 970+ Vedic texts across 7 scripts with 1,570+ verified PDF downloads.</p>
+                    <div class="card-links">
+                        <span class="card-tag">7 Scripts</span>
+                        <span class="card-tag">Samhita</span>
+                        <span class="card-tag">Brahmana</span>
+                        <span class="card-tag">Aranyaka</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Conventions -->
+            <a href="convention.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/goddess_gayatri_devi.webp" type="image/webp">
+                    <img src="assets/images/devatas/goddess_gayatri_devi.jpg" alt="Goddess Gayatri Devi" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">Vedic Conventions</h3>
+                    <p class="card-desc">Comprehensive reference on Vedic swara notations, svara markers, font standards, and chant rules.</p>
+                    <div class="card-links">
+                        <span class="card-tag">Swaras</span>
+                        <span class="card-tag">Vedic Fonts</span>
+                        <span class="card-tag">Pronunciation</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Articles -->
+            <a href="articles.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/agni_deva.webp" type="image/webp">
+                    <img src="assets/images/devatas/agni_deva.jpg" alt="Lord Agni Deva" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">Articles &amp; Research</h3>
+                    <p class="card-desc">Scholarly papers, interpretive articles, and deep-dive studies into Vedic rituals and philosophy.</p>
+                    <div class="card-links">
+                        <span class="card-tag">Essays</span>
+                        <span class="card-tag">Research</span>
+                        <span class="card-tag">Commentaries</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Videos -->
+            <a href="videos.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/pavamana_soma.webp" type="image/webp">
+                    <img src="assets/images/devatas/pavamana_soma.jpg" alt="Lord Pavamana Soma" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">Chanting Lessons &amp; Videos</h3>
+                    <p class="card-desc">Structured audio/video chanting lessons arranged by kanda, prashna, and anuvaka.</p>
+                    <div class="card-links">
+                        <span class="card-tag">Oral Tradition</span>
+                        <span class="card-tag">Audio Chants</span>
+                        <span class="card-tag">Video Classes</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Donations -->
+            <a href="donations.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/sri_suktam_lakshmi_kerala_mural.webp" type="image/webp">
+                    <img src="assets/images/devatas/sri_suktam_lakshmi_kerala_mural.jpg" alt="Goddess Sri Mahalakshmi" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">Support &amp; Donations</h3>
+                    <p class="card-desc">Support Veda Pathashalas, student sustenance, Vedic preservation, and site operations.</p>
+                    <div class="card-links">
+                        <span class="card-tag">Pathashala Support</span>
+                        <span class="card-tag">Contributions</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Section 2: Interactive HTML Scripture Readers -->
+        <div class="section-header">
+            <h2>Interactive HTML Scripture Viewers</h2>
+            <span class="section-badge">Scripture Sanctuary</span>
+        </div>
+
+        <div class="cards-grid">
+            <!-- Viewer Hub -->
+            <a href="viewer/html_viewer.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/shiva_kerala_mural.webp" type="image/webp">
+                    <img src="assets/images/devatas/shiva_kerala_mural.jpg" alt="Lord Shiva and Sri Mahalakshmi" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">HTML Readers Main Hub</h3>
+                    <p class="card-desc">The central interactive reader dashboard featuring font controls, night mode, and chapter navigation.</p>
+                    <div class="card-links">
+                        <span class="card-tag">Font Switcher</span>
+                        <span class="card-tag">Side-by-Side</span>
+                        <span class="card-tag">TOC Navigation</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Siva Stuti & Rudram -->
+            <a href="viewer/siva_stuti_sanskrit.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/shiva_kerala_mural.webp" type="image/webp">
+                    <img src="assets/images/devatas/shiva_kerala_mural.jpg" alt="Lord Shiva" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">Siva Stuti, Sri Rudram &amp; Chamakam</h3>
+                    <p class="card-desc">Taittiriya Samhita 4.5 (Namakam) and 4.7 (Chamakam) with word breaks and full accentuation.</p>
+                    <div class="card-links">
+                        <span class="card-tag">TS 4.5 Rudram</span>
+                        <span class="card-tag">TS 4.7 Chamakam</span>
+                        <span class="card-tag">Stuti</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Shanti Japam -->
+            <a href="viewer/shanti_japam_sanskrit.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/sri_suktam_lakshmi_kerala_mural.webp" type="image/webp">
+                    <img src="assets/images/devatas/sri_suktam_lakshmi_kerala_mural.jpg" alt="Goddess Sri Mahalakshmi" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">Universal Shanti Japam</h3>
+                    <p class="card-desc">Universal Vedic peace hymns invoked for cosmic harmony, spiritual welfare, and removal of distress.</p>
+                    <div class="card-links">
+                        <span class="card-tag">Shanti Mantras</span>
+                        <span class="card-tag">Universal Welfare</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Taittiriya Aranyakam / Aruna Prashnam -->
+            <a href="viewer/taittiriya_upanishad_sanskrit.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/lord_surya_aditya.webp?v=3" type="image/webp">
+                    <img src="assets/images/devatas/lord_surya_aditya.jpg" alt="Lord Surya / Aditya" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">Aruna Prashnam (Surya Namaskaram)</h3>
+                    <p class="card-desc">Taittiriya Aranyakam Prashna 1 — the complete 32 anuvakas of the sacred solar adoration.</p>
+                    <div class="card-links">
+                        <span class="card-tag">Aruna Prashnam</span>
+                        <span class="card-tag">32 Anuvakas</span>
+                        <span class="card-tag">Surya Mantras</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Udaka Shanti -->
+            <a href="viewer/udaka_shanti_sanskrit.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/varuna_deva.webp" type="image/webp">
+                    <img src="assets/images/devatas/varuna_deva.jpg" alt="Lord Varuna Deva" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">Udaka Shanti &amp; Anushangam</h3>
+                    <p class="card-desc">Consecrated water sanctification hymns invoked during auspicious rites, housewarmings, and ceremonies.</p>
+                    <div class="card-links">
+                        <span class="card-tag">Udaka Shanti</span>
+                        <span class="card-tag">Anushangam</span>
+                        <span class="card-tag">Sanctification</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- TB 3.7 Achidram -->
+            <a href="viewer/tb_3_7_achidram_sanskrit.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/agni_deva.webp" type="image/webp">
+                    <img src="assets/images/devatas/agni_deva.jpg" alt="Lord Agni Deva" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">TB 3.7 Achidram (Yajna Integrity)</h3>
+                    <p class="card-desc">Taittiriya Brahmana Prapathaka 3.7 — prayers rectifying flaws and ensuring purity of sacred rites.</p>
+                    <div class="card-links">
+                        <span class="card-tag">TB 3.7</span>
+                        <span class="card-tag">Achidram</span>
+                        <span class="card-tag">Pavitreshti</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- TB 3.8 Aswamedham Vaiswadevam -->
+            <a href="viewer/tb_3_8_aswamedham_vaiswadevam_sanskrit.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/indra_deva.webp" type="image/webp">
+                    <img src="assets/images/devatas/indra_deva.jpg" alt="Lord Indra Deva" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">TB 3.8 Aswamedham Vaiswadevam</h3>
+                    <p class="card-desc">Taittiriya Brahmana Prapathaka 3.8 — hymns addressed to the assembly of all cosmic gods and sovereigns.</p>
+                    <div class="card-links">
+                        <span class="card-tag">TB 3.8</span>
+                        <span class="card-tag">Vaiswadevam</span>
+                        <span class="card-tag">All Deities</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- TB 3.9 Aswamedham Havirdhanam -->
+            <a href="viewer/tb_3_9_aswamedham_havirdhanam_sanskrit.html" class="sitemap-card">
+                <picture>
+                    <source srcset="assets/images/devatas/pavamana_soma.webp" type="image/webp">
+                    <img src="assets/images/devatas/pavamana_soma.jpg" alt="Lord Pavamana Soma" class="card-thumb" width="88" height="88" loading="lazy">
+                </picture>
+                <div class="card-body">
+                    <h3 class="card-title">TB 3.9 Aswamedham Havirdhanam</h3>
+                    <p class="card-desc">Taittiriya Brahmana Prapathaka 3.9 — sacred oblations and hymns of the sacred Soma pressings.</p>
+                    <div class="card-links">
+                        <span class="card-tag">TB 3.9</span>
+                        <span class="card-tag">Havirdhanam</span>
+                        <span class="card-tag">Soma Rites</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Section 3: Document Archives by Script -->
+        <div class="section-header">
+            <h2>Downloadable Document Archives by Script</h2>
+            <span class="section-badge">Master Catalog Jump Index</span>
+        </div>
+
+        <div class="script-directory-grid">
+            <a href="documents.html#sanskrit" class="script-box">
+                <h4>Sanskrit (Devanagari) <span>→</span></h4>
+                <p>131 documents across 6 sections including Samhita, Brahmana, Aranyaka, and Upanishads.</p>
+            </a>
+            <a href="documents.html#tamil" class="script-box">
+                <h4>Tamil Script <span>→</span></h4>
+                <p>125 documents with custom Tamil Vedic swara diacritics and chanting guides.</p>
+            </a>
+            <a href="documents.html#malayalam" class="script-box">
+                <h4>Malayalam Script <span>→</span></h4>
+                <p>125 documents preserving authentic Kerala Namboothiri and Krishna Yajurveda traditions.</p>
+            </a>
+            <a href="documents.html#kannada" class="script-box">
+                <h4>Kannada Script <span>→</span></h4>
+                <p>30 documents with rigorous swara marks for the Karnataka chanting community.</p>
+            </a>
+            <a href="documents.html#telugu" class="script-box">
+                <h4>Telugu Script <span>→</span></h4>
+                <p>16 documents for Andhra and Telangana Vedic chanting traditions.</p>
+            </a>
+            <a href="documents.html#latin" class="script-box">
+                <h4>Latin (IAST) <span>→</span></h4>
+                <p>27 documents in standardized international romanization with precise swara accents.</p>
+            </a>
+            <a href="documents.html#baraha" class="script-box">
+                <h4>Baraha Source <span>→</span></h4>
+                <p>201 source text files for researchers, transliterators, and text editors.</p>
+            </a>
+            <a href="documents.html#samhita_jatai" class="script-box">
+                <h4>TS Samhita Jatai <span>→</span></h4>
+                <p>132 documents of advanced Vikrithi Jata Patha combinations.</p>
+            </a>
+            <a href="documents.html#samhita_ghanam" class="script-box">
+                <h4>TS Samhita Ghanam <span>→</span></h4>
+                <p>132 documents of complex Ghana Patha permutations.</p>
+            </a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <a href="index.html">Home</a>
+        <a href="documents.html">Documents</a>
+        <a href="viewer/html_viewer.html">HTML Viewers</a>
+        <a href="videos.html">Videos</a>
+        <a href="articles.html">Articles</a>
+        <a href="convention.html">Conventions</a>
+        <a href="about.html">About</a>
+        <a href="sitemap.html">Sitemap</a>
+        <a href="donations.html">Donate</a>
+        <div style="margin-top:1rem; font-size:0.8rem; opacity:0.7;">&copy; 2026 VedaVMS
+            <div class="footer-meta" style="margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.55;">Generated: 02-Oct-2026 17:12 IST</div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var navToggle = document.getElementById('navToggle');
+            var navContainer = document.getElementById('navContainer');
+            if (navToggle && navContainer) {
+                navToggle.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var isOpen = navContainer.classList.toggle('active');
+                    navToggle.classList.toggle('open', isOpen);
+                    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+
+                navContainer.querySelectorAll('a').forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        navContainer.classList.remove('active');
+                        navToggle.classList.remove('open');
+                        navToggle.setAttribute('aria-expanded', 'false');
+                    });
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!navContainer.contains(e.target) && !navToggle.contains(e.target)) {
+                        navContainer.classList.remove('active');
+                        navToggle.classList.remove('open');
+                        navToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape' && navContainer.classList.contains('active')) {
+                        navContainer.classList.remove('active');
+                        navToggle.classList.remove('open');
+                        navToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
