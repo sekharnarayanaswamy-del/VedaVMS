@@ -397,6 +397,41 @@
                 }
             }
         }
+    
+        /* Centered Sacred Deity Portrait */
+        .deity-portrait-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.75rem auto 2.5rem;
+        }
+
+        .deity-portrait-img {
+            max-width: 240px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid var(--gold, #DAA520);
+            box-shadow: 0 6px 20px rgba(78, 52, 46, 0.16);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .deity-portrait-img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(128, 0, 0, 0.22);
+        }
+
+        @media (max-width: 600px) {
+            .deity-portrait-img {
+                max-width: 190px;
+            }
+            .deity-portrait-wrapper {
+                margin: 1.25rem auto 2rem;
+            }
+        }
+
     </style>
 </head>
 
@@ -503,6 +538,10 @@
     </section>
 
     <main class="main-content">
+        <div class="deity-portrait-wrapper">
+            <img src="assets/images/devatas/shankara_and_disciples.webp" alt="Sri Adi Shankaracharya and Disciples" class="deity-portrait-img" loading="lazy">
+        </div>
+
         <div class="section">
             <h2>1.1 Introduction</h2>
             <p>We are a group of working professionals who are collaborating to prepare/compile Veda Books on specific

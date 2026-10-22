@@ -177,6 +177,41 @@
             .video-card { flex-wrap: wrap; }
             .video-desc { display: none; }
         }
+    
+        /* Centered Sacred Deity Portrait */
+        .deity-portrait-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.75rem auto 2.5rem;
+        }
+
+        .deity-portrait-img {
+            max-width: 240px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid var(--gold, #DAA520);
+            box-shadow: 0 6px 20px rgba(78, 52, 46, 0.16);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .deity-portrait-img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(128, 0, 0, 0.22);
+        }
+
+        @media (max-width: 600px) {
+            .deity-portrait-img {
+                max-width: 190px;
+            }
+            .deity-portrait-wrapper {
+                margin: 1.25rem auto 2rem;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -270,6 +305,10 @@
     </section>
 
     <main class="main-content">
+        <div class="deity-portrait-wrapper">
+            <img src="assets/images/devatas/pavamana_soma.webp" alt="Lord Pavamana Soma" class="deity-portrait-img" loading="lazy">
+        </div>
+
         <div class="info-box">
             <strong>Dear Patrons and Well wishers,</strong><br>
             All these videos have been released & managed by <strong>Aaladi Chavadi Channel</strong> (YouTube) for VedaVMS at no cost. We are continually striving to improve the quality and content. Videos are 10-15 minutes each.<br><br>

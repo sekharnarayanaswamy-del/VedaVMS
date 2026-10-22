@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <meta name="catalog-version" content="2.5.1">
+  <meta name="catalog-version" content="2.5.8">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Articles - VedaVMS</title>
@@ -429,6 +429,41 @@
                 justify-content: center;
             }
         }
+    
+        /* Centered Sacred Deity Portrait */
+        .deity-portrait-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.75rem auto 2.5rem;
+        }
+
+        .deity-portrait-img {
+            max-width: 240px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid var(--gold, #DAA520);
+            box-shadow: 0 6px 20px rgba(78, 52, 46, 0.16);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .deity-portrait-img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(128, 0, 0, 0.22);
+        }
+
+        @media (max-width: 600px) {
+            .deity-portrait-img {
+                max-width: 190px;
+            }
+            .deity-portrait-wrapper {
+                margin: 1.25rem auto 2rem;
+            }
+        }
+
     </style>
 </head>
 
@@ -536,6 +571,10 @@
     </section>
 
     <main class="main-content">
+        <div class="deity-portrait-wrapper">
+            <img src="assets/images/devatas/agni_deva.webp" alt="Lord Agni Deva" class="deity-portrait-img" loading="lazy">
+        </div>
+
         <div class="info-box">
             📌 <strong>Note:</strong> Kindly refer to updates on Articles as they periodically change as our learnings
             progress. These articles complement our video lectures.
@@ -669,7 +708,7 @@
         <a href="convention.html">Conventions</a>
         <a href="about.html">About</a>
         <div style="margin-top:1rem; font-size:0.8rem; opacity:0.7;">&copy; 2026 VedaVMS
-            <div class="footer-meta" style="margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.55;">Generated: 22-Oct-2026 21:06 IST • Catalog v2.5.1</div>
+            <div class="footer-meta" style="margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.55;">Generated: 23-Oct-2026 00:29 IST • Catalog v2.5.8</div>
         </div>
     </footer>
 

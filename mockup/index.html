@@ -768,169 +768,41 @@
             }
         }
     
-        /* Sacred Texts Spotlight Section */
-        .sacred-spotlight-section {
-            background: linear-gradient(180deg, #FFFDF8 0%, #FAF2E6 100%);
-            border-top: 1px solid #EADBCE;
-            border-bottom: 1px solid #EADBCE;
-            padding: 3.5rem 1rem 4rem;
-        }
+        
 
-        .spotlight-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 2rem auto 0;
-        }
-
-        .spotlight-card {
-            background: #FFFFFF;
-            border-radius: 14px;
-            border: 1px solid #E8DCCF;
-            box-shadow: 0 4px 18px rgba(93, 64, 55, 0.08);
-            overflow: hidden;
+    
+        /* Centered Sacred Deity Portrait */
+        .deity-portrait-wrapper {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 1.75rem auto 2.5rem;
+        }
+
+        .deity-portrait-img {
+            max-width: 240px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid var(--gold, #DAA520);
+            box-shadow: 0 6px 20px rgba(78, 52, 46, 0.16);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .spotlight-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 26px rgba(128, 0, 0, 0.14);
+        .deity-portrait-img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(128, 0, 0, 0.22);
         }
 
-        .spotlight-card.shiva-card {
-            border-top: 5px solid var(--maroon);
-        }
-
-        .spotlight-card.lakshmi-card {
-            border-top: 5px solid var(--gold);
-        }
-
-        .spotlight-img-wrap {
-            position: relative;
-            height: 240px;
-            overflow: hidden;
-            background: #2D1810;
-        }
-
-        .spotlight-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center 20%;
-            transition: transform 0.5s ease;
-        }
-
-        .spotlight-card:hover .spotlight-img {
-            transform: scale(1.04);
-        }
-
-        .spotlight-badge {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: rgba(30, 20, 15, 0.85);
-            color: #FFD54F;
-            backdrop-filter: blur(4px);
-            padding: 0.3rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            border: 1px solid rgba(218, 165, 32, 0.5);
-        }
-
-        .spotlight-content {
-            padding: 1.5rem 1.75rem 1.75rem;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .spotlight-deva-title {
-            font-family: 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: var(--maroon);
-            margin-bottom: 0.25rem;
-        }
-
-        .spotlight-eng-title {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--dark-brown);
-            margin-bottom: 0.75rem;
-        }
-
-        .spotlight-shloka {
-            font-family: 'Noto Serif Devanagari', serif;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: #5D4037;
-            background: #FFF9F2;
-            padding: 0.65rem 0.95rem;
-            border-left: 3px solid var(--gold);
-            border-radius: 4px;
-            margin-bottom: 0.9rem;
-            font-style: italic;
-        }
-
-        .spotlight-desc {
-            font-size: 0.9rem;
-            color: #4A3B32;
-            line-height: 1.6;
-            margin-bottom: 1.25rem;
-            flex-grow: 1;
-        }
-
-        .spotlight-actions {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            margin-top: auto;
-        }
-
-        .spotlight-btn-primary {
-            background: linear-gradient(135deg, #800000 0%, #A52A2A 100%);
-            color: #FFFFFF;
-            padding: 0.65rem 1.15rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.88rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            transition: all 0.2s ease;
-        }
-
-        .spotlight-btn-primary:hover {
-            background: linear-gradient(135deg, #600000 0%, #852020 100%);
-            color: #FFFFFF;
-            transform: translateY(-1px);
-        }
-
-        .spotlight-btn-secondary {
-            background: #FFFFFF;
-            color: var(--dark-brown);
-            border: 1px solid #D7CCC8;
-            padding: 0.65rem 1.05rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.88rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            transition: all 0.2s ease;
-        }
-
-        .spotlight-btn-secondary:hover {
-            background: #F5EFEB;
-            border-color: #BCAAA4;
+        @media (max-width: 600px) {
+            .deity-portrait-img {
+                max-width: 190px;
+            }
+            .deity-portrait-wrapper {
+                margin: 1.25rem auto 2rem;
+            }
         }
 
     </style>
@@ -1030,6 +902,10 @@
     </div>
 
     <section class="hero">
+        <div class="deity-portrait-wrapper" style="margin: 0 auto 1.5rem;">
+            <img src="assets/images/devatas/lord_ganapati.webp" alt="Lord Maha Ganapati" class="deity-portrait-img" loading="lazy">
+        </div>
+
         <h1>कृष्ण यजुर्वेद ग्रन्थाः</h1>
         <h1 style="font-size:1.5rem; margin-top:-0.5rem;">Krishna Yajurveda Resources</h1>
         <p>A comprehensive collection of Vedic texts in Sanskrit, Tamil, Malayalam, Kannada, Telugu and English -
@@ -1156,60 +1032,6 @@
                 <div class="name">HTML Vedic Readers</div>
                 <div class="count">5 Interactive Editions</div>
             </a>
-        </div>
-    </section>
-
-            <!-- Sacred Texts Spotlight -->
-    <section class="sacred-spotlight-section" id="sacred-art">
-        <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
-            <h2 class="section-title">Sacred Texts Spotlight</h2>
-            <p class="section-subtitle">Interactive Vedic editions with authentic svara markings</p>
-
-            <div class="spotlight-grid">
-                <!-- Shiva Spotlight Card -->
-                <div class="spotlight-card shiva-card">
-                    <div class="spotlight-img-wrap">
-                        <img src="assets/images/devatas/shiva_kerala_mural.webp" alt="Lord Shiva" class="spotlight-img" loading="lazy">
-                    </div>
-                    <div class="spotlight-content">
-                        <h3 class="spotlight-deva-title">शिव स्तुतिः</h3>
-                        <div class="spotlight-eng-title">Lord Shiva (Dhyāna Rūpam)</div>
-                        <div class="spotlight-shloka">
-                            ध्यायेन्नित्यं महेशं रजतगिरिनिभं चारुचन्द्रावतंसं रत्नाकल्पोज्ज्वलाङ्गं परशुमृगवराभीतिहस्तं प्रसन्नम्...
-                        </div>
-                        <div class="spotlight-actions">
-                            <a href="viewer/siva_stuti_sanskrit.html" class="spotlight-btn-primary">
-                                <span>📖</span> Open Interactive Reader ↗
-                            </a>
-                            <a href="documents.html#sanskrit" class="spotlight-btn-secondary">
-                                <span>📄</span> Download PDFs
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Lakshmi Spotlight Card -->
-                <div class="spotlight-card lakshmi-card">
-                    <div class="spotlight-img-wrap">
-                        <img src="assets/images/devatas/sri_suktam_lakshmi_kerala_mural.webp" alt="Sri Mahalakshmi" class="spotlight-img" loading="lazy">
-                    </div>
-                    <div class="spotlight-content">
-                        <h3 class="spotlight-deva-title">श्री सूक्तम्</h3>
-                        <div class="spotlight-eng-title">Goddess Sri Mahalakshmi (Dhyāna Rūpam)</div>
-                        <div class="spotlight-shloka">
-                            हिरण्यवर्णां हरिणीं सुवर्णरजतस्रजाम् । चन्द्रां हिरण्मयीं लक्ष्मीं जातवेदो म आवह ॥
-                        </div>
-                        <div class="spotlight-actions">
-                            <a href="viewer/shanti_japam_sanskrit.html#chapter-10" class="spotlight-btn-primary">
-                                <span>📖</span> Open Sri Suktam Reader ↗
-                            </a>
-                            <a href="documents.html#sanskrit" class="spotlight-btn-secondary">
-                                <span>📄</span> Download PDFs
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
