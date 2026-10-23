@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="catalog-version" content="2.5.8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sacred Deities Gallery - VedaVMS</title>
+    <meta name="description"
+        content="Traditional temple fresco art collection of sacred Vedic deities for the VedaVMS repository.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@500;600;700&family=Tiro+Devanagari+Sanskrit&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --saffron: #E65100;
+            --saffron-light: #FFF3E0;
+            --maroon: #800000;
+            --maroon-dark: #5c0000;
+            --cream: #FFFDF9;
+            --gold: #DAA520;
+            --gold-light: #FCF8E3;
+            --dark-brown: #3E2723;
+            --text-color: #2D2424;
+            --border-color: #E8DCCF;
+            --card-bg: #FFFFFF;
+            --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.09);
+            --shadow-lg: 0 10px 30px rgba(128, 0, 0, 0.16);
+        }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            color: var(--text-color);
+            background: #FAF7F2;
+            line-height: 1.65;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #153E75 0%, #1D5296 50%, #2563A8 100%);
+            color: white;
+            padding: 1.25rem 0;
+            text-align: center;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .logo {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+        }
+
+        .om-symbol {
+            font-size: 1.8rem;
+            color: #FFD54F;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .blessing {
+            font-size: 0.82rem;
+            color: #F0F7FF;
+            opacity: 0.95;
+            font-style: italic;
+            margin-top: 0.35rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav {
+            background: var(--card-bg);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-mobile-bar {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.65rem 1rem;
+            background: var(--card-bg);
+        }
+
+        .nav-mobile-brand {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--dark-brown);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-mobile-brand .om-symbol {
+            color: var(--saffron);
+            font-size: 1.25rem;
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 22px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .hamburger-bar {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--dark-brown);
+            border-radius: 3px;
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
+        }
+
+        .nav-toggle.open .hamburger-bar:nth-child(1) {
+            transform: translateY(9.5px) rotate(45deg);
+        }
+
+        .nav-toggle.open .hamburger-bar:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .nav-toggle.open .hamburger-bar:nth-child(3) {
+            transform: translateY(-9.5px) rotate(-45deg);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            display: inline-block;
+            color: var(--dark-brown);
+            text-decoration: none;
+            padding: 0.85rem 1.25rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .nav a:hover {
+            color: var(--saffron);
+            background: rgba(230, 81, 0, 0.05);
+        }
+
+        .nav a.active {
+            color: var(--maroon);
+            border-bottom: 3px solid var(--maroon);
+        }
+
+        @media (max-width: 860px) {
+            .nav-mobile-bar {
+                display: flex;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            .nav-container {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: var(--card-bg);
+                border-top: 1px solid var(--border-color);
+                padding: 0.5rem 0 1rem;
+            }
+
+            .nav-container.active {
+                display: flex;
+            }
+
+            .nav a {
+                padding: 0.75rem 1.5rem;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            }
+        }
+
+        .main-container {
+            max-width: 1080px;
+            margin: 2rem auto 4rem;
+            padding: 0 1.25rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        .page-intro {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 2.2rem;
+            color: var(--maroon);
+            margin-bottom: 0.4rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.05rem;
+            color: #5D4037;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        /* View Toggle Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .view-btn {
+            background: var(--card-bg);
+            border: 1.5px solid var(--border-color);
+            color: var(--dark-brown);
+            padding: 0.45rem 1.1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .view-btn:hover {
+            border-color: var(--gold);
+            color: var(--saffron);
+        }
+
+        .view-btn.active {
+            background: var(--maroon);
+            color: white;
+            border-color: var(--maroon);
+        }
+
+        /* Carousel Section */
+        .carousel-wrapper {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem 1.5rem 1.75rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .carousel-stage {
+            position: relative;
+            width: 100%;
+            max-width: 520px;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .carousel-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid var(--gold);
+            box-shadow: var(--shadow-lg);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 45%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.92);
+            color: var(--maroon);
+            border: 1.5px solid var(--gold);
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            font-size: 1.6rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: var(--maroon);
+            color: white;
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .carousel-btn.prev {
+            left: 1.25rem;
+        }
+
+        .carousel-btn.next {
+            right: 1.25rem;
+        }
+
+        .carousel-caption {
+            text-align: center;
+            max-width: 680px;
+            margin-top: 0.5rem;
+        }
+
+        .caption-title {
+            font-family: 'Noto Serif Devanagari', serif;
+            font-size: 1.45rem;
+            color: var(--maroon);
+            margin-bottom: 0.35rem;
+        }
+
+        .caption-role {
+            font-size: 0.95rem;
+            color: #5D4037;
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+        }
+
+        .caption-link {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--saffron);
+            text-decoration: none;
+            padding: 0.3rem 0.85rem;
+            border: 1px solid var(--saffron);
+            border-radius: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .caption-link:hover {
+            background: var(--saffron);
+            color: white;
+        }
+
+        .counter-badge {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #8C7B70;
+            background: #F5EFEB;
+            padding: 0.2rem 0.65rem;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Thumbnails Strip */
+        .thumb-ribbon {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            max-width: 100%;
+            padding: 1rem 0.5rem 0.5rem;
+            scrollbar-width: thin;
+        }
+
+        .thumb-ribbon::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .thumb-ribbon::-webkit-scrollbar-thumb {
+            background: #D8C3AE;
+            border-radius: 3px;
+        }
+
+        .thumb-item {
+            flex: 0 0 72px;
+            width: 72px;
+            height: 72px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid transparent;
+            cursor: pointer;
+            opacity: 0.65;
+            transition: all 0.25s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .thumb-item:hover {
+            opacity: 0.95;
+            transform: scale(1.05);
+        }
+
+        .thumb-item.active {
+            opacity: 1;
+            border-color: var(--gold);
+            transform: scale(1.08);
+            box-shadow: 0 4px 12px rgba(128, 0, 0, 0.22);
+        }
+
+        /* Grid View */
+        .gallery-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .grid-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .grid-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--gold);
+        }
+
+        .grid-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-bottom: 1.5px solid var(--border-color);
+        }
+
+        .grid-body {
+            padding: 1rem 1.15rem 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .grid-title {
+            font-family: 'Noto Serif Devanagari', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--maroon);
+            margin-bottom: 0.35rem;
+        }
+
+        .grid-card:hover .grid-title {
+            color: var(--saffron);
+        }
+
+        .grid-desc {
+            font-size: 0.88rem;
+            color: #666;
+            line-height: 1.45;
+            margin-bottom: 0.75rem;
+            flex: 1;
+        }
+
+        .grid-link-btn {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #1D5296;
+            margin-top: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2D2424;
+            color: #FFF8F0;
+            padding: 2.5rem 1rem 1.75rem;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: auto;
+            border-top: 3px solid var(--gold);
+        }
+
+        .footer a {
+            color: #FFD54F;
+            text-decoration: none;
+            margin: 0 0.65rem;
+            font-weight: 500;
+            display: inline-block;
+            padding: 0.2rem 0;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .carousel-wrapper {
+                padding: 1.5rem 0.85rem 1.25rem;
+            }
+
+            .carousel-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1.3rem;
+            }
+
+            .carousel-btn.prev {
+                left: 0.5rem;
+            }
+
+            .carousel-btn.next {
+                right: 0.5rem;
+            }
+
+            .thumb-item {
+                flex: 0 0 58px;
+                width: 58px;
+                height: 58px;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <a href="index.html" class="logo"><span class="om-symbol">ॐ</span><span>VedaVMS</span></a>
+        <div class="blessing">ॐ श्री महागणपतये नमः || श्री गुरुभ्यो नमः ||</div>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-mobile-bar">
+            <a href="index.html" class="nav-mobile-brand"><span class="om-symbol">ॐ</span><span>VedaVMS</span></a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false"
+                type="button">
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+            </button>
+        </div>
+        <div class="nav-container" id="navContainer">
+            <a href="index.html">Home</a>
+            <a href="documents.html">Documents</a>
+            <a href="viewer/html_viewer.html">HTML Viewers</a>
+            <a href="videos.html">Videos</a>
+            <a href="articles.html">Articles</a>
+            <a href="convention.html">Conventions</a>
+            <a href="about.html">About</a>
+            <a href="gallery.html" class="active">Gallery</a>
+            <a href="sitemap.html">Sitemap</a>
+            <a href="donations.html">Donate</a>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <div class="page-intro">
+            <h1 class="page-title">Sacred Deities Art Gallery</h1>
+            <p class="page-subtitle">
+                A unified collection of 11 authentic Kerala temple mural paintings presiding over each section of the VedaVMS repository.
+            </p>
+        </div>
+
+        <!-- View Controls -->
+        <div class="toolbar">
+            <button class="view-btn active" id="btnCarouselView" onclick="setView('carousel')">
+                <span>✦</span> Carousel View
+            </button>
+            <button class="view-btn" id="btnGridView" onclick="setView('grid')">
+                <span>▦</span> Grid View (All 11)
+            </button>
+        </div>
+
+        <!-- Carousel View -->
+        <div class="carousel-wrapper" id="carouselSection">
+            <button class="carousel-btn prev" onclick="prevSlide()" aria-label="Previous Deity">‹</button>
+            <button class="carousel-btn next" onclick="nextSlide()" aria-label="Next Deity">›</button>
+
+            <span class="counter-badge" id="slideCounter">Deity 1 of 11</span>
+
+            <div class="carousel-stage">
+                <img id="mainImage" src="assets/images/devatas/lord_ganapati.webp" alt="Sacred Deity Portrait"
+                    class="carousel-img" width="520" height="520">
+            </div>
+
+            <div class="carousel-caption">
+                <h2 class="caption-title" id="captionTitle">Lord Maha Ganapati</h2>
+                <p class="caption-role" id="captionRole">Presiding over the Home Portal with auspicious blessings.</p>
+                <a href="index.html" class="caption-link" id="captionLink">Open Assigned Page →</a>
+            </div>
+
+            <!-- Thumbnails Ribbon -->
+            <div class="thumb-ribbon" id="thumbRibbon">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+
+        <!-- Grid View (All 11) -->
+        <div class="gallery-grid" id="gridSection">
+            <!-- Injected via JavaScript -->
+        </div>
+    </main>
+
+    <footer class="footer">
+        <a href="index.html">Home</a>
+        <a href="documents.html">Documents</a>
+        <a href="viewer/html_viewer.html">HTML Viewers</a>
+        <a href="videos.html">Videos</a>
+        <a href="articles.html">Articles</a>
+        <a href="convention.html">Conventions</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="sitemap.html">Sitemap</a>
+        <a href="donations.html">Donate</a>
+        <div style="margin-top:1rem; font-size:0.8rem; opacity:0.7;">&copy; 2026 VedaVMS
+            <div class="footer-meta" style="margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.55;">Generated: 23-Oct-2026 09:01 IST • Catalog v2.5.8</div>
+        </div>
+    </footer>
+
+    <script>
+        const deities = [
+            {
+                name: "Lord Maha Ganapati",
+                image: "assets/images/devatas/lord_ganapati.webp",
+                role: "Auspicious invocation and remover of obstacles, presiding over the repository entryway.",
+                pageName: "Home Portal",
+                pageUrl: "index.html"
+            },
+            {
+                name: "Sri Adi Shankaracharya & Disciples",
+                image: "assets/images/devatas/shankara_and_disciples.webp",
+                role: "Guru Parampara commentary lineage upholding authentic Advaita Vedic tradition.",
+                pageName: "About Us",
+                pageUrl: "about.html"
+            },
+            {
+                name: "Lord Maha Vishnu",
+                image: "assets/images/devatas/lord_vishnu.webp",
+                role: "Yajño vai Viṣṇuḥ — cosmic preserver guarding the 972+ master documents catalog.",
+                pageName: "Master Documents",
+                pageUrl: "documents.html"
+            },
+            {
+                name: "Goddess Gayatri Devi (Veda Mātā)",
+                image: "assets/images/devatas/goddess_gayatri_devi.webp",
+                role: "Mother of the Vedas, presiding over swara conventions, accents, and chanting meters.",
+                pageName: "Vedic Conventions",
+                pageUrl: "convention.html"
+            },
+            {
+                name: "Lord Surya / Aditya (Saptāśva)",
+                image: "assets/images/devatas/lord_surya_aditya.webp?v=4",
+                role: "Seven-horse solar chariot (Saptāśva-ratham) presiding over Taittiriya Aranyakam Prashna 1 (Aruna Prashnam).",
+                pageName: "Aruna Prashnam Reader",
+                pageUrl: "viewer/taittiriya_upanishad_sanskrit.html"
+            },
+            {
+                name: "Lord Shiva (Dhyāna Rūpam)",
+                image: "assets/images/devatas/shiva_kerala_mural.webp",
+                role: "Supreme Yogi and cosmic silence, presiding over Siva Stuti, Sri Rudram, and Chamakam.",
+                pageName: "Siva Stuti Reader",
+                pageUrl: "viewer/siva_stuti_sanskrit.html"
+            },
+            {
+                name: "Goddess Sri Mahalakshmi (Gaja-Lakshmi)",
+                image: "assets/images/devatas/sri_suktam_lakshmi_kerala_mural.webp?v=4",
+                role: "Presiding over donations, Veda Pathashalas, and universal peace chanting (Shanti Japam).",
+                pageName: "Support & Donations",
+                pageUrl: "donations.html"
+            },
+            {
+                name: "Lord Agni Deva",
+                image: "assets/images/devatas/agni_deva.webp",
+                role: "Sacred Vedic flame and messenger of Yajna, presiding over research articles and TB 3.7 Achidram.",
+                pageName: "Articles & Research",
+                pageUrl: "articles.html"
+            },
+            {
+                name: "Lord Indra Deva",
+                image: "assets/images/devatas/indra_deva.webp",
+                role: "Devendra mounted on Airavata, brandishing the Vajra, presiding over TB 3.8 Aswamedham Vaiswadevam.",
+                pageName: "TB 3.8 Reader",
+                pageUrl: "viewer/tb_3_8_aswamedham_vaiswadevam_sanskrit.html"
+            },
+            {
+                name: "Lord Varuna Deva",
+                image: "assets/images/devatas/varuna_deva.webp",
+                role: "Lord of cosmic waters and Rta, presiding over the sacred Udaka Shanti sanctification hymns.",
+                pageName: "Udaka Shanti Reader",
+                pageUrl: "viewer/udaka_shanti_sanskrit.html"
+            },
+            {
+                name: "Lord Pavamana Soma",
+                image: "assets/images/devatas/pavamana_soma.webp",
+                role: "Celestial king of amrita and sacred plants, presiding over oral chanting lessons and TB 3.9 Havirdhanam.",
+                pageName: "Chanting Videos",
+                pageUrl: "videos.html"
+            }
+        ];
+
+        let currentIndex = 0;
+
+        function renderThumbnails() {
+            const ribbon = document.getElementById('thumbRibbon');
+            ribbon.innerHTML = '';
+            deities.forEach((d, idx) => {
+                const img = document.createElement('img');
+                img.src = d.image;
+                img.alt = d.name;
+                img.className = 'thumb-item' + (idx === currentIndex ? ' active' : '');
+                img.onclick = () => goToSlide(idx);
+                ribbon.appendChild(img);
+            });
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('gridSection');
+            grid.innerHTML = '';
+            deities.forEach((d, idx) => {
+                const card = document.createElement('a');
+                card.className = 'grid-card';
+                card.href = d.pageUrl;
+                card.innerHTML = `
+                    <img src="${d.image}" alt="${d.name}" class="grid-img" loading="lazy">
+                    <div class="grid-body">
+                        <h3 class="grid-title">${d.name}</h3>
+                        <p class="grid-desc">${d.role}</p>
+                        <span class="grid-link-btn">View on ${d.pageName} →</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function updateSlide() {
+            const d = deities[currentIndex];
+            const mainImg = document.getElementById('mainImage');
+            mainImg.style.opacity = '0';
+            setTimeout(() => {
+                mainImg.src = d.image;
+                mainImg.alt = d.name;
+                mainImg.style.opacity = '1';
+            }, 150);
+
+            document.getElementById('slideCounter').textContent = `Deity ${currentIndex + 1} of ${deities.length}`;
+            document.getElementById('captionTitle').textContent = d.name;
+            document.getElementById('captionRole').textContent = d.role;
+            const link = document.getElementById('captionLink');
+            link.href = d.pageUrl;
+            link.textContent = `Open ${d.pageName} →`;
+
+            document.querySelectorAll('.thumb-item').forEach((el, idx) => {
+                el.classList.toggle('active', idx === currentIndex);
+            });
+
+            // Auto-scroll active thumbnail into view
+            const activeThumb = document.querySelectorAll('.thumb-item')[currentIndex];
+            if (activeThumb) {
+                activeThumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % deities.length;
+            updateSlide();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + deities.length) % deities.length;
+            updateSlide();
+        }
+
+        function goToSlide(idx) {
+            currentIndex = idx;
+            updateSlide();
+        }
+
+        function setView(view) {
+            const carousel = document.getElementById('carouselSection');
+            const grid = document.getElementById('gridSection');
+            const btnCarousel = document.getElementById('btnCarouselView');
+            const btnGrid = document.getElementById('btnGridView');
+
+            if (view === 'grid') {
+                carousel.style.display = 'none';
+                grid.style.display = 'grid';
+                btnGrid.classList.add('active');
+                btnCarousel.classList.remove('active');
+            } else {
+                carousel.style.display = 'flex';
+                grid.style.display = 'none';
+                btnCarousel.classList.add('active');
+                btnGrid.classList.remove('active');
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('carouselSection').style.display !== 'none') {
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+            }
+        });
+
+        // Mobile nav toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            renderThumbnails();
+            renderGrid();
+            updateSlide();
+
+            const navToggle = document.getElementById('navToggle');
+            const navContainer = document.getElementById('navContainer');
+            if (navToggle && navContainer) {
+                navToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = navContainer.classList.toggle('active');
+                    navToggle.classList.toggle('open', isOpen);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
