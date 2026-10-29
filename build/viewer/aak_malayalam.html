@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ml">
 <head>
-  <meta name="catalog-version" content="2.5.10">
+  <meta name="catalog-version" content="2.5.11">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="generator" content="VedaVMS Reader Generator">
-    <meta name="generated-at" content="30-10-2026 00:15:09">
+    <meta name="generated-at" content="30-10-2026 00:25:21">
     <title>തൈത്തിരീയ ബ്രാഹ്മണം (തൃതീയ കാണ്ഡം, പ്രപാഠക ൭ - ൧൨) - Malayalam Vedic Text</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1276,6 +1276,40 @@
             color: #666;
         }
 
+        /* Centered Sacred Deity Portrait */
+        .deity-portrait-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.75rem auto 2.5rem;
+        }
+
+        .deity-portrait-img {
+            max-width: 240px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid var(--gold, #DAA520);
+            box-shadow: 0 6px 20px rgba(78, 52, 46, 0.16);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .deity-portrait-img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(128, 0, 0, 0.22);
+        }
+
+        @media (max-width: 600px) {
+            .deity-portrait-img {
+                max-width: 190px;
+            }
+            .deity-portrait-wrapper {
+                margin: 1.25rem auto 2rem;
+            }
+        }
+
         @page {
             size: auto;
             margin: 15mm 18mm 15mm 18mm;
@@ -1295,7 +1329,7 @@
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-            .header, .toc-sidebar, .back-to-top, .modal-overlay {
+            .header, .toc-sidebar, .back-to-top, .modal-overlay, .deity-portrait-wrapper {
                 display: none !important;
             }
             .layout {
@@ -1561,7 +1595,10 @@
             <div class="main-title">
                 <h1>തൈത്തിരീയ ബ്രാഹ്മണം (തൃതീയ കാണ്ഡം, പ്രപാഠക ൭ - ൧൨)</h1>
                 <div class="sub-heading subheading">കൃഷ്ണ യജുർവേദീയ തൈത്തിരീയ ബ്രാഹ്മണം (സസ്വരമ്)</div>
-                <div class="generation-timestamp">Generated: 30-10-2026 00:15:09</div>
+                <div class="generation-timestamp">Generated: 30-10-2026 00:25:21</div>
+            </div>
+            <div class="deity-portrait-wrapper">
+                <img src="../assets/images/devatas/bhagavan_veda_vyasa.webp" alt="Bhagavan Sri Veda Vyasa" class="deity-portrait-img" loading="lazy">
             </div>
             <section class="chapter-container" id="chapter-0">
                 <h2 class="chapter-heading">വിഷയാനുക്രമണികാ (Table of Contents)</h2>
@@ -8122,7 +8159,7 @@
                 </div>
             </section>
             <footer class="reader-footer">
-                    <div class="footer-meta" style="margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.55;">Generated: 30-Oct-2026 00:17 IST • Catalog v2.5.10</div>
+                    <div class="footer-meta" style="margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.55;">Generated: 30-Oct-2026 00:25 IST • Catalog v2.5.11</div>
 </footer>
         </main>
     </div>

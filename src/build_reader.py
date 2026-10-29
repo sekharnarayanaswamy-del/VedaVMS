@@ -255,6 +255,14 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
     fonts_js = json.dumps(fonts, ensure_ascii=False)
 
+    deity_img = book_meta.get("deity_image")
+    deity_name = book_meta.get("deity_name", "Sacred Deity")
+    deity_portrait_html = ""
+    if deity_img:
+        deity_portrait_html = f'''            <div class="deity-portrait-wrapper">
+                <img src="../assets/images/devatas/{deity_img}" alt="{esc(deity_name)}" class="deity-portrait-img" loading="lazy">
+            </div>\n'''
+
     html_parts = []
     html_parts.append(f'''<!DOCTYPE html>
 <html lang="{html_lang}">
@@ -1533,6 +1541,40 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             color: #666;
         }}
 
+        /* Centered Sacred Deity Portrait */
+        .deity-portrait-wrapper {{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.75rem auto 2.5rem;
+        }}
+
+        .deity-portrait-img {{
+            max-width: 240px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid var(--gold, #DAA520);
+            box-shadow: 0 6px 20px rgba(78, 52, 46, 0.16);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }}
+
+        .deity-portrait-img:hover {{
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(128, 0, 0, 0.22);
+        }}
+
+        @media (max-width: 600px) {{
+            .deity-portrait-img {{
+                max-width: 190px;
+            }}
+            .deity-portrait-wrapper {{
+                margin: 1.25rem auto 2rem;
+            }}
+        }}
+
         @page {{
             size: auto;
             margin: 15mm 18mm 15mm 18mm;
@@ -1552,7 +1594,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }}
-            .header, .toc-sidebar, .back-to-top, .modal-overlay {{
+            .header, .toc-sidebar, .back-to-top, .modal-overlay, .deity-portrait-wrapper {{
                 display: none !important;
             }}
             .layout {{
@@ -1704,7 +1746,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 <div class="sub-heading subheading">{subtitle}</div>
                 <div class="generation-timestamp">Generated: {generated_at}</div>
             </div>
-''')
+{deity_portrait_html}''')
 
     for ch in chapters:
         ch_id = f"chapter-{ch['num']}"

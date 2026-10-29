@@ -8,7 +8,9 @@
       "pdf_path": "data/pdf/Taittiriya Upanishad Sanskrit.pdf",
       "back_link": "../index.html",
       "back_label": "← Home",
-      "chapter_regex": "^([1-6])(?!\\.)\\s*(.*(?:vall[iI]|nArAyaN|aruNa|triNAcikE).*)$"
+      "chapter_regex": "^([1-6])(?!\\.)\\s*(.*(?:vall[iI]|nArAyaN|aruNa|triNAcikE).*)$",
+      "deity_image": "lord_surya_aditya.webp",
+      "deity_name": "Lord Surya / Aditya"
     },
     "udaka_shanti": {
       "title": "Udaka Shanti",
@@ -18,7 +20,9 @@
       "pdf_path": "data/pdf/Udaka Shanti Sanskrit.pdf",
       "back_link": "../index.html",
       "back_label": "← Home",
-      "chapter_regex": "^(1)\\s+(udaka\\s*SAnti.*)$"
+      "chapter_regex": "^(1)\\s+(udaka\\s*SAnti.*)$",
+      "deity_image": "varuna_deva.webp",
+      "deity_name": "Lord Varuna Deva"
     },
     "shanti_japam": {
       "title": "Shanti Japam",
@@ -28,7 +32,9 @@
       "pdf_path": "data/pdf/Shanti Japam Sanskrit.pdf",
       "back_link": "../index.html",
       "back_label": "← Home",
-      "chapter_regex": "^([1-4]?\\d)(?!\\.\\d)\\.?\\s*([a-zA-Z].*)$"
+      "chapter_regex": "^([1-4]?\\d)(?!\\.\\d)\\.?\\s*([a-zA-Z].*)$",
+      "deity_image": "lord_vishnu.webp",
+      "deity_name": "Lord Maha Vishnu"
     },
     "shiva_stuti": {
       "title": "Shiva Stuti",
@@ -55,7 +61,9 @@
         "days of the week:": "2.4.1 Days of the Week:",
         "days of the week": "2.4.1 Days of the Week:",
         "masam, ruthu, ayanam": "2.4.2 Masam, Ruthu, Ayanam"
-      }
+      },
+      "deity_image": "shiva_kerala_mural.webp",
+      "deity_name": "Lord Shiva"
     },
     "udaka_shanti_anushangam": {
       "title": "Udaka Shanti Anushangam",
@@ -65,7 +73,9 @@
       "pdf_path": "data/pdf/Udaka Shanti Sanskrit ASCT.pdf",
       "back_link": "../index.html",
       "back_label": "← Home",
-      "chapter_regex": "^(1)\\s+(udaka\\s*SAnti.*)$"
+      "chapter_regex": "^(1)\\s+(udaka\\s*SAnti.*)$",
+      "deity_image": "varuna_deva.webp",
+      "deity_name": "Lord Varuna Deva"
     },
     "tb_3_7_achidram": {
       "title": "तैत्तिरीय ब्राह्मणे तृतीयाष्टके सप्तमः प्रपाठकः (अच्छिद्रं)",
@@ -77,7 +87,9 @@
       "direct": true,
       "chapter_filter": "3.7",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "agni_deva.webp",
+      "deity_name": "Lord Agni Deva"
     },
     "tb_3_8_aswamedham_vaiswadevam": {
       "title": "तैत्तिरीय ब्राह्मणे तृतीयाष्टके अष्टमः प्रपाठकः (अश्वमेधं - वैश्वदेवम्)",
@@ -89,7 +101,9 @@
       "direct": true,
       "chapter_filter": "3.8",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "indra_deva.webp",
+      "deity_name": "Lord Indra Deva"
     },
     "tb_3_9_aswamedham_havirdhanam": {
       "title": "तैत्तिरीय ब्राह्मणे तृतीयाष्टके नवमः प्रपाठकः (अश्वमेधं - हविर्धानम्)",
@@ -101,7 +115,9 @@
       "direct": true,
       "chapter_filter": "3.9",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "pavamana_soma.webp",
+      "deity_name": "Lord Pavamana Soma"
     },
     "tb_complete": {
       "title": "तैत्तिरीय ब्राह्मणम् (तृतीय काण्डम्, प्रपाठक ७ - १२)",
@@ -113,7 +129,9 @@
       "direct": true,
       "chapter_regex": "^(3\\.(?:[7-9]|1[0-2]))\\t?\\s+(.*(?:prapAThaka|praSna).*)$",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "bhagavan_veda_vyasa.webp",
+      "deity_name": "Bhagavan Sri Veda Vyasa"
     },
     "aak": {
       "title": "तैत्तिरीय ब्राह्मणम् (तृतीय काण्डम्, प्रपाठक ७ - १२)",
@@ -124,7 +142,9 @@
       "pdf_path": "data/pdf/TB 3.7-3.12 Sanskrit.pdf",
       "direct": true,
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "bhagavan_veda_vyasa.webp",
+      "deity_name": "Bhagavan Sri Veda Vyasa"
     },
     "aak_malayalam": {
       "title": "തൈത്തിരീയ ബ്രാഹ്മണം (തൃതീയ കാണ്ഡം, പ്രപാഠക ൭ - ൧൨)",
@@ -136,7 +156,9 @@
       "direct": true,
       "lang": "malayalam",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "bhagavan_veda_vyasa.webp",
+      "deity_name": "Bhagavan Sri Veda Vyasa"
     },
     "tb_3_7_achidram_malayalam": {
       "title": "തൈത്തിരീയ ബ്രാഹ്മണേ തൃതീയാഷ്ടകേ സപ്തമഃ പ്രപാഠകഃ (അച്ഛിദ്രം)",
@@ -149,7 +171,9 @@
       "lang": "malayalam",
       "chapter_filter": "3.7",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "agni_deva.webp",
+      "deity_name": "Lord Agni Deva"
     },
     "tb_3_8_aswamedham_vaiswadevam_malayalam": {
       "title": "തൈത്തിരീയ ബ്രാഹ്മണേ തൃതീയാഷ്ടകേ അഷ്ടമഃ പ്രപാഠകഃ (അശ്വമേധം - വൈശ്വദേവമ്)",
@@ -162,7 +186,9 @@
       "lang": "malayalam",
       "chapter_filter": "3.8",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "indra_deva.webp",
+      "deity_name": "Lord Indra Deva"
     },
     "tb_3_9_aswamedham_havirdhanam_malayalam": {
       "title": "തൈത്തിരീയ ബ്രാഹ്മണേ തൃതീയാഷ്ടകേ നവമഃ പ്രപാഠകഃ (അശ്വമേധം - ഹവിര്ധാനമ്)",
@@ -175,7 +201,9 @@
       "lang": "malayalam",
       "chapter_filter": "3.9",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "pavamana_soma.webp",
+      "deity_name": "Lord Pavamana Soma"
     },
     "tb_3_10_katakam_savitra": {
       "title": "तैत्तिरीय ब्राह्मणे काठके प्रथमः प्रश्नः (सावित्रचयनम्)",
@@ -187,7 +215,9 @@
       "direct": true,
       "chapter_filter": "3.10",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "lord_surya_aditya.webp",
+      "deity_name": "Lord Surya / Aditya"
     },
     "tb_3_10_katakam_savitra_malayalam": {
       "title": "തൈത്തിരീയ ബ്രാഹ്മണേ കാഠകേ പ്രഥമഃ പ്രശ്നഃ (സാവിത്രചയനമ്)",
@@ -200,7 +230,9 @@
       "lang": "malayalam",
       "chapter_filter": "3.10",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "lord_surya_aditya.webp",
+      "deity_name": "Lord Surya / Aditya"
     },
     "tb_3_11_katakam_naciketa": {
       "title": "तैत्तिरीय ब्राह्मणे काठके द्वितीयः प्रश्नः (नाचिकेतचयनम्)",
@@ -212,7 +244,9 @@
       "direct": true,
       "chapter_filter": "3.11",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "shiva_kerala_mural.webp",
+      "deity_name": "Lord Shiva"
     },
     "tb_3_11_katakam_naciketa_malayalam": {
       "title": "തൈത്തിരീയ ബ്രാഹ്മണേ കാഠകേ ദ്വിതീയഃ പ്രശ്നഃ (നാചികേതചയനമ്)",
@@ -225,7 +259,9 @@
       "lang": "malayalam",
       "chapter_filter": "3.11",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "shiva_kerala_mural.webp",
+      "deity_name": "Lord Shiva"
     },
     "tb_3_12_katakam_caturhotra_vaiswasruja": {
       "title": "तैत्तिरीय ब्राह्मणे काठके तृतीयः प्रश्नः (चातुर्होत्र-वैश्वसृजचयनम्)",
@@ -237,7 +273,9 @@
       "direct": true,
       "chapter_filter": "3.12",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "goddess_gayatri_devi.webp",
+      "deity_name": "Goddess Gayatri Devi"
     },
     "tb_3_12_katakam_caturhotra_vaiswasruja_malayalam": {
       "title": "തൈത്തിരീയ ബ്രാഹ്മണേ കാഠകേ തൃതീയഃ പ്രശ്നഃ (ചാതുര്ഹോത്ര-വൈശ്വസൃജചയനമ്)",
@@ -250,7 +288,9 @@
       "lang": "malayalam",
       "chapter_filter": "3.12",
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "goddess_gayatri_devi.webp",
+      "deity_name": "Goddess Gayatri Devi"
     },
     "tb_3_12_katakam_caturhotra": {
       "title": "तैत्तिरीय ब्राह्मणे काठके चातुर्होत्रचयनम्",
@@ -265,7 +305,9 @@
         "3.12.5"
       ],
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "goddess_gayatri_devi.webp",
+      "deity_name": "Goddess Gayatri Devi"
     },
     "tb_3_12_katakam_vaiswasruja": {
       "title": "तैत्तिरीय ब्राह्मणे काठके वैश्वसृजचयनम्",
@@ -287,7 +329,9 @@
         "3.12.9"
       ],
       "back_link": "../index.html",
-      "back_label": "← Home"
+      "back_label": "← Home",
+      "deity_image": "bhagavan_veda_vyasa.webp",
+      "deity_name": "Bhagavan Sri Veda Vyasa"
     }
   },
   "fonts": [
