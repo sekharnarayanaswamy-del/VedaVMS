@@ -171,40 +171,53 @@
             background: var(--saffron-light);
         }
 
-        .nav
-
-        .nav
-
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, #FFFDF9 0%, #FFF3E0 100%);
             border-bottom: 1px solid var(--border-color);
             padding: 2.75rem 1.5rem 2.25rem;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .hero-deva-title {
             font-family: 'Noto Serif Devanagari', serif;
-            font-size: 2.1rem;
+            font-size: clamp(1.35rem, 3.8vw, 2.1rem);
             font-weight: 700;
             color: var(--maroon);
-            margin-bottom: 0.4rem;
+            margin: 0 auto 0.5rem;
             letter-spacing: 0.02em;
+            text-align: center;
+            width: 100%;
+            max-width: 1000px;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .hero-title {
-            font-size: 1.45rem;
+            font-size: clamp(1.05rem, 2.5vw, 1.45rem);
             color: var(--dark-brown);
             font-weight: 700;
-            margin-bottom: 0.75rem;
+            margin: 0 auto 0.75rem;
+            text-align: center;
+            width: 100%;
+            max-width: 1000px;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .hero-desc {
             max-width: 780px;
             margin: 0 auto 1.25rem;
             color: #5D4037;
-            font-size: 0.98rem;
+            font-size: clamp(0.9rem, 2vw, 0.98rem);
             line-height: 1.6;
+            text-align: center;
         }
 
         .hero-badges {
@@ -359,6 +372,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .card-btn-group {
+            display: flex;
+            gap: 0.4rem;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .open-reader-btn {
@@ -367,18 +389,32 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 0.88rem;
-            padding: 0.55rem 1.15rem;
+            padding: 0.48rem 0.95rem;
             border-radius: 6px;
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.35rem;
             transition: all 0.2s;
             box-shadow: 0 2px 6px rgba(128, 0, 0, 0.2);
+            white-space: nowrap;
         }
 
         .open-reader-btn:hover {
             background: linear-gradient(135deg, var(--saffron) 0%, #E65100 100%);
             box-shadow: 0 4px 10px rgba(230, 81, 0, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .open-reader-btn.btn-malayalam {
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+            box-shadow: 0 2px 6px rgba(27, 94, 32, 0.25);
+            font-family: 'Noto Serif Malayalam', 'Noto Sans Malayalam', sans-serif;
+            font-size: 0.84rem;
+        }
+
+        .open-reader-btn.btn-malayalam:hover {
+            background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.35);
             transform: translateY(-1px);
         }
 
@@ -556,7 +592,7 @@
             Experience authentic Vedic texts in an interactive, responsive web format. Each reader features precision swara accents (Udatta, Anudatta, Swarita, Deergha Swarita), anunasika sandhi rules, multi-script font switching, hierarchical chapter navigation, and clean print/PDF export.
         </p>
         <div class="hero-badges">
-            <span class="hero-badge">🕉️ 5 Interactive Books</span>
+            <span class="hero-badge">🕉️ 12 Interactive Books</span>
             <span class="hero-badge">🔤 5 Vedic Fonts</span>
             <span class="hero-badge">📋 Hierarchical Sūcī (Index)</span>
             <span class="hero-badge">🖨️ Clean Print / PDF</span>
@@ -572,7 +608,7 @@
                 <h2 class="section-heading">
                     <span>📖</span> Interactive HTML Vedic Readers
                 </h2>
-                <span class="section-count">5 Books Available</span>
+                <span class="section-count">12 Books Available</span>
             </div>
 
             <div class="readers-grid" id="readersGrid">
@@ -724,9 +760,14 @@
                     </div>
                     <div class="card-actions">
                         <span class="reader-format-badge">⚡ Full Interactive Reader</span>
-                        <a href="tb_3_7_achidram_sanskrit.html" class="open-reader-btn">
-                            Open Reader <span>↗</span>
-                        </a>
+                        <div class="card-btn-group">
+                            <a href="tb_3_7_achidram_sanskrit.html" class="open-reader-btn" title="Sanskrit Devanagari Edition">
+                                संस्कृत <span>↗</span>
+                            </a>
+                            <a href="tb_3_7_achidram_malayalam.html" class="open-reader-btn btn-malayalam" title="Malayalam Script Edition">
+                                മലയാളം <span>↗</span>
+                            </a>
+                        </div>
                     </div>
                 </article>
 
@@ -749,9 +790,14 @@
                     </div>
                     <div class="card-actions">
                         <span class="reader-format-badge">⚡ Full Interactive Reader</span>
-                        <a href="tb_3_8_aswamedham_vaiswadevam_sanskrit.html" class="open-reader-btn">
-                            Open Reader <span>↗</span>
-                        </a>
+                        <div class="card-btn-group">
+                            <a href="tb_3_8_aswamedham_vaiswadevam_sanskrit.html" class="open-reader-btn" title="Sanskrit Devanagari Edition">
+                                संस्कृत <span>↗</span>
+                            </a>
+                            <a href="tb_3_8_aswamedham_vaiswadevam_malayalam.html" class="open-reader-btn btn-malayalam" title="Malayalam Script Edition">
+                                മലയാളം <span>↗</span>
+                            </a>
+                        </div>
                     </div>
                 </article>
 
@@ -774,9 +820,143 @@
                     </div>
                     <div class="card-actions">
                         <span class="reader-format-badge">⚡ Full Interactive Reader</span>
-                        <a href="tb_3_9_aswamedham_havirdhanam_sanskrit.html" class="open-reader-btn">
-                            Open Reader <span>↗</span>
-                        </a>
+                        <div class="card-btn-group">
+                            <a href="tb_3_9_aswamedham_havirdhanam_sanskrit.html" class="open-reader-btn" title="Sanskrit Devanagari Edition">
+                                संस्कृत <span>↗</span>
+                            </a>
+                            <a href="tb_3_9_aswamedham_havirdhanam_malayalam.html" class="open-reader-btn btn-malayalam" title="Malayalam Script Edition">
+                                മലയാളം <span>↗</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Book 9: TB 3.10 Katakam 1 - Savitracayanam -->
+                <article class="reader-card" data-category="reader"
+                    data-keywords="tb 3.10 katakam savitracayanam savitra cayanam agnicayana chiti graha taittiriya brahmana काठकम् सावित्रचयनम् तृतीयाष्टके दशमः प्रपाठकः">
+                    <div class="card-top">
+                        <div class="card-category">📖 Taittiriya Brahmana • TB 3.10 (Katakam 1)</div>
+                        <h3 class="card-title-deva">तैत्तिरीय ब्राह्मणम् ३.१० (काठकम् १ - सावित्रचयनम्)</h3>
+                        <div class="card-title-eng">TB 3.10: Katakam 1 - Savitracayanam</div>
+                        <p class="card-desc">
+                            Prapāṭhaka 10 of the 3rd Ashtaka featuring 11 Anuvakas detailing the Savitra Agnicayana,
+                            altar brick construction (chiti), Savitra grahas, solar offerings, and mystical fruit of the sacrifice.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag accent">TB 3.10</span>
+                            <span class="tag">Katakam</span>
+                            <span class="tag">Savitracayanam</span>
+                            <span class="tag">11 Anuvakas</span>
+                            <span class="tag">Svara Accents</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span class="reader-format-badge">⚡ Full Interactive Reader</span>
+                        <div class="card-btn-group">
+                            <a href="tb_3_10_katakam_savitra_sanskrit.html" class="open-reader-btn" title="Sanskrit Devanagari Edition">
+                                संस्कृत <span>↗</span>
+                            </a>
+                            <a href="tb_3_10_katakam_savitra_malayalam.html" class="open-reader-btn btn-malayalam" title="Malayalam Script Edition">
+                                മലയാളം <span>↗</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Book 10: TB 3.11 Katakam 2 - Naciketacayanam -->
+                <article class="reader-card" data-category="reader"
+                    data-keywords="tb 3.11 katakam naciketacayanam naciketa yama agnicayana mrityu taittiriya brahmana काठकम् नाचिकेतचयनम् तृतीयाष्टके एकादशः प्रपाठकः">
+                    <div class="card-top">
+                        <div class="card-category">📖 Taittiriya Brahmana • TB 3.11 (Katakam 2)</div>
+                        <h3 class="card-title-deva">तैत्तिरीय ब्राह्मणम् ३.११ (काठकम् २ - नाचिकेतचयनम्)</h3>
+                        <div class="card-title-eng">TB 3.11: Katakam 2 - Naciketacayanam</div>
+                        <p class="card-desc">
+                            Prapāṭhaka 11 of the 3rd Ashtaka featuring 10 Anuvakas preserving the dialogue of
+                            Nachiketa and Lord Yama, the sacred Nachiketa fire-altar ritual, and the conquest of death.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag accent">TB 3.11</span>
+                            <span class="tag">Katakam</span>
+                            <span class="tag">Naciketacayanam</span>
+                            <span class="tag">10 Anuvakas</span>
+                            <span class="tag">Svara Accents</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span class="reader-format-badge">⚡ Full Interactive Reader</span>
+                        <div class="card-btn-group">
+                            <a href="tb_3_11_katakam_naciketa_sanskrit.html" class="open-reader-btn" title="Sanskrit Devanagari Edition">
+                                संस्कृत <span>↗</span>
+                            </a>
+                            <a href="tb_3_11_katakam_naciketa_malayalam.html" class="open-reader-btn btn-malayalam" title="Malayalam Script Edition">
+                                മലയാളം <span>↗</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Book 11: TB 3.12 Katakam 3 - Caturhotra & Vaiswasrujacayanam -->
+                <article class="reader-card" data-category="reader"
+                    data-keywords="tb 3.12 katakam caturhotra vaiswasruja caturhotracayanam vaiswasrujacayanam agnicayana taittiriya brahmana काठकम् चातुर्होत्र-वैश्वसृजचयनम् तृतीयाष्टके द्वादशः प्रपाठकः">
+                    <div class="card-top">
+                        <div class="card-category">📖 Taittiriya Brahmana • TB 3.12 (Katakam 3)</div>
+                        <h3 class="card-title-deva">तैत्तिरीय ब्राह्मणम् ३.१२ (काठकम् ३ - चातुर्होत्र-वैश्वसृजचयनम्)</h3>
+                        <div class="card-title-eng">TB 3.12: Katakam 3 - Caturhotra &amp; Vaiswasrujacayanam</div>
+                        <p class="card-desc">
+                            Prapāṭhaka 12 of the 3rd Ashtaka comprising 9 Anuvakas on the Chatuh-hotri chiti mantras,
+                            cosmic Prajapati offerings, and the supreme Vaishvasruja universal fire sacrifice.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag accent">TB 3.12</span>
+                            <span class="tag">Katakam</span>
+                            <span class="tag">Caturhotracayanam</span>
+                            <span class="tag">Vaiswasruja</span>
+                            <span class="tag">9 Anuvakas</span>
+                            <span class="tag">Svara Accents</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span class="reader-format-badge">⚡ Full Interactive Reader</span>
+                        <div class="card-btn-group">
+                            <a href="tb_3_12_katakam_caturhotra_vaiswasruja_sanskrit.html" class="open-reader-btn" title="Sanskrit Devanagari Edition">
+                                संस्कृत <span>↗</span>
+                            </a>
+                            <a href="tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html" class="open-reader-btn btn-malayalam" title="Malayalam Script Edition">
+                                മലയാളം <span>↗</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Book 12: Complete TB 3.7 - 3.12 (AAK Full Compendium) -->
+                <article class="reader-card" data-category="reader"
+                    data-keywords="tb 3.7-3.12 aak achidram aswamedham katakam complete taittiriya brahmana अच्छिद्रं अश्वमेधं काठकम् सम्पूर्ण">
+                    <div class="card-top">
+                        <div class="card-category">🏛️ Taittiriya Brahmana • TB 3.7 – 3.12 (Complete)</div>
+                        <h3 class="card-title-deva">तैत्तिरीय ब्राह्मणम् ३.७–३.१२ (अच्छिद्रं, अश्वमेधं, काठकम्)</h3>
+                        <div class="card-title-eng">TB 3.7–3.12: Achidram, Aswamedham &amp; Katakam (AAK)</div>
+                        <p class="card-desc">
+                            Complete compendium uniting all 6 Prapāṭhakas (90 Anuvakas): Achidram (3.7), Aswamedham
+                            Vaiswadevam (3.8), Aswamedham Havirdhanam (3.9), and all three Katakam Cayana rituals (3.10–3.12).
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag accent">Complete AAK</span>
+                            <span class="tag">TB 3.7–3.12</span>
+                            <span class="tag">90 Anuvakas</span>
+                            <span class="tag">Full Sucī</span>
+                            <span class="tag">Svara Accents</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span class="reader-format-badge">⚡ Complete Compendium</span>
+                        <div class="card-btn-group">
+                            <a href="aak_sanskrit.html" class="open-reader-btn" title="Sanskrit Devanagari Edition">
+                                संस्कृत <span>↗</span>
+                            </a>
+                            <a href="aak_malayalam.html" class="open-reader-btn btn-malayalam" title="Malayalam Script Edition">
+                                മലയാളം <span>↗</span>
+                            </a>
+                        </div>
                     </div>
                 </article>
             </div>
