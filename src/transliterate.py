@@ -9,7 +9,7 @@ Supports:
     $ -> U+1CDA (Deergha Svarita: double vertical stroke ᳚)
 - Vedic nasal glyphs:
     (gm), (gM), (gm~) -> U+A8F3 (ꣳ DEVANAGARI SIGN CANDRABINDU VIRAMA)
-    (gg)              -> U+1CFA (ᳺ VEDIC SIGN DOUBLE ANUSVARA ANTARGOMUKHA)
+    (gg)              -> U+A8F4 (ꣴ DEVANAGARI SIGN RING ANUSVARA)
     ~M                -> U+00A0 U+0901 (NBSP + Candrabindu ँ)
 - Symbols & Punctuation:
     & -> ऽ (Avagraha)
@@ -40,7 +40,7 @@ VOWEL_SIGNS = {
     'I': 'ी', 'ee': 'ी',
     'u': 'ु',
     'U': 'ू', 'oo': 'ू',
-    'Ru': 'ृ', 'ru': 'ृ',
+    'Ru': 'ृ',
     'RU': 'ॄ',
     'e': 'े', 'E': 'े',
     'ai': 'ै',
@@ -55,7 +55,7 @@ INDEPENDENT_VOWELS = {
     'I': 'ई', 'ee': 'ई',
     'u': 'उ',
     'U': 'ऊ', 'oo': 'ऊ',
-    'Ru': 'ऋ', 'ru': 'ऋ',
+    'Ru': 'ऋ',
     'RU': 'ॠ',
     'e': 'ए', 'E': 'ए',
     'ai': 'ऐ',
@@ -137,6 +137,8 @@ def normalize_glued_citation_tokens(text: str) -> str:
 
 def clean_baraha_english(text: str) -> str:
     """Clean Baraha idiosyncrasies in English text (like capitalized E and O)."""
+    text = text.replace('@dbaakyam', 'Vakyam').replace('@dbaakyams', 'Vakyams')
+    text = text.replace('@av', '&')
     text = re.sub(r'</?lang=[^>]+>', '', text).strip()
     text = normalize_glued_citation_tokens(text)
     def fix_word(m):
@@ -159,6 +161,9 @@ def is_english_text(text: str) -> bool:
         return False
     # If text contains Devanagari or Vedic accent/nasal characters, it is not English text
     if re.search(r'[\u0900-\u097F\u1CD0-\u1CFF\uA8E0-\uA8FF]', text):
+        return False
+    # If text contains new Baraha v2 Vedic accent tokens, it is Sanskrit chant text
+    if re.search(r'@(?:an|sv|ds)', text):
         return False
     t = re.sub(r'</?lang=[^>]+>', '', text).strip()
     if '<lang=eng>' in t.lower():
@@ -267,6 +272,12 @@ def baraha_to_devanagari(text: str) -> str:
     if not text:
         return ""
 
+    # Pre-map new Baraha v2 format (@an, @sv, @ds, @av, ~ru) to canonical tokens
+    text = text.replace('@an', 'q').replace('@sv', '#').replace('@ds', '$').replace('@av', '&')
+    text = re.sub(r'~ru', 'Ru', text)
+    text = re.sub(r'~rU', 'RU', text)
+    text = re.sub(r'([kKgGcCjJtTdDnpPbmMyrlvShs])l~ru', r'\1lRu', text)
+
     text = normalize_parasavarna_sandhi(text)
 
     # If line has an English prefix transitioning via <lang=def> to Sanskrit (e.g. Note... <lang=def> mantra)
@@ -283,7 +294,7 @@ def baraha_to_devanagari(text: str) -> str:
     text = re.sub(r'\b(Oum|OUM|OM|Oum_|OM_|oUM)\b', 'ॐ', text)
     text = text.replace('ओउम्', 'ॐ')
     text = re.sub(r'\(gm~?\)', '\uA8F3', text, flags=re.I)
-    text = re.sub(r'\(gg\)', '\u1CFA', text, flags=re.I)
+    text = re.sub(r'\(gg\)', '\uA8F4', text, flags=re.I)
     text = text.replace('~M', '\u00A0\u0901')
     text = text.replace('&', 'ऽ')
     text = text.replace('||', '॥')
@@ -391,7 +402,7 @@ def baraha_to_devanagari(text: str) -> str:
             return f'\uE000{len(placeholders)-1}\uE001'
 
         # 1. Any Vedic svara accents, anudatta q, or special symbols -> SANSKRIT
-        if re.search(r'[#$\uA8F3\u1CFA]', inside) or re.search(r'[a-zA-Z]q', inside) or re.search(r'(~[gGjJM]|\&|\^)', inside):
+        if re.search(r'[#$\uA8F3\uA8F4\u1CFA]', inside) or re.search(r'[a-zA-Z]q', inside) or re.search(r'(~[gGjJM]|\&|\^)', inside):
             return m.group(0)
 
         # 2. Citations or citation ranges -> ENGLISH
@@ -540,7 +551,7 @@ def baraha_to_devanagari(text: str) -> str:
             out.append('\u200C')
             i += 1
             continue
-        elif text[i] in ' \t\n\r।,॥():-0123456789.[]{}/\\+*\uA8F3\uA8F2\uA8F4\u1CFA\u00A0\u0901\u0950':
+        elif text[i] in ' \t\n\r।,॥():-0123456789.[]{}/\\+*\uA8F3\uA8F2\uA8F4\u1CFA\u00A0\u0901\u0950"\'“”—–':
             out.append(text[i])
             i += 1
             continue
@@ -603,6 +614,100 @@ def baraha_to_devanagari(text: str) -> str:
     return res
 
 
+DEVA_TO_MALAYALAM = {
+    # Candrabindu, Anusvara, Visarga
+    0x0901: 0x0D01,  # ँ -> ഁ
+    0x0902: 0x0D02,  # ं -> ം
+    0x0903: 0x0D03,  # ः -> ഃ
+
+    # Independent vowels
+    0x0905: 0x0D05,  # अ -> അ
+    0x0906: 0x0D06,  # आ -> ആ
+    0x0907: 0x0D07,  # इ -> ഇ
+    0x0908: 0x0D08,  # ई -> ഈ
+    0x0909: 0x0D09,  # उ -> ഉ
+    0x090A: 0x0D0A,  # ऊ -> ഊ
+    0x090B: 0x0D0B,  # ऋ -> ഋ
+    0x0960: 0x0D60,  # ॠ -> ൠ
+    0x090C: 0x0D0C,  # ऌ -> ഌ
+    0x0961: 0x0D61,  # ॡ -> ൡ
+    0x090E: 0x0D0E,  # ऎ -> എ
+    0x090F: 0x0D0F,  # ए -> ഏ
+    0x0910: 0x0D10,  # ऐ -> ഐ
+    0x0912: 0x0D12,  # ऒ -> ഒ
+    0x0913: 0x0D13,  # ओ -> ഓ
+    0x0914: 0x0D14,  # औ -> ഔ
+
+    # Consonants
+    0x0915: 0x0D15, 0x0916: 0x0D16, 0x0917: 0x0D17, 0x0918: 0x0D18, 0x0919: 0x0D19,
+    0x091A: 0x0D1A, 0x091B: 0x0D1B, 0x091C: 0x0D1C, 0x091D: 0x0D1D, 0x091E: 0x0D1E,
+    0x091F: 0x0D1F, 0x0920: 0x0D20, 0x0921: 0x0D21, 0x0922: 0x0D22, 0x0923: 0x0D23,
+    0x0924: 0x0D24, 0x0925: 0x0D25, 0x0926: 0x0D26, 0x0927: 0x0D27, 0x0928: 0x0D28,
+    0x092A: 0x0D2A, 0x092B: 0x0D2B, 0x092C: 0x0D2C, 0x092D: 0x0D2D, 0x092E: 0x0D2E,
+    0x092F: 0x0D2F, 0x0930: 0x0D30, 0x0931: 0x0D31, 0x0932: 0x0D32, 0x0933: 0x0D33,
+    0x0934: 0x0D34, 0x0935: 0x0D35, 0x0936: 0x0D36, 0x0937: 0x0D37, 0x0938: 0x0D38,
+    0x0939: 0x0D39,
+
+    # Avagraha
+    0x093D: 0x0D3D,  # ऽ -> ഽ
+
+    # Dependent vowel signs (Matras)
+    0x093E: 0x0D3E,  # ा -> ാ
+    0x093F: 0x0D3F,  # ि -> ി
+    0x0940: 0x0D40,  # ी -> ീ
+    0x0941: 0x0D41,  # ु -> ു
+    0x0942: 0x0D42,  # ू -> ൂ
+    0x0943: 0x0D43,  # ृ -> ൃ
+    0x0944: 0x0D44,  # ॄ -> ൄ
+    0x0962: 0x0D62,  # ॢ -> ൢ
+    0x0963: 0x0D63,  # ॣ -> ൣ
+    0x0946: 0x0D46,  # ॆ -> െ
+    0x0947: 0x0D47,  # े -> േ
+    0x0948: 0x0D48,  # ै -> ൈ
+    0x094A: 0x0D4A,  # ॊ -> ൊ
+    0x094B: 0x0D4B,  # ो -> ോ
+    0x094C: 0x0D4C,  # ौ -> ൌ
+
+    # Virama
+    0x094D: 0x0D4D,  # ् -> ്
+}
+
+
+def deva_to_malayalam(text: str) -> str:
+    """Convert Devanagari text (preserving Vedic accents, HTML markup, and punctuation) into Malayalam script."""
+    if not text:
+        return ""
+    out = []
+    i = 0
+    n = len(text)
+    while i < n:
+        # Preserve HTML tags without character substitution
+        if text[i] == '<':
+            end_tag = text.find('>', i)
+            if end_tag != -1:
+                out.append(text[i:end_tag + 1])
+                i = end_tag + 1
+                continue
+        ch = text[i]
+        code = ord(ch)
+        if code == 0x0950:  # OM ॐ
+            out.append('ഓം')
+            i += 1
+            continue
+        if code in DEVA_TO_MALAYALAM:
+            out.append(chr(DEVA_TO_MALAYALAM[code]))
+        else:
+            out.append(ch)
+        i += 1
+    return ''.join(out)
+
+
+def baraha_to_malayalam(text: str) -> str:
+    """Convert Baraha transliteration text directly to Malayalam script with Vedic accents."""
+    deva = baraha_to_devanagari(text)
+    return deva_to_malayalam(deva)
+
+
 if __name__ == '__main__':
     tests = [
         "SannO# miqtraH SaM ~Mvaru#NaH | SannO# BavatvaryaqmA |",
@@ -612,6 +717,11 @@ if __name__ == '__main__':
         "SIkShAM ~MvyA$KyAsyAqmaH | varNaqH svaraH | mAtrAq balaM | sAma# santAqnaH |",
         "pA~NktA(gg)# sOmaH |",
         "OM SAntiqH SAntiqH SAnti#H ||",
+        # New Baraha format tests (@an, @sv, @ds, @av, ~ru):
+        "sarvA@ann@an. vA E@anShO@dsgnau kAmA@ann pravE@svSayati |",
+        "yO@ds @avgnIna@svnvA@andhAya@sv vra@antamu@anpaiti@sv |",
+        "sA@an~ggra@anha@anNyEShTyA@sv yajatE | i@anmAM ja@annatA@an(gm)@an sa~gg~ru@svhNA@annIti@sv ||",
+        "k~ruShNa yajurvEdIya taittirIya brAhmaNaM",
     ]
     for t in tests:
         print(f"Baraha: {t}")

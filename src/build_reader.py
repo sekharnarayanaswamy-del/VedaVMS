@@ -200,21 +200,22 @@ def format_vedic_html(text: str) -> str:
     if text.startswith('<table') or text.startswith('<div') or text.startswith('<!--'):
         return text
 
-    # Pass through pure English text as-is (only if no Devanagari or Vedic accents present)
-    if not re.search(r'[\u0900-\u097F\u0951\u0952\u1CDA\uA8E0-\uA8FF]', text) and is_english_text(text):
+    # Pass through pure English text as-is (only if no Indic or Vedic accents present)
+    if not re.search(r'[\u0900-\u097F\u0D00-\u0D7F\u0951\u0952\u1CDA\uA8E0-\uA8FF]', text) and is_english_text(text):
         return text
 
     # 1. Normalize ASCII colons to Visarga (only outside HTML tags)
     text = re.sub(r':(?![^<]*>)', 'ः', text)
 
-    # 2. Reorder accents that landed before Visarga so syllable + ः remain contiguous
-    text = re.sub(r'([\u0951\u0952\u1CDA]+)\s*ः', r'ः\1', text)
+    # 2. Reorder accents that landed before Visarga so syllable + Visarga remain contiguous
+    text = re.sub(r'([\u0951\u0952\u1CDA]+)\s*([ःഃ])', r'\2\1', text)
 
     # 3. Accents following Visarga receive .accent-visarga to shift backwards over the syllable
-    text = text.replace('ः\u0951', 'ः<span class="accent-swarita accent-visarga">&#x0951;</span>')
-    text = text.replace('ः\u1CDA', 'ः<span class="accent-deergha accent-visarga">&#x1CDA;</span>')
-    text = text.replace('ः\u0952\u0952', 'ः<span class="accent-anudatta accent-visarga">&#x0952;&#x0952;</span>')
-    text = text.replace('ः\u0952', 'ः<span class="accent-anudatta accent-visarga">&#x0952;</span>')
+    for vis in ('ः', 'ഃ'):
+        text = text.replace(f'{vis}\u0951', f'{vis}<span class="accent-swarita accent-visarga">&#x0951;</span>')
+        text = text.replace(f'{vis}\u1CDA', f'{vis}<span class="accent-deergha accent-visarga">&#x1CDA;</span>')
+        text = text.replace(f'{vis}\u0952\u0952', f'{vis}<span class="accent-anudatta accent-visarga">&#x0952;&#x0952;</span>')
+        text = text.replace(f'{vis}\u0952', f'{vis}<span class="accent-anudatta accent-visarga">&#x0952;</span>')
 
     # 4. Standard accents (on syllables without Visarga)
     # Svarita (U+0951)
@@ -236,20 +237,36 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
     back_label = book_meta.get("back_label", "← Home")
     generated_at = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
+    target_lang = book_meta.get("lang") or ("malayalam" if "malayalam" in str(book_meta.get("output_html", "")).lower() else "sanskrit")
+    if target_lang == "malayalam":
+        html_lang = "ml"
+        title_suffix = "Malayalam Vedic Text"
+        google_fonts_link = '<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Gayathri:wght@400;700&family=Manjari:wght@400;700&family=Noto+Serif+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">'
+        sidebar_btn_text = "☰ സൂചിക"
+        sidebar_title_text = "സൂചിക (Contents)"
+        default_font_name = fonts[0]['label'] if fonts else 'Noto Serif Malayalam'
+    else:
+        html_lang = "sa"
+        title_suffix = "Sanskrit Vedic Text"
+        google_fonts_link = '<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">'
+        sidebar_btn_text = "☰ सूची"
+        sidebar_title_text = "सूची (Contents)"
+        default_font_name = "Noto Serif"
+
     fonts_js = json.dumps(fonts, ensure_ascii=False)
 
     html_parts = []
     html_parts.append(f'''<!DOCTYPE html>
-<html lang="sa">
+<html lang="{html_lang}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="generator" content="VedaVMS Reader Generator">
     <meta name="generated-at" content="{generated_at}">
-    <title>{title} - Sanskrit Vedic Text</title>
+    <title>{title} - {title_suffix}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {google_fonts_link}
     <style>
         @font-face {{
             font-family: 'AdishilaVedic';
@@ -1612,12 +1629,12 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                     <span>VedaVMS</span>
                 </a>
                 <div class="header-quick-actions">
-                    <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Toggle Contents Panel (सूची)" id="sidebar-toggle-btn">☰ सूची</button>
+                    <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Toggle Contents Panel" id="sidebar-toggle-btn">{sidebar_btn_text}</button>
                     <a href="{back_link}" class="btn-ctrl">{back_label}</a>
                 </div>
             </div>
             <div class="controls">
-                <button class="btn-ctrl" id="font-toggle-btn" onclick="toggleFont()" title="Toggle Sanskrit Font">Font: Noto Serif</button>
+                <button class="btn-ctrl" id="font-toggle-btn" onclick="toggleFont()" title="Toggle Font">Font: {default_font_name}</button>
                 <div class="zoom-controls">
                     <button class="btn-ctrl" onclick="adjustFont(-1)" title="Decrease Font Size (A-)">A-</button>
                     <span id="font-size-val" onclick="resetFontSize()" style="font-size: 0.85rem; padding: 0.15rem 0.45rem; color: #FFF; font-family: monospace; font-weight: 600; min-width: 44px; text-align: center; display: inline-block; cursor: pointer; border-radius: 4px; background: rgba(255,255,255,0.14); transition: transform 0.15s ease;" title="Click to reset font size to 100%">100%</span>
@@ -1635,7 +1652,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         <!-- Sidebar Navigation -->
         <aside class="toc-sidebar" id="toc-sidebar">
             <div class="toc-header-bar">
-                <div class="toc-title">सूची (Contents)</div>
+                <div class="toc-title">{sidebar_title_text}</div>
                 <button class="toc-close-btn" onclick="closeMobileToc()" title="Close Contents" aria-label="Close">✕</button>
             </div>
             <ul class="toc-list">
@@ -2506,6 +2523,174 @@ def ast_to_chapters(ast_data: dict) -> list[dict]:
     return chapters
 
 
+def convert_docx_direct(
+    input_file: str | Path,
+    output_file: str | Path = None,
+    book_meta: dict = None,
+    config: dict = None,
+    title: str = None,
+    subtitle: str = None,
+    chapter_regex: str = None
+) -> Path:
+    """Directly convert any Baraha or Vedic Word (.docx) document into a standalone interactive Vedic HTML Reader."""
+    input_path = Path(input_file)
+    if not input_path.exists():
+        for cand in [
+            Path("data/baraha") / input_path,
+            Path("data/docx") / input_path,
+            Path(__file__).parent.parent / "data/baraha" / input_path,
+            Path(__file__).parent.parent / "data/docx" / input_path,
+            Path(__file__).parent.parent / input_path,
+            Path(__file__).parent / input_path,
+        ]:
+            if cand.exists():
+                input_path = cand
+                break
+        else:
+            raise FileNotFoundError(f"Input document not found: {input_path}")
+
+    if config is None:
+        cfg_candidates = [
+            Path(__file__).parent / "config.json",
+            Path("src/config.json"),
+            Path("vedavms_html/config.json"),
+            Path(__file__).parent.parent / "src" / "config.json",
+        ]
+        cfg_p = next((p for p in cfg_candidates if p.exists()), None)
+        if cfg_p:
+            with open(cfg_p, "r", encoding="utf-8") as f:
+                config = json.load(f)
+        else:
+            config = {}
+
+    book_meta = dict(book_meta or {})
+    fonts = config.get("fonts", [])
+    default_size = config.get("default_font_size_rem", 1.35)
+
+    doc_title = title or book_meta.get("title_sanskrit") or book_meta.get("title")
+    doc_subtitle = subtitle or book_meta.get("subtitle") or "कृष्ण यजुर्वेदीय आरण्यकम् (वेदमन्त्राः सस्वराः)"
+    ch_reg = chapter_regex or book_meta.get("chapter_regex")
+
+    if not output_file:
+        slug = input_path.stem.lower().replace(" ", "_").replace("-", "_")
+        if not slug.endswith("_sanskrit"):
+            slug += "_sanskrit"
+        output_file = Path("build/viewer") / f"{slug}.html"
+    out_path = Path(output_file)
+
+    print(f"\n--- Direct Document Conversion ---")
+    print(f"Loading Document: {input_path}")
+    print(f"Target HTML:  {out_path}")
+
+    try:
+        from .baraha_reader import parse_baraha_docx_to_ast, ast_to_reader_chapters
+    except ImportError:
+        from baraha_reader import parse_baraha_docx_to_ast, ast_to_reader_chapters
+
+    ast_data, extracted_title = parse_baraha_docx_to_ast(input_path, title=doc_title, chapter_regex=ch_reg)
+    final_title = doc_title or extracted_title or input_path.stem
+
+    book_meta.setdefault("title", final_title)
+    book_meta.setdefault("title_sanskrit", final_title)
+    book_meta.setdefault("subtitle", doc_subtitle)
+    book_meta.setdefault("back_link", "../index.html")
+    book_meta.setdefault("back_label", "← Home")
+    book_meta["input_docx"] = str(input_path)
+    book_meta["output_html"] = str(out_path)
+
+    chapters = ast_to_reader_chapters(ast_data)
+
+    ch_filter = book_meta.get("chapter_filter")
+    if ch_filter:
+        filtered = [ch for ch in chapters if str(ch.get('num')) == str(ch_filter)]
+        if filtered:
+            chapters = filtered
+            # Clean up English summary/intro notes for dedicated book readers
+            chapters[0]['sections'] = [s for s in chapters[0]['sections'] if not str(s.get('num', '')).endswith('.D')]
+            sec_filter = book_meta.get("section_filter")
+            if sec_filter:
+                chapters[0]['sections'] = [s for s in chapters[0]['sections'] if s.get('num') in sec_filter]
+
+    target_lang = book_meta.get("lang") or ("malayalam" if "malayalam" in str(out_path).lower() else "sanskrit")
+    if target_lang == "malayalam":
+        try:
+            from .transliterate import deva_to_malayalam
+        except ImportError:
+            from transliterate import deva_to_malayalam
+        mal_chapters = []
+        for ch in chapters:
+            mal_ch = dict(ch)
+            mal_ch['title_deva'] = deva_to_malayalam(ch['title_deva'])
+            mal_ch['sections'] = []
+            for sec in ch['sections']:
+                mal_sec = dict(sec)
+                mal_sec['title_deva'] = deva_to_malayalam(sec['title_deva'])
+                mal_sec['content_deva'] = [deva_to_malayalam(line) for line in sec.get('content_deva', [])]
+                mal_ch['sections'].append(mal_sec)
+            mal_chapters.append(mal_ch)
+        chapters = mal_chapters
+        fonts = [
+            {
+                "label": "Noto Serif Malayalam",
+                "font": "'Noto Serif Malayalam', 'Kartika', 'Gayathri', 'Noto Serif Devanagari', 'Siddhanta', serif",
+                "weight": "500"
+            },
+            {
+                "label": "Gayathri",
+                "font": "'Gayathri', 'Noto Serif Malayalam', 'Noto Serif Devanagari', serif",
+                "weight": "700"
+            },
+            {
+                "label": "Noto Sans Malayalam",
+                "font": "'Noto Sans Malayalam', 'Noto Sans Devanagari', sans-serif",
+                "weight": "500"
+            },
+            {
+                "label": "Manjari",
+                "font": "'Manjari', 'Noto Sans Malayalam', 'Noto Sans Devanagari', sans-serif",
+                "weight": "400"
+            }
+        ]
+
+    print(f"Extracted {len(chapters)} chapter(s):")
+    for ch in chapters:
+        print(f"  Chapter {ch['num']}: {ch['title_deva']} ({len(ch['sections'])} sections)")
+
+    html_content = generate_reader_html(book_meta, chapters, fonts, default_size)
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(html_content)
+
+    print(f"[SUCCESS] Standalone HTML Reader generated: {out_path} ({os.path.getsize(out_path):,} bytes)")
+
+    # Post-generation audit check if reference PDF exists
+    try:
+        try:
+            from .audit_reader import audit_book, print_audit_report
+        except ImportError:
+            from audit_reader import audit_book, print_audit_report
+
+        pdf_p = book_meta.get('pdf_path')
+        if not pdf_p:
+            title_simple = book_meta.get('title', '').split(',')[0].strip()
+            for cand in [
+                Path("data/pdf") / f"{title_simple} Sanskrit.pdf",
+                Path("data/pdf") / f"{input_path.stem}.pdf"
+            ]:
+                if cand.exists():
+                    pdf_p = str(cand)
+                    break
+        if pdf_p and Path(pdf_p).exists():
+            print(f"[AUDIT] Running post-generation TOC audit against {pdf_p}...")
+            audit_res = audit_book(pdf_p, out_path)
+            print_audit_report(audit_res)
+    except Exception as e:
+        print(f"[AUDIT NOTICE] PDF audit check skipped: {e}")
+
+    return out_path
+
+
 def build_book(book_id: str, config: dict, input_override: str = None, output_override: str = None) -> Path:
     """Build reader HTML for a given book configuration."""
     books = config.get("books", {})
@@ -2518,6 +2703,16 @@ def build_book(book_id: str, config: dict, input_override: str = None, output_ov
     chapter_regex = book_meta.get("chapter_regex") or ""
     fonts = config.get("fonts", [])
     default_size = config.get("default_font_size_rem", 1.35)
+
+    is_direct = book_meta.get("direct", False) or book_meta.get("mode") == "direct" or book_meta.get("converter") == "direct"
+    if is_direct:
+        return convert_docx_direct(
+            input_file,
+            output_file,
+            book_meta=book_meta,
+            config=config,
+            chapter_regex=chapter_regex
+        )
 
     print(f"\n--- Building '{book_id}' ---")
     print(f"Loading DOCX: {input_file}")
@@ -2583,11 +2778,18 @@ def build_book(book_id: str, config: dict, input_override: str = None, output_ov
 
 def main():
     parser = argparse.ArgumentParser(description="Generate VedaVMS Sanskrit Vedic Readers from Baraha DOCX.")
-    parser.add_argument("--book", type=str, default="taittiriya_upanishad", help="Book identifier from config.json")
+    parser.add_argument("docx_file", nargs="?", default=None, help="Optional direct input DOCX file to convert")
+    parser.add_argument("--direct", type=str, default=None, help="Directly convert a DOCX file to an HTML reader without book ID")
+    parser.add_argument("--book", type=str, default=None, help="Book identifier from config.json")
     parser.add_argument("--all", action="store_true", help="Build all books in config.json")
     parser.add_argument("--config", type=str, default=None, help="Path to config.json")
     parser.add_argument("--input", type=str, default=None, help="Override input DOCX path")
     parser.add_argument("--output", type=str, default=None, help="Override output HTML path")
+    parser.add_argument("--title", type=str, default=None, help="Document title for direct conversion")
+    parser.add_argument("--subtitle", type=str, default=None, help="Document subtitle for direct conversion")
+    parser.add_argument("--batch", type=str, default=None, help="Directory or glob pattern to convert multiple Baraha files in batch")
+    parser.add_argument("--lang", type=str, default=None, choices=["sanskrit", "malayalam"], help="Target language/script (sanskrit or malayalam)")
+    parser.add_argument("--chapter", type=str, default=None, help="Filter to specific chapter number (e.g. 3.7, 3.8)")
 
     args = parser.parse_args()
 
@@ -2611,11 +2813,42 @@ def main():
         config = json.load(f)
 
     built_paths = []
-    if args.all:
+    batch_target = args.batch or (args.docx_file if args.docx_file and Path(args.docx_file).is_dir() else None)
+    direct_target = args.direct or (args.docx_file if args.docx_file and args.docx_file.lower().endswith((".docx", ".brh", ".txt")) else None)
+    if batch_target:
+        p = Path(batch_target)
+        if p.is_dir():
+            files = sorted(list(p.glob("*.brh")) + list(p.glob("*.txt")) + list(p.glob("*.docx")))
+        else:
+            import glob
+            files = [Path(x) for x in sorted(glob.glob(batch_target))]
+        print(f"\n=== Batch Processing {len(files)} Baraha Document(s) ===")
+        for f in files:
+            try:
+                built_paths.append(convert_docx_direct(
+                    f,
+                    config=config
+                ))
+            except Exception as ex:
+                print(f"[ERROR] Failed to convert {f}: {ex}")
+    elif direct_target:
+        cli_meta = {}
+        if args.lang: cli_meta["lang"] = args.lang
+        if args.chapter: cli_meta["chapter_filter"] = args.chapter
+        built_paths.append(convert_docx_direct(
+            direct_target,
+            output_file=args.output,
+            config=config,
+            title=args.title,
+            subtitle=args.subtitle,
+            book_meta=cli_meta if cli_meta else None
+        ))
+    elif args.all:
         for b_id in config.get("books", {}):
             built_paths.append(build_book(b_id, config))
     else:
-        built_paths.append(build_book(args.book, config, args.input, args.output))
+        book_id = args.book or "taittiriya_upanishad"
+        built_paths.append(build_book(book_id, config, args.input, args.output))
 
     # Save comprehensive audit reports to build/audit_report.md and build/audit_report.txt
     try:

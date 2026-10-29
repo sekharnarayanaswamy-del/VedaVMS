@@ -192,12 +192,15 @@ def audit_book(pdf_path: str | Path, html_path: str | Path, verbose: bool = Fals
             notes.append("In Udaka Shanti ASCT DOCX, section 1.13 is split into 1.13 and 1.13B, which causes subsequent numbering to offset by 1 (ending at 1.40 in HTML vs 1.41 in PDF).")
 
     if extra_subsections:
-        if any(s.startswith('19.') for s in extra_subsections):
+        doc_ident = (str(html_path) + " " + str(pdf_path)).lower()
+        if ('shanti_japam' in doc_ident or 'sj_' in doc_ident) and any(s.startswith('19.') for s in extra_subsections):
             notes.append("Shanti Japam Nakshatra Suktam includes 40 granular nakshatras (19.1–19.40) directly indexed in the HTML reader.")
-        if any('T.B.3.11' in s for s in extra_subsections):
+        elif ('taittiriya_upanishad' in doc_ident or 'tu_' in doc_ident) and any('T.B.3.11' in s for s in extra_subsections):
             notes.append("Taittiriya Upanishad Chapter 6 (Trinachiketam) includes 26 granular Taittiriya Brahmana mantras (T.B.3.11.x) directly indexed in the HTML reader.")
-        elif any('T.B.' in s for s in extra_subsections):
+        elif 'udaka' in doc_ident and any('T.B.' in s for s in extra_subsections):
             notes.append("Udaka Shanti includes 7 granular Taittiriya Brahmana mantras directly indexed in the HTML reader.")
+        elif ('tb_' in doc_ident or 'brahmana' in doc_ident) and any('T.B.' in s for s in extra_subsections):
+            notes.append("Taittiriya Brahmana includes granular verse markers (T.B. x.y.z) directly indexed in the HTML reader.")
 
     if missing_chapters or extra_chapters:
         status = "FAIL"

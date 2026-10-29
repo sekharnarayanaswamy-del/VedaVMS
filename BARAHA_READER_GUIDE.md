@@ -39,13 +39,14 @@ src/
 
 | Baraha Token | Unicode Character | Name / Function | Devanagari Example |
 | :--- | :--- | :--- | :--- |
-| `q` | `॒` (U+0952) | Anudatta (bottom horizontal line) | `miqtraH` $\rightarrow$ `मि॒त्रः` |
-| `#` | `॑` (U+0951) | Svarita / Udatta (top vertical stroke) | `SannO#` $\rightarrow$ `शन्नो॑` |
-| `$` | `᳚` (U+1CDA) | Deergha Svarita (double vertical stroke) | `vyA$KyA` $\rightarrow$ `व्या᳚ख्या` |
-| `~M` | `\u00A0ँ` (U+0901) | Candrabindu (with non-breaking space) | `SaM ~Mvaru#NaH` $\rightarrow$ `शं ँवरु॑णः` |
+| `q` or `@an` | `॒` (U+0952) | Anudatta (bottom horizontal line) | `miqtraH` / `mi@antraH` $\rightarrow$ `मि॒त्रः` |
+| `#` or `@sv` | `॑` (U+0951) | Svarita / Udatta (top vertical stroke) | `SannO#` / `SannO@sv` $\rightarrow$ `शन्नो॑` |
+| `$` or `@ds` | `᳚` (U+1CDA) | Deergha Svarita (double vertical stroke) | `vyA$KyA` / `vyA@dsKyA` $\rightarrow$ `व्या᳚ख्या` |
+| `&` or `@av` | `ऽ` (U+093D) | Avagraha | `tE &gnE` / `tE @avgnE` $\rightarrow$ `ते ऽग्ने` |
+| `~ru`, `~rU` | `ऋ`, `ॠ` / `ृ`, `ॄ` | Vocalic R (independent & matra) | `~rujISha`, `k~ruShNa` $\rightarrow$ `ऋजीष`, `कृष्ण` |
 | `(gm)`, `(gm~)` | `ꣳ` (U+A8F3) | Candrabindu Virama (Vedic Gum) | `(gm)` $\rightarrow$ `ꣳ` |
-| `(gg)` | `ᳺ` (U+1CFA) | Double Anusvara Antargomukha | `pA~NktA(gg)#` $\rightarrow$ `पा~ण्क्ताᳺ॑` |
-| `&` | `ऽ` (U+093D) | Avagraha | `tE &gnE` $\rightarrow$ `ते ऽग्ने` |
+| `(gg)` | `ꣴ` (U+A8F4) | Devanagari Sign Ring Anusvara | `pA~NktA(gg)#` $\rightarrow$ `पा~ण्क्ताꣴ॑` |
+| `~M` | `\u00A0ँ` (U+0901) | Candrabindu (with non-breaking space) | `SaM ~Mvaru#NaH` $\rightarrow$ `शं ँवरु॑णः` |
 | `\|` / `\|\|` | `।` / `॥` | Danda / Double Danda | `\|` $\rightarrow$ `।`, `\|\|` $\rightarrow$ `॥` |
 | `^` | `\u200C` | Zero-Width Non-Joiner (ZWNJ) | Prevents ligature forming |
 
@@ -74,13 +75,37 @@ python src/build_reader.py --all
 
 # Build specific books by ID defined in src/config.json
 python src/build_reader.py --book taittiriya_upanishad
-python src/build_reader.py --book shiva_stuti
-python src/build_reader.py --book shanti_japam
-python src/build_reader.py --book udaka_shanti
-python src/build_reader.py --book udaka_shanti_anushangam
-python src/build_reader.py --book tb_3_7_achidram
-python src/build_reader.py --book tb_3_8_aswamedham_vaiswadevam
-python src/build_reader.py --book tb_3_9_aswamedham_havirdhanam
+python src/build_reader.py --book aak                     # Sanskrit Reader
+python src/build_reader.py --book aak_malayalam           # Malayalam Transliteration Reader
+python src/build_reader.py --book tb_complete
+
+# Direct File to HTML Reader Conversion (.brh, .txt, or .docx):
+python src/build_reader.py "data/baraha/AAK.brh"
+python src/build_reader.py "data/baraha/AAK.brh" --lang malayalam --output "build/viewer/aak_malayalam.html"
+python src/build_reader.py "data/baraha/Taittiriya Upanishad Baraha.docx"
+python src/build_reader.py --direct "data/baraha/AAK.brh" --output "build/viewer/aak_sanskrit.html"
+
+# Batch Process an Entire Directory or Glob of Baraha Files:
+python src/build_reader.py --batch "data/baraha/"
+python src/build_reader.py --batch "data/baraha/*.brh"
+python src/build_reader.py "data/baraha/"
+```
+
+### Direct Conversion in `src/config.json`:
+Any book entry in [`src/config.json`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/src/config.json) can specify `"direct": true` to use the unified direct conversion pipeline:
+```json
+"tb_complete": {
+  "title": "तैत्तिरीय ब्राह्मणम् (तृतीय काण्डम्, प्रपाठक ७ - १२)",
+  "title_sanskrit": "तैत्तिरीय ब्राह्मणम् ३.७ - ३.१२",
+  "subtitle": "कृष्ण यजुर्वेदीय तैत्तिरीय ब्राह्मणम् (अच्छिद्रं, अश्वमेधं, काठकम्)",
+  "input_docx": "data/baraha/TB 3.7-3.12 Baraha.docx",
+  "output_html": "build/viewer/tb_complete_sanskrit.html",
+  "pdf_path": "data/pdf/TB 3.7-3.12 Sanskrit.pdf",
+  "direct": true,
+  "chapter_regex": "^(3\\.(?:[7-9]|1[0-2]))\\t?\\s+(.*(?:prapAThaka|praSna).*)$",
+  "back_link": "../index.html",
+  "back_label": "← Home"
+}
 ```
 
 ### 2. Output Location & Directory Structure

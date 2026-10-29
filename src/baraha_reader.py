@@ -38,6 +38,310 @@ except ImportError:
 DOCX_NS = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
 
 
+def extract_brh_elements(brh_path: str | Path) -> tuple[list[tuple[str, any]], dict]:
+    """Extract ordered paragraphs ('p') and tables ('tbl') from Baraha text (.brh / .txt) document.
+    Also extracts and structures the Table of Contents if present.
+    """
+    brh_path = Path(brh_path)
+    if not brh_path.exists():
+        for cand in [
+            Path("data/baraha") / brh_path,
+            Path(__file__).parent.parent / "data/baraha" / brh_path,
+            Path(__file__).parent.parent / brh_path,
+            Path(__file__).parent / brh_path
+        ]:
+            if cand.exists():
+                brh_path = cand
+                break
+        else:
+            raise FileNotFoundError(f"Input document not found: {brh_path}")
+
+    raw = None
+    for enc in ['utf-8-sig', 'cp1252', 'latin1']:
+        try:
+            with open(brh_path, 'r', encoding=enc) as f:
+                raw = f.read()
+            break
+        except UnicodeDecodeError:
+            continue
+    if raw is None:
+        raise ValueError(f"Could not decode {brh_path}")
+
+    # Check for in-file TOC
+    delimiter = '=========================='
+    if delimiter in raw:
+        toc_text, body_text = raw.split(delimiter, 1)
+    else:
+        toc_text, body_text = '', raw
+
+    toc_dict = {}
+    toc_table_rows = []
+    if toc_text:
+        for line in toc_text.splitlines():
+            line = line.strip()
+            if not line or line.lower().startswith('table of contents'):
+                continue
+            m = re.match(r'^(3\.(?:[7-9]|1[0-2])(?:\.\d+)?)\t*\s*(.*?)(?:\t+(\d+))?$', line)
+            if m:
+                sec_id = m.group(1)
+                t = m.group(2).strip()
+                p = m.group(3) or ''
+                m_rep = re.match(r'^(.*?)(?:3\.\d+\.\d+\s+.*)$', t)
+                if m_rep:
+                    t = m_rep.group(1).strip()
+                if sec_id not in toc_dict or (p and not toc_dict[sec_id][1]):
+                    toc_dict[sec_id] = (t, p)
+                    toc_table_rows.append((sec_id, t, p))
+
+    elements = []
+    lines = body_text.splitlines()
+    table_buffer = []
+
+    def flush_table():
+        if not table_buffer:
+            return
+        html = ['<table class="vedic-table">']
+        is_first = True
+        for row in table_buffer:
+            cells = [c.strip() for c in row.split('\t') if c.strip()]
+            if not cells:
+                continue
+            tag = 'th' if is_first and any(x in row.lower() for x in ['dasini', 'vakyam', 'anuvakam', 'prapaatakam', 'ashtakam']) else 'td'
+            html.append('  <tr>')
+            for c in cells:
+                c_clean = c.replace('@dbaakyam', 'Vakyam').replace('@dbaakyams', 'Vakyams').replace('@av', '&').replace('\x93', '"').replace('\x94', '"').replace('à', '')
+                html.append(f'    <{tag}>{c_clean}</{tag}>')
+            html.append('  </tr>')
+            if tag == 'th':
+                is_first = False
+        html.append('</table>')
+        elements.append(('tbl', '\n'.join(html)))
+        table_buffer.clear()
+
+    for line in lines:
+        l = line.strip().replace('\x0c', '').replace('\x93', '"').replace('\x94', '"')
+        if not l:
+            flush_table()
+            continue
+
+        is_table_row = False
+        if '\t' in l and not re.match(r'^(?:3\.(?:[7-9]|1[0-2])(?:\.\d+)?)\t', l) and not re.match(r'^(?:T\.B\.)?3\.(?:[7-9]|1[0-2])\.\d+\.\d+', l):
+            parts = [p.strip() for p in l.split('\t') if p.strip()]
+            if len(parts) >= 2 and (any(p.isdigit() for p in parts) or any(x in l.lower() for x in ['dasini', 'vakyam', 'anuvakam', 'total'])):
+                is_table_row = True
+
+        if is_table_row:
+            table_buffer.append(l)
+        else:
+            flush_table()
+            elements.append(('p', l))
+
+    flush_table()
+    return elements, toc_dict
+
+
+def parse_aak_brh(file_path: str | Path) -> list[dict]:
+    """Parse AAK Baraha text document (.brh) into structured reader chapters and sections."""
+    file_path = Path(file_path)
+    if not file_path.exists():
+        for cand in [
+            Path("data/baraha") / file_path,
+            Path(__file__).parent.parent / "data/baraha" / file_path,
+            Path(__file__).parent.parent / file_path,
+            Path(__file__).parent / file_path
+        ]:
+            if cand.exists():
+                file_path = cand
+                break
+        else:
+            raise FileNotFoundError(f"Input document not found: {file_path}")
+
+    raw = None
+    for enc in ['utf-8-sig', 'cp1252', 'latin1']:
+        try:
+            with open(file_path, 'r', encoding=enc) as f:
+                raw = f.read()
+            break
+        except UnicodeDecodeError:
+            continue
+    if raw is None:
+        raise ValueError(f"Could not decode {file_path}")
+
+    delimiter = '=========================='
+    if delimiter in raw:
+        toc_text, body_text = raw.split(delimiter, 1)
+    else:
+        toc_text, body_text = '', raw
+
+    toc_dict = {}
+    toc_table_rows = []
+    if toc_text:
+        for line in toc_text.splitlines():
+            line = line.strip()
+            if not line or line.lower().startswith('table of contents'):
+                continue
+            m = re.match(r'^(3\.(?:[7-9]|1[0-2])(?:\.\d+)?)\t*\s*(.*?)(?:\t+(\d+))?$', line)
+            if m:
+                sec_id = m.group(1)
+                t = m.group(2).strip()
+                p = m.group(3) or ''
+                m_rep = re.match(r'^(.*?)(?:3\.\d+\.\d+\s+.*)$', t)
+                if m_rep:
+                    t = m_rep.group(1).strip()
+                if sec_id not in toc_dict or (p and not toc_dict[sec_id][1]):
+                    toc_dict[sec_id] = (t, p)
+                    toc_table_rows.append((sec_id, t, p))
+
+    toc_table_html = ''
+    if toc_table_rows:
+        rows = [
+            '<table class="vedic-table toc-table">',
+            '  <thead><tr><th>अनुवाकः / विभागः</th><th>विवरणम्</th><th style="text-align:right;">पृष्ठम्</th></tr></thead>',
+            '  <tbody>'
+        ]
+        for sec_id, t, p in toc_table_rows:
+            deva_t = baraha_to_devanagari(t)
+            anchor = sec_id.replace('.', '-')
+            link = f'<a href="#sec-{anchor}" style="text-decoration:none;color:var(--maroon);font-weight:600;">{sec_id}</a>'
+            rows.append(f'    <tr><td style="white-space:nowrap;">{link}</td><td>{deva_t}</td><td style="text-align:right;">{p}</td></tr>')
+        rows.append('  </tbody></table>')
+        toc_table_html = '\n'.join(rows)
+
+    chapters = []
+    if toc_table_html:
+        toc_chapter = {
+            'num': '0',
+            'title_raw': 'Table of Contents',
+            'title_deva': 'विषयानुक्रमणिका (Table of Contents)',
+            'sections': [{
+                'num': '0.0',
+                'title_raw': 'विषयानुक्रमणिका',
+                'title_deva': 'विषयानुक्रमणिका (Table of Contents)',
+                'ta_code': '',
+                'content': [toc_table_html],
+                'content_deva': [toc_table_html]
+            }]
+        }
+        chapters.append(toc_chapter)
+
+    ch_re = re.compile(r'^(3\.(?:[7-9]|1[0-2]))(?!\.\d+)\t*\s*(.*(?:prapAThaka|praSna|kANDa|AShTakE).*)', re.I)
+    sec_re = re.compile(r'^(3\.(?:[7-9]|1[0-2])\.\d+)\.?\t*\s*(.*)')
+    tb_re = re.compile(r'^(?:T\.B\.)?3\.(?:[7-9]|1[0-2])\.\d+\.\d+')
+
+    cur_ch = None
+    cur_sec = None
+    table_buffer = []
+
+    def flush_table():
+        if not table_buffer or cur_sec is None:
+            table_buffer.clear()
+            return
+        html = ['<table class="vedic-table">']
+        is_first = True
+        for row in table_buffer:
+            cells = [c.strip() for c in row.split('\t') if c.strip()]
+            if not cells:
+                continue
+            tag = 'th' if is_first and any(x in row.lower() for x in ['dasini', 'vakyam', 'anuvakam', 'prapaatakam', 'ashtakam']) else 'td'
+            html.append('  <tr>')
+            for c in cells:
+                c_clean = c.replace('@dbaakyam', 'Vakyam').replace('@dbaakyams', 'Vakyams').replace('@av', '&').replace('\x93', '"').replace('\x94', '"').replace('à', '')
+                html.append(f'    <{tag}>{c_clean}</{tag}>')
+            html.append('  </tr>')
+            if tag == 'th':
+                is_first = False
+        html.append('</table>')
+        tbl_str = '\n'.join(html)
+        cur_sec['content'].append(tbl_str)
+        cur_sec['content_deva'].append(tbl_str)
+        table_buffer.clear()
+
+    lines = body_text.splitlines()
+    for line in lines:
+        p = line.strip().replace('\x0c', '').replace('\x93', '"').replace('\x94', '"')
+        if not p:
+            flush_table()
+            continue
+
+        ch_m = ch_re.match(p)
+        if ch_m and not re.search(r'@(?:an|sv|ds)|[|]', p):
+            flush_table()
+            ch_id = ch_m.group(1)
+            raw_t = ch_m.group(2).strip()
+            if ch_id in toc_dict:
+                raw_t = toc_dict[ch_id][0]
+            deva_t = baraha_to_devanagari(raw_t)
+            cur_ch = {
+                'num': ch_id,
+                'title_raw': raw_t,
+                'title_deva': f"{ch_id}. {deva_t}",
+                'sections': []
+            }
+            chapters.append(cur_ch)
+            cur_sec = None
+            continue
+
+        sec_m = sec_re.match(p)
+        if sec_m and not re.search(r'@(?:an|sv|ds)|[|]', p) and cur_ch:
+            flush_table()
+            sec_id = sec_m.group(1)
+            raw_t = sec_m.group(2).strip()
+            if sec_id in toc_dict:
+                raw_t = toc_dict[sec_id][0]
+            clean_title_raw = re.sub(r'^\s*anuvAka[mM]\s*\d+\s*[-–:]?\s*', '', raw_t, flags=re.I).strip()
+            deva_title = baraha_to_devanagari(clean_title_raw) if clean_title_raw else baraha_to_devanagari(raw_t)
+            cur_sec = {
+                'num': sec_id,
+                'title_raw': raw_t,
+                'title_deva': f"{sec_id} {deva_title}" if deva_title else sec_id,
+                'ta_code': f"T.B. {sec_id}",
+                'content': [],
+                'content_deva': []
+            }
+            cur_ch['sections'].append(cur_sec)
+            continue
+
+        if re.search(r'Details of Dasini|For Kaatakam|Summary for entire', p, re.I) and cur_ch:
+            flush_table()
+            sec_id = f"{cur_ch['num']}.D"
+            title_text = clean_baraha_english(p)
+            cur_sec = {
+                'num': sec_id,
+                'title_raw': p,
+                'title_deva': f"{cur_ch['num']} {title_text}",
+                'ta_code': '',
+                'content': [f'<p class="verse-citation">{title_text}</p>'],
+                'content_deva': [f'<p class="verse-citation">{title_text}</p>']
+            }
+            cur_ch['sections'].append(cur_sec)
+            continue
+
+        is_table_row = False
+        if '\t' in p and not tb_re.match(p):
+            parts = [x.strip() for x in p.split('\t') if x.strip()]
+            if len(parts) >= 2 and (any(x.isdigit() for x in parts) or any(k in p.lower() for k in ['dasini', 'vakyam', 'anuvakam', 'total', 'ashtakam'])):
+                is_table_row = True
+
+        if is_table_row:
+            table_buffer.append(p)
+            continue
+        else:
+            flush_table()
+
+        if tb_re.match(p) and cur_sec:
+            cur_sec['content'].append(p)
+            cur_sec['content_deva'].append(f'<p class="verse-citation">{p}</p>')
+            continue
+
+        if cur_sec:
+            deva_line = baraha_to_devanagari(p)
+            cur_sec['content'].append(p)
+            cur_sec['content_deva'].append(deva_line)
+
+    flush_table()
+    return chapters
+
+
 def extract_docx_elements(docx_path: str | Path) -> list[tuple[str, any]]:
     """Extract ordered paragraphs ('p') and tables ('tbl') from Word (.docx) document."""
     docx_path = Path(docx_path)
@@ -356,7 +660,8 @@ def parse_baraha_elements(
     elements: list[tuple[str, any]],
     chapter_regex: str = None,
     intro_start: str = None,
-    intro_sections: dict = None
+    intro_sections: dict = None,
+    doc_title: str = "Vedic Text"
 ) -> list[dict]:
     """Single, unified Vedic element parser for standard and complex Baraha documents.
     Features:
@@ -502,7 +807,11 @@ def parse_baraha_elements(
         # Chapter heading check
         ch_m = (ch_pattern.match(p) if ch_pattern else fallback_ch_regex.match(p)) if not is_forced_inline else None
         if ch_m and not re.search(r'[q#$|]', p) and len(p) < 90:
-            ch_num = int(ch_m.group(1))
+            raw_ch_num = ch_m.group(1)
+            try:
+                ch_num = int(raw_ch_num)
+            except ValueError:
+                ch_num = len(chapters) + 1
             ch_raw_title = ch_m.group(2).strip() if ch_m.lastindex >= 2 and ch_m.group(2) else ''
 
             excluded_starts = (
@@ -510,14 +819,15 @@ def parse_baraha_elements(
                 'namaH', 'svAhA', 'item no', 'purusha sukhtam'
             )
             is_valid = True
-            if current_ch is not None and ch_num != current_ch['num'] + 1:
-                is_valid = False
-            elif any(ch_raw_title.lower().startswith(x.lower()) for x in excluded_starts):
-                is_valid = False
-            elif re.search(r'\b(namaH|svAhA|OM|Oum|CatraM|vAdyaM|gItaM|aSvaM|rathaM)\b', ch_raw_title, re.I):
-                is_valid = False
-            elif 'item no' in ch_raw_title.lower() or 'persons' in ch_raw_title.lower():
-                is_valid = False
+            if ch_pattern is None:
+                if current_ch is not None and isinstance(ch_num, int) and isinstance(current_ch.get('num'), int) and ch_num != current_ch['num'] + 1:
+                    is_valid = False
+                elif any(ch_raw_title.lower().startswith(x.lower()) for x in excluded_starts):
+                    is_valid = False
+                elif re.search(r'\b(namaH|svAhA|OM|Oum|CatraM|vAdyaM|gItaM|aSvaM|rathaM)\b', ch_raw_title, re.I):
+                    is_valid = False
+                elif 'item no' in ch_raw_title.lower() or 'persons' in ch_raw_title.lower():
+                    is_valid = False
 
             if is_valid:
                 # Transliterate title if Sanskrit, or keep as English
@@ -598,6 +908,26 @@ def parse_baraha_elements(
                 'title_raw': current_ch['title_raw'],
                 'title_deva': current_ch['title_deva'],
                 'ta_code': current_ch.get('ta_code', ''),
+                'content': [p],
+                'content_deva': [line_deva],
+                'is_intro': True
+            }
+            current_ch['sections'].append(current_sec)
+        else:
+            current_ch = {
+                'num': 1,
+                'title_raw': doc_title,
+                'title_deva': f"1. {doc_title}",
+                'ta_code': '',
+                'is_english': False,
+                'sections': []
+            }
+            chapters.append(current_ch)
+            current_sec = {
+                'num': '1.1',
+                'title_raw': doc_title,
+                'title_deva': doc_title,
+                'ta_code': '',
                 'content': [p],
                 'content_deva': [line_deva],
                 'is_intro': True
@@ -700,9 +1030,66 @@ def parse_baraha_docx_to_ast(
     intro_start: str = None,
     intro_sections: dict = None
 ) -> tuple[dict, str]:
-    """Parse Baraha DOCX document into standard VedaVMS hierarchical JSON AST."""
-    elements = extract_docx_elements(docx_path)
-    docx_name = Path(docx_path).name.lower()
+    """Parse Baraha DOCX or BRH document into standard VedaVMS hierarchical JSON AST."""
+    docx_path = Path(docx_path)
+    if not docx_path.exists():
+        for cand in [
+            Path("data/baraha") / docx_path,
+            Path(__file__).parent.parent / "data/baraha" / docx_path,
+            Path(__file__).parent.parent / docx_path,
+            Path(__file__).parent / docx_path
+        ]:
+            if cand.exists():
+                docx_path = cand
+                break
+        else:
+            raise FileNotFoundError(f"Input document not found: {docx_path}")
+
+    docx_name = docx_path.name.lower()
+
+    if docx_path.suffix.lower() in ('.brh', '.txt') and ('aak' in docx_name or 'tb' in docx_name):
+        chapters = parse_aak_brh(docx_path)
+        doc_title_sa = title or "तैत्तिरीय ब्राह्मणम् ३.७ - ३.१२ (अच्छिद्रं, अश्वमेधं, काठकम्)"
+        sections = {}
+        for ch in chapters:
+            sec_key = f"section_{ch['num']}"
+            sec_data = {
+                'title': ch['title_deva'],
+                'section_title': ch['title_deva'],
+                'raw_title': ch.get('title_raw', ''),
+                'ta_code': ch.get('ta_code', ''),
+                'is_english': False,
+                'Count': str(len(ch['sections'])),
+                'subsections': {}
+            }
+            for sec in ch['sections']:
+                sub_key = f"sub_sec_{sec['num'].replace('.', '_')}"
+                sec_data['subsections'][sub_key] = {
+                    'title': sec['title_deva'],
+                    'sub_section_id': sec['num'],
+                    'header': {'header': sec['title_deva']},
+                    'ta_code': sec.get('ta_code', ''),
+                    'is_intro': False,
+                    'content_lines': sec.get('content_deva', sec.get('content', []))
+                }
+            sections[sec_key] = sec_data
+        ast_data = {
+            'meta': {
+                'title': doc_title_sa,
+                'version': version or '1.0.0',
+                'generated_at': generated_at or datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                'source': str(docx_path)
+            },
+            'supersections': {'supersection_1': {'supersection_title': doc_title_sa, 'sections': sections}},
+            '_reader_chapters': chapters
+        }
+        return ast_data, doc_title_sa
+
+    if docx_path.suffix.lower() in ('.brh', '.txt'):
+        elements, doc_toc = extract_brh_elements(docx_path)
+    else:
+        elements = extract_docx_elements(docx_path)
+        doc_toc = {}
 
     # Look up book config from config.json if available
     candidates = [
@@ -727,13 +1114,6 @@ def parse_baraha_docx_to_ast(
     i_start = intro_start or book_cfg.get('intro_start')
     i_sec = intro_sections or book_cfg.get('intro_sections')
 
-    chapters = parse_baraha_elements(
-        elements,
-        chapter_regex=ch_reg,
-        intro_start=i_start,
-        intro_sections=i_sec
-    )
-
     doc_title_sa = title or book_cfg.get('title_sanskrit') or book_cfg.get('title')
     if not doc_title_sa:
         first_p = elements[0][1] if elements and elements[0][0] == 'p' else ''
@@ -747,6 +1127,14 @@ def parse_baraha_docx_to_ast(
             doc_title_sa = "शिव स्तुतिः"
         else:
             doc_title_sa = baraha_to_devanagari(first_p.strip()) or "Vedic Sanskrit Reader"
+
+    chapters = parse_baraha_elements(
+        elements,
+        chapter_regex=ch_reg,
+        intro_start=i_start,
+        intro_sections=i_sec,
+        doc_title=doc_title_sa
+    )
 
     sections = {}
     for ch in chapters:
@@ -806,6 +1194,8 @@ def parse_baraha_docx_to_ast(
 
 def ast_to_reader_chapters(ast_data: dict) -> list[dict]:
     """Convert AST dictionary into chapter list format expected by HTML reader generator."""
+    if '_reader_chapters' in ast_data:
+        return ast_data['_reader_chapters']
     supersections = ast_data.get('supersections', ast_data.get('supersection', {}))
     chapters = []
     for ss_key, ss_data in supersections.items():
