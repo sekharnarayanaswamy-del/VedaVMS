@@ -141,7 +141,7 @@ def extract_brh_elements(brh_path: str | Path) -> tuple[list[tuple[str, any]], d
 
 
 def parse_aak_brh(file_path: str | Path) -> list[dict]:
-    """Parse AAK Baraha text document (.brh) into structured reader chapters and sections."""
+    """Parse AAK Baraha text document (.brh or .docx) into structured reader chapters and sections."""
     file_path = Path(file_path)
     if not file_path.exists():
         for cand in [
@@ -157,13 +157,18 @@ def parse_aak_brh(file_path: str | Path) -> list[dict]:
             raise FileNotFoundError(f"Input document not found: {file_path}")
 
     raw = None
-    for enc in ['utf-8-sig', 'cp1252', 'latin1']:
-        try:
-            with open(file_path, 'r', encoding=enc) as f:
-                raw = f.read()
-            break
-        except UnicodeDecodeError:
-            continue
+    if file_path.suffix.lower() == '.docx':
+        import docx
+        doc = docx.Document(file_path)
+        raw = '\n'.join(p.text for p in doc.paragraphs)
+    else:
+        for enc in ['utf-8-sig', 'cp1252', 'latin1']:
+            try:
+                with open(file_path, 'r', encoding=enc) as f:
+                    raw = f.read()
+                break
+            except UnicodeDecodeError:
+                continue
     if raw is None:
         raise ValueError(f"Could not decode {file_path}")
 
@@ -174,7 +179,6 @@ def parse_aak_brh(file_path: str | Path) -> list[dict]:
         toc_text, body_text = '', raw
 
     toc_dict = {}
-    toc_table_rows = []
     if toc_text:
         for line in toc_text.splitlines():
             line = line.strip()
@@ -184,53 +188,58 @@ def parse_aak_brh(file_path: str | Path) -> list[dict]:
             if m:
                 sec_id = m.group(1)
                 t = m.group(2).strip()
-                p = m.group(3) or ''
-                m_rep = re.match(r'^(.*?)(?:3\.\d+\.\d+\s+.*)$', t)
-                if m_rep:
-                    t = m_rep.group(1).strip()
-                if sec_id not in toc_dict or (p and not toc_dict[sec_id][1]):
-                    toc_dict[sec_id] = (t, p)
-                    toc_table_rows.append((sec_id, t, p))
+                t = re.split(r'\t|\s*3\.\d+', t)[0].strip()
+                t = re.sub(r'[\t\s]+\d+$', '', t).strip()
+                if sec_id not in toc_dict:
+                    toc_dict[sec_id] = t
 
-    toc_table_html = ''
-    if toc_table_rows:
-        rows = [
-            '<table class="vedic-table toc-table">',
-            '  <thead><tr><th>अनुवाकः / विभागः</th><th>विवरणम्</th><th style="text-align:right;">पृष्ठम्</th></tr></thead>',
-            '  <tbody>'
-        ]
-        for sec_id, t, p in toc_table_rows:
-            deva_t = baraha_to_devanagari(t)
-            anchor = sec_id.replace('.', '-')
-            link = f'<a href="#sec-{anchor}" style="text-decoration:none;color:var(--maroon);font-weight:600;">{sec_id}</a>'
-            rows.append(f'    <tr><td style="white-space:nowrap;">{link}</td><td>{deva_t}</td><td style="text-align:right;">{p}</td></tr>')
-        rows.append('  </tbody></table>')
-        toc_table_html = '\n'.join(rows)
-
+    # Note: TOC table is NOT added to chapters array.
+    # The reader uses the TOC navigation sidebar only; no TOC table in the main HTML text body.
     chapters = []
-    if toc_table_html:
-        toc_chapter = {
-            'num': '0',
-            'title_raw': 'Table of Contents',
-            'title_deva': 'विषयानुक्रमणिका (Table of Contents)',
-            'sections': [{
-                'num': '0.0',
-                'title_raw': 'विषयानुक्रमणिका',
-                'title_deva': 'विषयानुक्रमणिका (Table of Contents)',
-                'ta_code': '',
-                'content': [toc_table_html],
-                'content_deva': [toc_table_html]
-            }]
-        }
-        chapters.append(toc_chapter)
 
     ch_re = re.compile(r'^(3\.(?:[7-9]|1[0-2]))(?!\.\d+)\t*\s*(.*(?:prapAThaka|praSna|kANDa|AShTakE).*)', re.I)
-    sec_re = re.compile(r'^(3\.(?:[7-9]|1[0-2])\.\d+)\.?\t*\s*(.*)')
+    sec_re = re.compile(r'^(3\.(?:[7-9]|1[0-2])\.\d+)(?!\.\d+)\.?\t*\s*(.*)')
     tb_re = re.compile(r'^(?:T\.B\.)?3\.(?:[7-9]|1[0-2])\.\d+\.\d+')
 
     cur_ch = None
     cur_sec = None
     table_buffer = []
+    para_buffer_raw = []
+    para_buffer_deva = []
+
+    cur_korvai_type = None
+    cur_korvai_title = ""
+    korvai_buffer = []
+
+    def flush_korvai():
+        nonlocal cur_korvai_type, cur_korvai_title, korvai_buffer
+        if korvai_buffer and cur_sec:
+            raw_text = ' '.join(korvai_buffer).strip()
+            deva_text = baraha_to_devanagari(raw_text)
+            box_html = (
+                f'<div class="korvai-box">\n'
+                f'  <div class="korvai-header"><span class="korvai-tag">{cur_korvai_title}</span></div>\n'
+                f'  <div class="korvai-body">{deva_text}</div>\n'
+                f'</div>'
+            )
+            cur_sec['content'].append(raw_text)
+            cur_sec['content_deva'].append(box_html)
+            korvai_buffer.clear()
+        cur_korvai_type = None
+        cur_korvai_title = ""
+
+    def flush_para():
+        if not para_buffer_deva or cur_sec is None:
+            para_buffer_raw.clear()
+            para_buffer_deva.clear()
+            return
+        joined_deva = ' '.join(para_buffer_deva).strip()
+        joined_raw = ' '.join(para_buffer_raw).strip()
+        if joined_deva:
+            cur_sec['content'].append(joined_raw)
+            cur_sec['content_deva'].append(joined_deva)
+        para_buffer_raw.clear()
+        para_buffer_deva.clear()
 
     def flush_table():
         if not table_buffer or cur_sec is None:
@@ -259,18 +268,36 @@ def parse_aak_brh(file_path: str | Path) -> list[dict]:
     lines = body_text.splitlines()
     for line in lines:
         p = line.strip().replace('\x0c', '').replace('\x93', '"').replace('\x94', '"')
+
+        if cur_korvai_type:
+            if not p or re.match(r'^(?:3\.\d+|T\.B\.|Special\s+Korvai|Prapaataka\s+Korvai|Korvai\s+with|First\s+and\s+Last)', p, re.I):
+                flush_korvai()
+            else:
+                korvai_buffer.append(p)
+                if cur_korvai_type == 'anuvaka' and re.search(r'\(A\d+[a-z]?\)|\[A\d+[a-z]?\]', p):
+                    flush_korvai()
+                continue
+
         if not p:
             flush_table()
+            flush_para()
+            flush_korvai()
             continue
 
         ch_m = ch_re.match(p)
         if ch_m and not re.search(r'@(?:an|sv|ds)|[|]', p):
             flush_table()
+            flush_para()
+            flush_korvai()
             ch_id = ch_m.group(1)
             raw_t = ch_m.group(2).strip()
+            raw_t = re.split(r'\t|\s*3\.\d+', raw_t)[0].strip()
+            raw_t = re.sub(r'[\t\s]+\d+$', '', raw_t).strip()
             if ch_id in toc_dict:
-                raw_t = toc_dict[ch_id][0]
+                raw_t = toc_dict[ch_id] if isinstance(toc_dict[ch_id], str) else toc_dict[ch_id][0]
+                raw_t = re.sub(r'[\t\s]+\d+$', '', raw_t).strip()
             deva_t = baraha_to_devanagari(raw_t)
+            deva_t = re.sub(r'[\t\s]+\d+$', '', deva_t).strip()
             cur_ch = {
                 'num': ch_id,
                 'title_raw': raw_t,
@@ -284,12 +311,19 @@ def parse_aak_brh(file_path: str | Path) -> list[dict]:
         sec_m = sec_re.match(p)
         if sec_m and not re.search(r'@(?:an|sv|ds)|[|]', p) and cur_ch:
             flush_table()
+            flush_para()
+            flush_korvai()
             sec_id = sec_m.group(1)
             raw_t = sec_m.group(2).strip()
+            raw_t = re.split(r'\t|\s*3\.\d+', raw_t)[0].strip()
+            raw_t = re.sub(r'[\t\s]+\d+$', '', raw_t).strip()
             if sec_id in toc_dict:
-                raw_t = toc_dict[sec_id][0]
+                raw_t = toc_dict[sec_id] if isinstance(toc_dict[sec_id], str) else toc_dict[sec_id][0]
+                raw_t = re.sub(r'[\t\s]+\d+$', '', raw_t).strip()
             clean_title_raw = re.sub(r'^\s*anuvAka[mM]\s*\d+\s*[-–:]?\s*', '', raw_t, flags=re.I).strip()
+            clean_title_raw = re.sub(r'[\t\s]+\d+$', '', clean_title_raw).strip()
             deva_title = baraha_to_devanagari(clean_title_raw) if clean_title_raw else baraha_to_devanagari(raw_t)
+            deva_title = re.sub(r'[\t\s]+\d+$', '', deva_title).strip()
             cur_sec = {
                 'num': sec_id,
                 'title_raw': raw_t,
@@ -303,15 +337,18 @@ def parse_aak_brh(file_path: str | Path) -> list[dict]:
 
         if re.search(r'Details of Dasini|For Kaatakam|Summary for entire', p, re.I) and cur_ch:
             flush_table()
-            sec_id = f"{cur_ch['num']}.D"
+            flush_para()
+            flush_korvai()
+            d_count = sum(1 for s in cur_ch['sections'] if 'D' in s['num']) + 1
+            sec_id = f"{cur_ch['num']}.D{d_count}" if d_count > 1 else f"{cur_ch['num']}.D"
             title_text = clean_baraha_english(p)
             cur_sec = {
                 'num': sec_id,
                 'title_raw': p,
                 'title_deva': f"{cur_ch['num']} {title_text}",
                 'ta_code': '',
-                'content': [f'<p class="verse-citation">{title_text}</p>'],
-                'content_deva': [f'<p class="verse-citation">{title_text}</p>']
+                'content': [f'<p class="verse-note">{title_text}</p>'],
+                'content_deva': [f'<p class="verse-note">{title_text}</p>']
             }
             cur_ch['sections'].append(cur_sec)
             continue
@@ -323,24 +360,107 @@ def parse_aak_brh(file_path: str | Path) -> list[dict]:
                 is_table_row = True
 
         if is_table_row:
+            flush_para()
+            flush_korvai()
             table_buffer.append(p)
             continue
         else:
             flush_table()
 
         if tb_re.match(p) and cur_sec:
+            flush_para()
+            flush_korvai()
+            clean_tb = p if p.startswith('T.B.') else f'T.B.{p}'
+            cur_sec['content'].append(clean_tb)
+            cur_sec['content_deva'].append(f'<p class="verse-citation">{clean_tb}</p>')
+            continue
+
+        if re.match(r'^\s*special\s+korvai\s*$', p, re.I) and cur_sec:
+            flush_para()
+            flush_korvai()
+            cur_korvai_type = 'special'
+            cur_korvai_title = "विशेष कोर्वै (Special Korvai)"
+            continue
+
+        m_prap = re.match(r'^\s*(prapaataka\s+korvai.*?|korvai\s+with\s+starting.*?|first\s+and\s+last\s+padam.*?)(?:[:-]+)?\s*$', p, re.I)
+        if m_prap and cur_sec:
+            flush_para()
+            flush_korvai()
+            cur_korvai_type = 'prap'
+            raw_t = m_prap.group(1).strip()
+            if 'prapaataka' in raw_t.lower():
+                cur_korvai_title = "प्रपाठक कोर्वै (Prapāṭhaka Korvai)"
+            elif 'dasini' in raw_t.lower():
+                cur_korvai_title = "दशिनी कोर्वै (Dasini Korvai)"
+            else:
+                cur_korvai_title = "कोर्वै (Korvai)"
+            continue
+
+        if re.match(r'^\s*\(\s*no\s+korvai\s+for\s+.*?\)\s*$', p, re.I) and cur_sec:
+            flush_para()
+            flush_korvai()
+            box_html = (
+                f'<div class="korvai-box korvai-note">\n'
+                f'  <div class="korvai-header"><span class="korvai-tag">कोर्वै (Korvai Note)</span></div>\n'
+                f'  <div class="korvai-body"><em>{clean_baraha_english(p)}</em></div>\n'
+                f'</div>'
+            )
             cur_sec['content'].append(p)
-            cur_sec['content_deva'].append(f'<p class="verse-citation">{p}</p>')
+            cur_sec['content_deva'].append(box_html)
+            continue
+
+        if re.search(r'\(A\d+[a-z]?\)|\[A\d+[a-z]?\]', p) and cur_sec:
+            flush_korvai()
+            m_split = re.search(r'^(.*?\|\|\s*\d+\s*\(\d+\))\s*(.*)$', p)
+            if m_split:
+                verse_part = m_split.group(1).strip()
+                korvai_text = m_split.group(2).strip()
+                deva_verse = baraha_to_devanagari(verse_part)
+                para_buffer_raw.append(verse_part)
+                para_buffer_deva.append(deva_verse)
+                flush_para()
+            else:
+                flush_para()
+                korvai_text = p
+
+            a_tag_m = re.search(r'\(A(\d+[a-z]?)\)|\[A(\d+[a-z]?)\]', korvai_text)
+            a_num = a_tag_m.group(1) or a_tag_m.group(2) if a_tag_m else ""
+            title = f"अनुवाक कोर्वै (Anuvāka Korvai A{a_num})" if a_num else "अनुवाक कोर्वै (Anuvāka Korvai)"
+            deva_body = baraha_to_devanagari(korvai_text)
+            box_html = (
+                f'<div class="korvai-box">\n'
+                f'  <div class="korvai-header"><span class="korvai-tag">{title}</span></div>\n'
+                f'  <div class="korvai-body">{deva_body}</div>\n'
+                f'</div>'
+            )
+            cur_sec['content'].append(korvai_text)
+            cur_sec['content_deva'].append(box_html)
+            continue
+
+        if p.startswith(('(', '[')) and (' - ' in p or ' ca' in p) and cur_sec:
+            flush_para()
+            flush_korvai()
+            cur_korvai_type = 'anuvaka'
+            cur_korvai_title = "अनुवाक कोर्वै (Anuvāka Korvai)"
+            korvai_buffer.append(p)
+            continue
+
+        if (p.startswith('---') or p.lower().startswith('item ') or p.lower().startswith('both ')) and cur_sec:
+            flush_para()
+            flush_korvai()
+            cur_sec['content'].append(p)
+            cur_sec['content_deva'].append(f'<p class="verse-note">{clean_baraha_english(p)}</p>')
             continue
 
         if cur_sec:
             deva_line = baraha_to_devanagari(p)
-            cur_sec['content'].append(p)
-            cur_sec['content_deva'].append(deva_line)
+            para_buffer_raw.append(p)
+            para_buffer_deva.append(deva_line)
 
+    flush_para()
+    flush_korvai()
     flush_table()
     return chapters
-
 
 def extract_docx_elements(docx_path: str | Path) -> list[tuple[str, any]]:
     """Extract ordered paragraphs ('p') and tables ('tbl') from Word (.docx) document."""

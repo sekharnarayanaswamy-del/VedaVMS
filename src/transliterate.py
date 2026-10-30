@@ -699,7 +699,37 @@ def deva_to_malayalam(text: str) -> str:
         else:
             out.append(ch)
         i += 1
-    return ''.join(out)
+    res = ''.join(out)
+
+    # Orthographic chillu conversions:
+    # 1. Chillu-RR (ർ 0x0D7C): ര് -> ർ (including before '.')
+    res = re.sub(r'ര്([॒॑᳚]*)(?![യവ])', r'ർ\g<1>', res)
+
+    # 2. Chillu-N (ൻ 0x0D7B): word-final / boundary / before '.' ന് / ന്ന് -> ൻ
+    res = re.sub(r'ന്ന്([॒॑᳚]*)(?=[\s,;:!?<\|।॥\)\-\]\}\.]|$)', r'ൻ\g<1>', res)
+    res = re.sub(r'ന്([॒॑᳚]*)(?=[\s,;:!?<\|।॥\)\-\]\}\.]|$)', r'ൻ\g<1>', res)
+
+    # Remove space after padapatha period before next Malayalam word (e.g. സർവാ॒ൻ॒. വാ -> സർവാ॒ൻ॒.വാ)
+    res = re.sub(r'([ൻർമ്][॒॑᳚]*\.)\s+(?=[\u0D00-\u0D7F])', r'\1', res)
+
+    # 3. Anusvara conversions for 'മ്':
+    # Group 1: 'മ്' before labials [ഭബപഫ] -> 'ം' (e.g. ലമ്ഭുകാ -> ലംഭുകാ, ഋഷഭാലമ്ഭഃ -> ഋഷഭാലംഭഃ)
+    res = re.sub(r'മ്([॒॑᳚]*)(?=[ഭബപഫ])', r'ം\g<1>', res)
+
+    # Transliteration artifact: 'വാക്യമ്സ്' -> 'വാക്യംസ്'
+    res = res.replace('വാക്യമ്സ്', 'വാക്യംസ്')
+
+    # Group 2: Word-final / boundary 'മ്' before whitespace, hyphens, punctuation, tags, end of string -> 'ം' (preserving 'മ്.')
+    # (Group 3 conjuncts like മ്യ, മ്ര, മ്ന, മ്മി are preserved as-is)
+    res = re.sub(r'മ്([॒॑᳚]*)(?!\.)(?=[\s\-\u2010-\u2015,;:!?<\|।॥\)\-\]\}]|$)', r'ം\g<1>', res, flags=re.MULTILINE)
+
+    # 4. Gumphita Candrabindu (ഁ):
+    # 'മ്' or 'ം' followed by candrabindu -> ensure 'ം' + accents + NBSP (\u00A0) + candrabindu (\u0D01) before next syllable
+    res = re.sub(r'[മ്ം]([॒॑᳚]*)[\s\xa0]*ഁ[\s\xa0]*', 'ം\\g<1>\u00A0ഁ', res)
+    # Any other candrabindu preceded by whitespace -> NBSP + candrabindu
+    res = re.sub(r'[\s\xa0]+ഁ[\s\xa0]*', '\u00A0ഁ', res)
+
+    return res
 
 
 def baraha_to_malayalam(text: str) -> str:

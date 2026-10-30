@@ -210,12 +210,18 @@ def format_vedic_html(text: str) -> str:
     # 2. Reorder accents that landed before Visarga so syllable + Visarga remain contiguous
     text = re.sub(r'([\u0951\u0952\u1CDA]+)\s*([ःഃ])', r'\2\1', text)
 
+    # Stop shirorekha over visarga in Devanagari:
+    # Insert &zwnj; before Devanagari Visarga (ः) when preceded by a Devanagari character,
+    # so OpenType shaping terminates the top stroke over the previous syllable and leaves the visarga freestanding.
+    text = re.sub(r'([\u0904-\u094F\u0955-\u097F])(?<!\u200c)(?<!&zwnj;)ः', r'\1&zwnj;ः', text)
+
     # 3. Accents following Visarga receive .accent-visarga to shift backwards over the syllable
-    for vis in ('ः', 'ഃ'):
+    for vis in ('&zwnj;ः', 'ः', 'ഃ'):
         text = text.replace(f'{vis}\u0951', f'{vis}<span class="accent-swarita accent-visarga">&#x0951;</span>')
         text = text.replace(f'{vis}\u1CDA', f'{vis}<span class="accent-deergha accent-visarga">&#x1CDA;</span>')
         text = text.replace(f'{vis}\u0952\u0952', f'{vis}<span class="accent-anudatta accent-visarga">&#x0952;&#x0952;</span>')
         text = text.replace(f'{vis}\u0952', f'{vis}<span class="accent-anudatta accent-visarga">&#x0952;</span>')
+
 
     # 4. Standard accents (on syllables without Visarga)
     # Svarita (U+0951)
@@ -340,7 +346,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             --swarita-bottom: 0.2em;
             --anudatta-bottom: -0.25em;
             --accent-offset: -0.10em;
-            --visarga-offset: -0.35em;
+            --visarga-offset: {'-1.1em' if target_lang == 'malayalam' else '-0.35em'};
             --accent-font: 'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
             --verse-font: 'Adishila San', 'AdishilaVedic', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
             --verse-weight: 500;
@@ -393,7 +399,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         .header-content {{
-            max-width: 1240px;
+            max-width: 1560px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -468,7 +474,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         .layout {{
-            max-width: 1240px;
+            max-width: 1560px;
             width: 100%;
             margin: 1.75rem auto;
             padding: 0 1rem;
@@ -899,20 +905,29 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         .anuvaka-code {{
-            font-size: 0.82rem;
-            color: #777;
-            background: #EFEFEF;
-            padding: 0.2rem 0.55rem;
-            border-radius: 4px;
-            font-family: monospace;
+            font-family: monospace, system-ui, -apple-system, sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--saffron-dark, #b76e00);
+            background: rgba(224, 86, 36, 0.08);
+            border: 1.5px solid rgba(224, 86, 36, 0.3);
+            padding: 0.22rem 0.65rem;
+            border-radius: 5px;
+            letter-spacing: 0.03em;
             margin-left: auto;
             text-align: right;
-            white-space: normal;
+            white-space: nowrap;
+        }}
+
+        .dark-mode .anuvaka-code {{
+            color: #f4a261;
+            background: rgba(244, 162, 97, 0.14);
+            border-color: rgba(244, 162, 97, 0.35);
         }}
 
         .chapter-heading .chapter-code {{
-            font-size: 0.82rem;
-            font-weight: normal;
+            font-size: 0.85rem;
+            font-weight: 600;
             vertical-align: middle;
             margin-left: auto;
             display: inline-block;
@@ -974,6 +989,98 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             margin-bottom: 0;
         }}
 
+        .verse-citation {{
+            font-family: monospace, system-ui, -apple-system, sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted, #777);
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            padding: 0.14rem 0.52rem;
+            border-radius: 4px;
+            letter-spacing: 0.03em;
+            display: table;
+            margin-left: auto;
+            margin-right: 0;
+            margin-top: 1.25rem;
+            margin-bottom: 0.4rem;
+            text-align: right;
+        }}
+
+        .dark-mode .verse-citation {{
+            color: #aaa;
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+        }}
+
+        .verse-note {{
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin: 0.4rem 0;
+            font-style: italic;
+        }}
+
+        /* Korvai Box Styles */
+        .korvai-box {{
+            margin: 1.35rem 0 1.5rem 0;
+            padding: 1.1rem 1.35rem;
+            background: linear-gradient(135deg, rgba(255, 248, 238, 0.96) 0%, rgba(254, 242, 224, 0.92) 100%);
+            border: 1.5px solid #d4a373;
+            border-left: 6px solid var(--maroon, #800000);
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(128, 0, 0, 0.07);
+            transition: all 0.2s ease;
+        }}
+
+        .dark-mode .korvai-box {{
+            background: linear-gradient(135deg, rgba(45, 30, 25, 0.85) 0%, rgba(35, 25, 20, 0.92) 100%);
+            border-color: #8c5a3c;
+            border-left-color: #e07a5f;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+        }}
+
+        .korvai-box:hover {{
+            box-shadow: 0 5px 16px rgba(128, 0, 0, 0.12);
+        }}
+
+        .korvai-header {{
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.65rem;
+        }}
+
+        .korvai-tag {{
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--maroon, #800000);
+            background: rgba(128, 0, 0, 0.09);
+            padding: 0.22rem 0.65rem;
+            border-radius: 4px;
+        }}
+
+        .dark-mode .korvai-tag {{
+            color: #f4a261;
+            background: rgba(244, 162, 97, 0.18);
+        }}
+
+        .korvai-body {{
+            font-family: var(--verse-font);
+            font-size: 0.75em;
+            line-height: 1.85;
+            color: var(--text-color, #2b2b2b);
+            word-break: normal;
+            overflow-wrap: break-word;
+        }}
+
+        .korvai-note .korvai-tag {{
+            background: rgba(100, 100, 100, 0.1);
+            color: var(--text-muted);
+        }}
+
         /* Vedic Accent Mark Styles - Zero-width elevated positioning (mimicking Jaimineeya Samavedam) */
         .accent-swarita {{
             display: inline-block;
@@ -1021,7 +1128,6 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         .accent-visarga {{
             left: var(--visarga-offset, -0.55em) !important;
         }}
-
         /* Vedic & General Tables */
         .table-responsive {{
             width: 100%;
@@ -1700,6 +1806,9 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             <ul class="toc-list">
 ''')
 
+    # Filter out Chapter 0 (TOC) if present; TOC is handled solely by sidebar navigation pane
+    chapters = [ch for ch in chapters if str(ch.get('num')) not in ('0', '0.0')]
+
     for ch in chapters:
         ch_id = f"chapter-{ch['num']}"
         sub_sections = [
@@ -1710,7 +1819,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         if has_subsections:
             html_parts.append(f'''                <li class="toc-chapter" id="toc-{ch_id}">
                     <div class="toc-ch-header" onclick="toggleTocChapter('toc-{ch_id}')">
-                        <div class="toc-ch-title"><a href="#{ch_id}">{ch['title_deva']}</a></div>
+                        <div class="toc-ch-title"><a href="#{ch_id}">{re.sub(r"[\t\s]+\d+$", "", ch["title_deva"]).strip()}</a></div>
                         <span class="toc-ch-toggle">▼</span>
                     </div>
                     <ul class="toc-sub-list">
@@ -1718,10 +1827,13 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             for sec in sub_sections:
                 sec_id = f"sec-{sec['num'].replace('.', '-')}"
                 t_deva = sec['title_deva'].strip() if sec.get('title_deva') else ''
+                # Remove any trailing tabs or page numbers
+                t_deva = re.sub(r'[\t\s]+\d+$', '', t_deva).strip()
                 if t_deva.startswith(f"{sec['num']}.") or t_deva.startswith(f"{sec['num']} ") or t_deva == sec['num']:
                     title_disp = t_deva
                 else:
                     title_disp = f"{sec['num']} {t_deva}".strip()
+                title_disp = re.sub(r'[\t\s]+\d+$', '', title_disp).strip()
                 sec_parts = [p for p in sec['num'].split('.') if p.strip().isdigit()]
                 lvl_class = "toc-level-3" if len(sec_parts) >= 3 else "toc-level-2"
                 html_parts.append(f'                        <li class="{lvl_class}"><a href="#{sec_id}">{title_disp}</a></li>\n')
@@ -1784,7 +1896,14 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                     <div class="verse-text">
 ''')
             for deva_line in sec["content_deva"]:
-                if deva_line.startswith('<div') or deva_line.startswith('<table'):
+                if deva_line.startswith('<div class="korvai-box"'):
+                    m = re.match(r'(<div class="korvai-box.*?>\s*<div class="korvai-header">.*?</div>\s*<div class="korvai-body">)(.*?)(</div>\s*</div>)', deva_line, re.DOTALL)
+                    if m:
+                        formatted_body = format_vedic_html(m.group(2).strip())
+                        html_parts.append(f'                        {m.group(1)}{formatted_body}{m.group(3)}\n')
+                    else:
+                        html_parts.append(f'                        {deva_line}\n')
+                elif deva_line.startswith('<div') or deva_line.startswith('<table') or deva_line.startswith('<p'):
                     html_parts.append(f'                        {deva_line}\n')
                 else:
                     html_parts.append(f'                        <p class="verse-p">{format_vedic_html(deva_line)}</p>\n')
@@ -2659,6 +2778,9 @@ def convert_docx_direct(
             from .transliterate import deva_to_malayalam
         except ImportError:
             from transliterate import deva_to_malayalam
+        for k in ['title', 'title_sanskrit', 'subtitle']:
+            if k in book_meta and book_meta[k]:
+                book_meta[k] = deva_to_malayalam(book_meta[k])
         mal_chapters = []
         for ch in chapters:
             mal_ch = dict(ch)

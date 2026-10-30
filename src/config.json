@@ -149,7 +149,7 @@
     "aak_malayalam": {
       "title": "തൈത്തിരീയ ബ്രാഹ്മണം (തൃതീയ കാണ്ഡം, പ്രപാഠക ൭ - ൧൨)",
       "title_sanskrit": "തൈത്തിരീയ ബ്രാഹ്മണം ൩.൭ - ൩.൧൨ (അച്ഛിദ്രം, അശ്വമേധം, കാഠകം)",
-      "subtitle": "കൃഷ്ണ യജുർവേദീയ തൈത്തിരീയ ബ്രാഹ്മണം (സസ്വരമ്)",
+      "subtitle": "കൃഷ്ണ യജുർവേദീയ തൈത്തിരീയ ബ്രാഹ്മണം (സസ്വരം)",
       "input_docx": "data/baraha/AAK.brh",
       "output_html": "build/viewer/aak_malayalam.html",
       "pdf_path": "data/pdf/TB 3.7-3.12 Sanskrit.pdf",
@@ -162,7 +162,7 @@
     },
     "tb_3_7_achidram_malayalam": {
       "title": "തൈത്തിരീയ ബ്രാഹ്മണേ തൃതീയാഷ്ടകേ സപ്തമഃ പ്രപാഠകഃ (അച്ഛിദ്രം)",
-      "title_sanskrit": "അച്ഛിദ്രമ്",
+      "title_sanskrit": "അച്ഛിദ്രം",
       "subtitle": "കൃഷ്ണ യജുർവേദീയ തൈത്തിരീയ ബ്രാഹ്മണം (TB 3.7)",
       "input_docx": "data/baraha/AAK.brh",
       "output_html": "build/viewer/tb_3_7_achidram_malayalam.html",
@@ -176,8 +176,8 @@
       "deity_name": "Lord Agni Deva"
     },
     "tb_3_8_aswamedham_vaiswadevam_malayalam": {
-      "title": "തൈത്തിരീയ ബ്രാഹ്മണേ തൃതീയാഷ്ടകേ അഷ്ടമഃ പ്രപാഠകഃ (അശ്വമേധം - വൈശ്വദേവമ്)",
-      "title_sanskrit": "അശ്വമേധം - വൈശ്വദേവമ്",
+      "title": "തൈത്തിരീയ ബ്രാഹ്മണേ തൃതീയാഷ്ടകേ അഷ്ടമഃ പ്രപാഠകഃ (അശ്വമേധം - വൈശ്വദേവം)",
+      "title_sanskrit": "അശ്വമേധം - വൈശ്വദേവം",
       "subtitle": "കൃഷ്ണ യജുർവേദീയ തൈത്തിരീയ ബ്രാഹ്മണം (TB 3.8)",
       "input_docx": "data/baraha/AAK.brh",
       "output_html": "build/viewer/tb_3_8_aswamedham_vaiswadevam_malayalam.html",
@@ -191,8 +191,8 @@
       "deity_name": "Lord Indra Deva"
     },
     "tb_3_9_aswamedham_havirdhanam_malayalam": {
-      "title": "തൈത്തിരീയ ബ്രാഹ്മണേ തൃതീയാഷ്ടകേ നവമഃ പ്രപാഠകഃ (അശ്വമേധം - ഹവിര്ധാനമ്)",
-      "title_sanskrit": "അശ്വമേധം - ഹവിര്ധാനമ്",
+      "title": "തൈത്തിരീയ ബ്രാഹ്മണേ തൃതീയാഷ്ടകേ നവമഃ പ്രപാഠകഃ (അശ്വമേധം - ഹവിർധാനം)",
+      "title_sanskrit": "അശ്വമേധം - ഹവിർധാനം",
       "subtitle": "കൃഷ്ണ യജുർവേദീയ തൈത്തിരീയ ബ്രാഹ്മണം (TB 3.9)",
       "input_docx": "data/baraha/AAK.brh",
       "output_html": "build/viewer/tb_3_9_aswamedham_havirdhanam_malayalam.html",
@@ -220,8 +220,8 @@
       "deity_name": "Lord Surya / Aditya"
     },
     "tb_3_10_katakam_savitra_malayalam": {
-      "title": "തൈത്തിരീയ ബ്രാഹ്മണേ കാഠകേ പ്രഥമഃ പ്രശ്നഃ (സാവിത്രചയനമ്)",
-      "title_sanskrit": "കാഠകം ൧ - സാവിത്രചയനമ്",
+      "title": "തൈത്തിരീയ ബ്രാഹ്മണേ കാഠകേ പ്രഥമഃ പ്രശ്നഃ (സാവിത്രചയനം)",
+      "title_sanskrit": "കാഠകം ൧ - സാവിത്രചയനം",
       "subtitle": "കൃഷ്ണ യജുർവേദീയ തൈത്തിരീയ ബ്രാഹ്മണം (TB 3.10)",
       "input_docx": "data/baraha/AAK.brh",
       "output_html": "build/viewer/tb_3_10_katakam_savitra_malayalam.html",
@@ -249,8 +249,8 @@
       "deity_name": "Lord Shiva"
     },
     "tb_3_11_katakam_naciketa_malayalam": {
-      "title": "തൈത്തിരീയ ബ്രാഹ്മണേ കാഠകേ ദ്വിതീയഃ പ്രശ്നഃ (നാചികേതചയനമ്)",
-      "title_sanskrit": "കാഠകം ൨ - നാചികേതചയനമ്",
+      "title": "തൈത്തിരീയ ബ്രാഹ്മണേ കാഠകേ ദ്വിതീയഃ പ്രശ്നഃ (നാചികേതചയനം)",
+      "title_sanskrit": "കാഠകം ൨ - നാചികേതചയനം",
       "subtitle": "കൃഷ്ണ യജുർവേദീയ തൈത്തിരീയ ബ്രാഹ്മണം (TB 3.11)",
       "input_docx": "data/baraha/AAK.brh",
       "output_html": "build/viewer/tb_3_11_katakam_naciketa_malayalam.html",
@@ -278,8 +278,8 @@
       "deity_name": "Goddess Gayatri Devi"
     },
     "tb_3_12_katakam_caturhotra_vaiswasruja_malayalam": {
-      "title": "തൈത്തിരീയ ബ്രാഹ്മണേ കാഠകേ തൃതീയഃ പ്രശ്നഃ (ചാതുര്ഹോത്ര-വൈശ്വസൃജചയനമ്)",
-      "title_sanskrit": "കാഠകം ൩ - ചാതുര്ഹോത്ര-വൈശ്വസൃജചയനമ്",
+      "title": "തൈത്തിരീയ ബ്രാഹ്മണേ കാഠകേ തൃതീയഃ പ്രശ്നഃ (ചാതുർഹോത്ര-വൈശ്വസൃജചയനം)",
+      "title_sanskrit": "കാഠകം ൩ - ചാതുർഹോത്ര-വൈശ്വസൃജചയനം",
       "subtitle": "കൃഷ്ണ യജുർവേദീയ തൈത്തിരീയ ബ്രാഹ്മണം (TB 3.12)",
       "input_docx": "data/baraha/AAK.brh",
       "output_html": "build/viewer/tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html",
