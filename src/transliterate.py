@@ -703,7 +703,7 @@ def deva_to_malayalam(text: str) -> str:
 
     # Orthographic chillu conversions:
     # 1. Chillu-RR (ർ 0x0D7C): ര് -> ർ (including before '.')
-    res = re.sub(r'ര്([॒॑᳚]*)(?![യവ])', r'ർ\g<1>', res)
+    res = re.sub(r'ര്([॒॑᳚]*)(?!യ)', r'ർ\g<1>', res)
 
     # 2. Chillu-N (ൻ 0x0D7B): word-final / boundary / before '.' ന് / ന്ന് -> ൻ
     res = re.sub(r'ന്ന്([॒॑᳚]*)(?=[\s,;:!?<\|।॥\)\-\]\}\.]|$)', r'ൻ\g<1>', res)
