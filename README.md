@@ -8,11 +8,11 @@ This repository contains tools, data snapshots, and redesign mockups for [VedaVM
 
 ```
 vedavms/
-├── src/                                # Baraha transliteration & Vedic Reader generator
+├── src/                                # Baraha transliteration & Vedic Reader generator (Dual .brh & .docx support)
 │   ├── __init__.py
 │   ├── transliterate.py                # Baraha to Devanagari Unicode transliterator
-│   ├── baraha_reader.py                # DOCX to structured JSON AST extractor & parser
-│   ├── build_reader.py                 # DOCX / AST to interactive Vedic HTML reader generator
+│   ├── baraha_reader.py                # DOCX & BRH to structured JSON AST extractor & parser
+│   ├── build_reader.py                 # Direct .brh & DOCX to interactive Vedic HTML reader generator
 │   └── config.json                     # Multi-book configuration & font settings
 ├── generate_documents.py               # Main static website & documents generator script
 ├── scripts/

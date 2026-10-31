@@ -17,17 +17,24 @@ src/
 └── config.json          # Multi-book definitions, regex rules, and font options
 ```
 
-### Dual Input Variant Support:
+## 📂 Dual Baraha Format Support (.docx & .brh)
 
-The engine fully supports **both Baraha source variants** concurrently:
-1. **Direct Baraha (`.brh` / `.txt`) Sources**:
-   - Modern, lightweight plain-text Baraha script files (e.g. `data/baraha/AAK.brh` powering all 17 Taittirīya Brāhmaṇa 3.7–3.12 books).
-   - Fast, dependency-free parsing with native support for multi-chapter slicing and granular introductory Dhyānam passages (`.D`).
-2. **Legacy Word (`.docx`) Baraha Documents**:
-   - Pre-existing Microsoft Word `.docx` documents containing Baraha ASCII text (e.g. `Taittiriya Upanishad Baraha.docx`, `Udaka Shanti Baraha.docx`, `Shanti Japam Baraha.docx`, etc.).
-   - Parsed directly from DOCX XML (`zipfile` + `xml.etree`) without requiring external Word libraries.
+The VedaVMS engine provides first-class, concurrent support for **both Baraha source formats**:
 
-Both variants feed into the same unified AST (`src/baraha_reader.py`) and transliteration pipeline (`src/transliterate.py`).
+| Dimension | Modern Direct Baraha (`.brh` / `.txt`) | Legacy Word Baraha (`.docx`) |
+| :--- | :--- | :--- |
+| **File Type** | Raw UTF-8 / ASCII text file | Compressed Word OpenXML package |
+| **Parsing Engine** | Native line & regex parser (`parse_aak_brh()`) | Native XML extractor (`extract_docx_paragraphs()`) |
+| **External Dependencies**| Zero (Standard Python library) | Zero (uses `zipfile` + `xml.etree.ElementTree`) |
+| **Slicing & Filtering** | Native multi-chapter slicing (`--chapter 3.7`) | Regex-based section splitting |
+| **Granular Invocations**| Fully indexes Dhyānam & preliminary passages (`.D`)| Index markers in brackets / headings |
+| **Git Diff Visibility** | 100% human-readable text line diffs | Binary diff (opaque zip archive) |
+| **Current Books in Prod**| 17 books (`AAK.brh` $ightarrow$ TB 3.7 to 3.12 Sanskrit & Malayalam) | 5 books (Taittiriya Upanishad, Udaka Shanti, Shanti Japam, etc.) |
+
+### Why We Support Both Formats
+1. **Preserving Legacy Investments**: The historical VedaVMS corpus has valuable `.docx` files containing carefully typeset Baraha ASCII text. These can continue to be built without converting them first.
+2. **Modernization via Direct `.brh`**: Newer editions (like `AAK.brh`) use direct `.brh` files because they are plain-text, version-controlled directly in Git, faster to compile, and immune to Word document corruption.
+3. **Unified Transliteration**: Both formats feed into the exact same transliteration engine (`src/transliterate.py`). Svara accent positioning, zero dotted circle prevention, Visarga rules, and Option 1 atomic chanting padas are guaranteed to behave identically across both formats.
 
 ### Key Modules:
 
