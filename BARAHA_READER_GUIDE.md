@@ -17,6 +17,18 @@ src/
 └── config.json          # Multi-book definitions, regex rules, and font options
 ```
 
+### Dual Input Variant Support:
+
+The engine fully supports **both Baraha source variants** concurrently:
+1. **Direct Baraha (`.brh` / `.txt`) Sources**:
+   - Modern, lightweight plain-text Baraha script files (e.g. `data/baraha/AAK.brh` powering all 17 Taittirīya Brāhmaṇa 3.7–3.12 books).
+   - Fast, dependency-free parsing with native support for multi-chapter slicing and granular introductory Dhyānam passages (`.D`).
+2. **Legacy Word (`.docx`) Baraha Documents**:
+   - Pre-existing Microsoft Word `.docx` documents containing Baraha ASCII text (e.g. `Taittiriya Upanishad Baraha.docx`, `Udaka Shanti Baraha.docx`, `Shanti Japam Baraha.docx`, etc.).
+   - Parsed directly from DOCX XML (`zipfile` + `xml.etree`) without requiring external Word libraries.
+
+Both variants feed into the same unified AST (`src/baraha_reader.py`) and transliteration pipeline (`src/transliterate.py`).
+
 ### Key Modules:
 
 1. **[`src/transliterate.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/src/transliterate.py)**:
@@ -58,6 +70,45 @@ src/
 * **Alphanumeric Code Preservation**: Parenthesized combinations of letters and numbers (e.g. `(26B)`, `(9B)`, `(A26)`) are recognized as reference codes and preserved in English without Devanagari transliteration.
 * **Swara Matra Duration Preservation**: Numerals in braces/parentheses such as `(3)` or `(2)` (e.g., `हा(3)`, `दो(2)`) represent matra duration for swaras and are preserved without being replaced or dropped.
 * **Korvai & Inline Tag Protection**: Lines containing `Korvai`, `Special Korvai`, `Prapaataka Korvai`, or tagged with `</inline>` / `<inline>` are preserved in their original English form (e.g. `Special Korvai` instead of `स्पेचिअल् खोर्वै`).
+
+---
+
+## 📐 Vedic Structural Hierarchy & Terminology
+
+In traditional Vedic taxonomy and the VedaVMS digital reader architecture, the structural tiers map as follows:
+
+```
+Book / Kāṇḍa (Level 1)
+ └── Chapter / Prapāṭhaka / Praśna (Level 2)
+      └── Anuvāka / Subsection (Level 3)
+           └── Verse / Mantra / Pada (Level 4)
+```
+
+| Hierarchy Level | Traditional Vedic Term | Digital / Reader Term | Description |
+| :--- | :--- | :--- | :--- |
+| **Level 1** | **Kāṇḍa / Aṣṭaka** (काण्ड / अष्टक) | **Book** | The major volume or division (e.g., Kāṇḍa 3 of Taittirīya Brāhmaṇa). |
+| **Level 2** | **Prapāṭhaka / Praśna** (प्रपाठक / प्रश्न) | **Chapter** | The overarching thematic discourse or chapter (e.g., Praśna 7: *Achidram*). |
+| **Level 3** | **Anuvāka** (अनुवाक) | **Subsection** | The primary chant section containing a specific set of mantras. In technical audits, **Subsection $\equiv$ Anuvāka**. |
+| **Level 4** | **Rik / Mantra / Pada** (ऋक् / मन्त्र / पद) | **Verse Paragraph** | Individual chant sentences and phrases bounded by daṇḍas (`।` / `॥`). |
+
+### Concrete Example from Achidram (`TB 3.7`)
+
+* **Book Level**: Taittirīya Brāhmaṇa, 3rd Aṣṭaka (`तृतीयाष्टकम्`)
+* **Chapter Level (Level 2)**: `3.7` — तैत्तिरीय ब्राह्मणे तृतियाष्टके सप्तमः प्रपाठकः (अच्छिद्रं) (*Prapāṭhaka 7: Achidram*)
+* **Subsection Level (Level 3 - Anuvāka)**:
+  * `3.7.1` (Anuvāka 1): दर्शपूर्णमासेष्टिविषयाणि कानि चित्प्रायश्चित्तानि
+  * `3.7.2` (Anuvāka 2): अग्निहोत्रसाम्नाय्यसाधारणानि प्रायश्चित्तानि
+  * `...`
+  * `3.7.14` (Anuvāka 14): दीक्षोपसत्सु प्रायश्चित्तविशेषाः
+* **Verse Level (Level 4 - Pada)**:
+  * Atomic chant units inside Anuvāka 3.7.1:
+    `<span class="chant-pada">सुमित्रा न आप ओषधयः सन्तु दुर्मित्रास्तस्मै भूयासुः...&nbsp;।</span>`
+
+### Role of `.brh` vs. Reference PDFs:
+* **Can we work with the hierarchy directly from `.brh`?**  
+  **Yes, completely.** The `.brh` file contains all chapter markers, section numbers (`3.7.1`, `3.7.2`), mantra text, and svara accents. It is the self-contained, canonical **Single Source of Truth** for the entire text hierarchy.
+* **Do we need to look into the PDF anymore?**  
+  **No.** The reference PDF is only an external static benchmark used by `src/audit_reader.py` for optional post-generation verification. The HTML generator does not depend on the PDF in any way.
 
 ---
 
