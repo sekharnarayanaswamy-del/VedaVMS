@@ -148,7 +148,7 @@ def extract_html_toc(html_path: str | Path) -> tuple[dict, list[dict]]:
     return meta, entries
 
 
-def audit_book(pdf_path: str | Path, html_path: str | Path, verbose: bool = False) -> dict:
+def audit_book(pdf_path: str | Path, html_path: str | Path, verbose: bool = False, section_filter: list = None) -> dict:
     """Audit the generated HTML against the reference PDF TOC."""
     pdf_path = Path(pdf_path)
     html_path = Path(html_path)
@@ -156,11 +156,19 @@ def audit_book(pdf_path: str | Path, html_path: str | Path, verbose: bool = Fals
     pdf_entries = extract_pdf_toc(pdf_path)
     html_meta, html_entries = extract_html_toc(html_path)
 
-    pdf_chaps = [e for e in pdf_entries if '.' not in e['num']]
-    pdf_secs = [e for e in pdf_entries if '.' in e['num']]
-
-    html_chaps = [e for e in html_entries if '.' not in e['num']]
-    html_secs = [e for e in html_entries if '.' in e['num']]
+    # Determine chapter/section hierarchy in PDF:
+    # For TB 3.7-3.12 where there are no 1-part numbers and 2-part numbers are Prapāṭhakas with 3-part Anuvākas:
+    is_tb_3tier = (not any('.' not in e['num'] for e in pdf_entries)) and any(len(e['num'].split('.')) >= 3 for e in pdf_entries)
+    if is_tb_3tier:
+        pdf_chaps = [e for e in pdf_entries if len(e['num'].split('.')) <= 2]
+        pdf_secs = [e for e in pdf_entries if len(e['num'].split('.')) >= 3]
+        html_chaps = [e for e in html_entries if len(e['num'].split('.')) <= 2]
+        html_secs = [e for e in html_entries if len(e['num'].split('.')) >= 3]
+    else:
+        pdf_chaps = [e for e in pdf_entries if '.' not in e['num']]
+        pdf_secs = [e for e in pdf_entries if '.' in e['num']]
+        html_chaps = [e for e in html_entries if '.' not in e['num']]
+        html_secs = [e for e in html_entries if '.' in e['num']]
 
     # Auto-scope for dedicated chapter readers (e.g. TB 3.7 Achidram with sections only under '3.7.'):
     if html_secs and pdf_secs:
@@ -171,6 +179,24 @@ def audit_book(pdf_path: str | Path, html_path: str | Path, verbose: bool = Fals
             if scoped_pdf:
                 pdf_secs = scoped_pdf
                 pdf_chaps = [e for e in pdf_chaps if e['num'] == ch_pref or e['num'] == ch_pref.split('.')[0]]
+
+    # If section_filter is provided (or configured in config.json), scope expected subsections accordingly:
+    if not section_filter:
+        try:
+            import json
+            cfg_p = Path("src/config.json")
+            if cfg_p.exists():
+                with open(cfg_p, "r", encoding="utf-8") as _cfg_f:
+                    _books = json.load(_cfg_f).get("books", {})
+                for _b in _books.values():
+                    if _b.get("output_html") and Path(_b.get("output_html")).name == html_path.name:
+                        section_filter = _b.get("section_filter")
+                        break
+        except Exception:
+            pass
+
+    if section_filter:
+        pdf_secs = [e for e in pdf_secs if e['num'] in section_filter]
 
     # Handle single-chapter books where PDF TOC lists only 1.x subsections (e.g. Udaka Shanti ASCT)
     if not pdf_chaps and pdf_secs:
