@@ -1,6 +1,6 @@
 # VedaVMS Post-Generation TOC Audit Report
 
-> **Generated at**: `31-10-2026 21:22:03`
+> **Generated at**: `31-10-2026 21:29:47`
 
 ## Summary
 
@@ -11,23 +11,23 @@
 | [`shanti_japam_sanskrit.html`](shanti_japam_sanskrit.html) | `Shanti Japam Sanskrit.pdf` | 40 / 42 | 40 / 82 | ✅ PASS |
 | [`siva_stuti_sanskrit.html`](siva_stuti_sanskrit.html) | `Siva Stuti Sanskrit.pdf` | 22 / 232 | 22 / 232 | ✅ PASS |
 | [`udaka_shanti_anushangam_sanskrit.html`](udaka_shanti_anushangam_sanskrit.html) | `Udaka Shanti Sanskrit ASCT.pdf` | 1 / 41 | 1 / 41 | ✅ PASS |
-| [`tb_3_7_achidram_sanskrit.html`](tb_3_7_achidram_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 14 | ⚠️ WARNING |
-| [`tb_3_8_aswamedham_vaiswadevam_sanskrit.html`](tb_3_8_aswamedham_vaiswadevam_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 23 | ⚠️ WARNING |
-| [`tb_3_9_aswamedham_havirdhanam_sanskrit.html`](tb_3_9_aswamedham_havirdhanam_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 23 | ⚠️ WARNING |
+| [`tb_3_7_achidram_sanskrit.html`](tb_3_7_achidram_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 14 | 0 / 14 | ✅ PASS |
+| [`tb_3_8_aswamedham_vaiswadevam_sanskrit.html`](tb_3_8_aswamedham_vaiswadevam_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 23 | 0 / 23 | ✅ PASS |
+| [`tb_3_9_aswamedham_havirdhanam_sanskrit.html`](tb_3_9_aswamedham_havirdhanam_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 23 | 0 / 23 | ✅ PASS |
 | [`tb_complete_sanskrit.html`](tb_complete_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 98 | ⚠️ WARNING |
 | [`aak_sanskrit.html`](aak_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 98 | ⚠️ WARNING |
 | [`aak_malayalam.html`](aak_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 98 | ⚠️ WARNING |
-| [`tb_3_7_achidram_malayalam.html`](tb_3_7_achidram_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 14 | ⚠️ WARNING |
-| [`tb_3_8_aswamedham_vaiswadevam_malayalam.html`](tb_3_8_aswamedham_vaiswadevam_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 23 | ⚠️ WARNING |
-| [`tb_3_9_aswamedham_havirdhanam_malayalam.html`](tb_3_9_aswamedham_havirdhanam_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 23 | ⚠️ WARNING |
-| [`tb_3_10_katakam_savitra_sanskrit.html`](tb_3_10_katakam_savitra_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 11 | ⚠️ WARNING |
-| [`tb_3_10_katakam_savitra_malayalam.html`](tb_3_10_katakam_savitra_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 11 | ⚠️ WARNING |
-| [`tb_3_11_katakam_naciketa_sanskrit.html`](tb_3_11_katakam_naciketa_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 10 | ⚠️ WARNING |
-| [`tb_3_11_katakam_naciketa_malayalam.html`](tb_3_11_katakam_naciketa_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 10 | ⚠️ WARNING |
-| [`tb_3_12_katakam_caturhotra_vaiswasruja_sanskrit.html`](tb_3_12_katakam_caturhotra_vaiswasruja_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 11 | ⚠️ WARNING |
-| [`tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html`](tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 11 | ⚠️ WARNING |
-| [`tb_3_12_katakam_caturhotra_sanskrit.html`](tb_3_12_katakam_caturhotra_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 1 | ⚠️ WARNING |
-| [`tb_3_12_katakam_vaiswasruja_sanskrit.html`](tb_3_12_katakam_vaiswasruja_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 8 | ⚠️ WARNING |
+| [`tb_3_7_achidram_malayalam.html`](tb_3_7_achidram_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 14 | 0 / 14 | ✅ PASS |
+| [`tb_3_8_aswamedham_vaiswadevam_malayalam.html`](tb_3_8_aswamedham_vaiswadevam_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 23 | 0 / 23 | ✅ PASS |
+| [`tb_3_9_aswamedham_havirdhanam_malayalam.html`](tb_3_9_aswamedham_havirdhanam_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 23 | 0 / 23 | ✅ PASS |
+| [`tb_3_10_katakam_savitra_sanskrit.html`](tb_3_10_katakam_savitra_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 11 | 0 / 11 | ✅ PASS |
+| [`tb_3_10_katakam_savitra_malayalam.html`](tb_3_10_katakam_savitra_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 11 | 0 / 11 | ✅ PASS |
+| [`tb_3_11_katakam_naciketa_sanskrit.html`](tb_3_11_katakam_naciketa_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 10 | 0 / 10 | ✅ PASS |
+| [`tb_3_11_katakam_naciketa_malayalam.html`](tb_3_11_katakam_naciketa_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 10 | 0 / 10 | ✅ PASS |
+| [`tb_3_12_katakam_caturhotra_vaiswasruja_sanskrit.html`](tb_3_12_katakam_caturhotra_vaiswasruja_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 9 | 0 / 11 | ✅ PASS |
+| [`tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html`](tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 9 | 0 / 11 | ✅ PASS |
+| [`tb_3_12_katakam_caturhotra_sanskrit.html`](tb_3_12_katakam_caturhotra_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 9 | 0 / 1 | ⚠️ WARNING |
+| [`tb_3_12_katakam_vaiswasruja_sanskrit.html`](tb_3_12_katakam_vaiswasruja_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 9 | 0 / 8 | ⚠️ WARNING |
 
 ---
 
@@ -78,7 +78,7 @@
 - **HTML Document**: [`build\viewer\siva_stuti_sanskrit.html`](siva_stuti_sanskrit.html)
 - **Reference PDF**: `data\pdf\Siva Stuti Sanskrit.pdf`
 - **Generated At**: `04-10-2026 06:21:55`
-- **HTML File Size**: `2,166,730 bytes`
+- **HTML File Size**: `2,176,140 bytes`
 - **Chapters**: PDF: `22`, HTML: `22`
 - **Subsections**: PDF: `232`, HTML: `232`
 
@@ -97,40 +97,40 @@
 ✓ *All chapters and subsections match the reference PDF exactly.*
 
 
-### tb_3_7_achidram_sanskrit.html `[WARNING]`
+### tb_3_7_achidram_sanskrit.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\tb_3_7_achidram_sanskrit.html`](tb_3_7_achidram_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
 - **Generated At**: `31-10-2026 21:06:46`
 - **HTML File Size**: `659,519 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `14`
+- **Subsections**: PDF: `14`, HTML: `14`
 
-- **Missing Subsections**: `['3.10', '3.10.1', '3.10.10', '3.10.11', '3.10.2', '3.10.3', '3.10.4', '3.10.5', '3.10.6', '3.10.7', '3.10.8', '3.10.9', '3.11', '3.11.1', '3.11.10', '3.11.2', '3.11.3', '3.11.4', '3.11.5', '3.11.6', '3.11.7', '3.11.8', '3.11.9', '3.12', '3.12.1', '3.12.2', '3.12.3', '3.12.4', '3.12.5', '3.12.6', '3.12.7', '3.12.8', '3.12.9', '3.7', '3.8', '3.8.1', '3.8.10', '3.8.11', '3.8.12', '3.8.13', '3.8.14', '3.8.15', '3.8.16', '3.8.17', '3.8.18', '3.8.19', '3.8.2', '3.8.20', '3.8.21', '3.8.22', '3.8.23', '3.8.3', '3.8.4', '3.8.5', '3.8.6', '3.8.7', '3.8.8', '3.8.9', '3.9', '3.9.1', '3.9.10', '3.9.11', '3.9.12', '3.9.13', '3.9.14', '3.9.15', '3.9.16', '3.9.17', '3.9.18', '3.9.19', '3.9.2', '3.9.20', '3.9.21', '3.9.22', '3.9.23', '3.9.3', '3.9.4', '3.9.5', '3.9.6', '3.9.7', '3.9.8', '3.9.9']`
+✓ *All chapters and subsections match the reference PDF exactly.*
 
 
-### tb_3_8_aswamedham_vaiswadevam_sanskrit.html `[WARNING]`
+### tb_3_8_aswamedham_vaiswadevam_sanskrit.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\tb_3_8_aswamedham_vaiswadevam_sanskrit.html`](tb_3_8_aswamedham_vaiswadevam_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
 - **Generated At**: `31-10-2026 21:06:47`
 - **HTML File Size**: `541,780 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `23`
+- **Subsections**: PDF: `23`, HTML: `23`
 
-- **Missing Subsections**: `['3.10', '3.10.1', '3.10.10', '3.10.11', '3.10.2', '3.10.3', '3.10.4', '3.10.5', '3.10.6', '3.10.7', '3.10.8', '3.10.9', '3.11', '3.11.1', '3.11.10', '3.11.2', '3.11.3', '3.11.4', '3.11.5', '3.11.6', '3.11.7', '3.11.8', '3.11.9', '3.12', '3.12.1', '3.12.2', '3.12.3', '3.12.4', '3.12.5', '3.12.6', '3.12.7', '3.12.8', '3.12.9', '3.7', '3.7.1', '3.7.10', '3.7.11', '3.7.12', '3.7.13', '3.7.14', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '3.7.7', '3.7.8', '3.7.9', '3.8', '3.9', '3.9.1', '3.9.10', '3.9.11', '3.9.12', '3.9.13', '3.9.14', '3.9.15', '3.9.16', '3.9.17', '3.9.18', '3.9.19', '3.9.2', '3.9.20', '3.9.21', '3.9.22', '3.9.23', '3.9.3', '3.9.4', '3.9.5', '3.9.6', '3.9.7', '3.9.8', '3.9.9']`
+✓ *All chapters and subsections match the reference PDF exactly.*
 
 
-### tb_3_9_aswamedham_havirdhanam_sanskrit.html `[WARNING]`
+### tb_3_9_aswamedham_havirdhanam_sanskrit.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\tb_3_9_aswamedham_havirdhanam_sanskrit.html`](tb_3_9_aswamedham_havirdhanam_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
 - **Generated At**: `31-10-2026 21:06:49`
 - **HTML File Size**: `509,497 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `23`
+- **Subsections**: PDF: `23`, HTML: `23`
 
-- **Missing Subsections**: `['3.10', '3.10.1', '3.10.10', '3.10.11', '3.10.2', '3.10.3', '3.10.4', '3.10.5', '3.10.6', '3.10.7', '3.10.8', '3.10.9', '3.11', '3.11.1', '3.11.10', '3.11.2', '3.11.3', '3.11.4', '3.11.5', '3.11.6', '3.11.7', '3.11.8', '3.11.9', '3.12', '3.12.1', '3.12.2', '3.12.3', '3.12.4', '3.12.5', '3.12.6', '3.12.7', '3.12.8', '3.12.9', '3.7', '3.7.1', '3.7.10', '3.7.11', '3.7.12', '3.7.13', '3.7.14', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '3.7.7', '3.7.8', '3.7.9', '3.8', '3.8.1', '3.8.10', '3.8.11', '3.8.12', '3.8.13', '3.8.14', '3.8.15', '3.8.16', '3.8.17', '3.8.18', '3.8.19', '3.8.2', '3.8.20', '3.8.21', '3.8.22', '3.8.23', '3.8.3', '3.8.4', '3.8.5', '3.8.6', '3.8.7', '3.8.8', '3.8.9', '3.9']`
+✓ *All chapters and subsections match the reference PDF exactly.*
 
 
 ### tb_complete_sanskrit.html `[WARNING]`
@@ -175,114 +175,112 @@
   `3.10.D`, `3.11.D`, `3.12.D`, `3.12.D2`, `3.12.D3`, `3.7.D`, `3.8.D`, `3.9.D`
 
 
-### tb_3_7_achidram_malayalam.html `[WARNING]`
+### tb_3_7_achidram_malayalam.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\tb_3_7_achidram_malayalam.html`](tb_3_7_achidram_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
 - **Generated At**: `31-10-2026 21:06:59`
 - **HTML File Size**: `654,524 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `14`
+- **Subsections**: PDF: `14`, HTML: `14`
 
-- **Missing Subsections**: `['3.10', '3.10.1', '3.10.10', '3.10.11', '3.10.2', '3.10.3', '3.10.4', '3.10.5', '3.10.6', '3.10.7', '3.10.8', '3.10.9', '3.11', '3.11.1', '3.11.10', '3.11.2', '3.11.3', '3.11.4', '3.11.5', '3.11.6', '3.11.7', '3.11.8', '3.11.9', '3.12', '3.12.1', '3.12.2', '3.12.3', '3.12.4', '3.12.5', '3.12.6', '3.12.7', '3.12.8', '3.12.9', '3.7', '3.8', '3.8.1', '3.8.10', '3.8.11', '3.8.12', '3.8.13', '3.8.14', '3.8.15', '3.8.16', '3.8.17', '3.8.18', '3.8.19', '3.8.2', '3.8.20', '3.8.21', '3.8.22', '3.8.23', '3.8.3', '3.8.4', '3.8.5', '3.8.6', '3.8.7', '3.8.8', '3.8.9', '3.9', '3.9.1', '3.9.10', '3.9.11', '3.9.12', '3.9.13', '3.9.14', '3.9.15', '3.9.16', '3.9.17', '3.9.18', '3.9.19', '3.9.2', '3.9.20', '3.9.21', '3.9.22', '3.9.23', '3.9.3', '3.9.4', '3.9.5', '3.9.6', '3.9.7', '3.9.8', '3.9.9']`
+✓ *All chapters and subsections match the reference PDF exactly.*
 
 
-### tb_3_8_aswamedham_vaiswadevam_malayalam.html `[WARNING]`
+### tb_3_8_aswamedham_vaiswadevam_malayalam.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\tb_3_8_aswamedham_vaiswadevam_malayalam.html`](tb_3_8_aswamedham_vaiswadevam_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
 - **Generated At**: `31-10-2026 21:07:01`
 - **HTML File Size**: `538,369 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `23`
+- **Subsections**: PDF: `23`, HTML: `23`
 
-- **Missing Subsections**: `['3.10', '3.10.1', '3.10.10', '3.10.11', '3.10.2', '3.10.3', '3.10.4', '3.10.5', '3.10.6', '3.10.7', '3.10.8', '3.10.9', '3.11', '3.11.1', '3.11.10', '3.11.2', '3.11.3', '3.11.4', '3.11.5', '3.11.6', '3.11.7', '3.11.8', '3.11.9', '3.12', '3.12.1', '3.12.2', '3.12.3', '3.12.4', '3.12.5', '3.12.6', '3.12.7', '3.12.8', '3.12.9', '3.7', '3.7.1', '3.7.10', '3.7.11', '3.7.12', '3.7.13', '3.7.14', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '3.7.7', '3.7.8', '3.7.9', '3.8', '3.9', '3.9.1', '3.9.10', '3.9.11', '3.9.12', '3.9.13', '3.9.14', '3.9.15', '3.9.16', '3.9.17', '3.9.18', '3.9.19', '3.9.2', '3.9.20', '3.9.21', '3.9.22', '3.9.23', '3.9.3', '3.9.4', '3.9.5', '3.9.6', '3.9.7', '3.9.8', '3.9.9']`
+✓ *All chapters and subsections match the reference PDF exactly.*
 
 
-### tb_3_9_aswamedham_havirdhanam_malayalam.html `[WARNING]`
+### tb_3_9_aswamedham_havirdhanam_malayalam.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\tb_3_9_aswamedham_havirdhanam_malayalam.html`](tb_3_9_aswamedham_havirdhanam_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
 - **Generated At**: `31-10-2026 21:07:02`
 - **HTML File Size**: `506,270 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `23`
+- **Subsections**: PDF: `23`, HTML: `23`
 
-- **Missing Subsections**: `['3.10', '3.10.1', '3.10.10', '3.10.11', '3.10.2', '3.10.3', '3.10.4', '3.10.5', '3.10.6', '3.10.7', '3.10.8', '3.10.9', '3.11', '3.11.1', '3.11.10', '3.11.2', '3.11.3', '3.11.4', '3.11.5', '3.11.6', '3.11.7', '3.11.8', '3.11.9', '3.12', '3.12.1', '3.12.2', '3.12.3', '3.12.4', '3.12.5', '3.12.6', '3.12.7', '3.12.8', '3.12.9', '3.7', '3.7.1', '3.7.10', '3.7.11', '3.7.12', '3.7.13', '3.7.14', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '3.7.7', '3.7.8', '3.7.9', '3.8', '3.8.1', '3.8.10', '3.8.11', '3.8.12', '3.8.13', '3.8.14', '3.8.15', '3.8.16', '3.8.17', '3.8.18', '3.8.19', '3.8.2', '3.8.20', '3.8.21', '3.8.22', '3.8.23', '3.8.3', '3.8.4', '3.8.5', '3.8.6', '3.8.7', '3.8.8', '3.8.9', '3.9']`
+✓ *All chapters and subsections match the reference PDF exactly.*
 
 
-### tb_3_10_katakam_savitra_sanskrit.html `[WARNING]`
+### tb_3_10_katakam_savitra_sanskrit.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\tb_3_10_katakam_savitra_sanskrit.html`](tb_3_10_katakam_savitra_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
 - **Generated At**: `31-10-2026 21:07:03`
 - **HTML File Size**: `355,775 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `11`
+- **Subsections**: PDF: `11`, HTML: `11`
 
-- **Missing Subsections**: `['3.10', '3.11', '3.11.1', '3.11.10', '3.11.2', '3.11.3', '3.11.4', '3.11.5', '3.11.6', '3.11.7', '3.11.8', '3.11.9', '3.12', '3.12.1', '3.12.2', '3.12.3', '3.12.4', '3.12.5', '3.12.6', '3.12.7', '3.12.8', '3.12.9', '3.7', '3.7.1', '3.7.10', '3.7.11', '3.7.12', '3.7.13', '3.7.14', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '3.7.7', '3.7.8', '3.7.9', '3.8', '3.8.1', '3.8.10', '3.8.11', '3.8.12', '3.8.13', '3.8.14', '3.8.15', '3.8.16', '3.8.17', '3.8.18', '3.8.19', '3.8.2', '3.8.20', '3.8.21', '3.8.22', '3.8.23', '3.8.3', '3.8.4', '3.8.5', '3.8.6', '3.8.7', '3.8.8', '3.8.9', '3.9', '3.9.1', '3.9.10', '3.9.11', '3.9.12', '3.9.13', '3.9.14', '3.9.15', '3.9.16', '3.9.17', '3.9.18', '3.9.19', '3.9.2', '3.9.20', '3.9.21', '3.9.22', '3.9.23', '3.9.3', '3.9.4', '3.9.5', '3.9.6', '3.9.7', '3.9.8', '3.9.9']`
+✓ *All chapters and subsections match the reference PDF exactly.*
 
 
-### tb_3_10_katakam_savitra_malayalam.html `[WARNING]`
+### tb_3_10_katakam_savitra_malayalam.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\tb_3_10_katakam_savitra_malayalam.html`](tb_3_10_katakam_savitra_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
 - **Generated At**: `31-10-2026 21:07:04`
 - **HTML File Size**: `353,871 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `11`
+- **Subsections**: PDF: `11`, HTML: `11`
 
-- **Missing Subsections**: `['3.10', '3.11', '3.11.1', '3.11.10', '3.11.2', '3.11.3', '3.11.4', '3.11.5', '3.11.6', '3.11.7', '3.11.8', '3.11.9', '3.12', '3.12.1', '3.12.2', '3.12.3', '3.12.4', '3.12.5', '3.12.6', '3.12.7', '3.12.8', '3.12.9', '3.7', '3.7.1', '3.7.10', '3.7.11', '3.7.12', '3.7.13', '3.7.14', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '3.7.7', '3.7.8', '3.7.9', '3.8', '3.8.1', '3.8.10', '3.8.11', '3.8.12', '3.8.13', '3.8.14', '3.8.15', '3.8.16', '3.8.17', '3.8.18', '3.8.19', '3.8.2', '3.8.20', '3.8.21', '3.8.22', '3.8.23', '3.8.3', '3.8.4', '3.8.5', '3.8.6', '3.8.7', '3.8.8', '3.8.9', '3.9', '3.9.1', '3.9.10', '3.9.11', '3.9.12', '3.9.13', '3.9.14', '3.9.15', '3.9.16', '3.9.17', '3.9.18', '3.9.19', '3.9.2', '3.9.20', '3.9.21', '3.9.22', '3.9.23', '3.9.3', '3.9.4', '3.9.5', '3.9.6', '3.9.7', '3.9.8', '3.9.9']`
+✓ *All chapters and subsections match the reference PDF exactly.*
 
 
-### tb_3_11_katakam_naciketa_sanskrit.html `[WARNING]`
+### tb_3_11_katakam_naciketa_sanskrit.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\tb_3_11_katakam_naciketa_sanskrit.html`](tb_3_11_katakam_naciketa_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
 - **Generated At**: `31-10-2026 21:07:05`
 - **HTML File Size**: `375,789 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `10`
+- **Subsections**: PDF: `10`, HTML: `10`
 
-- **Missing Subsections**: `['3.10', '3.10.1', '3.10.10', '3.10.11', '3.10.2', '3.10.3', '3.10.4', '3.10.5', '3.10.6', '3.10.7', '3.10.8', '3.10.9', '3.11', '3.12', '3.12.1', '3.12.2', '3.12.3', '3.12.4', '3.12.5', '3.12.6', '3.12.7', '3.12.8', '3.12.9', '3.7', '3.7.1', '3.7.10', '3.7.11', '3.7.12', '3.7.13', '3.7.14', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '3.7.7', '3.7.8', '3.7.9', '3.8', '3.8.1', '3.8.10', '3.8.11', '3.8.12', '3.8.13', '3.8.14', '3.8.15', '3.8.16', '3.8.17', '3.8.18', '3.8.19', '3.8.2', '3.8.20', '3.8.21', '3.8.22', '3.8.23', '3.8.3', '3.8.4', '3.8.5', '3.8.6', '3.8.7', '3.8.8', '3.8.9', '3.9', '3.9.1', '3.9.10', '3.9.11', '3.9.12', '3.9.13', '3.9.14', '3.9.15', '3.9.16', '3.9.17', '3.9.18', '3.9.19', '3.9.2', '3.9.20', '3.9.21', '3.9.22', '3.9.23', '3.9.3', '3.9.4', '3.9.5', '3.9.6', '3.9.7', '3.9.8', '3.9.9']`
+✓ *All chapters and subsections match the reference PDF exactly.*
 
 
-### tb_3_11_katakam_naciketa_malayalam.html `[WARNING]`
+### tb_3_11_katakam_naciketa_malayalam.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\tb_3_11_katakam_naciketa_malayalam.html`](tb_3_11_katakam_naciketa_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
 - **Generated At**: `31-10-2026 21:07:06`
 - **HTML File Size**: `373,860 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `10`
+- **Subsections**: PDF: `10`, HTML: `10`
 
-- **Missing Subsections**: `['3.10', '3.10.1', '3.10.10', '3.10.11', '3.10.2', '3.10.3', '3.10.4', '3.10.5', '3.10.6', '3.10.7', '3.10.8', '3.10.9', '3.11', '3.12', '3.12.1', '3.12.2', '3.12.3', '3.12.4', '3.12.5', '3.12.6', '3.12.7', '3.12.8', '3.12.9', '3.7', '3.7.1', '3.7.10', '3.7.11', '3.7.12', '3.7.13', '3.7.14', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '3.7.7', '3.7.8', '3.7.9', '3.8', '3.8.1', '3.8.10', '3.8.11', '3.8.12', '3.8.13', '3.8.14', '3.8.15', '3.8.16', '3.8.17', '3.8.18', '3.8.19', '3.8.2', '3.8.20', '3.8.21', '3.8.22', '3.8.23', '3.8.3', '3.8.4', '3.8.5', '3.8.6', '3.8.7', '3.8.8', '3.8.9', '3.9', '3.9.1', '3.9.10', '3.9.11', '3.9.12', '3.9.13', '3.9.14', '3.9.15', '3.9.16', '3.9.17', '3.9.18', '3.9.19', '3.9.2', '3.9.20', '3.9.21', '3.9.22', '3.9.23', '3.9.3', '3.9.4', '3.9.5', '3.9.6', '3.9.7', '3.9.8', '3.9.9']`
+✓ *All chapters and subsections match the reference PDF exactly.*
 
 
-### tb_3_12_katakam_caturhotra_vaiswasruja_sanskrit.html `[WARNING]`
+### tb_3_12_katakam_caturhotra_vaiswasruja_sanskrit.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\tb_3_12_katakam_caturhotra_vaiswasruja_sanskrit.html`](tb_3_12_katakam_caturhotra_vaiswasruja_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
 - **Generated At**: `31-10-2026 21:07:08`
 - **HTML File Size**: `440,093 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `11`
+- **Subsections**: PDF: `9`, HTML: `11`
 
-- **Missing Subsections**: `['3.10', '3.10.1', '3.10.10', '3.10.11', '3.10.2', '3.10.3', '3.10.4', '3.10.5', '3.10.6', '3.10.7', '3.10.8', '3.10.9', '3.11', '3.11.1', '3.11.10', '3.11.2', '3.11.3', '3.11.4', '3.11.5', '3.11.6', '3.11.7', '3.11.8', '3.11.9', '3.12', '3.7', '3.7.1', '3.7.10', '3.7.11', '3.7.12', '3.7.13', '3.7.14', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '3.7.7', '3.7.8', '3.7.9', '3.8', '3.8.1', '3.8.10', '3.8.11', '3.8.12', '3.8.13', '3.8.14', '3.8.15', '3.8.16', '3.8.17', '3.8.18', '3.8.19', '3.8.2', '3.8.20', '3.8.21', '3.8.22', '3.8.23', '3.8.3', '3.8.4', '3.8.5', '3.8.6', '3.8.7', '3.8.8', '3.8.9', '3.9', '3.9.1', '3.9.10', '3.9.11', '3.9.12', '3.9.13', '3.9.14', '3.9.15', '3.9.16', '3.9.17', '3.9.18', '3.9.19', '3.9.2', '3.9.20', '3.9.21', '3.9.22', '3.9.23', '3.9.3', '3.9.4', '3.9.5', '3.9.6', '3.9.7', '3.9.8', '3.9.9']`
 - **Additional Granular HTML Subsections** (2):
   `3.12.D2`, `3.12.D3`
 
 
-### tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html `[WARNING]`
+### tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html`](tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
 - **Generated At**: `31-10-2026 21:07:09`
 - **HTML File Size**: `437,302 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `11`
+- **Subsections**: PDF: `9`, HTML: `11`
 
-- **Missing Subsections**: `['3.10', '3.10.1', '3.10.10', '3.10.11', '3.10.2', '3.10.3', '3.10.4', '3.10.5', '3.10.6', '3.10.7', '3.10.8', '3.10.9', '3.11', '3.11.1', '3.11.10', '3.11.2', '3.11.3', '3.11.4', '3.11.5', '3.11.6', '3.11.7', '3.11.8', '3.11.9', '3.12', '3.7', '3.7.1', '3.7.10', '3.7.11', '3.7.12', '3.7.13', '3.7.14', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '3.7.7', '3.7.8', '3.7.9', '3.8', '3.8.1', '3.8.10', '3.8.11', '3.8.12', '3.8.13', '3.8.14', '3.8.15', '3.8.16', '3.8.17', '3.8.18', '3.8.19', '3.8.2', '3.8.20', '3.8.21', '3.8.22', '3.8.23', '3.8.3', '3.8.4', '3.8.5', '3.8.6', '3.8.7', '3.8.8', '3.8.9', '3.9', '3.9.1', '3.9.10', '3.9.11', '3.9.12', '3.9.13', '3.9.14', '3.9.15', '3.9.16', '3.9.17', '3.9.18', '3.9.19', '3.9.2', '3.9.20', '3.9.21', '3.9.22', '3.9.23', '3.9.3', '3.9.4', '3.9.5', '3.9.6', '3.9.7', '3.9.8', '3.9.9']`
 - **Additional Granular HTML Subsections** (2):
   `3.12.D2`, `3.12.D3`
 
@@ -294,9 +292,9 @@
 - **Generated At**: `31-10-2026 21:07:10`
 - **HTML File Size**: `187,785 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `1`
+- **Subsections**: PDF: `9`, HTML: `1`
 
-- **Missing Subsections**: `['3.10', '3.10.1', '3.10.10', '3.10.11', '3.10.2', '3.10.3', '3.10.4', '3.10.5', '3.10.6', '3.10.7', '3.10.8', '3.10.9', '3.11', '3.11.1', '3.11.10', '3.11.2', '3.11.3', '3.11.4', '3.11.5', '3.11.6', '3.11.7', '3.11.8', '3.11.9', '3.12', '3.12.1', '3.12.2', '3.12.3', '3.12.4', '3.12.6', '3.12.7', '3.12.8', '3.12.9', '3.7', '3.7.1', '3.7.10', '3.7.11', '3.7.12', '3.7.13', '3.7.14', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '3.7.7', '3.7.8', '3.7.9', '3.8', '3.8.1', '3.8.10', '3.8.11', '3.8.12', '3.8.13', '3.8.14', '3.8.15', '3.8.16', '3.8.17', '3.8.18', '3.8.19', '3.8.2', '3.8.20', '3.8.21', '3.8.22', '3.8.23', '3.8.3', '3.8.4', '3.8.5', '3.8.6', '3.8.7', '3.8.8', '3.8.9', '3.9', '3.9.1', '3.9.10', '3.9.11', '3.9.12', '3.9.13', '3.9.14', '3.9.15', '3.9.16', '3.9.17', '3.9.18', '3.9.19', '3.9.2', '3.9.20', '3.9.21', '3.9.22', '3.9.23', '3.9.3', '3.9.4', '3.9.5', '3.9.6', '3.9.7', '3.9.8', '3.9.9']`
+- **Missing Subsections**: `['3.12.1', '3.12.2', '3.12.3', '3.12.4', '3.12.6', '3.12.7', '3.12.8', '3.12.9']`
 
 
 ### tb_3_12_katakam_vaiswasruja_sanskrit.html `[WARNING]`
@@ -306,7 +304,7 @@
 - **Generated At**: `31-10-2026 21:07:11`
 - **HTML File Size**: `392,865 bytes`
 - **Chapters**: PDF: `0`, HTML: `0`
-- **Subsections**: PDF: `96`, HTML: `8`
+- **Subsections**: PDF: `9`, HTML: `8`
 
-- **Missing Subsections**: `['3.10', '3.10.1', '3.10.10', '3.10.11', '3.10.2', '3.10.3', '3.10.4', '3.10.5', '3.10.6', '3.10.7', '3.10.8', '3.10.9', '3.11', '3.11.1', '3.11.10', '3.11.2', '3.11.3', '3.11.4', '3.11.5', '3.11.6', '3.11.7', '3.11.8', '3.11.9', '3.12', '3.12.5', '3.7', '3.7.1', '3.7.10', '3.7.11', '3.7.12', '3.7.13', '3.7.14', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '3.7.7', '3.7.8', '3.7.9', '3.8', '3.8.1', '3.8.10', '3.8.11', '3.8.12', '3.8.13', '3.8.14', '3.8.15', '3.8.16', '3.8.17', '3.8.18', '3.8.19', '3.8.2', '3.8.20', '3.8.21', '3.8.22', '3.8.23', '3.8.3', '3.8.4', '3.8.5', '3.8.6', '3.8.7', '3.8.8', '3.8.9', '3.9', '3.9.1', '3.9.10', '3.9.11', '3.9.12', '3.9.13', '3.9.14', '3.9.15', '3.9.16', '3.9.17', '3.9.18', '3.9.19', '3.9.2', '3.9.20', '3.9.21', '3.9.22', '3.9.23', '3.9.3', '3.9.4', '3.9.5', '3.9.6', '3.9.7', '3.9.8', '3.9.9']`
+- **Missing Subsections**: `['3.12.5']`
 

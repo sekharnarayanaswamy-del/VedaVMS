@@ -162,6 +162,16 @@ def audit_book(pdf_path: str | Path, html_path: str | Path, verbose: bool = Fals
     html_chaps = [e for e in html_entries if '.' not in e['num']]
     html_secs = [e for e in html_entries if '.' in e['num']]
 
+    # Auto-scope for dedicated chapter readers (e.g. TB 3.7 Achidram with sections only under '3.7.'):
+    if html_secs and pdf_secs:
+        html_prefixes = set(s['num'].rsplit('.', 1)[0] for s in html_secs if '.' in s['num'] and not s['num'].endswith('.D'))
+        if len(html_prefixes) == 1:
+            ch_pref = list(html_prefixes)[0]
+            scoped_pdf = [e for e in pdf_secs if e['num'].startswith(ch_pref + '.') and e['num'] != ch_pref]
+            if scoped_pdf:
+                pdf_secs = scoped_pdf
+                pdf_chaps = [e for e in pdf_chaps if e['num'] == ch_pref or e['num'] == ch_pref.split('.')[0]]
+
     # Handle single-chapter books where PDF TOC lists only 1.x subsections (e.g. Udaka Shanti ASCT)
     if not pdf_chaps and pdf_secs:
         implicit_ch_nums = sorted(list(set(e['num'].split('.')[0] for e in pdf_secs if e['num'].split('.')[0].isdigit())))
