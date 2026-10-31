@@ -4347,7 +4347,18 @@ def build_book(book_id: str, config: dict, input_override: str = None, output_ov
     """Build reader HTML for a given book configuration."""
     books = config.get("books", {})
     if book_id not in books:
-        raise ValueError(f"Book '{book_id}' not found in configuration. Available: {list(books.keys())}")
+        alias_candidates = [
+            book_id.replace("siva_", "shiva_"),
+            book_id.replace("shiva_", "siva_"),
+            "shiva_stuti" if book_id in ("siva_stuti", "siva", "shiva") else None,
+            book_id.lower().replace("-", "_").replace(" ", "_"),
+        ]
+        for cand in alias_candidates:
+            if cand and cand in books:
+                book_id = cand
+                break
+        else:
+            raise ValueError(f"Book '{book_id}' not found in configuration. Available: {list(books.keys())}")
 
     book_meta = books[book_id]
     input_file = input_override or book_meta.get("input_docx")
