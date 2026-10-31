@@ -39,3 +39,15 @@ This document tracks open architectural items, planned enhancements, and backlog
 * **Topics for Discussion**:
   - Source file lifecycle and document update policies.
   - Tooling and tech stack (Baraha sources, PDF generation, backup snapshots, and deployment).
+---
+
+## ✅ Recently Completed Items
+
+### 4. Zero Dotted Circle Suppression & Multi-Script OpenType Auditing
+* **Status**: ✅ **Completed & Deployed to Production**.
+* **Target Area**: `src/transliterate.py`, `src/build_reader.py`, `src/audit_reader.py`.
+* **Summary**:
+  - **Freestanding Mark Suppression**: Added ` ‍` (NBSP + ZWJ) prefixing to Candrabindu / Anunāsika (`ँ` / `ഁ`), preventing OpenType layout shapers (HarfBuzz, DirectWrite, CoreText) from drawing fallback dotted circles (`◌`, `U+25CC`) on isolated marks.
+  - **Malayalam Anusvara Attachment**: Fixed DOM tag boundary detachment where syllables like `स॒म्` transliterated to `സ` + `॒` + `ം`, resulting in `സ<span ...>ം` and triggering `◌ം`. Enforced that `[ംं]` always binds directly to the preceding consonant before accent spans (`സം<span class="accent-anudatta">&#x0952;</span>`).
+  - **Multi-Script Automated Audit**: Integrated HarfBuzz OpenType layout shaping into `src/audit_reader.py` supporting both Devanagari (`AdishilaSan.ttf`) and Malayalam (`Nirmala.ttc`, `kartika.ttf`), along with structural DOM tag checks.
+  - **Verification**: All 22 books report **0 [✓ PASS]** dotted circles and **100% TOC compliance** against authoritative reference PDFs in `build/audit_report.md`.
