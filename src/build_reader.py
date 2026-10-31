@@ -4309,6 +4309,11 @@ def convert_docx_direct(
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(html_content)
 
+    mockup_viewer_dir = Path("mockup/viewer")
+    if mockup_viewer_dir.exists():
+        with open(mockup_viewer_dir / out_path.name, "w", encoding="utf-8") as f:
+            f.write(html_content)
+
     print(f"[SUCCESS] Standalone HTML Reader generated: {out_path} ({os.path.getsize(out_path):,} bytes)")
 
     # Post-generation audit check if reference PDF exists
@@ -4392,6 +4397,11 @@ def build_book(book_id: str, config: dict, input_override: str = None, output_ov
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(html_content)
+
+    mockup_viewer_dir = Path("mockup/viewer")
+    if mockup_viewer_dir.exists():
+        with open(mockup_viewer_dir / out_path.name, "w", encoding="utf-8") as f:
+            f.write(html_content)
 
     print(f"Successfully generated {out_path} ({os.path.getsize(out_path):,} bytes)")
 
