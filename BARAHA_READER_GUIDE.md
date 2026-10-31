@@ -28,7 +28,7 @@ src/
    * Extracts raw paragraphs from Word `.docx` documents using Python standard library (`zipfile` + `xml.etree.ElementTree`).
    * No third-party dependencies required (no `python-docx` needed).
    * Segments paragraphs into structured chapters, anuvakas, and verses.
-   * Generates the standalone HTML reader page with responsive navigation and typography controls.
+   * Generates the standalone HTML reader page with responsive navigation, typography controls, and interactive persistent bookmarks & Post-It study notes.
 
 3. **[`src/config.json`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/vedavms/src/config.json)**:
    * Declarative JSON configuration decoupling book metadata and chapter regexes from generator code.
