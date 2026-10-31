@@ -122,6 +122,8 @@ def extract_brh_elements(brh_path: str | Path) -> tuple[list[tuple[str, any]], d
         l = line.strip().replace('\x0c', '').replace('\x93', '"').replace('\x94', '"')
         if not l:
             flush_table()
+            if elements and elements[-1][0] != 'empty':
+                elements.append(('empty', ''))
             continue
 
         is_table_row = False
@@ -498,6 +500,9 @@ def extract_docx_elements(docx_path: str | Path) -> list[tuple[str, any]]:
             t = ''.join(parts).strip()
             if t:
                 elements.append(('p', t))
+            else:
+                if elements and elements[-1][0] != 'empty':
+                    elements.append(('empty', ''))
         elif tag == 'tbl':
             tbl_html = parse_docx_table_node(child)
             if tbl_html:
@@ -790,6 +795,7 @@ def parse_baraha_elements(
     - Configuration-driven unnumbered intro sections.
     - Sequential chapter validation.
     - Automatic Krama 2-column table detection.
+    - Multi-line verse buffering so mantras flow continuously into complete verse units.
     """
     intro_sections = intro_sections or {}
 
@@ -807,7 +813,7 @@ def parse_baraha_elements(
                 if p_clean.lower() == 'contents':
                     in_toc_skip = True
                     continue
-                if in_toc_skip and re.match(r'^[=\\-_]{5,}$', p_clean):
+                if in_toc_skip and re.match(r'^[=\-_]{5,}$', p_clean):
                     start_idx = idx + 1
                     break
 
@@ -820,6 +826,56 @@ def parse_baraha_elements(
     current_ch = None
     current_sec = None
     current_lang = 'def'
+
+    mantra_buf_raw = []
+    mantra_buf_deva = []
+
+    def flush_mantra_buf():
+        nonlocal current_sec, current_ch
+        if not mantra_buf_deva:
+            mantra_buf_raw.clear()
+            mantra_buf_deva.clear()
+            return
+        joined_raw = ' '.join(mantra_buf_raw).strip()
+        joined_deva = ' '.join(mantra_buf_deva).strip()
+        mantra_buf_raw.clear()
+        mantra_buf_deva.clear()
+        if not joined_deva:
+            return
+        if current_sec is not None:
+            current_sec['content'].append(joined_raw)
+            current_sec['content_deva'].append(joined_deva)
+        elif current_ch is not None:
+            current_sec = {
+                'num': str(current_ch['num']),
+                'title_raw': current_ch['title_raw'],
+                'title_deva': current_ch['title_deva'],
+                'ta_code': current_ch.get('ta_code', ''),
+                'content': [joined_raw],
+                'content_deva': [joined_deva],
+                'is_intro': True
+            }
+            current_ch['sections'].append(current_sec)
+        else:
+            current_ch = {
+                'num': 1,
+                'title_raw': doc_title,
+                'title_deva': f"1. {doc_title}",
+                'ta_code': '',
+                'is_english': False,
+                'sections': []
+            }
+            chapters.append(current_ch)
+            current_sec = {
+                'num': '1.1',
+                'title_raw': doc_title,
+                'title_deva': doc_title,
+                'ta_code': '',
+                'content': [joined_raw],
+                'content_deva': [joined_deva],
+                'is_intro': True
+            }
+            current_ch['sections'].append(current_sec)
 
     # If document starts with an intro section, initialize Chapter 1 in English mode
     if intro_start and (start_idx > 0 or (elements and elements[0][1].strip().lower() == intro_start.lower())):
@@ -837,7 +893,13 @@ def parse_baraha_elements(
     while i < len(elements):
         el_type, val = elements[i]
 
+        if el_type == 'empty':
+            flush_mantra_buf()
+            i += 1
+            continue
+
         if el_type == 'tbl':
+            flush_mantra_buf()
             if current_sec is not None:
                 current_sec['content'].append(val)
                 current_sec['content_deva'].append(val)
@@ -856,6 +918,7 @@ def parse_baraha_elements(
 
         p = val.strip()
         if re.match(r'^[+\-*=_~#]{3,}$', p):
+            flush_mantra_buf()
             i += 1
             continue
 
@@ -884,6 +947,7 @@ def parse_baraha_elements(
 
         # Check for unnumbered chapter 2 switch if preliminary section
         if low_p == 'pooja preparations' and current_ch and current_ch['num'] == 1:
+            flush_mantra_buf()
             current_ch = {
                 'num': 2,
                 'title_raw': 'Pooja Preparations',
@@ -899,6 +963,7 @@ def parse_baraha_elements(
 
         # Check intro_sections mapping (for unnumbered headings in preliminary pages)
         if intro_sections and low_p in intro_sections:
+            flush_mantra_buf()
             sec_full = intro_sections[low_p]
             parts = sec_full.split(' ', 1)
             s_num = parts[0]
@@ -919,6 +984,7 @@ def parse_baraha_elements(
         if not is_forced_inline and current_ch and current_ch['num'] == 19:
             nak_m = re.match(r'^(\d+)\.?\s*(nakShatra[MH]?|paurNamAsi|amAvAsi|candramA|ahO|uShA|sUrya[H]?|aditi[H]?|viShNu[H]?|agni[H]?|anumat[aI][H]?|havyavAha)(.*)', p, re.I)
             if nak_m:
+                flush_mantra_buf()
                 item_num = nak_m.group(1)
                 item_title = (nak_m.group(2) + nak_m.group(3)).strip()
                 sec_num = f"19.{item_num}"
@@ -961,6 +1027,7 @@ def parse_baraha_elements(
                     is_valid = False
 
             if is_valid:
+                flush_mantra_buf()
                 # Transliterate title if Sanskrit, or keep as English
                 if is_english_text(ch_raw_title) or (ch_num in (1, 2) and current_lang == 'eng'):
                     ch_raw_title = clean_baraha_english(ch_raw_title)
@@ -988,6 +1055,7 @@ def parse_baraha_elements(
         sm = sec_regex.match(p) if not is_forced_inline else None
         tb_m = tb_regex.match(p) if (not is_forced_inline and not is_trinachiketam and not re.search(r'\bto\b|\bfor\b|\bitem\b', p, re.I)) else None
         if (sm or tb_m) and current_ch:
+            flush_mantra_buf()
             sec_num = sm.group(1) if sm else tb_m.group(1)
             sec_name = sm.group(2).strip() if sm else ''
             sec_deva, current_lang = process_baraha_line(sec_name, current_lang)
@@ -1009,14 +1077,14 @@ def parse_baraha_elements(
         # Scriptural citation attribute immediately under section or chapter header before content
         if not is_forced_inline and is_scriptural_citation(p):
             cit = normalize_citation(p)
-            if current_sec is not None and not current_sec.get('content'):
+            if current_sec is not None and not current_sec.get('content') and not mantra_buf_deva:
                 if current_sec.get('ta_code'):
                     current_sec['ta_code'] += ' / ' + cit
                 else:
                     current_sec['ta_code'] = cit
                 i += 1
                 continue
-            elif current_ch is not None and not current_ch.get('sections'):
+            elif current_ch is not None and not current_ch.get('sections') and not mantra_buf_deva:
                 if current_ch.get('ta_code'):
                     current_ch['ta_code'] += ' / ' + cit
                 else:
@@ -1024,48 +1092,42 @@ def parse_baraha_elements(
                 i += 1
                 continue
 
+        # Check for isolated annotations, notes, or krama chant lines
+        is_isolated_note = bool(
+            re.match(r'^\s*[\(\[][^\)\|\]]+[\)\]]\s*$', p)
+            or re.match(r'^\s*[-=_.]{3,}\s*$', p)
+            or re.match(r'^\s*item\s+no', p, re.I)
+        )
+        if is_isolated_note or is_krama_line(p):
+            flush_mantra_buf()
+            line_deva, current_lang = process_baraha_line(p, current_lang)
+            if current_sec is not None:
+                current_sec['content'].append(p)
+                current_sec['content_deva'].append(line_deva)
+            i += 1
+            continue
+
         # Content line
         line_deva, current_lang = process_baraha_line(p, current_lang)
         if not line_deva:
             i += 1
             continue
 
-        if current_sec is not None:
-            current_sec['content'].append(p)
-            current_sec['content_deva'].append(line_deva)
-        elif current_ch is not None:
-            current_sec = {
-                'num': str(current_ch['num']),
-                'title_raw': current_ch['title_raw'],
-                'title_deva': current_ch['title_deva'],
-                'ta_code': current_ch.get('ta_code', ''),
-                'content': [p],
-                'content_deva': [line_deva],
-                'is_intro': True
-            }
-            current_ch['sections'].append(current_sec)
-        else:
-            current_ch = {
-                'num': 1,
-                'title_raw': doc_title,
-                'title_deva': f"1. {doc_title}",
-                'ta_code': '',
-                'is_english': False,
-                'sections': []
-            }
-            chapters.append(current_ch)
-            current_sec = {
-                'num': '1.1',
-                'title_raw': doc_title,
-                'title_deva': doc_title,
-                'ta_code': '',
-                'content': [p],
-                'content_deva': [line_deva],
-                'is_intro': True
-            }
-            current_ch['sections'].append(current_sec)
+        mantra_buf_raw.append(p)
+        mantra_buf_deva.append(line_deva)
+
+        is_verse_end = bool(
+            re.search(r'(?:\|\||॥)(?:\s*[\d\.\u0966-\u096F]+)?(?:\s*\([^\)]+\))?\s*$', p)
+            or re.search(r'(?:\||।)\s*[\d\.\u0966-\u096F]+(?:\s*\([^\)]+\))?\s*$', p)
+        )
+        is_buffer_full = (len(' '.join(mantra_buf_deva)) >= 350 and bool(re.search(r'[|।\|]\s*$', p.strip())))
+
+        if is_verse_end or is_buffer_full:
+            flush_mantra_buf()
 
         i += 1
+
+    flush_mantra_buf()
 
     # Post-process Krama sections generically into 2-column tables
     for ch in chapters:
