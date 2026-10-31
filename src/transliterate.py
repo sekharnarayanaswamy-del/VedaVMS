@@ -10,7 +10,7 @@ Supports:
 - Vedic nasal glyphs:
     (gm), (gM), (gm~) -> U+A8F3 (ꣳ DEVANAGARI SIGN CANDRABINDU VIRAMA)
     (gg)              -> U+A8F4 (ꣴ DEVANAGARI SIGN RING ANUSVARA)
-    ~M                -> U+00A0 U+0901 (NBSP + Candrabindu ँ)
+    ~M                -> U+00A0 U+200D U+0901 (NBSP + ZWJ + Candrabindu ँ)
 - Symbols & Punctuation:
     & -> ऽ (Avagraha)
     | -> । (Danda)
@@ -295,7 +295,7 @@ def baraha_to_devanagari(text: str) -> str:
     text = text.replace('ओउम्', 'ॐ')
     text = re.sub(r'\(gm~?\)', '\uA8F3', text, flags=re.I)
     text = re.sub(r'\(gg\)', '\uA8F4', text, flags=re.I)
-    text = text.replace('~M', '\u00A0\u0901')
+    text = text.replace('~M', '\u00A0\u200D\u0901')
     text = text.replace('&', 'ऽ')
     text = text.replace('||', '॥')
     text = text.replace('|', '।')
@@ -604,8 +604,10 @@ def baraha_to_devanagari(text: str) -> str:
     res = re.sub(r'([\u0951\u0952\u1CDA])(ः)', r'\2\1', res)
     # 4c. Anusvara (ं) must precede any combining Vedic accent:
     res = re.sub(r'([\u0951\u0952\u1CDA])(ं)', r'\2\1', res)
-    # 4d. Candrabindu (ँ) directly after whitespace -> convert space to non-breaking space
-    res = re.sub(r'\s+ँ', '\u00A0ँ', res)
+    # 4d. Candrabindu (ँ) directly after whitespace or start of string -> convert to NBSP + ZWJ (\u00A0\u200D) to eliminate dotted circles:
+    res = re.sub(r'(^|[\s।॥\(\[\{,\.\-_])([ँഁ])', r'\g<1>' + '\u00A0\u200D' + r'\g<2>', res)
+    res = re.sub(r'[ \t]+\u00A0', '\u00A0', res)
+    res = res.replace('~ं', 'ं')
     # 4e. Accents should not follow punctuation or whitespace without a base:
     res = re.sub(r'([ \t\n।,॥\(\)\[\]\{\}\-])([\u0951\u0952\u1CDA]+)', r'\1', res)
     # 4f. Alternate chant notation (Or ...) in English:
@@ -724,10 +726,15 @@ def deva_to_malayalam(text: str) -> str:
     res = re.sub(r'മ്([॒॑᳚]*)(?!\.)(?=[\s\-\u2010-\u2015,;:!?<\|।॥\)\-\]\}]|$)', r'ം\g<1>', res, flags=re.MULTILINE)
 
     # 4. Gumphita Candrabindu (ഁ):
-    # 'മ്' or 'ം' followed by candrabindu -> ensure 'ം' + accents + NBSP (\u00A0) + candrabindu (\u0D01) before next syllable
-    res = re.sub(r'[മ്ം]([॒॑᳚]*)[\s\xa0]*ഁ[\s\xa0]*', 'ം\\g<1>\u00A0ഁ', res)
-    # Any other candrabindu preceded by whitespace -> NBSP + candrabindu
-    res = re.sub(r'[\s\xa0]+ഁ[\s\xa0]*', '\u00A0ഁ', res)
+    # 'മ്' or 'ം' followed by candrabindu -> ensure 'ം' + accents + NBSP (\u00A0) + ZWJ (\u200D) + candrabindu (\u0D01) before next syllable
+    res = re.sub(r'[മ്ം]([॒॑᳚]*)[\s\xa0]*ഁ[\s\xa0]*', 'ം\\g<1>\u00A0\u200Dഁ', res)
+    # Any other candrabindu preceded by whitespace or boundary -> NBSP + ZWJ + candrabindu
+    res = re.sub(r'(^|[\s\xa0।॥\(\[\{,\.\-_])(ഁ)', r'\g<1>' + '\u00A0\u200D' + r'\g<2>', res)
+    res = re.sub(r'[ \t]+\u00A0', '\u00A0', res)
+
+    # 5. Ensure Malayalam Anusvara (ം) always adheres directly to its base consonant before accents:
+    # If any accents landed before 'ം' (e.g. from transliterated स॒म् -> സ॒ം), move 'ം' before accents:
+    res = re.sub(r'([\u0951\u0952\u1CDA]+)\s*ം', r'ം\1', res)
 
     return res
 

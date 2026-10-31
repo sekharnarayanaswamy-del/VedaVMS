@@ -204,11 +204,19 @@ def format_vedic_html(text: str) -> str:
     if not re.search(r'[\u0900-\u097F\u0D00-\u0D7F\u0951\u0952\u1CDA\uA8E0-\uA8FF]', text) and is_english_text(text):
         return text
 
+    # 0. Clean any stray tildes before anusvara (~ं -> ं)
+    text = text.replace('~ं', 'ं')
+
+    # Eliminate dotted circles on Candrabindu / Anunasika by ensuring NBSP + ZWJ (\u00A0\u200D)
+    text = re.sub(r'(^|[\s।॥\(\[\{,\.\-_>])([ँഁ])', r'\g<1>' + '\u00A0\u200D' + r'\g<2>', text)
+    text = re.sub(r'(^|[\s।॥\(\[\{,\.\-_>])(\u200D[ँഁ])', r'\g<1>' + '\u00A0' + r'\g<2>', text)
+    text = re.sub(r'[ \t]+\u00A0', '\u00A0', text)
+
     # 1. Normalize ASCII colons to Visarga (only outside HTML tags)
     text = re.sub(r':(?![^<]*>)', 'ः', text)
 
-    # 2. Reorder accents that landed before Visarga so syllable + Visarga remain contiguous
-    text = re.sub(r'([\u0951\u0952\u1CDA]+)\s*([ःഃ])', r'\2\1', text)
+    # 2. Reorder accents that landed before Visarga or Anusvara so syllable + mark remain contiguous
+    text = re.sub(r'([\u0951\u0952\u1CDA]+)\s*([ःഃംं])', r'\2\1', text)
 
     # Stop shirorekha over visarga in Devanagari:
     # Insert &zwnj; before Devanagari Visarga (ः) when preceded by a Devanagari character,
@@ -231,6 +239,10 @@ def format_vedic_html(text: str) -> str:
     # Anudatta (U+0952): handle double anudatta then single anudatta
     text = text.replace('\u0952\u0952', '<span class="accent-anudatta">&#x0952;&#x0952;</span>')
     text = text.replace('\u0952', '<span class="accent-anudatta">&#x0952;</span>')
+
+    # 5. Ensure Malayalam Anusvara (ം) and Devanagari Anusvara (ं) remain contiguous with their base
+    # and never follow a span boundary (e.g. </span>ം), which browsers render with a dotted circle:
+    text = re.sub(r'((?:<span class="accent-[^"]+">[^<]+</span>\s*)+)([ംं])', r'\2\1', text)
 
     return text
 
@@ -255,6 +267,8 @@ def wrap_chant_padas(html_text: str) -> str:
     for match in pattern.finditer(html_text):
         chunk = match.group(0).strip()
         if chunk:
+            if chunk.startswith(('ँ', 'ഁ', '\u200Dँ', '\u200Dഁ')):
+                chunk = '\u00A0\u200D' + chunk.lstrip('\u200D')
             chunk = re.sub(r'\s+([।॥])', r'&nbsp;\1', chunk)
             clean_text = re.sub(r'<[^>]+>', '', chunk)
             clean_text = re.sub(r'&#x[0-9a-fA-F]+;', '', clean_text)
@@ -267,6 +281,8 @@ def wrap_chant_padas(html_text: str) -> str:
 
     remainder = html_text[last_end:].strip()
     if remainder:
+        if remainder.startswith(('ँ', 'ഁ', '\u200Dँ', '\u200Dഁ')):
+            remainder = '\u00A0\u200D' + remainder.lstrip('\u200D')
         remainder = re.sub(r'\s+([।॥])', r'&nbsp;\1', remainder)
         clean_rem = re.sub(r'<[^>]+>', '', remainder)
         clean_rem = re.sub(r'&#x[0-9a-fA-F]+;', '', clean_rem)

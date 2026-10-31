@@ -148,6 +148,105 @@ def extract_html_toc(html_path: str | Path) -> tuple[dict, list[dict]]:
     return meta, entries
 
 
+def audit_dotted_circles(html_path: str | Path) -> dict:
+    """Audit an HTML reader document for literal and shaped dotted circles (U+25CC).
+    Checks:
+    1. Literal Unicode U+25CC (◌).
+    2. Orphaned combining marks after tags (>ം, >ँ, etc.) or boundaries that trigger browser fallback circles.
+    3. OpenType-shaped dotted circles produced by font layout engines (using uharfbuzz with AdishilaSan or Nirmala/Kartika).
+    """
+    html_path = Path(html_path)
+    if not html_path.exists():
+        return {'count': 0, 'literal_count': 0, 'shaped_count': 0, 'details': []}
+
+    content = html_path.read_text(encoding='utf-8')
+    lit_cnt = content.count('\u25CC')
+
+    is_mal = 'malayalam' in str(html_path).lower() or any('\u0D00' <= c <= '\u0D7F' for c in content[:2000])
+
+    shaped_cnt = 0
+    details = []
+
+    # Attempt to load appropriate font for precise HarfBuzz OpenType shaping verification
+    hb = None
+    ttfont = None
+    dot_glyph = None
+    hb_font = None
+
+    if is_mal:
+        font_candidates = [
+            Path(r"C:\Windows\Fonts\Nirmala.ttc"),
+            Path(r"C:\Windows\Fonts\kartika.ttf"),
+            Path(__file__).parent.parent / "fonts" / "Nirmala.ttc",
+        ]
+    else:
+        font_candidates = [
+            Path(__file__).parent.parent / "fonts" / "AdishilaSan.ttf",
+            Path("fonts/AdishilaSan.ttf"),
+            Path(__file__).parent / "fonts" / "AdishilaSan.ttf",
+        ]
+    font_path = next((p for p in font_candidates if p.exists()), None)
+
+    try:
+        import uharfbuzz as hb
+        from fontTools.ttLib import TTFont
+        if font_path:
+            is_ttc = str(font_path).lower().endswith('.ttc')
+            ttfont = TTFont(str(font_path), fontNumber=0 if is_ttc else 0)
+            face = hb.Face(open(str(font_path), "rb").read(), 0 if is_ttc else 0)
+            hb_font = hb.Font(face)
+            cmap = ttfont.getBestCmap()
+            dot_glyph = cmap.get(0x25CC)
+    except Exception:
+        hb = None
+
+    lines = re.findall(r'<p\s+class="verse-p"[^>]*>(.*?)</p>', content)
+    for l_idx, l in enumerate(lines):
+        # 1. Structural DOM check: combining marks detached from consonants by tags (e.g. </span>ം or <span ...>ം)
+        tag_orphans = re.findall(r'>[ \t]*([ँഁंംःഃ])', l)
+        if tag_orphans:
+            c = len(tag_orphans)
+            shaped_cnt += c
+            if len(details) < 5:
+                details.append(f"Line {l_idx}: tag-detached mark '{tag_orphans[0]}' ({c} instances)")
+
+        # 2. Text node OpenType shaping / regex boundary check
+        clean_l = re.sub(r'<[^>]+>', '', l).replace('&nbsp;', '\u00A0').replace('&zwnj;', '\u200C').replace('&zwj;', '\u200D')
+        
+        # Test individual DOM text runs between tags
+        runs = [s.replace('&nbsp;', '\u00A0').replace('&zwnj;', '\u200C').replace('&zwj;', '\u200D') for s in re.split(r'<[^>]+>', l) if s]
+
+        if hb and ttfont and dot_glyph and hb_font:
+            run_c = 0
+            for run in runs:
+                if not run.strip():
+                    continue
+                buf = hb.Buffer()
+                buf.add_str(run)
+                buf.guess_segment_properties()
+                hb.shape(hb_font, buf)
+                gnames = [ttfont.getGlyphName(i.codepoint) for i in buf.glyph_infos]
+                run_c += gnames.count(dot_glyph)
+            if run_c > 0:
+                shaped_cnt += run_c
+                if len(details) < 5:
+                    details.append(f"Line {l_idx}: shaped dotted circles ({run_c} glyphs)")
+        else:
+            orphan_m = re.findall(r'(?:^|[\s।॥\(\[\{,\.\-_])([ँഁंംःഃ])', clean_l)
+            if orphan_m:
+                shaped_cnt += len(orphan_m)
+                if len(details) < 5:
+                    details.append(f"Line {l_idx}: {clean_l[:50]}... (orphan mark {orphan_m[0]})")
+
+    total_dotted = lit_cnt + shaped_cnt
+    return {
+        'count': total_dotted,
+        'literal_count': lit_cnt,
+        'shaped_count': shaped_cnt,
+        'details': details
+    }
+
+
 def audit_book(pdf_path: str | Path, html_path: str | Path, verbose: bool = False, section_filter: list = None) -> dict:
     """Audit the generated HTML against the reference PDF TOC."""
     pdf_path = Path(pdf_path)
@@ -238,15 +337,22 @@ def audit_book(pdf_path: str | Path, html_path: str | Path, verbose: bool = Fals
         elif ('tb_' in doc_ident or 'brahmana' in doc_ident) and any('T.B.' in s for s in extra_subsections):
             notes.append("Taittiriya Brahmana includes granular verse markers (T.B. x.y.z) directly indexed in the HTML reader.")
 
+    dotted_info = audit_dotted_circles(html_path)
+    dotted_count = dotted_info['count']
+    if dotted_count > 0:
+        differences.append(f"Dotted circles detected: {dotted_count}")
+
     if missing_chapters or extra_chapters:
         status = "FAIL"
-    elif missing_subsections:
+    elif missing_subsections or dotted_count > 0:
         status = "WARNING"
     else:
         status = "PASS"
 
     return {
         'status': status,
+        'dotted_circles_count': dotted_count,
+        'dotted_circles_details': dotted_info['details'],
         'pdf_path': str(pdf_path),
         'html_path': str(html_path),
         'generated_at': html_meta.get('generated_at'),
@@ -285,6 +391,9 @@ def format_audit_ascii(result: dict) -> str:
     out.append(f"  HTML Chapters    : {result['html_chapter_count']}")
     out.append(f"  PDF Subsections  : {result['pdf_subsection_count']}")
     out.append(f"  HTML Subsections : {result['html_subsection_count']}")
+    dot_cnt = result.get('dotted_circles_count', 0)
+    dot_status = "✓ PASS" if dot_cnt == 0 else f"✗ FAIL ({dot_cnt} found)"
+    out.append(f"  Dotted Circles   : {dot_cnt} [{dot_status}]")
     out.append("-" * 70)
 
     if not result['differences'] and not result['extra_subsections']:
@@ -330,8 +439,8 @@ def format_audit_markdown(results: list[dict]) -> str:
         "",
         "## Summary",
         "",
-        "| Document | Reference PDF | PDF Ch/Sec | HTML Ch/Sec | Status |",
-        "| :--- | :--- | :---: | :---: | :---: |",
+        "| Document | Reference PDF | PDF Ch/Sec | HTML Ch/Sec | Dotted Circles | Status |",
+        "| :--- | :--- | :---: | :---: | :---: | :---: |",
     ]
     for r in results:
         status_badge = "✅ PASS" if r['status'] == 'PASS' else ("⚠️ WARNING" if r['status'] == 'WARNING' else "❌ FAIL")
@@ -339,7 +448,9 @@ def format_audit_markdown(results: list[dict]) -> str:
         pdf_name = Path(r['pdf_path']).name
         ch_sec_pdf = f"{r['pdf_chapter_count']} / {r['pdf_subsection_count']}"
         ch_sec_html = f"{r['html_chapter_count']} / {r['html_subsection_count']}"
-        lines.append(f"| [`{html_name}`]({html_name}) | `{pdf_name}` | {ch_sec_pdf} | {ch_sec_html} | {status_badge} |")
+        dot_cnt = r.get('dotted_circles_count', 0)
+        dot_badge = "0 [✓ PASS]" if dot_cnt == 0 else f"{dot_cnt} [❌ FAIL]"
+        lines.append(f"| [`{html_name}`]({html_name}) | `{pdf_name}` | {ch_sec_pdf} | {ch_sec_html} | {dot_badge} | {status_badge} |")
 
     lines.append("")
     lines.append("---")
@@ -359,6 +470,9 @@ def format_audit_markdown(results: list[dict]) -> str:
         lines.append(f"- **HTML File Size**: `{r.get('html_size_bytes', 0):,} bytes`")
         lines.append(f"- **Chapters**: PDF: `{r['pdf_chapter_count']}`, HTML: `{r['html_chapter_count']}`")
         lines.append(f"- **Subsections**: PDF: `{r['pdf_subsection_count']}`, HTML: `{r['html_subsection_count']}`")
+        dot_cnt = r.get('dotted_circles_count', 0)
+        dot_badge = "0 [✓ PASS]" if dot_cnt == 0 else f"{dot_cnt} [❌ FAIL]"
+        lines.append(f"- **Dotted Circles**: `{dot_badge}`")
         lines.append("")
 
         if not r['differences'] and not r['extra_subsections']:
