@@ -1,6 +1,6 @@
 # VedaVMS Post-Generation TOC Audit Report
 
-> **Generated at**: `31-10-2026 21:16:17`
+> **Generated at**: `31-10-2026 21:22:03`
 
 ## Summary
 
@@ -9,7 +9,7 @@
 | [`taittiriya_upanishad_sanskrit.html`](taittiriya_upanishad_sanskrit.html) | `Taittiriya Upanishad Sanskrit.pdf` | 6 / 106 | 6 / 106 | ✅ PASS |
 | [`udaka_shanti_sanskrit.html`](udaka_shanti_sanskrit.html) | `Udaka Shanti Sanskrit.pdf` | 1 / 40 | 1 / 40 | ✅ PASS |
 | [`shanti_japam_sanskrit.html`](shanti_japam_sanskrit.html) | `Shanti Japam Sanskrit.pdf` | 40 / 42 | 40 / 82 | ✅ PASS |
-| [`siva_stuti_sanskrit.html`](siva_stuti_sanskrit.html) | `Siva Stuti Sanskrit.pdf` | 22 / 232 | 29 / 32 | ❌ FAIL |
+| [`siva_stuti_sanskrit.html`](siva_stuti_sanskrit.html) | `Siva Stuti Sanskrit.pdf` | 22 / 232 | 22 / 232 | ✅ PASS |
 | [`udaka_shanti_anushangam_sanskrit.html`](udaka_shanti_anushangam_sanskrit.html) | `Udaka Shanti Sanskrit ASCT.pdf` | 1 / 41 | 1 / 41 | ✅ PASS |
 | [`tb_3_7_achidram_sanskrit.html`](tb_3_7_achidram_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 14 | ⚠️ WARNING |
 | [`tb_3_8_aswamedham_vaiswadevam_sanskrit.html`](tb_3_8_aswamedham_vaiswadevam_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 0 / 96 | 0 / 23 | ⚠️ WARNING |
@@ -73,17 +73,16 @@
 > Shanti Japam Nakshatra Suktam includes 40 granular nakshatras (19.1–19.40) directly indexed in the HTML reader.
 
 
-### siva_stuti_sanskrit.html `[FAIL]`
+### siva_stuti_sanskrit.html `[PASS]`
 
 - **HTML Document**: [`build\viewer\siva_stuti_sanskrit.html`](siva_stuti_sanskrit.html)
 - **Reference PDF**: `data\pdf\Siva Stuti Sanskrit.pdf`
-- **Generated At**: `31-10-2026 21:16:07`
-- **HTML File Size**: `897,819 bytes`
-- **Chapters**: PDF: `22`, HTML: `29`
-- **Subsections**: PDF: `232`, HTML: `32`
+- **Generated At**: `04-10-2026 06:21:55`
+- **HTML File Size**: `2,166,730 bytes`
+- **Chapters**: PDF: `22`, HTML: `22`
+- **Subsections**: PDF: `232`, HTML: `232`
 
-- **Extra Chapters**: `[23, 24, 25, 26, 27, 28, 29]`
-- **Missing Subsections**: `['1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '11.1', '11.2', '11.3', '11.4', '11.5', '11.6', '14.1', '14.1.1', '14.1.2', '14.1.3', '14.1.4', '14.10', '14.10.1', '14.10.2', '14.10.3', '14.10.4', '14.11', '14.11.1', '14.11.2', '14.11.3', '14.11.4', '14.2', '14.2.1', '14.2.2', '14.2.3', '14.2.4', '14.3', '14.3.1', '14.3.2', '14.3.3', '14.3.4', '14.4', '14.4.1', '14.4.2', '14.4.3', '14.4.4', '14.5', '14.5.1', '14.5.2', '14.5.3', '14.5.4', '14.6', '14.6.1', '14.6.2', '14.6.3', '14.6.4', '14.7', '14.7.1', '14.7.2', '14.7.3', '14.7.4', '14.8', '14.8.1', '14.8.2', '14.8.3', '14.8.4', '14.9', '14.9.1', '14.9.2', '14.9.3', '14.9.4', '16.1', '16.10', '16.11', '16.12', '16.2', '16.3', '16.4', '16.5', '16.6', '16.7', '16.8', '16.9', '17.1', '17.10', '17.11', '17.12', '17.2', '17.3', '17.4', '17.5', '17.6', '17.7', '17.8', '17.9', '18.1', '19.1', '19.1.1', '19.1.10', '19.1.2', '19.1.3', '19.1.4', '19.1.5', '19.1.6', '19.1.7', '19.1.8', '19.1.9', '19.2', '19.2.1', '19.3', '19.4', '19.4.1', '19.4.10', '19.4.11', '19.4.12', '19.4.2', '19.4.3', '19.4.4', '19.4.5', '19.4.6', '19.4.7', '19.4.8', '19.4.9', '19.5', '19.6', '2.1', '2.2', '2.3', '2.4', '2.4.1', '2.4.2', '20.1', '20.1.1', '20.1.2', '20.1.3', '20.1.4', '20.1.5', '21.1', '3.1', '3.1.1', '3.1.2', '3.1.3', '3.1.4', '3.1.5', '3.2', '3.2.1', '3.2.2', '3.2.3', '3.2.4', '3.3', '3.3.1', '3.3.2', '3.4', '3.4.1', '3.4.2', '3.4.3', '3.4.4', '3.4.5', '3.5', '3.5.1', '3.5.2', '3.5.3', '3.6', '3.6.1', '3.6.10', '3.6.11', '3.6.12', '3.6.13', '3.6.14', '3.6.15', '3.6.16', '3.6.17', '3.6.18', '3.6.2', '3.6.3', '3.6.4', '3.6.5', '3.6.6', '3.6.7', '3.6.8', '3.6.9', '3.7', '3.7.1', '3.7.2', '3.7.3', '3.7.4', '3.7.5', '3.7.6', '4.1', '4.2', '7.1', '7.2', '7.3', '8.1', '8.2', '9.1', '9.2', '9.3', '9.4', '9.5', '9.6', '9.7', '9.8', '9.9']`
+✓ *All chapters and subsections match the reference PDF exactly.*
 
 
 ### udaka_shanti_anushangam_sanskrit.html `[PASS]`

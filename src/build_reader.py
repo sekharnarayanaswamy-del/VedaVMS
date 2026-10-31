@@ -4361,6 +4361,11 @@ def build_book(book_id: str, config: dict, input_override: str = None, output_ov
             raise ValueError(f"Book '{book_id}' not found in configuration. Available: {list(books.keys())}")
 
     book_meta = books[book_id]
+    if book_meta.get("preserve"):
+        out_p = Path(output_override or book_meta.get("output_html"))
+        print(f"Preserving verified edition for '{book_id}' at {out_p}")
+        return out_p
+
     input_file = input_override or book_meta.get("input_docx")
     output_file = output_override or book_meta.get("output_html")
     chapter_regex = book_meta.get("chapter_regex") or ""
