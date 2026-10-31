@@ -1,6 +1,6 @@
 # VedaVMS Post-Generation TOC Audit Report
 
-> **Generated at**: `31-10-2026 21:40:06`
+> **Generated at**: `31-10-2026 21:57:30`
 
 ## Summary
 
@@ -77,8 +77,8 @@
 
 - **HTML Document**: [`build\viewer\siva_stuti_sanskrit.html`](siva_stuti_sanskrit.html)
 - **Reference PDF**: `data\pdf\Siva Stuti Sanskrit.pdf`
-- **Generated At**: `04-10-2026 06:21:55`
-- **HTML File Size**: `2,176,140 bytes`
+- **Generated At**: `31-10-2026 21:55:16`
+- **HTML File Size**: `3,088,052 bytes`
 - **Chapters**: PDF: `22`, HTML: `22`
 - **Subsections**: PDF: `232`, HTML: `232`
 

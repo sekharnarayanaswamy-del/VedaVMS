@@ -53,8 +53,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\siva_stuti_sanskrit.html
-  Generated At     : 04-10-2026 06:21:55
-  HTML File Size   : 2,176,140 bytes
+  Generated At     : 31-10-2026 21:55:16
+  HTML File Size   : 3,088,052 bytes
   Reference PDF    : data\pdf\Siva Stuti Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 22

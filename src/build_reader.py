@@ -242,6 +242,10 @@ def wrap_chant_padas(html_text: str) -> str:
     if not html_text or '<table' in html_text or '<div class="korvai' in html_text:
         return html_text
 
+    # Skip chant pada wrapping for pure English prose/descriptions without dandas:
+    if '।' not in html_text and '॥' not in html_text:
+        return html_text
+
     pattern = re.compile(
         r'([^।॥\n]+(?:[।॥]+(?:\s*[\d\.\u0966-\u096F]+)?(?:\s*[।॥]+)?))'
     )
@@ -4395,6 +4399,28 @@ def build_book(book_id: str, config: dict, input_override: str = None, output_ov
         tb_map = extract_tb_sections(input_file)
         raw_paras = tb_map.get(prefix, [])
         chapters = parse_tb_book_paras(raw_paras, prefix, book_meta.get("title_sanskrit", ""), book_meta.get("subtitle", ""))
+    elif book_id in ("shiva_stuti", "siva_stuti"):
+        try:
+            from .baraha_reader import ast_to_reader_chapters
+        except ImportError:
+            from baraha_reader import ast_to_reader_chapters
+        # Load verified AST for Siva Stuti to preserve exact 22 chapters, 232 sections & English descriptions
+        json_path = None
+        for cand in [Path("mockup/viewer/siva_stuti.json"), Path("data/baraha/siva_stuti.json")]:
+            if cand.exists():
+                json_path = cand
+                break
+        if json_path:
+            with open(json_path, "r", encoding="utf-8") as jf:
+                ast_data = json.load(jf)
+            chapters = ast_to_reader_chapters(ast_data)
+        else:
+            try:
+                from .baraha_reader import parse_baraha_docx_to_ast
+            except ImportError:
+                from baraha_reader import parse_baraha_docx_to_ast
+            ast_data, _ = parse_baraha_docx_to_ast(input_file, title=book_meta.get("title_sanskrit"))
+            chapters = ast_to_reader_chapters(ast_data)
     else:
         try:
             from .baraha_reader import parse_baraha_docx_to_ast, ast_to_reader_chapters
