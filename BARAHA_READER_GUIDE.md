@@ -29,7 +29,8 @@ The VedaVMS engine provides first-class, concurrent support for **both Baraha so
 | **Slicing & Filtering** | Native multi-chapter slicing (`--chapter 3.7`) | Regex-based section splitting |
 | **Granular Invocations**| Fully indexes Dhyānam & preliminary passages (`.D`)| Index markers in brackets / headings |
 | **Git Diff Visibility** | 100% human-readable text line diffs | Binary diff (opaque zip archive) |
-| **Current Books in Prod**| 17 books (`AAK.brh` $ightarrow$ TB 3.7 to 3.12 Sanskrit & Malayalam) | 5 books (Taittiriya Upanishad, Udaka Shanti, Shanti Japam, etc.) |
+| **Current Books in Prod**| 17 books (`AAK.brh` $
+ightarrow$ TB 3.7 to 3.12 Sanskrit & Malayalam) | 5 books (Taittiriya Upanishad, Udaka Shanti, Shanti Japam, etc.) |
 
 ### Why We Support Both Formats
 1. **Preserving Legacy Investments**: The historical VedaVMS corpus has valuable `.docx` files containing carefully typeset Baraha ASCII text. These can continue to be built without converting them first.
@@ -261,5 +262,28 @@ To decouple binary DOCX extraction from HTML/PDF rendering across VedaVMS, the p
 ### For discussion with VedaVMS team
 We should have a session to demo their workflow:  
 - Tools and technology: Working with sources,tools, pdf generation, documentation, backups, etc.
-- Content related: Document update policies and pratices. 
+- Content related: Document update policies and pratices.
+
+---
+
+## 📌 Product Backlog & To-Do Items
+
+### 1. Atomic Chanting Padas & Chanting Layout Refinement (Input Sources & Line Formatting)
+
+> [!NOTE]
+> **Status**: Paused pending review of upstream input files. Documented as open To-Do item for future enhancement.
+
+#### Problem Context (Identified in Udaka Shanti ASCT & Other DOCX Books)
+* **Punctuation Discrepancy**: Unlike Taittirīya Brāhmaṇa (AAK.brh), which contains disciplined | (daṇḍa) delimiters after every 3–6 words, legacy Word .docx documents (e.g., Udaka Shanti ASCT Baraha.docx) frequently feature entire Anuvāka passages (such as TS 1.1.1 continuous text in Section 1.2 *Vedadhaya*) without any internal | daṇḍas, terminating only with || 1.
+* **Current Fallback Limitation**: Because wrap_chant_padas relies on । and ॥ to identify atomic units, sentences exceeding 85 characters without internal daṇḍas fall back to .chant-pada-long (white-space: normal). The browser then wraps text arbitrarily mid-compound across screen margins (e.g., आप्यायद्धमघ्निया देवभाग / मूर्जस्वतीः).
+* **Inconsistent Line Breaks**: Some source documents contain manual line breaks mid-sentence without daṇḍas (e.g. अग्निमीळे पुरोहितं-यज्ञस्य), causing isolated fragments on individual lines, while adjacent padas with daṇḍas pack side-by-side (देवमृत्विजं ।  होतारं रत्न धातमं ।).
+
+#### Backlog Items & Action Plan
+1. **Source File Audit & Improvement**:
+   - Check if improved/standardized Baraha .docx or .brh source files can be obtained with canonical chanting daṇḍas (|) at authentic breath/pada boundaries (matching traditional Veda Pathashala recitation and AAK.brh).
+   - Standardize accidental carriage returns / line breaks across Word documents before parsing.
+2. **Rendering Layout Enhancements (To be implemented once sources are reviewed)**:
+   - **Mode A: Flowing Atomic Padas**: Refine fallback wrapping so long continuous blocks wrap only at word/avāntara boundaries rather than breaking arbitrary syllables.
+   - **Mode B: Traditional Chant-Line Mode**: Option to format every daṇḍa (। / ॥) on its own visual line (one breath/pada per line).
+   - **Mode C: User Toggle**: Provide an interactive header switch (Chant View: Pada | Flow) allowing students to switch between continuous prose and line-by-line chant practice.
 
