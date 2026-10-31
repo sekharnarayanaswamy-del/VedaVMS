@@ -799,6 +799,17 @@ def parse_baraha_elements(
             if el[0] == 'p' and el[1].strip().lower() == intro_start.lower():
                 start_idx = idx
                 break
+    elif start_idx == 0:
+        in_toc_skip = False
+        for idx, el in enumerate(elements):
+            if el[0] == 'p':
+                p_clean = el[1].strip()
+                if p_clean.lower() == 'contents':
+                    in_toc_skip = True
+                    continue
+                if in_toc_skip and re.match(r'^[=\\-_]{5,}$', p_clean):
+                    start_idx = idx + 1
+                    break
 
     ch_pattern = re.compile(chapter_regex, re.I) if chapter_regex and chapter_regex.strip() else None
     sec_regex = re.compile(r'^(\d+\.\d+(?:\.\d+)?)\.?\t?\s*(.*)')
@@ -811,7 +822,7 @@ def parse_baraha_elements(
     current_lang = 'def'
 
     # If document starts with an intro section, initialize Chapter 1 in English mode
-    if start_idx > 0 or (elements and intro_start and elements[0][1].strip().lower() == intro_start.lower()):
+    if intro_start and (start_idx > 0 or (elements and elements[0][1].strip().lower() == intro_start.lower())):
         current_ch = {
             'num': 1,
             'title_raw': 'Introduction',
@@ -906,7 +917,7 @@ def parse_baraha_elements(
 
         # Nakshatra items inside Chapter 19 MUST be captured as subsections
         if not is_forced_inline and current_ch and current_ch['num'] == 19:
-            nak_m = re.match(r'^(\d+)\.?\s*(nakShatra[MH]?|paurNamAsi|amAvAsi|candramA|ahO|uShA|sUrya[H]?|aditi[H]?|viShNu[H]?|agni[H]?|anumatI|havyavAha)(.*)', p, re.I)
+            nak_m = re.match(r'^(\d+)\.?\s*(nakShatra[MH]?|paurNamAsi|amAvAsi|candramA|ahO|uShA|sUrya[H]?|aditi[H]?|viShNu[H]?|agni[H]?|anumat[aI][H]?|havyavAha)(.*)', p, re.I)
             if nak_m:
                 item_num = nak_m.group(1)
                 item_title = (nak_m.group(2) + nak_m.group(3)).strip()

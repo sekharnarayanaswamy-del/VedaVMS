@@ -1,6 +1,6 @@
 # VedaVMS Post-Generation TOC Audit Report
 
-> **Generated at**: `31-10-2026 21:57:30`
+> **Generated at**: `31-10-2026 22:22:57`
 
 ## Summary
 
@@ -8,7 +8,7 @@
 | :--- | :--- | :---: | :---: | :---: |
 | [`taittiriya_upanishad_sanskrit.html`](taittiriya_upanishad_sanskrit.html) | `Taittiriya Upanishad Sanskrit.pdf` | 6 / 106 | 6 / 106 | ✅ PASS |
 | [`udaka_shanti_sanskrit.html`](udaka_shanti_sanskrit.html) | `Udaka Shanti Sanskrit.pdf` | 1 / 40 | 1 / 40 | ✅ PASS |
-| [`shanti_japam_sanskrit.html`](shanti_japam_sanskrit.html) | `Shanti Japam Sanskrit.pdf` | 40 / 42 | 40 / 82 | ✅ PASS |
+| [`shanti_japam_sanskrit.html`](shanti_japam_sanskrit.html) | `Shanti Japam Sanskrit.pdf` | 40 / 42 | 40 / 84 | ✅ PASS |
 | [`siva_stuti_sanskrit.html`](siva_stuti_sanskrit.html) | `Siva Stuti Sanskrit.pdf` | 22 / 232 | 22 / 232 | ✅ PASS |
 | [`udaka_shanti_anushangam_sanskrit.html`](udaka_shanti_anushangam_sanskrit.html) | `Udaka Shanti Sanskrit ASCT.pdf` | 1 / 41 | 1 / 41 | ✅ PASS |
 | [`tb_3_7_achidram_sanskrit.html`](tb_3_7_achidram_sanskrit.html) | `TB 3.7-3.12 Sanskrit.pdf` | 1 / 14 | 0 / 14 | ✅ PASS |
@@ -61,13 +61,13 @@
 
 - **HTML Document**: [`build\viewer\shanti_japam_sanskrit.html`](shanti_japam_sanskrit.html)
 - **Reference PDF**: `data\pdf\Shanti Japam Sanskrit.pdf`
-- **Generated At**: `31-10-2026 21:06:35`
-- **HTML File Size**: `2,063,363 bytes`
+- **Generated At**: `31-10-2026 22:21:58`
+- **HTML File Size**: `2,235,874 bytes`
 - **Chapters**: PDF: `40`, HTML: `40`
-- **Subsections**: PDF: `42`, HTML: `82`
+- **Subsections**: PDF: `42`, HTML: `84`
 
-- **Additional Granular HTML Subsections** (40):
-  `19.1`, `19.10`, `19.11`, `19.12`, `19.13`, `19.14`, `19.15`, `19.16`, `19.17`, `19.18`, `19.19`, `19.2`, `19.20`, `19.21`, `19.22`, ... (+25 more)
+- **Additional Granular HTML Subsections** (42):
+  `19.1`, `19.10`, `19.11`, `19.12`, `19.13`, `19.14`, `19.15`, `19.16`, `19.17`, `19.18`, `19.19`, `19.2`, `19.20`, `19.21`, `19.22`, ... (+27 more)
 
 > [!NOTE]
 > Shanti Japam Nakshatra Suktam includes 40 granular nakshatras (19.1–19.40) directly indexed in the HTML reader.

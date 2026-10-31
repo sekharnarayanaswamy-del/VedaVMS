@@ -34,17 +34,17 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\shanti_japam_sanskrit.html
-  Generated At     : 31-10-2026 21:06:35
-  HTML File Size   : 2,063,363 bytes
+  Generated At     : 31-10-2026 22:21:58
+  HTML File Size   : 2,235,874 bytes
   Reference PDF    : data\pdf\Shanti Japam Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 40
   HTML Chapters    : 40
   PDF Subsections  : 42
-  HTML Subsections : 82
+  HTML Subsections : 84
 ----------------------------------------------------------------------
-  [HTML SUBSECTIONS]   : 40 additional granular subsections in HTML
-                         (19.1, 19.10, 19.11, 19.12, 19.13, ... +35 more)
+  [HTML SUBSECTIONS]   : 42 additional granular subsections in HTML
+                         (19.1, 19.10, 19.11, 19.12, 19.13, ... +37 more)
 ----------------------------------------------------------------------
   ℹ NOTE: Shanti Japam Nakshatra Suktam includes 40 granular nakshatras (19.1–19.40) directly indexed in the HTML reader.
 ======================================================================
