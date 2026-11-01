@@ -250,6 +250,7 @@ def format_vedic_html(text: str) -> str:
 def wrap_chant_padas(html_text: str) -> str:
     """Wraps sentences ending with dandas (| or ||) in <span class="chant-pada">...</span>
     so that each phrase and its danda remain atomic and do not wrap arbitrarily mid-sentence.
+    Long phrases (> 70 characters) are given class .chant-pada-long and start on a fresh line.
     """
     if not html_text or '<table' in html_text or '<div class="korvai' in html_text:
         return html_text
@@ -264,6 +265,16 @@ def wrap_chant_padas(html_text: str) -> str:
 
     parts = []
     last_end = 0
+
+    def add_pada(chunk: str, is_long: bool):
+        if is_long:
+            if parts and not parts[-1].endswith('<br class="pada-break">'):
+                parts.append('<br class="pada-break">')
+            parts.append(f'<span class="chant-pada chant-pada-long">{chunk}</span>')
+            parts.append('<br class="pada-break">')
+        else:
+            parts.append(f'<span class="chant-pada">{chunk}</span>')
+
     for match in pattern.finditer(html_text):
         chunk = match.group(0).strip()
         if chunk:
@@ -273,10 +284,7 @@ def wrap_chant_padas(html_text: str) -> str:
             clean_text = re.sub(r'<[^>]+>', '', chunk)
             clean_text = re.sub(r'&#x[0-9a-fA-F]+;', '', clean_text)
             clean_text = clean_text.replace('&zwnj;', '').replace('&nbsp;', ' ')
-            if len(clean_text) <= 85:
-                parts.append(f'<span class="chant-pada">{chunk}</span>')
-            else:
-                parts.append(f'<span class="chant-pada chant-pada-long">{chunk}</span>')
+            add_pada(chunk, len(clean_text) > 70)
         last_end = match.end()
 
     remainder = html_text[last_end:].strip()
@@ -287,10 +295,10 @@ def wrap_chant_padas(html_text: str) -> str:
         clean_rem = re.sub(r'<[^>]+>', '', remainder)
         clean_rem = re.sub(r'&#x[0-9a-fA-F]+;', '', clean_rem)
         clean_rem = clean_rem.replace('&zwnj;', '').replace('&nbsp;', ' ')
-        if len(clean_rem) <= 85 and ('।' in remainder or '॥' in remainder):
-            parts.append(f'<span class="chant-pada">{remainder}</span>')
-        else:
-            parts.append(f'<span class="chant-pada chant-pada-long">{remainder}</span>')
+        add_pada(remainder, len(clean_rem) > 70)
+
+    while parts and parts[-1] == '<br class="pada-break">':
+        parts.pop()
 
     return ' '.join(parts) if parts else html_text
 
@@ -1366,6 +1374,11 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         .chant-pada-long {{
             display: inline;
             white-space: normal;
+        }}
+        br.pada-break {{
+            display: block;
+            content: "";
+            margin-top: 0.15em;
         }}
 
         @media (max-width: 600px) {{
@@ -2488,6 +2501,10 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             .chant-pada-long {{
                 display: inline !important;
                 white-space: normal !important;
+            }}
+            br.pada-break {{
+                display: block !important;
+                content: "" !important;
             }}
             html, body {{
                 background: white !important;
