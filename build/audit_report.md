@@ -1,6 +1,6 @@
 # VedaVMS Post-Generation TOC Audit Report
 
-> **Generated at**: `01-11-2026 07:35:52`
+> **Generated at**: `01-11-2026 07:48:00`
 
 ## Summary
 
@@ -37,7 +37,7 @@
 
 - **HTML Document**: [`build\viewer\taittiriya_upanishad_sanskrit.html`](taittiriya_upanishad_sanskrit.html)
 - **Reference PDF**: `data\pdf\Taittiriya Upanishad Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:34:57`
+- **Generated At**: `01-11-2026 07:47:13`
 - **HTML File Size**: `1,465,903 bytes`
 - **Chapters**: PDF: `6`, HTML: `6`
 - **Subsections**: PDF: `106`, HTML: `106`
@@ -50,7 +50,7 @@
 
 - **HTML Document**: [`build\viewer\udaka_shanti_sanskrit.html`](udaka_shanti_sanskrit.html)
 - **Reference PDF**: `data\pdf\Udaka Shanti Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:34:59`
+- **Generated At**: `01-11-2026 07:47:15`
 - **HTML File Size**: `999,961 bytes`
 - **Chapters**: PDF: `1`, HTML: `1`
 - **Subsections**: PDF: `40`, HTML: `40`
@@ -63,7 +63,7 @@
 
 - **HTML Document**: [`build\viewer\shanti_japam_sanskrit.html`](shanti_japam_sanskrit.html)
 - **Reference PDF**: `data\pdf\Shanti Japam Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:00`
+- **Generated At**: `01-11-2026 07:47:16`
 - **HTML File Size**: `1,835,192 bytes`
 - **Chapters**: PDF: `40`, HTML: `40`
 - **Subsections**: PDF: `42`, HTML: `84`
@@ -80,7 +80,7 @@
 
 - **HTML Document**: [`build\viewer\siva_stuti_sanskrit.html`](siva_stuti_sanskrit.html)
 - **Reference PDF**: `data\pdf\Siva Stuti Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:01`
+- **Generated At**: `01-11-2026 07:47:17`
 - **HTML File Size**: `3,088,656 bytes`
 - **Chapters**: PDF: `22`, HTML: `22`
 - **Subsections**: PDF: `232`, HTML: `232`
@@ -93,7 +93,7 @@
 
 - **HTML Document**: [`build\viewer\udaka_shanti_anushangam_sanskrit.html`](udaka_shanti_anushangam_sanskrit.html)
 - **Reference PDF**: `data\pdf\Udaka Shanti Sanskrit ASCT.pdf`
-- **Generated At**: `01-11-2026 07:35:04`
+- **Generated At**: `01-11-2026 07:47:18`
 - **HTML File Size**: `1,013,469 bytes`
 - **Chapters**: PDF: `1`, HTML: `1`
 - **Subsections**: PDF: `41`, HTML: `41`
@@ -106,7 +106,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_7_achidram_sanskrit.html`](tb_3_7_achidram_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:05`
+- **Generated At**: `01-11-2026 07:47:20`
 - **HTML File Size**: `656,960 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `14`, HTML: `15`
@@ -120,8 +120,8 @@
 
 - **HTML Document**: [`build\viewer\tb_3_8_aswamedham_vaiswadevam_sanskrit.html`](tb_3_8_aswamedham_vaiswadevam_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:07`
-- **HTML File Size**: `540,335 bytes`
+- **Generated At**: `01-11-2026 07:47:21`
+- **HTML File Size**: `540,439 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `23`, HTML: `23`
 - **Dotted Circles**: `0 [✓ PASS]`
@@ -133,7 +133,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_9_aswamedham_havirdhanam_sanskrit.html`](tb_3_9_aswamedham_havirdhanam_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:09`
+- **Generated At**: `01-11-2026 07:47:22`
 - **HTML File Size**: `507,713 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `23`, HTML: `23`
@@ -146,8 +146,8 @@
 
 - **HTML Document**: [`build\viewer\tb_complete_sanskrit.html`](tb_complete_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:10`
-- **HTML File Size**: `2,175,191 bytes`
+- **Generated At**: `01-11-2026 07:47:23`
+- **HTML File Size**: `2,173,228 bytes`
 - **Chapters**: PDF: `6`, HTML: `0`
 - **Subsections**: PDF: `90`, HTML: `100`
 - **Dotted Circles**: `0 [✓ PASS]`
@@ -160,8 +160,8 @@
 
 - **HTML Document**: [`build\viewer\aak_sanskrit.html`](aak_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:12`
-- **HTML File Size**: `2,175,139 bytes`
+- **Generated At**: `01-11-2026 07:47:25`
+- **HTML File Size**: `2,173,176 bytes`
 - **Chapters**: PDF: `6`, HTML: `0`
 - **Subsections**: PDF: `90`, HTML: `100`
 - **Dotted Circles**: `0 [✓ PASS]`
@@ -174,8 +174,8 @@
 
 - **HTML Document**: [`build\viewer\aak_malayalam.html`](aak_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:15`
-- **HTML File Size**: `2,156,711 bytes`
+- **Generated At**: `01-11-2026 07:47:26`
+- **HTML File Size**: `2,154,796 bytes`
 - **Chapters**: PDF: `6`, HTML: `0`
 - **Subsections**: PDF: `90`, HTML: `100`
 - **Dotted Circles**: `0 [✓ PASS]`
@@ -188,7 +188,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_7_achidram_malayalam.html`](tb_3_7_achidram_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:17`
+- **Generated At**: `01-11-2026 07:47:28`
 - **HTML File Size**: `651,959 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `14`, HTML: `15`
@@ -202,8 +202,8 @@
 
 - **HTML Document**: [`build\viewer\tb_3_8_aswamedham_vaiswadevam_malayalam.html`](tb_3_8_aswamedham_vaiswadevam_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:19`
-- **HTML File Size**: `536,925 bytes`
+- **Generated At**: `01-11-2026 07:47:29`
+- **HTML File Size**: `537,029 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `23`, HTML: `23`
 - **Dotted Circles**: `0 [✓ PASS]`
@@ -215,7 +215,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_9_aswamedham_havirdhanam_malayalam.html`](tb_3_9_aswamedham_havirdhanam_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:20`
+- **Generated At**: `01-11-2026 07:47:30`
 - **HTML File Size**: `504,423 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `23`, HTML: `23`
@@ -228,7 +228,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_10_katakam_savitra_sanskrit.html`](tb_3_10_katakam_savitra_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:22`
+- **Generated At**: `01-11-2026 07:47:32`
 - **HTML File Size**: `354,121 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `11`, HTML: `11`
@@ -241,7 +241,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_10_katakam_savitra_malayalam.html`](tb_3_10_katakam_savitra_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:24`
+- **Generated At**: `01-11-2026 07:47:33`
 - **HTML File Size**: `352,217 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `11`, HTML: `11`
@@ -254,7 +254,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_11_katakam_naciketa_sanskrit.html`](tb_3_11_katakam_naciketa_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:25`
+- **Generated At**: `01-11-2026 07:47:34`
 - **HTML File Size**: `374,851 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `10`, HTML: `10`
@@ -267,7 +267,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_11_katakam_naciketa_malayalam.html`](tb_3_11_katakam_naciketa_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:27`
+- **Generated At**: `01-11-2026 07:47:35`
 - **HTML File Size**: `372,922 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `10`, HTML: `10`
@@ -280,7 +280,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_12_katakam_caturhotra_vaiswasruja_sanskrit.html`](tb_3_12_katakam_caturhotra_vaiswasruja_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:29`
+- **Generated At**: `01-11-2026 07:47:37`
 - **HTML File Size**: `438,267 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `9`, HTML: `12`
@@ -294,7 +294,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html`](tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:30`
+- **Generated At**: `01-11-2026 07:47:38`
 - **HTML File Size**: `435,476 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `9`, HTML: `12`
@@ -308,7 +308,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_12_katakam_caturhotra_sanskrit.html`](tb_3_12_katakam_caturhotra_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:32`
+- **Generated At**: `01-11-2026 07:47:40`
 - **HTML File Size**: `187,739 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `1`, HTML: `1`
@@ -321,7 +321,7 @@
 
 - **HTML Document**: [`build\viewer\tb_3_12_katakam_vaiswasruja_sanskrit.html`](tb_3_12_katakam_vaiswasruja_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `01-11-2026 07:35:33`
+- **Generated At**: `01-11-2026 07:47:42`
 - **HTML File Size**: `349,314 bytes`
 - **Chapters**: PDF: `1`, HTML: `0`
 - **Subsections**: PDF: `8`, HTML: `8`

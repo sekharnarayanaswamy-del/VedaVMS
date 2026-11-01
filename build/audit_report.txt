@@ -2,7 +2,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\taittiriya_upanishad_sanskrit.html
-  Generated At     : 01-11-2026 07:34:57
+  Generated At     : 01-11-2026 07:47:13
   HTML File Size   : 1,465,903 bytes
   Reference PDF    : data\pdf\Taittiriya Upanishad Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -19,7 +19,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\udaka_shanti_sanskrit.html
-  Generated At     : 01-11-2026 07:34:59
+  Generated At     : 01-11-2026 07:47:15
   HTML File Size   : 999,961 bytes
   Reference PDF    : data\pdf\Udaka Shanti Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -36,7 +36,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\shanti_japam_sanskrit.html
-  Generated At     : 01-11-2026 07:35:00
+  Generated At     : 01-11-2026 07:47:16
   HTML File Size   : 1,835,192 bytes
   Reference PDF    : data\pdf\Shanti Japam Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -56,7 +56,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\siva_stuti_sanskrit.html
-  Generated At     : 01-11-2026 07:35:01
+  Generated At     : 01-11-2026 07:47:17
   HTML File Size   : 3,088,656 bytes
   Reference PDF    : data\pdf\Siva Stuti Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -73,7 +73,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\udaka_shanti_anushangam_sanskrit.html
-  Generated At     : 01-11-2026 07:35:04
+  Generated At     : 01-11-2026 07:47:18
   HTML File Size   : 1,013,469 bytes
   Reference PDF    : data\pdf\Udaka Shanti Sanskrit ASCT.pdf
 ----------------------------------------------------------------------
@@ -90,7 +90,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_7_achidram_sanskrit.html
-  Generated At     : 01-11-2026 07:35:05
+  Generated At     : 01-11-2026 07:47:20
   HTML File Size   : 656,960 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -108,8 +108,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_8_aswamedham_vaiswadevam_sanskrit.html
-  Generated At     : 01-11-2026 07:35:07
-  HTML File Size   : 540,335 bytes
+  Generated At     : 01-11-2026 07:47:21
+  HTML File Size   : 540,439 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 1
@@ -125,7 +125,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_9_aswamedham_havirdhanam_sanskrit.html
-  Generated At     : 01-11-2026 07:35:09
+  Generated At     : 01-11-2026 07:47:22
   HTML File Size   : 507,713 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -142,8 +142,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_complete_sanskrit.html
-  Generated At     : 01-11-2026 07:35:10
-  HTML File Size   : 2,175,191 bytes
+  Generated At     : 01-11-2026 07:47:23
+  HTML File Size   : 2,173,228 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 6
@@ -160,8 +160,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\aak_sanskrit.html
-  Generated At     : 01-11-2026 07:35:12
-  HTML File Size   : 2,175,139 bytes
+  Generated At     : 01-11-2026 07:47:25
+  HTML File Size   : 2,173,176 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 6
@@ -178,8 +178,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\aak_malayalam.html
-  Generated At     : 01-11-2026 07:35:15
-  HTML File Size   : 2,156,711 bytes
+  Generated At     : 01-11-2026 07:47:26
+  HTML File Size   : 2,154,796 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 6
@@ -196,7 +196,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_7_achidram_malayalam.html
-  Generated At     : 01-11-2026 07:35:17
+  Generated At     : 01-11-2026 07:47:28
   HTML File Size   : 651,959 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -214,8 +214,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_8_aswamedham_vaiswadevam_malayalam.html
-  Generated At     : 01-11-2026 07:35:19
-  HTML File Size   : 536,925 bytes
+  Generated At     : 01-11-2026 07:47:29
+  HTML File Size   : 537,029 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 1
@@ -231,7 +231,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_9_aswamedham_havirdhanam_malayalam.html
-  Generated At     : 01-11-2026 07:35:20
+  Generated At     : 01-11-2026 07:47:30
   HTML File Size   : 504,423 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -248,7 +248,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_10_katakam_savitra_sanskrit.html
-  Generated At     : 01-11-2026 07:35:22
+  Generated At     : 01-11-2026 07:47:32
   HTML File Size   : 354,121 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -265,7 +265,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_10_katakam_savitra_malayalam.html
-  Generated At     : 01-11-2026 07:35:24
+  Generated At     : 01-11-2026 07:47:33
   HTML File Size   : 352,217 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -282,7 +282,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_11_katakam_naciketa_sanskrit.html
-  Generated At     : 01-11-2026 07:35:25
+  Generated At     : 01-11-2026 07:47:34
   HTML File Size   : 374,851 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -299,7 +299,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_11_katakam_naciketa_malayalam.html
-  Generated At     : 01-11-2026 07:35:27
+  Generated At     : 01-11-2026 07:47:35
   HTML File Size   : 372,922 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -316,7 +316,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_12_katakam_caturhotra_vaiswasruja_sanskrit.html
-  Generated At     : 01-11-2026 07:35:29
+  Generated At     : 01-11-2026 07:47:37
   HTML File Size   : 438,267 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -334,7 +334,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_12_katakam_caturhotra_vaiswasruja_malayalam.html
-  Generated At     : 01-11-2026 07:35:30
+  Generated At     : 01-11-2026 07:47:38
   HTML File Size   : 435,476 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -352,7 +352,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_12_katakam_caturhotra_sanskrit.html
-  Generated At     : 01-11-2026 07:35:32
+  Generated At     : 01-11-2026 07:47:40
   HTML File Size   : 187,739 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
@@ -369,7 +369,7 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\tb_3_12_katakam_vaiswasruja_sanskrit.html
-  Generated At     : 01-11-2026 07:35:33
+  Generated At     : 01-11-2026 07:47:42
   HTML File Size   : 349,314 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
