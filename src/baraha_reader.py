@@ -337,6 +337,14 @@ def parse_aak_brh(file_path: str | Path) -> list[dict]:
             cur_ch['sections'].append(cur_sec)
             continue
 
+        # Check for title continuation lines immediately following a section header:
+        # If the section has no content yet, and this line has no svara accents, no dandas, and is not a verse/TB marker:
+        if cur_sec and len(cur_sec['content']) == 0 and len(para_buffer_raw) == 0:
+            if not tb_re.match(p) and not re.search(r'@(?:an|sv|ds)|[|]', p) and not ch_re.match(p) and not sec_re.match(p):
+                clean_p = p.strip()
+                if clean_p and (clean_p in cur_sec['title_raw'] or clean_p.lower() in cur_sec['title_raw'].lower()):
+                    continue
+
         if re.search(r'Details of Dasini|For Kaatakam|Summary for entire', p, re.I) and cur_ch:
             flush_table()
             flush_para()
