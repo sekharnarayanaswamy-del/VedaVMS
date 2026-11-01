@@ -24,13 +24,14 @@ This document tracks open architectural items, planned enhancements, and backlog
 
 ---
 
-### 2. Intermediate JSON AST Pipeline Expansion
-* **Status**: 🟡 In Progress.
+### 2. Intermediate JSON AST Pipeline Expansion (Closed / Deprecated)
+* **Status**: ❌ **Closed / Deprecated** (Superseded by Direct Baraha SSOT Pipeline).
 * **Target Area**: `src/baraha_reader.py`, `src/build_reader.py`.
-* **Summary**:
-  - Successfully decoupled *Siva Stuti* to build reliably via `mockup/viewer/siva_stuti.json` AST.
-  - Add `--from-json` CLI flag to `build_reader.py` to allow consuming pre-generated JSON ASTs across all books instead of parsing binary DOCX on every run.
-  - Standardize JSON schema (`meta`, `supersections`, `sections`, `subsections`) across all books in `config.json`.
+* **Architectural Decision**:
+  - Baraha source files (`.brh` / `.docx`) are the sole canonical **Single Source of Truth (SSOT)** in the VedaVMS correction workflow.
+  - Converting from or maintaining static `.json` AST files introduces severe content drift: when an editor updates a Baraha source file, reading from an older JSON bypasses the correction completely.
+  - The AST in `src/build_reader.py` operates strictly as an **ephemeral (in-memory)** compilation stage. Serialized JSON will never serve as a build input.
+  - *Siva Stuti* was temporarily built via `siva_stuti.json` as an emergency stopgap due to malformed DOCX formatting, and will be migrated to clean direct Baraha input.
 
 ---
 

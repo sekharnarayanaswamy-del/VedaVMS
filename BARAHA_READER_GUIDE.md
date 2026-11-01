@@ -274,27 +274,24 @@ The generated HTML reader provides:
 
 ---
 
-## 📋 Refactoring Roadmap & To-Do Items: Intermediate JSON AST
+## 🏛️ Architecture Decision: Single Source of Truth (Direct Baraha Pipeline)
 
-To decouple binary DOCX extraction from HTML/PDF rendering across VedaVMS, the project supports generating an intermediate JSON AST:
+### Baraha as the Canonical Source of Truth
+The VedaVMS correction and publishing workflow strictly adheres to a single source of truth (SSOT):
+$$\text{Baraha Source } (\texttt{.brh} \text{ or } \texttt{.docx}) \longrightarrow \text{Automated In-Memory Parsing} \longrightarrow \text{Multi-Script HTML Readers & PDF Generation}$$
 
-### Status
-- [x] **`src/baraha_reader.py` added**: Standalone DOCX $\rightarrow$ JSON AST parser moved from the JSV research branch to VedaVMS.
-- [x] Tested with `tu_baraha.docx` $\rightarrow$ `tu_baraha.json` (6 sections, complete Devanagari verse hierarchy).
-
-### To-Do
-1. **Optionally Decouple `build_reader.py`**:
-   - Add a `--from-json` CLI flag to `build_reader.py` (e.g. `python src/build_reader.py --from-json tu_baraha.json`).
-   - Allow `build_reader.py` to consume the pre-generated JSON AST directly instead of parsing raw OpenXML `.docx` on every run.
-2. **Schema Standardization for VedaVMS Books**:
-   - Verify that all books in `config.json` (Taittiriya Upanishad, Taittiriya Brahmana, Aranyakam, etc.) produce consistent JSON schemas with `meta`, `supersections`, `sections`, and `subsections`.
-3. **Multi-Format Downstream Target Support**:
-   - Use the JSON AST as the single source of truth for generating future targets (e.g., XeLaTeX/PDF booklets, EPUB, or search indexes) without re-parsing DOCX files.
+### Why Static JSON AST Files Are Not Used as Inputs
+1. **Elimination of Content Drift ("Split-Brain")**:
+   When an editor corrects a mantra, svara, or pada delimiter in a Baraha input file, reading from a decoupled static `.json` file would bypass those corrections entirely.
+2. **Zero Double-Maintenance Burden**:
+   Scholars and editors maintain the Baraha sources directly. Maintaining duplicate representations across both Baraha and multi-thousand-line JSON files is error-prone and redundant.
+3. **Pure In-Memory AST**:
+   In `build_reader.py`, parsing is fast ($\approx 0.5$s per book) and executes directly in memory. Serialized JSON outputs (via `baraha_reader.py`) serve solely as optional debug inspections or API exports, never as build inputs.
 
 ### For discussion with VedaVMS team
 We should have a session to demo their workflow:  
-- Tools and technology: Working with sources,tools, pdf generation, documentation, backups, etc.
-- Content related: Document update policies and pratices.
+- Tools and technology: Working with sources, tools, pdf generation, documentation, backups, etc.
+- Content related: Document update policies and practices.
 
 ---
 
