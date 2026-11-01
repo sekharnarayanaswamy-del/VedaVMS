@@ -268,8 +268,16 @@ def parse_aak_brh(file_path: str | Path) -> list[dict]:
         table_buffer.clear()
 
     lines = body_text.splitlines()
+    in_lang_eng = False
     for line in lines:
         p = line.strip().replace('\x0c', '').replace('\x93', '"').replace('\x94', '"')
+
+        if '<lang=eng>' in p.lower():
+            in_lang_eng = True
+            p = re.sub(r'<lang=eng>', '', p, flags=re.I).strip()
+        if '<lang=def>' in p.lower():
+            in_lang_eng = False
+            p = re.sub(r'<lang=def>', '', p, flags=re.I).strip()
 
         if cur_korvai_type:
             if not p or re.match(r'^(?:3\.\d+|T\.B\.|Special\s+Korvai|Prapaataka\s+Korvai|Korvai\s+with|First\s+and\s+Last)', p, re.I):
@@ -345,6 +353,23 @@ def parse_aak_brh(file_path: str | Path) -> list[dict]:
                 if clean_p and (clean_p in cur_sec['title_raw'] or clean_p.lower() in cur_sec['title_raw'].lower()):
                     continue
 
+        # Check for Appendix section: e.g. "</inline> Appendix (of expansions)" or "Appendix (of expansions)"
+        if re.search(r'Appendix\s*\(of expansions\)', p, re.I) and cur_ch:
+            flush_table()
+            flush_para()
+            flush_korvai()
+            sec_id = f"{cur_ch['num']}.App"
+            cur_sec = {
+                'num': sec_id,
+                'title_raw': 'Appendix (of expansions)',
+                'title_deva': f"{cur_ch['num']} परिशिष्टम् (Appendix - Mantra Expansions)",
+                'ta_code': f"T.B. {cur_ch['num']} Appendix",
+                'content': [],
+                'content_deva': []
+            }
+            cur_ch['sections'].append(cur_sec)
+            continue
+
         if re.search(r'Details of Dasini|For Kaatakam|Summary for entire', p, re.I) and cur_ch:
             flush_table()
             flush_para()
@@ -382,7 +407,15 @@ def parse_aak_brh(file_path: str | Path) -> list[dict]:
             flush_korvai()
             clean_tb = p if p.startswith('T.B.') else f'T.B.{p}'
             cur_sec['content'].append(clean_tb)
-            cur_sec['content_deva'].append(f'<p class="verse-citation">{clean_tb}</p>')
+            if ' - ' in clean_tb:
+                c_code, c_mantra = clean_tb.split(' - ', 1)
+                deva_cit = f'{c_code} — {baraha_to_devanagari(c_mantra)}'
+            elif ' "' in clean_tb:
+                c_code, c_mantra = clean_tb.split(' "', 1)
+                deva_cit = f'{c_code} — "{baraha_to_devanagari(c_mantra)}'
+            else:
+                deva_cit = clean_tb
+            cur_sec['content_deva'].append(f'<p class="verse-citation">{deva_cit}</p>')
             continue
 
         if re.match(r'^\s*special\s+korvai\s*$', p, re.I) and cur_sec:
@@ -455,17 +488,36 @@ def parse_aak_brh(file_path: str | Path) -> list[dict]:
             korvai_buffer.append(p)
             continue
 
-        if (p.startswith('---') or p.lower().startswith('item ') or p.lower().startswith('both ')) and cur_sec:
+        # Check for inline tagged or English commentary notes:
+        is_inline_note = p.startswith(('</inline>', '<inline>'))
+        if not is_inline_note and cur_sec:
+            p_clean_test = re.sub(r'^</?inline>\s*', '', p).strip().lower()
+            if p_clean_test.startswith(('item ', 'both ', 'same as ', '(appearing', '(both', 'anuvakam ')):
+                is_inline_note = True
+
+        if is_inline_note and cur_sec:
             flush_para()
             flush_korvai()
-            cur_sec['content'].append(p)
-            cur_sec['content_deva'].append(f'<p class="verse-note">{clean_baraha_english(p)}</p>')
+            clean_note = re.sub(r'^</?inline>\s*', '', p).strip()
+            if clean_note:
+                cur_sec['content'].append(clean_note)
+                cur_sec['content_deva'].append(f'<p class="verse-note"><em>{clean_baraha_english(clean_note)}</em></p>')
+            continue
+
+        if p.startswith('---') and cur_sec:
+            flush_para()
+            flush_korvai()
             continue
 
         if cur_sec:
-            deva_line = baraha_to_devanagari(p)
-            para_buffer_raw.append(p)
-            para_buffer_deva.append(deva_line)
+            if in_lang_eng:
+                deva_line = clean_baraha_english(p)
+                para_buffer_raw.append(p)
+                para_buffer_deva.append(f'<p class="verse-note">{deva_line}</p>')
+            else:
+                deva_line = baraha_to_devanagari(p)
+                para_buffer_raw.append(p)
+                para_buffer_deva.append(deva_line)
 
     flush_para()
     flush_korvai()
