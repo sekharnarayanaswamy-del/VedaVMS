@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="generator" content="VedaVMS Reader Generator">
-    <meta name="generated-at" content="01-11-2026 10:45:39">
+    <meta name="generated-at" content="05-11-2026 22:45:23">
     <title>तैत्तिरीय ब्राह्मणम् (तृतीय काण्डम्, प्रपाठक ७ - १२) - Sanskrit Vedic Text</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2438,7 +2438,7 @@
             <div class="main-title">
                 <h1>तैत्तिरीय ब्राह्मणम् (तृतीय काण्डम्, प्रपाठक ७ - १२)</h1>
                 <div class="sub-heading subheading">कृष्ण यजुर्वेदीय तैत्तिरीय ब्राह्मणम् (सस्वरम्)</div>
-                <div class="generation-timestamp">Generated: 01-11-2026 10:45:39</div>
+                <div class="generation-timestamp">Generated: 05-11-2026 22:45:23</div>
             </div>
             <div class="deity-portrait-wrapper">
                 <img src="../assets/images/devatas/bhagavan_veda_vyasa.webp" alt="Bhagavan Sri Veda Vyasa" class="deity-portrait-img" loading="lazy">
@@ -6126,7 +6126,7 @@
                 </div>
             </section>
             <footer class="reader-footer">
-                <div class="footer-meta">Generated: 01-11-2026 10:45:39 • VedaVMS Vedic Reader</div>
+                <div class="footer-meta">Generated: 05-11-2026 22:45:23 • VedaVMS Vedic Reader</div>
             </footer>
         </main>
     </div>
@@ -6704,19 +6704,39 @@
                 event.preventDefault();
             }
 
+            const data = loadNotes();
+            const existingNote = targetId ? Object.values(data).find(n => n.targetId === targetId) : null;
+            if (existingNote) {
+                existingNote.isOpen = true;
+                saveNotes(data);
+                setTimeout(() => {
+                    const noteEl = document.getElementById('postit-entity-' + existingNote.id);
+                    if (noteEl) {
+                        const ta = noteEl.querySelector('.postit-textarea');
+                        if (ta) ta.focus();
+                    }
+                }, 80);
+                return;
+            }
+
             let defaultTop = window.scrollY + 150;
             let defaultLeft = 20;
 
-            const targetEl = targetId ? document.getElementById(targetId) : null;
-            if (targetEl) {
-                const targetRect = targetEl.getBoundingClientRect();
-                const contentEl = document.querySelector('.main-content');
-                const contentRect = contentEl ? contentEl.getBoundingClientRect() : targetRect;
+            if (event && event.pageX && event.pageY) {
+                defaultLeft = Math.max(15, Math.min(window.innerWidth - 260, Math.round(event.pageX - 100)));
+                defaultTop = Math.max(50, Math.round(event.pageY - 20));
+            } else {
+                const targetEl = targetId ? document.getElementById(targetId) : null;
+                if (targetEl) {
+                    const targetRect = targetEl.getBoundingClientRect();
+                    const contentEl = document.querySelector('.main-content');
+                    const contentRect = contentEl ? contentEl.getBoundingClientRect() : targetRect;
 
-                defaultTop = Math.round(window.scrollY + targetRect.top);
-                defaultLeft = Math.round(window.scrollX + contentRect.left + Math.min(220, contentRect.width * 0.35));
-                if (defaultLeft + 245 > window.innerWidth - 20) {
-                    defaultLeft = Math.max(15, window.innerWidth - 260);
+                    defaultTop = Math.round(window.scrollY + targetRect.top);
+                    defaultLeft = Math.round(window.scrollX + contentRect.left + Math.min(220, contentRect.width * 0.35));
+                    if (defaultLeft + 245 > window.innerWidth - 20) {
+                        defaultLeft = Math.max(15, window.innerWidth - 260);
+                    }
                 }
             }
 
@@ -7183,29 +7203,6 @@
                         btn.title = 'Attach Post-It Note to this section (or double-click text)';
                         btn.innerHTML = '🔖 <span class="bm-btn-label">Note</span>';
                     }
-                }
-            });
-
-            Object.entries(targetsMap).forEach(([targetId, notes]) => {
-                const el = document.getElementById(targetId);
-                if (el && el.classList.contains('verse-p')) {
-                    notes.forEach(note => {
-                        const badge = document.createElement('span');
-                        const color = note.color || 'yellow';
-                        const previewText = note.text ? note.text : '(Empty note)';
-                        badge.className = `verse-pin-badge postit-theme-${color}`;
-                        badge.title = '📌 ' + previewText;
-                        badge.setAttribute('data-note-preview', previewText);
-                        badge.setAttribute('data-note-color', color);
-                        badge.setAttribute('data-note-title', note.targetTitle || 'Verse Note');
-                        badge.innerHTML = `📌 <span class="badge-snip">${escapeHtmlText(previewText.substring(0, 15))}</span>`;
-                        badge.onclick = (ev) => {
-                            ev.stopPropagation();
-                            note.isOpen = !note.isOpen;
-                            saveNotes(data);
-                        };
-                        el.appendChild(badge);
-                    });
                 }
             });
 

@@ -3317,19 +3317,39 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 event.preventDefault();
             }}
 
+            const data = loadNotes();
+            const existingNote = targetId ? Object.values(data).find(n => n.targetId === targetId) : null;
+            if (existingNote) {{
+                existingNote.isOpen = true;
+                saveNotes(data);
+                setTimeout(() => {{
+                    const noteEl = document.getElementById('postit-entity-' + existingNote.id);
+                    if (noteEl) {{
+                        const ta = noteEl.querySelector('.postit-textarea');
+                        if (ta) ta.focus();
+                    }}
+                }}, 80);
+                return;
+            }}
+
             let defaultTop = window.scrollY + 150;
             let defaultLeft = 20;
 
-            const targetEl = targetId ? document.getElementById(targetId) : null;
-            if (targetEl) {{
-                const targetRect = targetEl.getBoundingClientRect();
-                const contentEl = document.querySelector('.main-content');
-                const contentRect = contentEl ? contentEl.getBoundingClientRect() : targetRect;
+            if (event && event.pageX && event.pageY) {{
+                defaultLeft = Math.max(15, Math.min(window.innerWidth - 260, Math.round(event.pageX - 100)));
+                defaultTop = Math.max(50, Math.round(event.pageY - 20));
+            }} else {{
+                const targetEl = targetId ? document.getElementById(targetId) : null;
+                if (targetEl) {{
+                    const targetRect = targetEl.getBoundingClientRect();
+                    const contentEl = document.querySelector('.main-content');
+                    const contentRect = contentEl ? contentEl.getBoundingClientRect() : targetRect;
 
-                defaultTop = Math.round(window.scrollY + targetRect.top);
-                defaultLeft = Math.round(window.scrollX + contentRect.left + Math.min(220, contentRect.width * 0.35));
-                if (defaultLeft + 245 > window.innerWidth - 20) {{
-                    defaultLeft = Math.max(15, window.innerWidth - 260);
+                    defaultTop = Math.round(window.scrollY + targetRect.top);
+                    defaultLeft = Math.round(window.scrollX + contentRect.left + Math.min(220, contentRect.width * 0.35));
+                    if (defaultLeft + 245 > window.innerWidth - 20) {{
+                        defaultLeft = Math.max(15, window.innerWidth - 260);
+                    }}
                 }}
             }}
 
@@ -3796,29 +3816,6 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                         btn.title = 'Attach Post-It Note to this section (or double-click text)';
                         btn.innerHTML = '🔖 <span class="bm-btn-label">Note</span>';
                     }}
-                }}
-            }});
-
-            Object.entries(targetsMap).forEach(([targetId, notes]) => {{
-                const el = document.getElementById(targetId);
-                if (el && el.classList.contains('verse-p')) {{
-                    notes.forEach(note => {{
-                        const badge = document.createElement('span');
-                        const color = note.color || 'yellow';
-                        const previewText = note.text ? note.text : '(Empty note)';
-                        badge.className = `verse-pin-badge postit-theme-${{color}}`;
-                        badge.title = '📌 ' + previewText;
-                        badge.setAttribute('data-note-preview', previewText);
-                        badge.setAttribute('data-note-color', color);
-                        badge.setAttribute('data-note-title', note.targetTitle || 'Verse Note');
-                        badge.innerHTML = `📌 <span class="badge-snip">${{escapeHtmlText(previewText.substring(0, 15))}}</span>`;
-                        badge.onclick = (ev) => {{
-                            ev.stopPropagation();
-                            note.isOpen = !note.isOpen;
-                            saveNotes(data);
-                        }};
-                        el.appendChild(badge);
-                    }});
                 }}
             }});
 
