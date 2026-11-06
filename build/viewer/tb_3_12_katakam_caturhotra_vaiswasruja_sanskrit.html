@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="generator" content="VedaVMS Reader Generator">
-    <meta name="generated-at" content="05-11-2026 23:51:49">
+    <meta name="generated-at" content="06-11-2026 10:24:44">
     <title>तैत्तिरीय ब्राह्मणे काठके तृतीयः प्रश्नः (चातुर्होत्र-वैश्वसृजचयनम्) - Sanskrit Vedic Text</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1319,31 +1319,86 @@
         .bm-card-top {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             gap: 0.5rem;
             margin-bottom: 0.35rem;
         }
 
         .bm-card-ch {
-            font-size: 0.75rem;
+            font-size: 0.76rem;
             font-weight: 700;
             color: var(--saffron);
             text-transform: uppercase;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+        }
+
+        .bm-card-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            flex-shrink: 0;
+        }
+
+        .bm-card-action-btn {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.15rem 0.45rem;
+            cursor: pointer;
+            color: #5D4037;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .bm-card-jump:hover {
+            background: var(--saffron);
+            color: white;
+            border-color: var(--saffron);
         }
 
         .bm-card-del {
-            background: transparent;
-            border: none;
-            color: #9E9E9E;
-            cursor: pointer;
-            font-size: 0.85rem;
-            padding: 0 0.25rem;
-            line-height: 1;
-            transition: color 0.15s;
+            color: #757575;
         }
 
         .bm-card-del:hover {
             color: #DC2626;
+            background: rgba(220, 38, 38, 0.12);
+            border-color: #DC2626;
+        }
+
+        .bm-card-edit-wrap {
+            margin: 0.35rem 0;
+        }
+
+        .bm-card-textarea {
+            width: 100%;
+            min-height: 55px;
+            max-height: 140px;
+            font-family: inherit;
+            font-size: 0.84rem;
+            line-height: 1.4;
+            padding: 0.4rem 0.55rem;
+            border: 1px solid rgba(0, 0, 0, 0.16);
+            border-radius: 5px;
+            background: #FAF7F2;
+            color: #3E2723;
+            resize: vertical;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .bm-card-textarea:focus {
+            background: #FFFFFF;
+            border-color: var(--saffron);
+            box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.25);
         }
 
         .bm-card-title {
@@ -1365,6 +1420,25 @@
             border-left: 2px solid rgba(0,0,0,0.15);
             margin-bottom: 0.35rem;
             word-break: break-word;
+        }
+
+        .bm-card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            color: #8D6E63;
+            margin-top: 0.25rem;
+        }
+
+        .bm-card-snippet-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 65%;
+            font-style: italic;
+            opacity: 0.85;
         }
 
         .bm-card-date {
@@ -2310,7 +2384,7 @@
             <div class="main-title">
                 <h1>तैत्तिरीय ब्राह्मणे काठके तृतीयः प्रश्नः (चातुर्होत्र-वैश्वसृजचयनम्)</h1>
                 <div class="sub-heading subheading">कृष्ण यजुर्वेदीय तैत्तिरीय ब्राह्मणम् (TB 3.12)</div>
-                <div class="generation-timestamp">Generated: 05-11-2026 23:51:49</div>
+                <div class="generation-timestamp">Generated: 06-11-2026 10:24:44</div>
             </div>
             <div class="deity-portrait-wrapper">
                 <img src="../assets/images/devatas/goddess_gayatri_devi.webp" alt="Goddess Gayatri Devi" class="deity-portrait-img" loading="lazy">
@@ -2809,7 +2883,7 @@
                 </div>
             </section>
             <footer class="reader-footer">
-                <div class="footer-meta">Generated: 05-11-2026 23:51:49 • VedaVMS Vedic Reader</div>
+                <div class="footer-meta">Generated: 06-11-2026 10:24:44 • VedaVMS Vedic Reader</div>
             </footer>
         </main>
     </div>
@@ -3390,37 +3464,27 @@
             const data = loadNotes();
             const existingNote = targetId ? Object.values(data).find(n => n.targetId === targetId) : null;
             if (existingNote) {
-                existingNote.isOpen = true;
-                saveNotes(data);
-                setTimeout(() => {
-                    const noteEl = document.getElementById('postit-entity-' + existingNote.id);
-                    if (noteEl) {
-                        const ta = noteEl.querySelector('.postit-textarea');
-                        if (ta) ta.focus();
-                    }
-                }, 80);
+                openNote(existingNote.id, event);
                 return;
             }
 
             let defaultTop = window.scrollY + 150;
             let defaultLeft = 20;
 
-            if (event && event.pageX && event.pageY) {
+            const targetEl = targetId ? document.getElementById(targetId) : null;
+            if (targetEl) {
+                const targetRect = targetEl.getBoundingClientRect();
+                const contentEl = document.querySelector('.main-content');
+                const contentRect = contentEl ? contentEl.getBoundingClientRect() : targetRect;
+
+                defaultTop = Math.round(window.scrollY + targetRect.top);
+                defaultLeft = Math.round(window.scrollX + contentRect.left + Math.min(220, contentRect.width * 0.35));
+                if (defaultLeft + 245 > window.innerWidth - 20) {
+                    defaultLeft = Math.max(15, window.innerWidth - 260);
+                }
+            } else if (event && event.pageX && event.pageY) {
                 defaultLeft = Math.max(15, Math.min(window.innerWidth - 260, Math.round(event.pageX - 100)));
                 defaultTop = Math.max(50, Math.round(event.pageY - 20));
-            } else {
-                const targetEl = targetId ? document.getElementById(targetId) : null;
-                if (targetEl) {
-                    const targetRect = targetEl.getBoundingClientRect();
-                    const contentEl = document.querySelector('.main-content');
-                    const contentRect = contentEl ? contentEl.getBoundingClientRect() : targetRect;
-
-                    defaultTop = Math.round(window.scrollY + targetRect.top);
-                    defaultLeft = Math.round(window.scrollX + contentRect.left + Math.min(220, contentRect.width * 0.35));
-                    if (defaultLeft + 245 > window.innerWidth - 20) {
-                        defaultLeft = Math.max(15, window.innerWidth - 260);
-                    }
-                }
             }
 
             createNoteAtCoords(targetId, defaultLeft, defaultTop, '', initialSnippet);
@@ -3451,19 +3515,34 @@
         }
 
         let wasDragMoved = false;
+        let isDragActive = false;
 
         function openNote(noteId, event) {
-            if (wasDragMoved) {
+            if (isDragActive || wasDragMoved) {
                 wasDragMoved = false;
+                isDragActive = false;
                 return;
             }
             if (event) {
                 event.stopPropagation();
-                event.preventDefault();
             }
             const data = loadNotes();
-            if (data[noteId]) {
-                data[noteId].isOpen = true;
+            const note = data[noteId];
+            if (note) {
+                note.isOpen = true;
+                const target = note.targetId ? document.getElementById(note.targetId) : null;
+                if (target) {
+                    const rect = target.getBoundingClientRect();
+                    const contentEl = document.querySelector('.main-content');
+                    const cRect = contentEl ? contentEl.getBoundingClientRect() : rect;
+                    const pageTop = window.scrollY + rect.top;
+                    if (!note.posY || Math.abs(note.posY - pageTop) > 600) {
+                        note.posY = Math.round(pageTop);
+                    }
+                    if (!note.posX) {
+                        note.posX = Math.round(window.scrollX + cRect.left + Math.min(220, cRect.width * 0.35));
+                    }
+                }
                 saveNotes(data);
                 setTimeout(() => {
                     const noteEl = document.getElementById('postit-entity-' + noteId);
@@ -3522,7 +3601,17 @@
                             statusDone.textContent = 'Saved';
                             statusDone.style.opacity = '1';
                         }
-                        renderBookmarksDrawer();
+                        const noteEl = document.getElementById('postit-entity-' + noteId);
+                        if (noteEl) {
+                            const ta = noteEl.querySelector('.postit-textarea');
+                            if (ta && ta.value !== text) ta.value = text;
+                        }
+                        const tabEl = document.getElementById('postit-tab-' + noteId);
+                        if (tabEl) {
+                            const snip = tabEl.querySelector('.inplace-tab-title');
+                            if (snip) snip.textContent = (text || '(Empty note)').substring(0, 16);
+                            tabEl.setAttribute('data-note-preview', text || '(Empty note)');
+                        }
                     } catch (e) {}
                 }
             }, 350);
@@ -3559,15 +3648,26 @@
             if (!note) return;
 
             note.isOpen = true;
-            saveNotes(data);
-
             const target = note.targetId ? document.getElementById(note.targetId) : null;
             if (target) {
+                const rect = target.getBoundingClientRect();
+                const contentEl = document.querySelector('.main-content');
+                const cRect = contentEl ? contentEl.getBoundingClientRect() : rect;
+                const pageTop = window.scrollY + rect.top;
+                note.posY = Math.round(pageTop);
+                note.posX = Math.round(window.scrollX + cRect.left + Math.min(220, cRect.width * 0.35));
+                if (note.posX + 245 > window.innerWidth - 20) {
+                    note.posX = Math.max(15, window.innerWidth - 260);
+                }
+                saveNotes(data);
                 target.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 target.classList.add('anuvaka-highlight');
                 setTimeout(() => { target.classList.remove('anuvaka-highlight'); }, 2000);
-            } else if (note.posY) {
-                window.scrollTo({ top: Math.max(0, note.posY - 100), behavior: 'smooth' });
+            } else {
+                saveNotes(data);
+                if (note.posY) {
+                    window.scrollTo({ top: Math.max(0, note.posY - 100), behavior: 'smooth' });
+                }
             }
 
             setTimeout(() => {
@@ -3576,13 +3676,15 @@
                     const ta = noteEl.querySelector('.postit-textarea');
                     if (ta) ta.focus();
                 }
-            }, 450);
+            }, 400);
         }
 
         // --- Dragging Logic with Exact Page Coordinates ---
         let activeDragNote = null;
         let dragOffsetX = 0;
         let dragOffsetY = 0;
+        let dragStartClientX = 0;
+        let dragStartClientY = 0;
 
         function startDragNote(noteId, e) {
             if (e.target.closest('.postit-entity-tools') || e.target.closest('button') || e.target.closest('textarea')) return;
@@ -3590,21 +3692,16 @@
             if (!noteEl) return;
             activeDragNote = noteId;
             wasDragMoved = false;
-            noteEl.classList.add('dragging');
-
-            document.querySelectorAll('.postit-entity, .postit-inplace-tab').forEach(el => el.style.zIndex = '1200');
-            noteEl.style.zIndex = '2100';
+            isDragActive = false;
 
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            dragStartClientX = clientX;
+            dragStartClientY = clientY;
 
             const rect = noteEl.getBoundingClientRect();
             dragOffsetX = clientX - rect.left;
             dragOffsetY = clientY - rect.top;
-
-            if (e.type !== 'touchstart') {
-                e.preventDefault();
-            }
         }
 
         function onDragMove(e) {
@@ -3612,9 +3709,19 @@
             const noteEl = document.getElementById('postit-entity-' + activeDragNote) || document.getElementById('postit-tab-' + activeDragNote);
             if (!noteEl) return;
 
-            wasDragMoved = true;
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            // Only treat as drag if movement exceeds 6px threshold
+            if (!isDragActive) {
+                const dist = Math.hypot(clientX - dragStartClientX, clientY - dragStartClientY);
+                if (dist < 6) return;
+                isDragActive = true;
+                wasDragMoved = true;
+                noteEl.classList.add('dragging');
+                document.querySelectorAll('.postit-entity, .postit-inplace-tab').forEach(el => el.style.zIndex = '1200');
+                noteEl.style.zIndex = '2100';
+            }
 
             const docX = clientX + window.scrollX - dragOffsetX;
             const docY = clientY + window.scrollY - dragOffsetY;
@@ -3636,7 +3743,7 @@
             const noteEl = document.getElementById('postit-entity-' + activeDragNote) || document.getElementById('postit-tab-' + activeDragNote);
             if (noteEl) {
                 noteEl.classList.remove('dragging');
-                if (wasDragMoved) {
+                if (isDragActive && wasDragMoved) {
                     const data = loadNotes();
                     if (data[activeDragNote]) {
                         const newX = parseInt(noteEl.style.left, 10);
@@ -3665,6 +3772,7 @@
                 }
             }
             activeDragNote = null;
+            isDragActive = false;
         }
 
         document.addEventListener('mouseup', endDragNote);
@@ -3918,16 +4026,23 @@
             entries.forEach(item => {
                 const color = item.color || 'yellow';
                 const dateStr = item.updatedAt ? new Date(item.updatedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
-                const snippet = item.text ? escapeHtmlText(item.text) : (item.targetSnippet ? '<span style="opacity:0.7;">Attached to: "' + escapeHtmlText(item.targetSnippet) + '"</span>' : '<span style="opacity: 0.6; font-style: italic;">(Empty note)</span>');
 
                 html += `
-                    <div class="bm-card card-theme-${color}" onclick="jumpToBookmark('${item.id}')">
+                    <div class="bm-card card-theme-${color}">
                         <div class="bm-card-top">
-                            <div class="bm-card-ch">${escapeHtmlText(item.targetTitle || 'Note')}</div>
-                            <button type="button" class="bm-card-del" onclick="event.stopPropagation(); deleteNote('${item.id}')" title="Delete note">✕</button>
+                            <div class="bm-card-ch" title="${escapeHtmlText(item.targetTitle || 'Note')}">${escapeHtmlText(item.targetTitle || 'Note')}</div>
+                            <div class="bm-card-actions">
+                                <button type="button" class="bm-card-action-btn bm-card-jump" onclick="jumpToBookmark('${item.id}')" title="View note in text">↗ View</button>
+                                <button type="button" class="bm-card-action-btn bm-card-del" onclick="deleteNote('${item.id}')" title="Delete note">🗑️</button>
+                            </div>
                         </div>
-                        <div class="bm-card-snippet">${snippet}</div>
-                        <div class="bm-card-date">${dateStr}</div>
+                        <div class="bm-card-edit-wrap">
+                            <textarea class="bm-card-textarea" placeholder="Add study note, chant count, commentary..." oninput="updateNoteText('${item.id}', this.value)">${escapeHtmlText(item.text || '')}</textarea>
+                        </div>
+                        <div class="bm-card-meta">
+                            <span class="bm-card-snippet-text">${item.targetSnippet ? 'Attached: ' + escapeHtmlText(item.targetSnippet) : ''}</span>
+                            <span class="bm-card-date">${dateStr}</span>
+                        </div>
                     </div>
                 `;
             });
