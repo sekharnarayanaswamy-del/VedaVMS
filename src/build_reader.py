@@ -1107,6 +1107,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
         .postit-entity {{
             position: absolute;
+            z-index: 2100;
             width: 235px;
             min-height: 210px;
             max-height: 310px;
@@ -1122,6 +1123,11 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             transform: rotate(-0.5deg);
             transition: box-shadow 0.2s ease;
             animation: postitPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        }}
+
+        .postit-entity:focus-within {{
+            z-index: 2250 !important;
+            box-shadow: 3px 10px 28px rgba(0, 0, 0, 0.24);
         }}
 
         @keyframes postitPop {{
@@ -1443,7 +1449,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         /* Hover Preview Card for Notes */
         .postit-hover-card {{
             position: absolute;
-            z-index: 99999;
+            z-index: 1500;
             width: 220px;
             max-width: 85vw;
             padding: 0.65rem 0.8rem;
@@ -1454,7 +1460,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             font-size: 0.82rem;
             line-height: 1.45;
             transform: translateY(-4px) rotate(-0.5deg);
-            transition: opacity 0.15s ease, transform 0.15s ease;
+            transition: opacity 0.12s ease, transform 0.12s ease;
             opacity: 0;
             display: none;
             border: 1px solid rgba(0, 0, 0, 0.18);
@@ -3336,6 +3342,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         function createNoteAtCoords(targetId, posX, posY, titleOverride, initialSnippet) {{
+            hideHoverPreview();
             const data = loadNotes();
             const noteId = 'note_' + Date.now();
 
@@ -3386,6 +3393,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         function createNoteAtTarget(targetId, initialSnippet, event) {{
+            hideHoverPreview();
             if (event) {{
                 event.stopPropagation();
                 event.preventDefault();
@@ -3421,6 +3429,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         function toggleAnuvakaBookmark(secId, event) {{
+            hideHoverPreview();
             if (event) {{
                 event.stopPropagation();
                 event.preventDefault();
@@ -3448,6 +3457,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         let isDragActive = false;
 
         function openNote(noteId, event) {{
+            hideHoverPreview();
             if (isDragActive || wasDragMoved) {{
                 wasDragMoved = false;
                 isDragActive = false;
@@ -3485,6 +3495,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         function closeNote(noteId) {{
+            hideHoverPreview();
             const data = loadNotes();
             if (data[noteId]) {{
                 data[noteId].isOpen = false;
@@ -3493,6 +3504,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         function deleteNote(noteId) {{
+            hideHoverPreview();
             const data = loadNotes();
             if (data[noteId]) {{
                 const hasText = data[noteId].text && data[noteId].text.trim().length > 0;
@@ -3572,6 +3584,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         function jumpToBookmark(noteId) {{
+            hideHoverPreview();
             toggleBookmarksDrawer(false);
             const data = loadNotes();
             const note = data[noteId];
@@ -3617,6 +3630,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         let dragStartClientY = 0;
 
         function startDragNote(noteId, e) {{
+            hideHoverPreview();
             if (e.target.closest('.postit-entity-tools') || e.target.closest('button') || e.target.closest('textarea')) return;
             const noteEl = document.getElementById('postit-entity-' + noteId) || document.getElementById('postit-tab-' + noteId);
             if (!noteEl) return;
@@ -3721,15 +3735,41 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         // --- Hover Card Preview for Notes ---
         let hoverCardEl = null;
 
+        function hideHoverPreview() {{
+            if (hoverCardEl) {{
+                hoverCardEl.classList.remove('visible');
+                hoverCardEl.style.display = 'none';
+                hoverCardEl.innerHTML = '';
+            }}
+        }}
+
         function showHoverPreview(targetEl, title, text, color) {{
             if (!text && !title) return;
+            // Never show hover preview if the target or note is already open
+            if (targetEl) {{
+                const tabId = targetEl.id || '';
+                if (tabId.startsWith('postit-tab-')) {{
+                    const nid = tabId.replace('postit-tab-', '');
+                    const notes = loadNotes();
+                    if (notes[nid] && notes[nid].isOpen) {{
+                        hideHoverPreview();
+                        return;
+                    }}
+                }}
+            }}
+            // Never show hover preview if cursor or focus is inside an open note or drawer
+            if (document.querySelector('.postit-entity:hover, .bookmarks-drawer:hover, .postit-entity:focus-within')) {{
+                hideHoverPreview();
+                return;
+            }}
+
             if (!hoverCardEl) {{
                 hoverCardEl = document.createElement('div');
                 hoverCardEl.id = 'postit-hover-card';
-                hoverCardEl.className = 'postit-hover-card';
                 document.body.appendChild(hoverCardEl);
             }}
 
+            hoverCardEl.style.display = 'block';
             hoverCardEl.className = 'postit-hover-card postit-theme-' + (color || 'yellow') + ' visible';
             hoverCardEl.innerHTML = `
                 <div class="hover-card-header">
@@ -3751,15 +3791,22 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
             hoverCardEl.style.top = top + 'px';
         }}
 
-        function hideHoverPreview() {{
-            if (hoverCardEl) {{
-                hoverCardEl.classList.remove('visible');
-            }}
-        }}
-
         document.addEventListener('mouseover', function(e) {{
+            if (e.target.closest('.postit-entity, .bookmarks-drawer, .modal-overlay')) {{
+                hideHoverPreview();
+                return;
+            }}
             const btn = e.target.closest('[data-note-preview]');
             if (btn) {{
+                const tabId = btn.id || '';
+                if (tabId.startsWith('postit-tab-')) {{
+                    const nid = tabId.replace('postit-tab-', '');
+                    const notes = loadNotes();
+                    if (notes[nid] && notes[nid].isOpen) {{
+                        hideHoverPreview();
+                        return;
+                    }}
+                }}
                 const text = btn.getAttribute('data-note-preview');
                 const color = btn.getAttribute('data-note-color') || 'yellow';
                 const title = btn.getAttribute('data-note-title') || 'Note';
@@ -3773,6 +3820,22 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
                 hideHoverPreview();
             }}
         }});
+
+        // Immediately dismiss hover card on any click, pointerdown, mousedown, touch, or focus on notes or tabs
+        const dismissEvents = ['pointerdown', 'mousedown', 'touchstart', 'click'];
+        dismissEvents.forEach(evt => {{
+            document.addEventListener(evt, function(e) {{
+                if (e.target.closest('.postit-entity, .postit-inplace-tab, .anuvaka-bm-btn, .postit-hover-card, .bm-card')) {{
+                    hideHoverPreview();
+                }}
+            }}, {{ capture: true, passive: true }});
+        }});
+
+        document.addEventListener('focusin', function(e) {{
+            if (e.target.closest('.postit-entity, .bm-card-textarea')) {{
+                hideHoverPreview();
+            }}
+        }}, true);
 
         // --- Selection Tooltip ---
         let selectionNoteBtn = null;
@@ -3819,6 +3882,7 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
         }}
 
         function updateBookmarksUI() {{
+            hideHoverPreview();
             const data = loadNotes();
             const notesList = Object.values(data);
             const count = notesList.length;
@@ -3915,6 +3979,8 @@ def generate_reader_html(book_meta: dict, chapters: list[dict], fonts: list[dict
 
                         if (anyOpen) {{
                             btn.innerHTML = '✕ <span class="bm-btn-label">Close Note</span>';
+                            btn.removeAttribute('data-note-preview');
+                            btn.title = 'Close note for this section';
                         }} else {{
                             btn.innerHTML = '📌 <span class="bm-btn-label">View Note</span>';
                         }}
