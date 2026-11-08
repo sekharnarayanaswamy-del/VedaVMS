@@ -24,7 +24,32 @@ This document tracks open architectural items, planned enhancements, and backlog
 
 ---
 
-### 2. Intermediate JSON AST Pipeline Expansion (Closed / Deprecated)
+### 2. Unified Standalone HTML Viewer & Cross-Project Notes Component (VedaVMS, JSV, Gramageyaganam)
+* **Status**: 📋 **Active / Backlog**
+* **Target Area**: `vedavms` (`src/build_reader.py`), `jaimineeyasamavedam` (`src/renderers/html_common.py`), and `Converter-tools` (`gramageyaganam/src/generate_g1_html.py`).
+* **Objective**:
+  - Establish a single, shared, canonical standalone HTML viewer runtime and Post-It Notes / Bookmarks engine shared across **VedaVMS**, **Jaimineeya Samavedam (JSV)**, and **Gramageyaganam**.
+  - Maximize code reuse across the three projects so enhancements and fixes made in one viewer propagate consistently to all, eliminating duplication and regression drift.
+* **Core Capabilities to Unify**:
+  1. **Autonomous Post-It Stationery & Bookmarks Entity System**:
+     - Draggable sticky notes (`postit-entity`) with exact page coordinates and `localStorage` persistence.
+     - Collapsible in-place folded tabs (`postit-inplace-tab`) with live preview tooltips.
+     - Hover preview card (`postit-hover-card`) with safe auto-dismissal.
+     - Bookmarks slide-out drawer (`bookmarks-drawer`) with live badge counts, full in-drawer editing (`textarea`), and direct jump navigation.
+     - Immediate flush on close (`closeNote`) and debounce-protected auto-saving (`noteDebounce`) to ensure zero content loss.
+     - Section-level bookmarking (`anuvaka-bm-btn`) with smooth, bounce-free scrolling.
+     - Inline verse-level attachment buttons (`add-note-inline-btn`) and text selection tooltip (`selection-note-btn`).
+  2. **Maximal HTML Standalone Viewer Code Reuse**:
+     - Common header toolbar (`➕ Note`, `🔖 Notes`, Font Switcher, Font Zoom `A- / A+`, Fullscreen, Print modal).
+     - Unified responsive 2-column reader layout (TOC sidebar with collapsible chapters/sections + main reading pane with mobile drawer toggle).
+     - Unified Print CSS system (`@media print` clean book-layout formatting with UI button suppression).
+     - Shared typography assets (`AdiShila Vedic`, `Noto Serif Devanagari`, `Tiro Sanskrit`, `Noto Sans`).
+* **Implementation Plan**:
+  - Extract common viewer assets (CSS, JS engine, toolbar controls, drawer templates) into a reusable shared module or package (e.g. `vedavms-viewer-core` or shared `html_common` library) consumed cleanly by all three repositories.
+
+---
+
+### 3. Intermediate JSON AST Pipeline Expansion (Closed / Deprecated)
 * **Status**: ❌ **Closed / Deprecated** (Superseded by Direct Baraha SSOT Pipeline).
 * **Target Area**: `src/baraha_reader.py`, `src/build_reader.py`.
 * **Architectural Decision**:
@@ -35,7 +60,7 @@ This document tracks open architectural items, planned enhancements, and backlog
 
 ---
 
-### 3. VedaVMS Team Collaboration & Workflow Sync
+### 4. VedaVMS Team Collaboration & Workflow Sync
 * **Status**: 📋 Scheduled.
 * **Topics for Discussion**:
   - Source file lifecycle and document update policies.
