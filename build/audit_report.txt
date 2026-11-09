@@ -160,8 +160,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\aak_sanskrit.html
-  Generated At     : 09-11-2026 12:31:54
-  HTML File Size   : 2,180,576 bytes
+  Generated At     : 09-11-2026 12:42:05
+  HTML File Size   : 2,180,575 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 6
@@ -178,8 +178,8 @@
   VedaVMS POST-GENERATION TOC AUDIT REPORT: [✓ PASS]
 ======================================================================
   HTML Document    : build\viewer\aak_malayalam.html
-  Generated At     : 09-11-2026 12:32:16
-  HTML File Size   : 2,162,184 bytes
+  Generated At     : 09-11-2026 12:42:32
+  HTML File Size   : 2,162,186 bytes
   Reference PDF    : data\pdf\TB 3.7-3.12 Sanskrit.pdf
 ----------------------------------------------------------------------
   PDF Chapters     : 6

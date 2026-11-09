@@ -1,6 +1,6 @@
 # VedaVMS Post-Generation TOC Audit Report
 
-> **Generated at**: `09-11-2026 12:32:28`
+> **Generated at**: `09-11-2026 12:42:45`
 
 ## Summary
 
@@ -160,8 +160,8 @@
 
 - **HTML Document**: [`build\viewer\aak_sanskrit.html`](aak_sanskrit.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `09-11-2026 12:31:54`
-- **HTML File Size**: `2,180,576 bytes`
+- **Generated At**: `09-11-2026 12:42:05`
+- **HTML File Size**: `2,180,575 bytes`
 - **Chapters**: PDF: `6`, HTML: `0`
 - **Subsections**: PDF: `90`, HTML: `100`
 - **Dotted Circles**: `0 [✓ PASS]`
@@ -174,8 +174,8 @@
 
 - **HTML Document**: [`build\viewer\aak_malayalam.html`](aak_malayalam.html)
 - **Reference PDF**: `data\pdf\TB 3.7-3.12 Sanskrit.pdf`
-- **Generated At**: `09-11-2026 12:32:16`
-- **HTML File Size**: `2,162,184 bytes`
+- **Generated At**: `09-11-2026 12:42:32`
+- **HTML File Size**: `2,162,186 bytes`
 - **Chapters**: PDF: `6`, HTML: `0`
 - **Subsections**: PDF: `90`, HTML: `100`
 - **Dotted Circles**: `0 [✓ PASS]`
